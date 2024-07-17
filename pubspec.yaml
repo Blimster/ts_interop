@@ -1,0 +1,16 @@
+name: ts_interop
+description: Creates Dart interop types for JavaScript based on TypeScript declaration files.
+version: 0.1.0
+repository: https://github.com/blimster/ts_interop
+
+environment:
+  sdk: ^3.4.4
+
+dependencies:
+  #json_annotation: ^4.9.0
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^3.0.0
+  #build_runner: ^2.3.3
+  #json_serializable: ^6.8.0
