@@ -38,6 +38,8 @@ T _readNode<T extends TsNode>(Map<String, dynamic> json) {
         return TsExportKeyword() as T;
       case TsNodeKind.expressionWithTypeArguments:
         return TsExpressionWithTypeArguments.fromJson(json) as T;
+      case TsNodeKind.extendsKeyword:
+        return TsExtendsKeyword() as T;
       case TsNodeKind.falseKeyword:
         return TsFalseKeyword() as T;
       case TsNodeKind.functionType:
@@ -62,6 +64,8 @@ T _readNode<T extends TsNode>(Map<String, dynamic> json) {
         return TsImportSpecifier.fromJson(json) as T;
       case TsNodeKind.importType:
         return TsImportType.fromJson(json) as T;
+      case TsNodeKind.implementsKeyword:
+        return TsImplementsKeyword() as T;
       case TsNodeKind.indexedAccessType:
         return TsIndexedAccessType.fromJson(json) as T;
       case TsNodeKind.indexSignature:
@@ -72,6 +76,8 @@ T _readNode<T extends TsNode>(Map<String, dynamic> json) {
         return TsInterfaceDeclaration.fromJson(json) as T;
       case TsNodeKind.intersectionType:
         return TsIntersectionType.fromJson(json) as T;
+      case TsNodeKind.keyOfKeyword:
+        return TsKeyOfKeyword() as T;
       case TsNodeKind.literalType:
         return TsLiteralType.fromJson(json) as T;
       case TsNodeKind.mappedType:
@@ -170,6 +176,8 @@ T _readNode<T extends TsNode>(Map<String, dynamic> json) {
         return TsUndefinedKeyword() as T;
       case TsNodeKind.unionType:
         return TsUnionType.fromJson(json) as T;
+      case TsNodeKind.uniqueKeyword:
+        return TsUniqueKeyword() as T;
       case TsNodeKind.unknownKeyword:
         return TsUnknownKeyword() as T;
       case TsNodeKind.variableDeclaration:
@@ -185,6 +193,7 @@ T _readNode<T extends TsNode>(Map<String, dynamic> json) {
         return TsUnsupportedNode(_toFirstLower(json['kind'].toString())) as T;
     }
   } catch (e) {
+    print(e);
     print('WARNING: Unsupported node kind: ${json['kind']}');
     return TsUnsupportedNode(_toFirstLower(json['kind'].toString())) as T;
   }
@@ -222,12 +231,14 @@ enum TsNodeKind {
   exclamationToken,
   exportKeyword,
   expressionWithTypeArguments,
+  extendsKeyword,
   falseKeyword,
   functionType,
   functionDeclaration,
   getAccessor,
   heritageClause,
   identifier,
+  implementsKeyword,
   importAttribute,
   importAttributes,
   importClause,
@@ -239,6 +250,7 @@ enum TsNodeKind {
   inferType,
   interfaceDeclaration,
   intersectionType,
+  keyOfKeyword,
   literalType,
   mappedType,
   methodDeclaration,
@@ -288,6 +300,7 @@ enum TsNodeKind {
   typeReference,
   undefinedKeyword,
   unionType,
+  uniqueKeyword,
   unknownKeyword,
   unsupported,
   variableDeclaration,
@@ -369,17 +382,19 @@ class TsCallSignature extends TsNode {
 
 class TsClassDeclaration extends TsNode {
   final List<TsNode> modifiers;
-  final TsNode name;
+  final TsIdentifier name;
+  final List<TsTypeParameter> typeParameters;
   final List<TsNode> heritageClauses;
   final List<TsNode> members;
 
-  TsClassDeclaration(this.modifiers, this.name, this.heritageClauses, this.members)
+  TsClassDeclaration(this.modifiers, this.name, this.typeParameters, this.heritageClauses, this.members)
       : super(TsNodeKind.classDeclaration);
 
   factory TsClassDeclaration.fromJson(Map<String, dynamic> json) {
     return TsClassDeclaration(
       _readNodes(json['modifiers']),
       _readNode(json['name']),
+      _readNodes(json['typeParameters']),
       _readNodes(json['heritageClauses']),
       _readNodes(json['members']),
     );
@@ -509,7 +524,7 @@ class TsDeclareKeyword extends TsNode {
 
 class TsEnumDeclaration extends TsNode {
   final List<TsNode> modifiers;
-  final TsNode name;
+  final TsIdentifier name;
   final List<TsNode> members;
 
   TsEnumDeclaration(this.modifiers, this.name, this.members) : super(TsNodeKind.enumDeclaration);
@@ -581,6 +596,15 @@ class TsExpressionWithTypeArguments extends TsNode {
   @override
   String toString() {
     return 'TsExpressionWithTypeArguments{expression: $expression, typeArguments: $typeArguments}';
+  }
+}
+
+class TsExtendsKeyword extends TsNode {
+  TsExtendsKeyword() : super(TsNodeKind.extendsKeyword);
+
+  @override
+  String toString() {
+    return 'TsExtendsKeyword{}';
   }
 }
 
@@ -666,19 +690,21 @@ class TsGetAccessor extends TsNode {
 }
 
 class TsHeritageClause extends TsNode {
+  final TsNode token;
   final List<TsNode> types;
 
-  TsHeritageClause(this.types) : super(TsNodeKind.heritageClause);
+  TsHeritageClause(this.token, this.types) : super(TsNodeKind.heritageClause);
 
   factory TsHeritageClause.fromJson(Map<String, dynamic> json) {
     return TsHeritageClause(
+      _readNode(json['token']),
       _readNodes(json['types']),
     );
   }
 
   @override
   String toString() {
-    return 'TsHeritageClause{types: $types}';
+    return 'TsHeritageClause{token: $token, types: $types}';
   }
 }
 
@@ -824,6 +850,15 @@ class TsImportType extends TsNode {
   }
 }
 
+class TsImplementsKeyword extends TsNode {
+  TsImplementsKeyword() : super(TsNodeKind.implementsKeyword);
+
+  @override
+  String toString() {
+    return 'TsImplementsKeyword{}';
+  }
+}
+
 class TsIndexedAccessType extends TsNode {
   final TsNode objectType;
   final TsNode indexType;
@@ -883,9 +918,9 @@ class TsInferType extends TsNode {
 
 class TsInterfaceDeclaration extends TsNode {
   final List<TsNode> modifiers;
-  final TsNode name;
-  final List<TsNode> typeParameters;
-  final List<TsNode> heritageClauses;
+  final TsIdentifier name;
+  final List<TsTypeParameter> typeParameters;
+  final List<TsHeritageClause> heritageClauses;
   final List<TsNode> members;
 
   TsInterfaceDeclaration(this.modifiers, this.name, this.typeParameters, this.heritageClauses, this.members)
@@ -921,6 +956,15 @@ class TsIntersectionType extends TsNode {
   @override
   String toString() {
     return 'TsIntersectionType{types: $types}';
+  }
+}
+
+class TsKeyOfKeyword extends TsNode {
+  TsKeyOfKeyword() : super(TsNodeKind.keyOfKeyword);
+
+  @override
+  String toString() {
+    return 'TsKeyOfKeyword{}';
   }
 }
 
@@ -1552,8 +1596,8 @@ class TsTupleType extends TsNode {
 
 class TsTypeAliasDeclaration extends TsNode {
   final List<TsNode> modifiers;
-  final TsNode name;
-  final List<TsNode> typeParameters;
+  final TsIdentifier name;
+  final List<TsTypeParameter> typeParameters;
   final TsNode? type;
 
   TsTypeAliasDeclaration(this.modifiers, this.name, this.typeParameters, this.type)
@@ -1592,25 +1636,27 @@ class TsTypeLiteral extends TsNode {
 }
 
 class TsTypeOperator extends TsNode {
+  final TsNode operator;
   final TsNode type;
 
-  TsTypeOperator(this.type) : super(TsNodeKind.typeOperator);
+  TsTypeOperator(this.operator, this.type) : super(TsNodeKind.typeOperator);
 
   factory TsTypeOperator.fromJson(Map<String, dynamic> json) {
     return TsTypeOperator(
+      _readNode(json['operator']),
       _readNode(json['type']),
     );
   }
 
   @override
   String toString() {
-    return 'TsTypeOperator{type: $type}';
+    return 'TsTypeOperator{operator: $operator, type: $type}';
   }
 }
 
 class TsTypeParameter extends TsNode {
   final List<TsNode> modifiers;
-  final TsNode name;
+  final TsIdentifier name;
   final TsNode? constraint;
   final TsNode? defaultType;
 
@@ -1713,6 +1759,15 @@ class TsUnionType extends TsNode {
   @override
   String toString() {
     return 'TsUnionType{types: $types}';
+  }
+}
+
+class TsUniqueKeyword extends TsNode {
+  TsUniqueKeyword() : super(TsNodeKind.uniqueKeyword);
+
+  @override
+  String toString() {
+    return 'TsUniqueKeyword{}';
   }
 }
 
