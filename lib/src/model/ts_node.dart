@@ -1,6 +1,6 @@
 String _toFirstLower(String text) => "${text[0].toLowerCase()}${text.substring(1)}";
 
-T _readNode<T extends TsNode>(Map<String, dynamic> json) {
+T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
   try {
     final kind = TsNodeKind.values.byName(_toFirstLower(json['kind'] as String));
     switch (kind) {
@@ -199,18 +199,18 @@ T _readNode<T extends TsNode>(Map<String, dynamic> json) {
   }
 }
 
-T? _readNullableNode<T extends TsNode>(Map<String, dynamic>? json) {
+T? _fromNullableJsonObject<T extends TsNode>(Map<String, dynamic>? json) {
   if (json == null) {
     return null;
   }
-  return _readNode(json);
+  return _fromJsonObject(json);
 }
 
-List<T> _readNodes<T extends TsNode>(Iterable? json) {
+List<T> _fromJsonArray<T extends TsNode>(Iterable? json) {
   if (json == null) {
     return [];
   }
-  return json.map((e) => _readNode<T>(e as Map<String, dynamic>)).toList();
+  return json.map((e) => _fromJsonObject<T>(e as Map<String, dynamic>)).toList();
 }
 
 enum TsNodeKind {
@@ -311,8 +311,33 @@ enum TsNodeKind {
 
 sealed class TsNode {
   final TsNodeKind kind;
+  late final TsNode? parent;
 
   TsNode(this.kind);
+
+  String? get nodeQualifier => null;
+
+  List<TsNode> get children => [];
+
+  String nodeHierarchy({int indent = 2}) {
+    final buffer = StringBuffer();
+    _nodeHierarchy(buffer, indent);
+    return buffer.toString();
+  }
+
+  void _nodeHierarchy(StringBuffer buffer, int indent) {
+    buffer.writeln('${' ' * indent}${kind.name}: ${nodeQualifier ?? ''}');
+    for (final child in children) {
+      child._nodeHierarchy(buffer, indent + 2);
+    }
+  }
+
+  void _applyParentToChilds() {
+    for (final child in children) {
+      child.parent = this;
+      child._applyParentToChilds();
+    }
+  }
 }
 
 class TsAbstractKeyword extends TsNode {
@@ -340,9 +365,12 @@ class TsArrayType extends TsNode {
 
   factory TsArrayType.fromJson(Map<String, dynamic> json) {
     return TsArrayType(
-      _readNode(json['elementType']),
+      _fromJsonObject(json['elementType']),
     );
   }
+
+  @override
+  List<TsNode> get children => [elementType];
 
   @override
   String toString() {
@@ -368,11 +396,18 @@ class TsCallSignature extends TsNode {
 
   factory TsCallSignature.fromJson(Map<String, dynamic> json) {
     return TsCallSignature(
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -392,13 +427,25 @@ class TsClassDeclaration extends TsNode {
 
   factory TsClassDeclaration.fromJson(Map<String, dynamic> json) {
     return TsClassDeclaration(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNodes(json['typeParameters']),
-      _readNodes(json['heritageClauses']),
-      _readNodes(json['members']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['heritageClauses']),
+      _fromJsonArray(json['members']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.text;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        ...typeParameters,
+        ...heritageClauses,
+        ...members,
+      ];
 
   @override
   String toString() {
@@ -413,9 +460,12 @@ class TsComputedPropertyName extends TsNode {
 
   factory TsComputedPropertyName.fromJson(Map<String, dynamic> json) {
     return TsComputedPropertyName(
-      _readNode(json['expression']),
+      _fromJsonObject(json['expression']),
     );
   }
+
+  @override
+  List<TsNode> get children => [expression];
 
   @override
   String toString() {
@@ -434,12 +484,20 @@ class TsConditionalType extends TsNode {
 
   factory TsConditionalType.fromJson(Map<String, dynamic> json) {
     return TsConditionalType(
-      _readNode(json['checkType']),
-      _readNode(json['extendsType']),
-      _readNode(json['trueType']),
-      _readNode(json['falseType']),
+      _fromJsonObject(json['checkType']),
+      _fromJsonObject(json['extendsType']),
+      _fromJsonObject(json['trueType']),
+      _fromJsonObject(json['falseType']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        checkType,
+        extendsType,
+        trueType,
+        falseType,
+      ];
 
   @override
   String toString() {
@@ -456,11 +514,18 @@ class TsConstructorDeclaration extends TsNode {
 
   factory TsConstructorDeclaration.fromJson(Map<String, dynamic> json) {
     return TsConstructorDeclaration(
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -479,12 +544,20 @@ class TsConstructorType extends TsNode {
 
   factory TsConstructorType.fromJson(Map<String, dynamic> json) {
     return TsConstructorType(
-      _readNodes(json['modifiers']),
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -501,11 +574,18 @@ class TsConstructSignature extends TsNode {
 
   factory TsConstructSignature.fromJson(Map<String, dynamic> json) {
     return TsConstructSignature(
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -531,11 +611,21 @@ class TsEnumDeclaration extends TsNode {
 
   factory TsEnumDeclaration.fromJson(Map<String, dynamic> json) {
     return TsEnumDeclaration(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNodes(json['members']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromJsonArray(json['members']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        ...members,
+      ];
+
+  @override
+  String? get nodeQualifier => name.text;
 
   @override
   String toString() {
@@ -544,17 +634,26 @@ class TsEnumDeclaration extends TsNode {
 }
 
 class TsEnumMember extends TsNode {
-  final TsNode name;
+  final TsIdentifier name;
   final TsNode? initializer;
 
   TsEnumMember(this.name, this.initializer) : super(TsNodeKind.enumMember);
 
   factory TsEnumMember.fromJson(Map<String, dynamic> json) {
     return TsEnumMember(
-      _readNode(json['name']),
-      _readNullableNode(json['initializer']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['initializer']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.text;
+
+  @override
+  List<TsNode> get children => [
+        name,
+        if (initializer != null) initializer!,
+      ];
 
   @override
   String toString() {
@@ -588,10 +687,16 @@ class TsExpressionWithTypeArguments extends TsNode {
 
   factory TsExpressionWithTypeArguments.fromJson(Map<String, dynamic> json) {
     return TsExpressionWithTypeArguments(
-      _readNode(json['expression']),
-      _readNodes(json['typeArguments']),
+      _fromJsonObject(json['expression']),
+      _fromJsonArray(json['typeArguments']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        expression,
+        ...typeArguments,
+      ];
 
   @override
   String toString() {
@@ -620,7 +725,7 @@ class TsFalseKeyword extends TsNode {
 class TsFunctionDeclaration extends TsNode {
   final List<TsNode> modifiers;
   final TsNode? asteriskToken;
-  final TsNode name;
+  final TsIdentifier name;
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -630,14 +735,27 @@ class TsFunctionDeclaration extends TsNode {
 
   factory TsFunctionDeclaration.fromJson(Map<String, dynamic> json) {
     return TsFunctionDeclaration(
-      _readNodes(json['modifiers']),
-      _readNullableNode(json['asteriskToken']),
-      _readNode(json['name']),
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['modifiers']),
+      _fromNullableJsonObject(json['asteriskToken']),
+      _fromJsonObject(json['name']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.text;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        if (asteriskToken != null) asteriskToken!,
+        name,
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -654,11 +772,18 @@ class TsFunctionType extends TsNode {
 
   factory TsFunctionType.fromJson(Map<String, dynamic> json) {
     return TsFunctionType(
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -676,12 +801,23 @@ class TsGetAccessor extends TsNode {
 
   factory TsGetAccessor.fromJson(Map<String, dynamic> json) {
     return TsGetAccessor(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNodes(json['typeParameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromJsonArray(json['typeParameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        ...typeParameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -697,10 +833,16 @@ class TsHeritageClause extends TsNode {
 
   factory TsHeritageClause.fromJson(Map<String, dynamic> json) {
     return TsHeritageClause(
-      _readNode(json['token']),
-      _readNodes(json['types']),
+      _fromJsonObject(json['token']),
+      _fromJsonArray(json['types']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        token,
+        ...types,
+      ];
 
   @override
   String toString() {
@@ -720,6 +862,9 @@ class TsIdentifier extends TsNode {
   }
 
   @override
+  String? get nodeQualifier => text;
+
+  @override
   String toString() {
     return 'TsIdentifier{text: $text}';
   }
@@ -733,10 +878,19 @@ class TsImportAttribute extends TsNode {
 
   factory TsImportAttribute.fromJson(Map<String, dynamic> json) {
     return TsImportAttribute(
-      _readNode(json['name']),
-      _readNode(json['value']),
+      _fromJsonObject(json['name']),
+      _fromJsonObject(json['value']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        name,
+        value,
+      ];
 
   @override
   String toString() {
@@ -751,9 +905,12 @@ class TsImportAttributes extends TsNode {
 
   factory TsImportAttributes.fromJson(Map<String, dynamic> json) {
     return TsImportAttributes(
-      _readNodes(json['elements']),
+      _fromJsonArray(json['elements']),
     );
   }
+
+  @override
+  List<TsNode> get children => elements;
 
   @override
   String toString() {
@@ -771,10 +928,19 @@ class TsImportClause extends TsNode {
   factory TsImportClause.fromJson(Map<String, dynamic> json) {
     return TsImportClause(
       json['isTypeOnly'],
-      _readNullableNode(json['name']),
-      _readNullableNode(json['namedBindings']),
+      _fromNullableJsonObject(json['name']),
+      _fromNullableJsonObject(json['namedBindings']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name?.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        if (name != null) name!,
+        if (namedBindings != null) namedBindings!,
+      ];
 
   @override
   String toString() {
@@ -793,12 +959,20 @@ class TsImportDeclaration extends TsNode {
 
   factory TsImportDeclaration.fromJson(Map<String, dynamic> json) {
     return TsImportDeclaration(
-      _readNodes(json['modifiers']),
-      _readNullableNode(json['importClause']),
-      _readNode(json['moduleSpecifier']),
-      _readNullableNode(json['importAttributes']),
+      _fromJsonArray(json['modifiers']),
+      _fromNullableJsonObject(json['importClause']),
+      _fromJsonObject(json['moduleSpecifier']),
+      _fromNullableJsonObject(json['importAttributes']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        if (importClause != null) importClause!,
+        moduleSpecifier,
+        if (importAttributes != null) importAttributes!,
+      ];
 
   @override
   String toString() {
@@ -816,10 +990,19 @@ class TsImportSpecifier extends TsNode {
   factory TsImportSpecifier.fromJson(Map<String, dynamic> json) {
     return TsImportSpecifier(
       json['isTypeOnly'],
-      _readNode(json['name']),
-      _readNullableNode(json['propertyName']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['propertyName']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        name,
+        if (propertyName != null) propertyName!,
+      ];
 
   @override
   String toString() {
@@ -837,12 +1020,20 @@ class TsImportType extends TsNode {
 
   factory TsImportType.fromJson(Map<String, dynamic> json) {
     return TsImportType(
-      _readNode(json['argument']),
-      _readNullableNode(json['attributes']),
-      _readNullableNode(json['qualifier']),
-      _readNodes(json['typeArguments']),
+      _fromJsonObject(json['argument']),
+      _fromNullableJsonObject(json['attributes']),
+      _fromNullableJsonObject(json['qualifier']),
+      _fromJsonArray(json['typeArguments']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        argument,
+        if (attributes != null) attributes!,
+        if (qualifier != null) qualifier!,
+        ...typeArguments,
+      ];
 
   @override
   String toString() {
@@ -867,8 +1058,8 @@ class TsIndexedAccessType extends TsNode {
 
   factory TsIndexedAccessType.fromJson(Map<String, dynamic> json) {
     return TsIndexedAccessType(
-      _readNode(json['objectType']),
-      _readNode(json['indexType']),
+      _fromJsonObject(json['objectType']),
+      _fromJsonObject(json['indexType']),
     );
   }
 
@@ -887,11 +1078,18 @@ class TsIndexSignature extends TsNode {
 
   factory TsIndexSignature.fromJson(Map<String, dynamic> json) {
     return TsIndexSignature(
-      _readNodes(json['modifiers']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -906,9 +1104,12 @@ class TsInferType extends TsNode {
 
   factory TsInferType.fromJson(Map<String, dynamic> json) {
     return TsInferType(
-      _readNode(json['typeParameter']),
+      _fromJsonObject(json['typeParameter']),
     );
   }
+
+  @override
+  List<TsNode> get children => [typeParameter];
 
   @override
   String toString() {
@@ -928,13 +1129,25 @@ class TsInterfaceDeclaration extends TsNode {
 
   factory TsInterfaceDeclaration.fromJson(Map<String, dynamic> json) {
     return TsInterfaceDeclaration(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNodes(json['typeParameters']),
-      _readNodes(json['heritageClauses']),
-      _readNodes(json['members']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['heritageClauses']),
+      _fromJsonArray(json['members']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        ...typeParameters,
+        ...heritageClauses,
+        ...members,
+      ];
 
   @override
   String toString() {
@@ -949,9 +1162,12 @@ class TsIntersectionType extends TsNode {
 
   factory TsIntersectionType.fromJson(Map<String, dynamic> json) {
     return TsIntersectionType(
-      _readNodes(json['types']),
+      _fromJsonArray(json['types']),
     );
   }
+
+  @override
+  List<TsNode> get children => types;
 
   @override
   String toString() {
@@ -975,9 +1191,12 @@ class TsLiteralType extends TsNode {
 
   factory TsLiteralType.fromJson(Map<String, dynamic> json) {
     return TsLiteralType(
-      _readNode(json['literal']),
+      _fromJsonObject(json['literal']),
     );
   }
+
+  @override
+  List<TsNode> get children => [literal];
 
   @override
   String toString() {
@@ -998,14 +1217,27 @@ class TsMappedType extends TsNode {
 
   factory TsMappedType.fromJson(Map<String, dynamic> json) {
     return TsMappedType(
-      _readNullableNode(json['readonlyToken']),
-      _readNode(json['typeParameter']),
-      _readNullableNode(json['nameType']),
-      _readNullableNode(json['questionToken']),
-      _readNullableNode(json['type']),
-      _readNodes(json['members']),
+      _fromNullableJsonObject(json['readonlyToken']),
+      _fromJsonObject(json['typeParameter']),
+      _fromNullableJsonObject(json['nameType']),
+      _fromNullableJsonObject(json['questionToken']),
+      _fromNullableJsonObject(json['type']),
+      _fromJsonArray(json['members']),
     );
   }
+
+  @override
+  String? get nodeQualifier => nameType?.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        if (readonlyToken != null) readonlyToken!,
+        typeParameter,
+        if (nameType != null) nameType!,
+        if (questionToken != null) questionToken!,
+        if (type != null) type!,
+        ...members,
+      ];
 
   @override
   String toString() {
@@ -1028,15 +1260,29 @@ class TsMethodDeclaration extends TsNode {
 
   factory TsMethodDeclaration.fromJson(Map<String, dynamic> json) {
     return TsMethodDeclaration(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNullableNode(json['asteriskToken']),
-      _readNullableNode(json['questionToken']),
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['asteriskToken']),
+      _fromNullableJsonObject(json['questionToken']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        if (asteriskToken != null) asteriskToken!,
+        if (questionToken != null) questionToken!,
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -1056,13 +1302,25 @@ class TsMethodSignature extends TsNode {
 
   factory TsMethodSignature.fromJson(Map<String, dynamic> json) {
     return TsMethodSignature(
-      _readNode(json['name']),
-      _readNullableNode(json['questionToken']),
-      _readNodes(json['typeParameters']),
-      _readNodes(json['parameters']),
-      _readNullableNode(json['type']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['questionToken']),
+      _fromJsonArray(json['typeParameters']),
+      _fromJsonArray(json['parameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        name,
+        if (questionToken != null) questionToken!,
+        ...typeParameters,
+        ...parameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -1095,9 +1353,12 @@ class TsModuleBlock extends TsNode {
 
   factory TsModuleBlock.fromJson(Map<String, dynamic> json) {
     return TsModuleBlock(
-      _readNodes(json['statements']),
+      _fromJsonArray(json['statements']),
     );
   }
+
+  @override
+  List<TsNode> get children => statements;
 
   @override
   String toString() {
@@ -1114,11 +1375,21 @@ class TsModuleDeclaration extends TsNode {
 
   factory TsModuleDeclaration.fromJson(Map<String, dynamic> json) {
     return TsModuleDeclaration(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNullableNode(json['body']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['body']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        if (body != null) body!,
+      ];
 
   @override
   String toString() {
@@ -1133,9 +1404,12 @@ class TsNamedImports extends TsNode {
 
   factory TsNamedImports.fromJson(Map<String, dynamic> json) {
     return TsNamedImports(
-      _readNodes(json['elements']),
+      _fromJsonArray(json['elements']),
     );
   }
+
+  @override
+  List<TsNode> get children => elements;
 
   @override
   String toString() {
@@ -1150,9 +1424,15 @@ class TsNamespaceImport extends TsNode {
 
   factory TsNamespaceImport.fromJson(Map<String, dynamic> json) {
     return TsNamespaceImport(
-      _readNode(json['name']),
+      _fromJsonObject(json['name']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [name];
 
   @override
   String toString() {
@@ -1221,13 +1501,22 @@ class TsPackage extends TsNode {
   TsPackage(super.kind, this.name, this.version, this.sourceFiles);
 
   factory TsPackage.fromJson(Map<String, dynamic> json) {
-    return TsPackage(
+    final result = TsPackage(
       TsNodeKind.package,
       json['name'] as String,
       json['version'] as String,
-      _readNodes(json['sourceFiles']),
+      _fromJsonArray(json['sourceFiles']),
     );
+    result.parent = null;
+    result._applyParentToChilds();
+    return result;
   }
+
+  @override
+  String? get nodeQualifier => name;
+
+  @override
+  List<TsNode> get children => sourceFiles;
 
   @override
   String toString() {
@@ -1246,13 +1535,25 @@ class TsParameter extends TsNode {
 
   factory TsParameter.fromJson(Map<String, dynamic> json) {
     return TsParameter(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNullableNode(json['questionToken']),
-      _readNullableNode(json['type']),
-      _readNullableNode(json['initializer']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['questionToken']),
+      _fromNullableJsonObject(json['type']),
+      _fromNullableJsonObject(json['initializer']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        if (questionToken != null) questionToken!,
+        if (type != null) type!,
+        if (initializer != null) initializer!,
+      ];
 
   @override
   String toString() {
@@ -1267,9 +1568,12 @@ class TsParenthesizedType extends TsNode {
 
   factory TsParenthesizedType.fromJson(Map<String, dynamic> json) {
     return TsParenthesizedType(
-      _readNode(json['type']),
+      _fromJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [type];
 
   @override
   String toString() {
@@ -1303,10 +1607,16 @@ class TsPrefixUnaryExpression extends TsNode {
 
   factory TsPrefixUnaryExpression.fromJson(Map<String, dynamic> json) {
     return TsPrefixUnaryExpression(
-      _readNode(json['operator']),
-      _readNode(json['operand']),
+      _fromJsonObject(json['operator']),
+      _fromJsonObject(json['operand']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        operator,
+        operand,
+      ];
 
   @override
   String toString() {
@@ -1333,11 +1643,21 @@ class TsPropertyAccessExpression extends TsNode {
 
   factory TsPropertyAccessExpression.fromJson(Map<String, dynamic> json) {
     return TsPropertyAccessExpression(
-      _readNode(json['expression']),
-      _readNullableNode(json['questionDotToken']),
-      _readNode(json['name']),
+      _fromJsonObject(json['expression']),
+      _fromNullableJsonObject(json['questionDotToken']),
+      _fromJsonObject(json['name']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        expression,
+        if (questionDotToken != null) questionDotToken!,
+        name,
+      ];
 
   @override
   String toString() {
@@ -1359,14 +1679,27 @@ class TsPropertyDeclaration extends TsNode {
 
   factory TsPropertyDeclaration.fromJson(Map<String, dynamic> json) {
     return TsPropertyDeclaration(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNullableNode(json['questionToken']),
-      _readNullableNode(json['exclamationToken']),
-      _readNullableNode(json['type']),
-      _readNullableNode(json['initializer']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['questionToken']),
+      _fromNullableJsonObject(json['exclamationToken']),
+      _fromNullableJsonObject(json['type']),
+      _fromNullableJsonObject(json['initializer']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        if (questionToken != null) questionToken!,
+        if (exclamationToken != null) exclamationToken!,
+        if (type != null) type!,
+        if (initializer != null) initializer!,
+      ];
 
   @override
   String toString() {
@@ -1386,13 +1719,25 @@ class TsPropertySignature extends TsNode {
 
   factory TsPropertySignature.fromJson(Map<String, dynamic> json) {
     return TsPropertySignature(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNullableNode(json['questionToken']),
-      _readNullableNode(json['type']),
-      _readNullableNode(json['initializer']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['questionToken']),
+      _fromNullableJsonObject(json['type']),
+      _fromNullableJsonObject(json['initializer']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        if (questionToken != null) questionToken!,
+        if (type != null) type!,
+        if (initializer != null) initializer!,
+      ];
 
   @override
   String toString() {
@@ -1417,10 +1762,19 @@ class TsQualifiedName extends TsNode {
 
   factory TsQualifiedName.fromJson(Map<String, dynamic> json) {
     return TsQualifiedName(
-      _readNode(json['left']),
-      _readNode(json['right']),
+      _fromJsonObject(json['left']),
+      _fromJsonObject(json['right']),
     );
   }
+
+  @override
+  String? get nodeQualifier => '${left.nodeQualifier}.${right.nodeQualifier}';
+
+  @override
+  List<TsNode> get children => [
+        left,
+        right,
+      ];
 
   @override
   String toString() {
@@ -1453,9 +1807,12 @@ class TsRestType extends TsNode {
 
   factory TsRestType.fromJson(Map<String, dynamic> json) {
     return TsRestType(
-      _readNode(json['type']),
+      _fromJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [type];
 
   @override
   String toString() {
@@ -1473,12 +1830,23 @@ class TsSetAccessor extends TsNode {
 
   factory TsSetAccessor.fromJson(Map<String, dynamic> json) {
     return TsSetAccessor(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNodes(json['typeParameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromJsonArray(json['typeParameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        ...typeParameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -1496,9 +1864,15 @@ class TsSourceFile extends TsNode {
     return TsSourceFile(
       TsNodeKind.sourceFile,
       json['baseName'] as String,
-      _readNodes(json['statements']),
+      _fromJsonArray(json['statements']),
     );
   }
+
+  @override
+  String? get nodeQualifier => baseName;
+
+  @override
+  List<TsNode> get children => statements;
 
   @override
   String toString() {
@@ -1534,6 +1908,9 @@ class TsStringLiteral extends TsNode {
       json['text'] as String,
     );
   }
+
+  @override
+  String? get nodeQualifier => text;
 
   @override
   String toString() {
@@ -1584,9 +1961,12 @@ class TsTupleType extends TsNode {
 
   factory TsTupleType.fromJson(Map<String, dynamic> json) {
     return TsTupleType(
-      _readNodes(json['elements']),
+      _fromJsonArray(json['elements']),
     );
   }
+
+  @override
+  List<TsNode> get children => elements;
 
   @override
   String toString() {
@@ -1605,12 +1985,23 @@ class TsTypeAliasDeclaration extends TsNode {
 
   factory TsTypeAliasDeclaration.fromJson(Map<String, dynamic> json) {
     return TsTypeAliasDeclaration(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNodes(json['typeParameters']),
-      _readNullableNode(json['type']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromJsonArray(json['typeParameters']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        ...typeParameters,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -1625,9 +2016,12 @@ class TsTypeLiteral extends TsNode {
 
   factory TsTypeLiteral.fromJson(Map<String, dynamic> json) {
     return TsTypeLiteral(
-      _readNodes(json['members']),
+      _fromJsonArray(json['members']),
     );
   }
+
+  @override
+  List<TsNode> get children => members;
 
   @override
   String toString() {
@@ -1643,10 +2037,16 @@ class TsTypeOperator extends TsNode {
 
   factory TsTypeOperator.fromJson(Map<String, dynamic> json) {
     return TsTypeOperator(
-      _readNode(json['operator']),
-      _readNode(json['type']),
+      _fromJsonObject(json['operator']),
+      _fromJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        operator,
+        type,
+      ];
 
   @override
   String toString() {
@@ -1664,12 +2064,23 @@ class TsTypeParameter extends TsNode {
 
   factory TsTypeParameter.fromJson(Map<String, dynamic> json) {
     return TsTypeParameter(
-      _readNodes(json['modifiers']),
-      _readNode(json['name']),
-      _readNullableNode(json['constraint']),
-      _readNullableNode(json['default']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['constraint']),
+      _fromNullableJsonObject(json['default']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        name,
+        if (constraint != null) constraint!,
+        if (defaultType != null) defaultType!,
+      ];
 
   @override
   String toString() {
@@ -1686,11 +2097,18 @@ class TsTypePredicate extends TsNode {
 
   factory TsTypePredicate.fromJson(Map<String, dynamic> json) {
     return TsTypePredicate(
-      _readNullableNode(json['assertModifier']),
-      _readNode(json['parameterName']),
-      _readNullableNode(json['type']),
+      _fromNullableJsonObject(json['assertModifier']),
+      _fromJsonObject(json['parameterName']),
+      _fromNullableJsonObject(json['type']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        if (assertModifier != null) assertModifier!,
+        parameterName,
+        if (type != null) type!,
+      ];
 
   @override
   String toString() {
@@ -1706,10 +2124,16 @@ class TsTypeQuery extends TsNode {
 
   factory TsTypeQuery.fromJson(Map<String, dynamic> json) {
     return TsTypeQuery(
-      _readNode(json['exprName']),
-      _readNodes(json['typeArguments']),
+      _fromJsonObject(json['exprName']),
+      _fromJsonArray(json['typeArguments']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        exprName,
+        ...typeArguments,
+      ];
 
   @override
   String toString() {
@@ -1725,10 +2149,19 @@ class TsTypeReference extends TsNode {
 
   factory TsTypeReference.fromJson(Map<String, dynamic> json) {
     return TsTypeReference(
-      _readNode(json['typeName']),
-      _readNodes(json['typeArguments']),
+      _fromJsonObject(json['typeName']),
+      _fromJsonArray(json['typeArguments']),
     );
   }
+
+  @override
+  String? get nodeQualifier => typeName.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        typeName,
+        ...typeArguments,
+      ];
 
   @override
   String toString() {
@@ -1752,9 +2185,12 @@ class TsUnionType extends TsNode {
 
   factory TsUnionType.fromJson(Map<String, dynamic> json) {
     return TsUnionType(
-      _readNodes(json['types']),
+      _fromJsonArray(json['types']),
     );
   }
+
+  @override
+  List<TsNode> get children => types;
 
   @override
   String toString() {
@@ -1791,12 +2227,23 @@ class TsVariableDeclaration extends TsNode {
 
   factory TsVariableDeclaration.fromJson(Map<String, dynamic> json) {
     return TsVariableDeclaration(
-      _readNode(json['name']),
-      _readNullableNode(json['exclamationToken']),
-      _readNullableNode(json['type']),
-      _readNullableNode(json['initializer']),
+      _fromJsonObject(json['name']),
+      _fromNullableJsonObject(json['exclamationToken']),
+      _fromNullableJsonObject(json['type']),
+      _fromNullableJsonObject(json['initializer']),
     );
   }
+
+  @override
+  String? get nodeQualifier => name.nodeQualifier;
+
+  @override
+  List<TsNode> get children => [
+        name,
+        if (exclamationToken != null) exclamationToken!,
+        if (type != null) type!,
+        if (initializer != null) initializer!,
+      ];
 
   @override
   String toString() {
@@ -1811,9 +2258,12 @@ class TsVariableDeclarationList extends TsNode {
 
   factory TsVariableDeclarationList.fromJson(Map<String, dynamic> json) {
     return TsVariableDeclarationList(
-      _readNodes(json['declarations']),
+      _fromJsonArray(json['declarations']),
     );
   }
+
+  @override
+  List<TsNode> get children => declarations;
 
   @override
   String toString() {
@@ -1829,10 +2279,16 @@ class TsVariableStatement extends TsNode {
 
   factory TsVariableStatement.fromJson(Map<String, dynamic> json) {
     return TsVariableStatement(
-      _readNodes(json['modifiers']),
-      _readNode(json['declarationList']),
+      _fromJsonArray(json['modifiers']),
+      _fromJsonObject(json['declarationList']),
     );
   }
+
+  @override
+  List<TsNode> get children => [
+        ...modifiers,
+        declarationList,
+      ];
 
   @override
   String toString() {

@@ -1,4 +1,3 @@
 library;
 
-export 'src/model/ts/ts_ast_nodes.dart';
-export 'src/reader/ts_ast_reader.dart';
+export 'src/model/ts_node.dart';

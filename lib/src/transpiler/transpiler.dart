@@ -1,6 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:ts_interop/src/config/config.dart';
-import 'package:ts_interop/src/model/ts/ts_ast_nodes.dart';
+import 'package:ts_interop/src/model/ts_node.dart';
 import 'package:ts_interop/ts_interop.dart';
 
 bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
