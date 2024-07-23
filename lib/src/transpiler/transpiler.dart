@@ -13,7 +13,11 @@ bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
 }
 
 class Transpiler {
-  Spec transpile(TsPackage package, Config config) {
+  final TranspilerConfig config;
+
+  Transpiler(this.config);
+
+  Spec transpile(TsPackage package, TranspilerConfig config) {
     final result = <Spec>[];
     transpilePackage(package, result);
     return Library((builder) {
@@ -21,7 +25,11 @@ class Transpiler {
     });
   }
 
-  TypeReference? _transpileType(TsNode type) {
+  TypeReference? _transpileType(TsNode node) {
+    final TsNode? type = config.convertTypeNode(node);
+    if (type == null) {
+      return null;
+    }
     if (type is TsTypeReference) {
       final typeName = type.typeName;
       final symbol = switch (typeName) {
@@ -30,6 +38,7 @@ class Transpiler {
       };
       return TypeReference((builder) {
         builder.symbol = symbol;
+        builder.url = config.libForType(symbol);
         builder.types.addAll(_transpileTypes(type.typeArguments));
       });
     } else if (type is TsExpressionWithTypeArguments) {
@@ -37,6 +46,7 @@ class Transpiler {
       if (expression is TsIdentifier) {
         return TypeReference((builder) {
           builder.symbol = expression.text;
+          builder.url = config.libForType(expression.text);
           builder.types.addAll(_transpileTypes(type.typeArguments));
         });
       }
@@ -55,7 +65,7 @@ class Transpiler {
         builder.url = 'dart:js_interop';
       });
     }
-    print('WARNING: unsupport node for type: ${type.kind}');
+    print('WARNING: unsupport node for type: ${type.kind} (converted from ${node.kind})');
     return null;
   }
 
