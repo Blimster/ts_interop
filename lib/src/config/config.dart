@@ -1,14 +1,14 @@
 import 'package:ts_interop/ts_interop.dart';
 
-typedef TsNodeConverter = TsNode? Function(TsNode node);
+typedef TsNodeMapper = List<TsNode> Function(TsNode node);
 
 class TranspilerConfig {
   final Map<String, String> libs;
-  final TsNodeConverter? typeNodeConverter;
+  final TsNodeMapper? nodeMapper;
 
-  TranspilerConfig._(this.libs, this.typeNodeConverter);
+  TranspilerConfig._(this.libs, this.nodeMapper);
 
-  factory TranspilerConfig({Map<String, String> libs = const {}, TsNodeConverter? typeNodeConverter}) {
+  factory TranspilerConfig({Map<String, String> libs = const {}, TsNodeMapper? typeNodeConverter}) {
     return TranspilerConfig._(Map.of(libs), typeNodeConverter);
   }
 
@@ -19,13 +19,10 @@ class TranspilerConfig {
     return libs[typeName];
   }
 
-  TsNode? convertTypeNode(TsNode? node) {
+  List<TsNode> mapNode(TsNode? node) {
     if (node == null) {
-      return null;
+      return [];
     }
-    if (typeNodeConverter != null) {
-      return typeNodeConverter?.call(node);
-    }
-    return node;
+    return nodeMapper?.call(node) ?? [node];
   }
 }

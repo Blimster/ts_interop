@@ -7,10 +7,10 @@ import 'package:ts_interop/src/config/config.dart';
 import 'package:ts_interop/src/transpiler/transpiler.dart';
 import 'package:ts_interop/ts_interop.dart';
 
-TsNode? _typeNodeConverter(TsNode node) {
+List<TsNode> _typeNodeConverter(TsNode node) {
   return switch (node) {
-    TsTypeReference(typeName: TsIdentifier(text: 'InstanceType')) => TsTypeReference(TsIdentifier('C'), []),
-    _ => node,
+    TsTypeReference(typeName: TsIdentifier(text: 'InstanceType')) => [TsTypeReference(TsIdentifier('C'), [])],
+    _ => [node],
   };
 }
 
@@ -33,7 +33,7 @@ void main() {
   );
 
   final transpiler = Transpiler(config);
-  final lib = transpiler.transpile(package, TranspilerConfig());
+  final lib = transpiler.transpile(package, TranspilerConfig()).first;
 
   final emitter = DartEmitter.scoped();
   final DartFormatter formatter = DartFormatter();
