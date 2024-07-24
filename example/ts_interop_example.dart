@@ -8,10 +8,28 @@ import 'package:ts_interop/src/transpiler/transpiler.dart';
 import 'package:ts_interop/ts_interop.dart';
 
 List<TsNode> _typeNodeConverter(TsNode node) {
-  return switch (node) {
-    TsTypeReference(typeName: TsIdentifier(text: 'InstanceType')) => [TsTypeReference(TsIdentifier('C'), [])],
-    _ => [node],
-  };
+  switch (node) {
+    case TsTypeReference(typeName: TsIdentifier(text: 'InstanceType')):
+      return [TsTypeReference(TsIdentifier('C'), [])];
+    case TsClassDeclaration(name: TsIdentifier(text: 'PhysicsEngine')):
+      final parent = node.firstParent<TsSourceFile>();
+      if (parent != null) {
+        if (parent.path.contains('v2')) {
+          return [
+            TsClassDeclaration(
+              node.modifiers,
+              TsIdentifier('PhysicsEngineV2'),
+              node.typeParameters,
+              node.heritageClauses,
+              node.members,
+            )
+          ];
+        }
+      }
+    default:
+      return [node];
+  }
+  return [node];
 }
 
 final _libs = {

@@ -325,6 +325,17 @@ sealed class TsNode {
     return buffer.toString();
   }
 
+  T? firstParent<T extends TsNode>() {
+    var parent = this.parent;
+    while (parent != null) {
+      if (parent is T) {
+        return parent;
+      }
+      parent = parent.parent;
+    }
+    return null;
+  }
+
   void _nodeHierarchy(StringBuffer buffer, int indent) {
     buffer.writeln('${' ' * indent}${kind.name}: ${nodeQualifier ?? ''}');
     for (final child in children) {
@@ -1855,15 +1866,17 @@ class TsSetAccessor extends TsNode {
 }
 
 class TsSourceFile extends TsNode {
+  final String path;
   final String baseName;
   final List<TsNode> statements;
 
-  TsSourceFile(super.kind, this.baseName, this.statements);
+  TsSourceFile(super.kind, this.path, this.baseName, this.statements);
 
   factory TsSourceFile.fromJson(Map<String, dynamic> json) {
     return TsSourceFile(
       TsNodeKind.sourceFile,
-      json['baseName'] as String,
+      json['path'],
+      json['baseName'],
       _fromJsonArray(json['statements']),
     );
   }
