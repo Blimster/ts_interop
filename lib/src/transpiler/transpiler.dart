@@ -1,7 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:ts_interop/src/config/config.dart';
 import 'package:ts_interop/src/model/ts_node.dart';
-import 'package:ts_interop/ts_interop.dart';
 
 bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
   for (final node in nodes) {
@@ -40,14 +39,34 @@ class Transpiler {
     ];
   }
 
+  List<TypeReference> _transpileBooleanKeyword(TsBooleanKeyword booleanKeyword) {
+    return [
+      TypeReference((builder) {
+        builder.symbol = 'bool';
+      })
+    ];
+  }
+
   List<Spec> _transpileClassDeclaration(TsClassDeclaration classDeclaration) {
-    final clazz = Class((builder) {
-      builder.abstract = _containsNodeKind(classDeclaration.modifiers, TsNodeKind.abstractKeyword);
+    final isAbstract = _containsNodeKind(classDeclaration.modifiers, TsNodeKind.abstractKeyword);
+    final extensionType = ExtensionType((builder) {
       builder.name = classDeclaration.name.text;
       builder.types.addAll(_transpileNodes(classDeclaration.typeParameters));
-      //builder.implements.addAll(_transpileHeritageClauses(classDeclaration.heritageClauses, true, true));
+      builder.primaryConstructorName = isAbstract ? '_' : '';
+      builder.representationDeclaration = RepresentationDeclaration((builder) {
+        builder.name = '_';
+        builder.declaredRepresentationType = TypeReference((builder) {
+          builder.symbol = 'JSObject';
+          builder.url = 'dart:js_interop';
+        });
+      });
+      builder.implements.add(TypeReference((builder) {
+        builder.symbol = 'JSObject';
+        builder.url = 'dart:js_interop';
+      }));
+      builder.implements.addAll(_transpileNodes(classDeclaration.heritageClauses));
     });
-    return [clazz];
+    return [extensionType];
   }
 
   List<Spec> _transpileEnumDeclaration(TsEnumDeclaration enumDeclaration) {
@@ -80,17 +99,44 @@ class Transpiler {
   }
 
   List<Spec> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
-    final clazz = Class((builder) {
-      builder.abstract = true;
+    final extensionType = ExtensionType((builder) {
       builder.name = interfaceDeclaration.name.text;
       builder.types.addAll(_transpileNodes(interfaceDeclaration.typeParameters));
+      builder.primaryConstructorName = '_';
+      builder.representationDeclaration = RepresentationDeclaration((builder) {
+        builder.name = '_';
+        builder.declaredRepresentationType = TypeReference((builder) {
+          builder.symbol = 'JSObject';
+          builder.url = 'dart:js_interop';
+        });
+      });
+      builder.implements.add(TypeReference((builder) {
+        builder.symbol = 'JSObject';
+        builder.url = 'dart:js_interop';
+      }));
       builder.implements.addAll(_transpileNodes(interfaceDeclaration.heritageClauses));
     });
-    return [clazz];
+    return [extensionType];
   }
 
-  List<Spec> _transpileTypeReference(TsTypeReference typeReferencde) {
-    final typeName = typeReferencde.typeName;
+  List<Spec> _transpileLiteralType(TsLiteralType literalType) {
+    return _transpileNode(literalType.literal);
+  }
+
+  List<Spec> _transpileNumberKeyword(TsNumberKeyword numberKeyword) {
+    return [
+      TypeReference((builder) {
+        builder.symbol = 'num';
+      })
+    ];
+  }
+
+  List<Spec> _transpileNumericLiteral(TsNumericLiteral numericLiteral) {
+    return [literalNum(num.parse(numericLiteral.text))];
+  }
+
+  List<Spec> _transpileTypeReference(TsTypeReference typeReference) {
+    final typeName = typeReference.typeName;
     final symbol = switch (typeName) {
       TsIdentifier() => typeName.text,
       _ => null,
@@ -99,7 +145,7 @@ class Transpiler {
       TypeReference((builder) {
         builder.symbol = symbol;
         builder.url = config.libForType(symbol);
-        builder.types.addAll(_transpileNodes(typeReferencde.typeArguments));
+        builder.types.addAll(_transpileNodes(typeReference.typeArguments));
       })
     ];
   }
@@ -146,33 +192,37 @@ class Transpiler {
     if (node == null) {
       return [];
     }
-    final mappedNodes = config.mapNode(node);
-    if (mappedNodes.isEmpty) {
+    final mappedNode = config.mapNode(node);
+    if (mappedNode == null) {
       return [];
     }
+    updateParentAndChilds(mappedNode, node.parent);
+
     final result = <T>[];
-    for (final mappedNode in mappedNodes) {
-      final List<Spec> transpiledNodes = switch (mappedNode) {
-        TsAnyKeyword() => _transpileAnyKeyword(mappedNode),
-        TsArrayType() => _transpileArrayType(mappedNode),
-        TsClassDeclaration() => _transpileClassDeclaration(mappedNode),
-        TsEnumDeclaration() => _transpileEnumDeclaration(mappedNode),
-        TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(mappedNode),
-        TsHeritageClause() => _transpileHeritageClause(mappedNode),
-        TsInterfaceDeclaration() => _transpileInterfaceDeclaration(mappedNode),
-        TsPackage() => _transpilePackage(mappedNode),
-        TsSourceFile() => _transpileSourceFile(mappedNode),
-        TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(mappedNode),
-        TsTypeParameter() => _transpileTypeParameter(mappedNode),
-        TsTypeReference() => _transpileTypeReference(mappedNode),
-        _ => [],
-      };
-      for (final transpiledNode in transpiledNodes) {
-        if (transpiledNode is T) {
-          result.add(transpiledNode);
-        } else {
-          throw 'ERROR: Transpiled node ${transpiledNode.runtimeType} is not of type $T. Source node${node.nodeQualifier}, mapped=${mappedNode.nodeQualifier}';
-        }
+    final List<Spec> transpiledNodes = switch (mappedNode) {
+      TsAnyKeyword() => _transpileAnyKeyword(mappedNode),
+      TsArrayType() => _transpileArrayType(mappedNode),
+      TsBooleanKeyword() => _transpileBooleanKeyword(mappedNode),
+      TsClassDeclaration() => _transpileClassDeclaration(mappedNode),
+      TsEnumDeclaration() => _transpileEnumDeclaration(mappedNode),
+      TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(mappedNode),
+      TsHeritageClause() => _transpileHeritageClause(mappedNode),
+      TsInterfaceDeclaration() => _transpileInterfaceDeclaration(mappedNode),
+      TsLiteralType() => _transpileLiteralType(mappedNode),
+      TsNumberKeyword() => _transpileNumberKeyword(mappedNode),
+      TsNumericLiteral() => _transpileNumericLiteral(mappedNode),
+      TsPackage() => _transpilePackage(mappedNode),
+      TsSourceFile() => _transpileSourceFile(mappedNode),
+      TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(mappedNode),
+      TsTypeParameter() => _transpileTypeParameter(mappedNode),
+      TsTypeReference() => _transpileTypeReference(mappedNode),
+      _ => [],
+    };
+    for (final transpiledNode in transpiledNodes) {
+      if (transpiledNode is T) {
+        result.add(transpiledNode);
+      } else {
+        throw 'ERROR: Transpiled node ${transpiledNode.runtimeType} is not of type $T. Source node=${node.kind.name}:${node.nodeQualifier}, mapped=${mappedNode.kind}:${mappedNode.nodeQualifier}';
       }
     }
     return result;

@@ -1,7 +1,13 @@
-abstract class XRFrame {}
+import 'dart:js_interop';
 
-abstract class WebGLContextAttributes {}
+extension type XRFrame._(JSObject _) {}
 
-abstract class ReadonlyArray<T> {}
+extension type WebGLContextAttributes._(JSObject _) {}
 
-abstract class GPURequestAdapterOptions {}
+extension type ReadonlyArray<T>._(JSObject _) {}
+
+extension type GPURequestAdapterOptions._(JSObject _) {}
+
+extension type Array._(JSObject _) {}
+
+extension type Error._(JSObject _) {}

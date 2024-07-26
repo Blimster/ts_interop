@@ -213,6 +213,11 @@ List<T> _fromJsonArray<T extends TsNode>(Iterable? json) {
   return json.map((e) => _fromJsonObject<T>(e as Map<String, dynamic>)).toList();
 }
 
+void updateParentAndChilds(TsNode node, TsNode? parent) {
+  node._parent = parent;
+  node._applyParentToChilds();
+}
+
 enum TsNodeKind {
   abstractKeyword,
   anyKeyword,
@@ -311,7 +316,7 @@ enum TsNodeKind {
 
 sealed class TsNode {
   final TsNodeKind kind;
-  late final TsNode? parent;
+  TsNode? _parent;
 
   TsNode(this.kind);
 
@@ -319,33 +324,22 @@ sealed class TsNode {
 
   List<TsNode> get children => [];
 
-  String nodeHierarchy({int indent = 2}) {
-    final buffer = StringBuffer();
-    _nodeHierarchy(buffer, indent);
-    return buffer.toString();
-  }
+  TsNode? get parent => _parent;
 
   T? firstParent<T extends TsNode>() {
-    var parent = this.parent;
+    var parent = _parent;
     while (parent != null) {
       if (parent is T) {
         return parent;
       }
-      parent = parent.parent;
+      parent = parent._parent;
     }
     return null;
   }
 
-  void _nodeHierarchy(StringBuffer buffer, int indent) {
-    buffer.writeln('${' ' * indent}${kind.name}: ${nodeQualifier ?? ''}');
-    for (final child in children) {
-      child._nodeHierarchy(buffer, indent + 2);
-    }
-  }
-
   void _applyParentToChilds() {
     for (final child in children) {
-      child.parent = this;
+      child._parent = this;
       child._applyParentToChilds();
     }
   }
@@ -1207,6 +1201,9 @@ class TsLiteralType extends TsNode {
   }
 
   @override
+  String? get nodeQualifier => literal.nodeQualifier;
+
+  @override
   List<TsNode> get children => [literal];
 
   @override
@@ -1490,6 +1487,9 @@ class TsNumericLiteral extends TsNode {
   }
 
   @override
+  String? get nodeQualifier => text;
+
+  @override
   String toString() {
     return 'TsNumericLiteral{text: $text}';
   }
@@ -1518,7 +1518,7 @@ class TsPackage extends TsNode {
       json['version'] as String,
       _fromJsonArray(json['sourceFiles']),
     );
-    result.parent = null;
+    result._parent = null;
     result._applyParentToChilds();
     return result;
   }

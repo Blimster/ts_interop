@@ -1,15 +1,18 @@
 import 'package:ts_interop/ts_interop.dart';
 
-typedef TsNodeMapper = List<TsNode> Function(TsNode node);
+typedef TsNodeMapper = TsNode Function(TsNode node);
 
 class TranspilerConfig {
   final Map<String, String> libs;
-  final TsNodeMapper? nodeMapper;
+  final List<TsNodeMapper> nodeMappers;
 
-  TranspilerConfig._(this.libs, this.nodeMapper);
+  TranspilerConfig._(this.libs, this.nodeMappers);
 
-  factory TranspilerConfig({Map<String, String> libs = const {}, TsNodeMapper? typeNodeConverter}) {
-    return TranspilerConfig._(Map.of(libs), typeNodeConverter);
+  factory TranspilerConfig({Map<String, String> libs = const {}, List<TsNodeMapper>? nodeMappers}) {
+    return TranspilerConfig._(
+      Map.of(libs),
+      nodeMappers != null ? List.of(nodeMappers) : [],
+    );
   }
 
   String? libForType(String? typeName) {
@@ -19,10 +22,35 @@ class TranspilerConfig {
     return libs[typeName];
   }
 
-  List<TsNode> mapNode(TsNode? node) {
+  TsNode? mapNode(TsNode? node) {
     if (node == null) {
-      return [];
+      return null;
     }
-    return nodeMapper?.call(node) ?? [node];
+    if (nodeMappers.isEmpty) {
+      return node;
+    }
+
+    final loopDetector = <int, int>{};
+    TsNode mappedNode = node;
+    while (true) {
+      var mapped = 0;
+      for (final (index, nodeMapper) in nodeMappers.indexed) {
+        final tempNode = nodeMapper(mappedNode);
+        if (tempNode != mappedNode) {
+          mappedNode = tempNode;
+          mapped++;
+          loopDetector[index] = loopDetector.putIfAbsent(index, () => 0) + 1;
+          for (final executions in loopDetector.values) {
+            if (executions > 3) {
+              throw StateError(
+                  'ERROR: Loop detected in node mappers! Node mapper $index was called more than 3 times for node ${node.kind.name}:${node.nodeQualifier}.');
+            }
+          }
+        }
+      }
+      if (mapped == 0) {
+        return mappedNode;
+      }
+    }
   }
 }
