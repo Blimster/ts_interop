@@ -17,8 +17,9 @@ class DartSpec<S extends Spec> extends DartNode<S> {
 
 class DartParameter extends DartNode<TypeReference> {
   final Parameter parameter;
+  final bool isNullable;
 
-  DartParameter(this.parameter);
+  DartParameter(this.parameter, this.isNullable);
 
   @override
   TypeReference toSpec(TranspilerConfig config) {
