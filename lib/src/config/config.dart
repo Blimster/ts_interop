@@ -1,7 +1,5 @@
 import 'package:ts_interop/ts_interop.dart';
 
-typedef TsNodeMapper = TsNode Function(TsNode node);
-
 class TranspilerConfig {
   final Map<String, String> libs;
   final List<TsNodeMapper> nodeMappers;
@@ -36,6 +34,9 @@ class TranspilerConfig {
       var mapped = 0;
       for (final (index, nodeMapper) in nodeMappers.indexed) {
         final tempNode = nodeMapper(mappedNode);
+        if (tempNode == null) {
+          return null;
+        }
         if (tempNode != mappedNode) {
           mappedNode = tempNode;
           mapped++;

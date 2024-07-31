@@ -213,6 +213,8 @@ List<T> _fromJsonArray<T extends TsNode>(Iterable? json) {
   return json.map((e) => _fromJsonObject<T>(e as Map<String, dynamic>)).toList();
 }
 
+typedef TsNodeMapper = TsNode? Function(TsNode node);
+
 void updateParentAndChilds(TsNode node, TsNode? parent) {
   node._parent = parent;
   node._applyParentToChilds();
@@ -1509,11 +1511,10 @@ class TsPackage extends TsNode {
   final String version;
   final List<TsSourceFile> sourceFiles;
 
-  TsPackage(super.kind, this.name, this.version, this.sourceFiles);
+  TsPackage(this.name, this.version, this.sourceFiles) : super(TsNodeKind.package);
 
   factory TsPackage.fromJson(Map<String, dynamic> json) {
     final result = TsPackage(
-      TsNodeKind.package,
       json['name'] as String,
       json['version'] as String,
       _fromJsonArray(json['sourceFiles']),
@@ -1870,11 +1871,10 @@ class TsSourceFile extends TsNode {
   final String baseName;
   final List<TsNode> statements;
 
-  TsSourceFile(super.kind, this.path, this.baseName, this.statements);
+  TsSourceFile(this.path, this.baseName, this.statements) : super(TsNodeKind.sourceFile);
 
   factory TsSourceFile.fromJson(Map<String, dynamic> json) {
     return TsSourceFile(
-      TsNodeKind.sourceFile,
       json['path'],
       json['baseName'],
       _fromJsonArray(json['statements']),

@@ -8,4 +8,5 @@ export 'src/mapper/missing_type_mapper.dart';
 export 'src/mapper/standard_type_mapper.dart';
 export 'src/mapper/type_query_mapper.dart';
 export 'src/model/ts_node.dart' hide updateParentAndChilds;
+export 'src/sanitizer/sanitizer.dart';
 export 'src/transpiler/transpiler.dart';

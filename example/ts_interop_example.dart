@@ -80,8 +80,18 @@ void main() {
     ],
   );
 
+  final sanitizedPackage = Sanitizer().addPhase([
+    standardTypesMapper,
+    missingTypeMapper,
+    literalAsTypeArgumentMapper,
+    typeQueryMapper,
+    mappedTypeMapper,
+    instanceTypeMapper,
+    physicsEngineMapper,
+  ]).sanitize(package);
+
   final transpiler = Transpiler(config);
-  final lib = transpiler.transpile(package, TranspilerConfig()).first;
+  final lib = transpiler.transpile(sanitizedPackage, TranspilerConfig()).first;
 
   final emitter = DartEmitter.scoped();
   final DartFormatter formatter = DartFormatter();

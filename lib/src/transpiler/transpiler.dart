@@ -1,6 +1,5 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:ts_interop/src/model/dart_node.dart';
-import 'package:ts_interop/src/model/ts_node.dart';
 import 'package:ts_interop/ts_interop.dart';
 
 bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
@@ -329,11 +328,11 @@ class Transpiler {
     if (node == null) {
       return [];
     }
-    final mappedNode = config.mapNode(node);
-    if (mappedNode == null) {
-      return [];
-    }
-    updateParentAndChilds(mappedNode, node.parent);
+    final mappedNode = node; //config.mapNode(node);
+    // if (mappedNode == null) {
+    //   return [];
+    // }
+    // updateParentAndChilds(mappedNode, node.parent);
 
     final result = <DartNode<T>>[];
     final List<DartNode<Spec>> transpiledNodes = switch (mappedNode) {
@@ -371,7 +370,8 @@ class Transpiler {
       if (spec is T) {
         result.add(transpiledNode as DartNode<T>);
       } else {
-        throw 'ERROR: Transpiled node ${spec.runtimeType} is not of type $T. Source node=${node.kind.name}:${node.nodeQualifier}, mapped=${mappedNode.kind}:${mappedNode.nodeQualifier}';
+        throw StateError(
+            'Transpiled node ${spec.runtimeType} is not of type $T. Source node=${node.kind.name}:${node.nodeQualifier}, mapped=${mappedNode.kind}:${mappedNode.nodeQualifier}');
       }
     }
     return result;
