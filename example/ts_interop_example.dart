@@ -67,19 +67,6 @@ void main() {
   final json = jsonDecode(content);
   final package = TsPackage.fromJson(json);
 
-  final config = TranspilerConfig(
-    libs: libs,
-    nodeMappers: [
-      standardTypesMapper,
-      missingTypeMapper,
-      literalAsTypeArgumentMapper,
-      typeQueryMapper,
-      mappedTypeMapper,
-      instanceTypeMapper,
-      physicsEngineMapper,
-    ],
-  );
-
   final sanitizedPackage = Sanitizer().addPhase([
     standardTypesMapper,
     missingTypeMapper,
@@ -90,7 +77,7 @@ void main() {
     physicsEngineMapper,
   ]).sanitize(package);
 
-  final transpiler = Transpiler(config);
+  final transpiler = Transpiler(TranspilerConfig(libs: libs));
   final lib = transpiler.transpile(sanitizedPackage, TranspilerConfig()).first;
 
   final emitter = DartEmitter.scoped();
