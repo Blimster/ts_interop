@@ -10,3 +10,5 @@ export 'src/mapper/type_query_mapper.dart';
 export 'src/model/ts_node.dart' hide updateParentAndChilds;
 export 'src/sanitizer/sanitizer.dart';
 export 'src/transpiler/transpiler.dart';
+export 'src/util/ts_node_foreach.dart';
+export 'src/util/ts_node_search.dart';

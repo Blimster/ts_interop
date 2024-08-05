@@ -22,6 +22,7 @@ class SanitizerPhase {
         }
         if (tempNode != mappedNode) {
           mappedNode = tempNode;
+          updateParentAndChilds(mappedNode, node.parent);
           mapped++;
           loopDetector[index] = loopDetector.putIfAbsent(index, () => 0) + 1;
           for (final executions in loopDetector.values) {
@@ -39,11 +40,11 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeAbstractKeyword(TsAbstractKeyword node) {
-    return TsAbstractKeyword();
+    return node;
   }
 
   TsNode _sanitizeAnyKeyword(TsAnyKeyword node) {
-    return TsAnyKeyword();
+    return node;
   }
 
   TsNode _sanitizeArrayType(TsArrayType node) {
@@ -53,7 +54,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeBooleanKeyword(TsBooleanKeyword node) {
-    return TsBooleanKeyword();
+    return node;
   }
 
   TsNode _sanitizeCallSignature(TsCallSignature node) {
@@ -115,7 +116,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeDeclareKeyword(TsDeclareKeyword node) {
-    return TsDeclareKeyword();
+    return node;
   }
 
   TsNode _sanitizeEnumDeclaration(TsEnumDeclaration node) {
@@ -134,11 +135,11 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeExclamationToken(TsExclamationToken node) {
-    return TsExclamationToken();
+    return node;
   }
 
   TsNode _sanitizeExportKeyword(TsExportKeyword node) {
-    return TsExportKeyword();
+    return node;
   }
 
   TsNode _saniitizeExpressionWithTypeArguments(TsExpressionWithTypeArguments node) {
@@ -149,11 +150,11 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeExtendsKeyword(TsExtendsKeyword node) {
-    return TsExtendsKeyword();
+    return node;
   }
 
   TsNode _sanitizeFalseKeyword(TsFalseKeyword node) {
-    return TsFalseKeyword();
+    return node;
   }
 
   TsNode _sanitizeFunctionType(TsFunctionType node) {
@@ -196,7 +197,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeImplementsKeyword(TsImplementsKeyword node) {
-    return TsImplementsKeyword();
+    return node;
   }
 
   TsNode _sanitizeImportAttribute(TsImportAttribute node) {
@@ -284,7 +285,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeKeyOfKeyword(TsKeyOfKeyword node) {
-    return TsKeyOfKeyword();
+    return node;
   }
 
   TsNode _sanitizeLiteralType(TsLiteralType node) {
@@ -327,11 +328,11 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeMinusToken(TsMinusToken node) {
-    return TsMinusToken();
+    return node;
   }
 
   TsNode _sanitizeMinusMinusToken(TsMinusMinusToken node) {
-    return TsMinusMinusToken();
+    return node;
   }
 
   TsNode _sanitizeModuleBlock(TsModuleBlock node) {
@@ -361,15 +362,15 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeNeverKeyword(TsNeverKeyword node) {
-    return TsNeverKeyword();
+    return node;
   }
 
   TsNode _sanitizeNullKeyword(TsNullKeyword node) {
-    return TsNullKeyword();
+    return node;
   }
 
   TsNode _sanitizeNumberKeyword(TsNumberKeyword node) {
-    return TsNumberKeyword();
+    return node;
   }
 
   TsNode _sanitizeNumericLiteral(TsNumericLiteral node) {
@@ -377,7 +378,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeObjectKeyword(TsObjectKeyword node) {
-    return TsObjectKeyword();
+    return node;
   }
 
   TsNode _sanitizeParameter(TsParameter node) {
@@ -412,15 +413,15 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizePlusToken(TsPlusToken node) {
-    return TsPlusToken();
+    return node;
   }
 
   TsNode _sanitizePlusPlusToken(TsPlusPlusToken node) {
-    return TsPlusPlusToken();
+    return node;
   }
 
   TsNode _sanitzePrivateKeyword(TsPrivateKeyword node) {
-    return TsPrivateKeyword();
+    return node;
   }
 
   TsNode _sanitizePropertyAccessExpression(TsPropertyAccessExpression node) {
@@ -453,7 +454,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizedProtectedKeyword(TsProtectedKeyword node) {
-    return TsProtectedKeyword();
+    return node;
   }
 
   TsNode _sanitizeQualifiedName(TsQualifiedName node) {
@@ -464,11 +465,11 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeQuestionToken(TsQuestionToken node) {
-    return TsQuestionToken();
+    return node;
   }
 
   TsNode _sanitizeReadonlyKeyword(TsReadonlyKeyword node) {
-    return TsReadonlyKeyword();
+    return node;
   }
 
   TsNode _sanitizeRestType(TsRestType node) {
@@ -495,11 +496,11 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeStaticKeyword(TsStaticKeyword node) {
-    return TsStaticKeyword();
+    return node;
   }
 
   TsNode _sanitizeStringKeyword(TsStringKeyword node) {
-    return TsStringKeyword();
+    return node;
   }
 
   TsNode _sanitizeStringLiteral(TsStringLiteral node) {
@@ -507,19 +508,19 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeSymbolKeyword(TsSymbolKeyword node) {
-    return TsSymbolKeyword();
+    return node;
   }
 
   TsNode _sanitizeThisType(TsThisType node) {
-    return TsThisType();
+    return node;
   }
 
   TsNode _sanitizeTildeToken(TsTildeToken node) {
-    return TsTildeToken();
+    return node;
   }
 
   TsNode _sanitizeTrueKeyword(TsTrueKeyword node) {
-    return TsTrueKeyword();
+    return node;
   }
 
   TsNode _sanitizeTupleType(TsTupleType node) {
@@ -579,7 +580,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeUndefinedKeyword(TsUndefinedKeyword node) {
-    return TsUndefinedKeyword();
+    return node;
   }
 
   TsNode _sanitizeUnionType(TsUnionType node) {
@@ -589,11 +590,11 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeUniqueKeyword(TsUniqueKeyword node) {
-    return TsUniqueKeyword();
+    return node;
   }
 
   TsNode _sanitizeUnknownKeyword(TsUnknownKeyword node) {
-    return TsUnknownKeyword();
+    return node;
   }
 
   TsNode _sanitizeUnsupportedNode(TsUnsupportedNode node) {
@@ -625,7 +626,7 @@ class SanitizerPhase {
   }
 
   TsNode _sanitizeVoidKeyword(TsVoidKeyword node) {
-    return TsVoidKeyword();
+    return node;
   }
 
   T _sanitizeNode<T extends TsNode>(TsNode node) {
@@ -724,16 +725,14 @@ class SanitizerPhase {
       TsVariableStatement() => _sanitizeVariableStatement(node),
       TsVoidKeyword() => _sanitizeVoidKeyword(node),
     };
-    if (sanitizedNode is! T) {
-      throw StateError(
-          'Node of ${node.kind.name}:${node.nodeQualifier} was sanitized to type ${sanitizedNode.runtimeType}, but $T is required.');
+    if (sanitizedNode != node) {
+      updateParentAndChilds(sanitizedNode, node.parent);
     }
     final mappedNode = _applyMappers(sanitizedNode);
     if (mappedNode is! T) {
       throw StateError(
           'Node of ${node.kind.name}:${node.nodeQualifier} was sanitized to type ${sanitizedNode.runtimeType}, but $T is required.');
     }
-    updateParentAndChilds(mappedNode, node.parent);
     return mappedNode;
   }
 
@@ -757,21 +756,29 @@ class SanitizerPhase {
 }
 
 class Sanitizer {
-  final List<SanitizerPhase> phases = [];
+  final void Function(int phase)? _beforePhase;
+  final void Function(int phase)? _afterPhase;
+  final List<SanitizerPhase> _phases = [];
+
+  Sanitizer({void Function(int phase)? beforePhase, void Function(int phase)? afterPhase})
+      : _beforePhase = beforePhase,
+        _afterPhase = afterPhase;
 
   Sanitizer addPhase(List<TsNodeMapper> nodeMappers) {
-    phases.add(SanitizerPhase._(phases.length, nodeMappers));
+    _phases.add(SanitizerPhase._(_phases.length, nodeMappers));
     return this;
   }
 
-  TsPackage sanitize(TsPackage tsPackage) {
-    TsPackage sanitizedNode = tsPackage;
-    for (final phase in phases) {
+  TsPackage sanitize(TsPackage package) {
+    TsPackage sanitizedNode = package;
+    for (final phase in _phases) {
+      _beforePhase?.call(phase.phase);
       final tempNode = phase._sanitizeNode(sanitizedNode);
       if (tempNode is! TsPackage) {
         throw StateError('Node of type $TsPackage must be sanitized to a TsPackage.');
       }
       sanitizedNode = tempNode;
+      _afterPhase?.call(phase.phase);
     }
     return sanitizedNode;
   }

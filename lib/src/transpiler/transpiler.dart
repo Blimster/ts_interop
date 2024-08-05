@@ -2,6 +2,8 @@ import 'package:code_builder/code_builder.dart';
 import 'package:ts_interop/src/model/dart_node.dart';
 import 'package:ts_interop/ts_interop.dart';
 
+import '../model/ts_node.dart';
+
 bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
   for (final node in nodes) {
     if (node.kind == kind) {
@@ -37,6 +39,7 @@ class Transpiler {
   Transpiler(this.config);
 
   List<Spec> transpile(TsPackage package, TranspilerConfig config) {
+    updateParentAndChilds(package, package.parent);
     return _transpileNode<Library>(package).toSpec(config);
   }
 
@@ -254,6 +257,19 @@ class Transpiler {
     ].toDartNode;
   }
 
+  List<DartNode<Spec>> _transpileTupleType(TsTupleType tupleType) {
+    return [
+      TypeReference((builder) {
+        builder.symbol = 'JSArray';
+        builder.url = config.libForType(builder.symbol);
+        builder.types.add(TypeReference((builder) {
+          builder.symbol = 'JSAny';
+          builder.url = config.libForType(builder.symbol);
+        }));
+      })
+    ].toDartNode;
+  }
+
   List<DartNode<Spec>> _transpileTypeAliasDeclaration(TsTypeAliasDeclaration typeAliasDeclaration) {
     final typeDef = TypeDef((builder) {
       builder.name = typeAliasDeclaration.name.text;
@@ -354,6 +370,7 @@ class Transpiler {
       TsParameter() => _transpileParameter(mappedNode),
       TsSourceFile() => _transpileSourceFile(mappedNode),
       TsStringKeyword() => _transpileStringKeyword(mappedNode),
+      TsTupleType() => _transpileTupleType(mappedNode),
       TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(mappedNode),
       TsTypeLiteral() => _transpileTypeLiteral(mappedNode),
       TsTypeParameter() => _transpileTypeParameter(mappedNode),
@@ -363,7 +380,7 @@ class Transpiler {
       _ => [],
     };
     if (transpiledNodes.isEmpty) {
-      print('WARNING: No transpiled nodes for ${mappedNode.kind.name}:${mappedNode.nodeQualifier}');
+      // print('WARNING: No transpiled nodes for ${mappedNode.kind.name}:${mappedNode.nodeQualifier}');
     }
     for (final transpiledNode in transpiledNodes) {
       final spec = transpiledNode.toSpec(config);

@@ -11,6 +11,10 @@ TsNode literalAsTypeArgumentMapper(TsNode node) {
           changed = true;
           newTypeArguments.add(TsNumberKeyword());
           break;
+        case TsLiteralType(literal: TsStringLiteral()):
+          changed = true;
+          newTypeArguments.add(TsStringKeyword());
+          break;
         default:
           newTypeArguments.add(typeArgument);
       }

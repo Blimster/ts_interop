@@ -316,11 +316,23 @@ enum TsNodeKind {
   voidKeyword,
 }
 
-sealed class TsNode {
+abstract class WithTypeParameters<T extends TsNode> {
+  List<TsNode> get typeParameters;
+  T copyWithTypeParameters(List<TsNode> typeParameters);
+}
+
+abstract class WithTypeArguments<T extends TsNode> {
+  List<TsNode> get typeArguments;
+  T copyWithTypeArguments(List<TsNode> typeParameters);
+}
+
+sealed class TsNode implements Comparable<TsNode> {
+  static int _idCounter = 0;
+  final int id;
   final TsNodeKind kind;
   TsNode? _parent;
 
-  TsNode(this.kind);
+  TsNode(this.kind) : id = _idCounter++;
 
   String? get nodeQualifier => null;
 
@@ -328,22 +340,18 @@ sealed class TsNode {
 
   TsNode? get parent => _parent;
 
-  T? firstParent<T extends TsNode>() {
-    var parent = _parent;
-    while (parent != null) {
-      if (parent is T) {
-        return parent;
-      }
-      parent = parent._parent;
-    }
-    return null;
-  }
+  String toShortString() => '[$kind:$nodeQualifier]';
 
   void _applyParentToChilds() {
     for (final child in children) {
       child._parent = this;
       child._applyParentToChilds();
     }
+  }
+
+  @override
+  int compareTo(TsNode other) {
+    return id.compareTo(other.id);
   }
 }
 
@@ -394,7 +402,8 @@ class TsBooleanKeyword extends TsNode {
   }
 }
 
-class TsCallSignature extends TsNode {
+class TsCallSignature extends TsNode implements WithTypeParameters<TsCallSignature> {
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -417,15 +426,25 @@ class TsCallSignature extends TsNode {
       ];
 
   @override
+  TsCallSignature copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsCallSignature(
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
+
+  @override
   String toString() {
     return 'TsCallSignature{typeParameters: $typeParameters, parameters: $parameters, type: $type}';
   }
 }
 
-class TsClassDeclaration extends TsNode {
+class TsClassDeclaration extends TsNode implements WithTypeParameters<TsClassDeclaration> {
   final List<TsNode> modifiers;
   final TsIdentifier name;
-  final List<TsTypeParameter> typeParameters;
+  @override
+  final List<TsNode> typeParameters;
   final List<TsNode> heritageClauses;
   final List<TsNode> members;
 
@@ -453,6 +472,17 @@ class TsClassDeclaration extends TsNode {
         ...heritageClauses,
         ...members,
       ];
+
+  @override
+  TsClassDeclaration copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsClassDeclaration(
+      modifiers,
+      name,
+      typeParameters,
+      heritageClauses,
+      members,
+    );
+  }
 
   @override
   String toString() {
@@ -512,7 +542,8 @@ class TsConditionalType extends TsNode {
   }
 }
 
-class TsConstructorDeclaration extends TsNode {
+class TsConstructorDeclaration extends TsNode implements WithTypeParameters<TsConstructorDeclaration> {
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -535,13 +566,23 @@ class TsConstructorDeclaration extends TsNode {
       ];
 
   @override
+  TsConstructorDeclaration copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsConstructorDeclaration(
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
+
+  @override
   String toString() {
     return 'TsConstructorDeclaration{modifiers: $typeParameters, parameters: $parameters, type: $type}';
   }
 }
 
-class TsConstructorType extends TsNode {
+class TsConstructorType extends TsNode implements WithTypeParameters<TsConstructorType> {
   final List<TsNode> modifiers;
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -567,12 +608,23 @@ class TsConstructorType extends TsNode {
       ];
 
   @override
+  TsConstructorType copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsConstructorType(
+      modifiers,
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
+
+  @override
   String toString() {
     return 'TsConstructorType{modifiers: $modifiers, typeParameters: $typeParameters, parameters: $parameters, type: $type}';
   }
 }
 
-class TsConstructSignature extends TsNode {
+class TsConstructSignature extends TsNode implements WithTypeParameters<TsConstructSignature> {
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -593,6 +645,15 @@ class TsConstructSignature extends TsNode {
         ...parameters,
         if (type != null) type!,
       ];
+
+  @override
+  TsConstructSignature copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsConstructSignature(
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
 
   @override
   String toString() {
@@ -686,8 +747,9 @@ class TsExclamationToken extends TsNode {
   }
 }
 
-class TsExpressionWithTypeArguments extends TsNode {
+class TsExpressionWithTypeArguments extends TsNode implements WithTypeArguments<TsExpressionWithTypeArguments> {
   final TsNode expression;
+  @override
   final List<TsNode> typeArguments;
 
   TsExpressionWithTypeArguments(this.expression, this.typeArguments) : super(TsNodeKind.expressionWithTypeArguments);
@@ -704,6 +766,14 @@ class TsExpressionWithTypeArguments extends TsNode {
         expression,
         ...typeArguments,
       ];
+
+  @override
+  TsExpressionWithTypeArguments copyWithTypeArguments(List<TsNode> typeArguments) {
+    return TsExpressionWithTypeArguments(
+      expression,
+      typeArguments,
+    );
+  }
 
   @override
   String toString() {
@@ -729,10 +799,11 @@ class TsFalseKeyword extends TsNode {
   }
 }
 
-class TsFunctionDeclaration extends TsNode {
+class TsFunctionDeclaration extends TsNode implements WithTypeParameters<TsFunctionDeclaration> {
   final List<TsNode> modifiers;
   final TsNode? asteriskToken;
   final TsIdentifier name;
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -765,12 +836,25 @@ class TsFunctionDeclaration extends TsNode {
       ];
 
   @override
+  TsFunctionDeclaration copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsFunctionDeclaration(
+      modifiers,
+      asteriskToken,
+      name,
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
+
+  @override
   String toString() {
     return 'TsFunctionDeclaration{modifiers: $modifiers, asteriskToken: $asteriskToken, name: $name, typeParameters: $typeParameters, parameters: $parameters, type: $type}';
   }
 }
 
-class TsFunctionType extends TsNode {
+class TsFunctionType extends TsNode implements WithTypeParameters<TsFunctionType> {
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -793,14 +877,24 @@ class TsFunctionType extends TsNode {
       ];
 
   @override
+  TsFunctionType copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsFunctionType(
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
+
+  @override
   String toString() {
     return 'TsFunctionType{typeParameters: $typeParameters, parameters: $parameters, type: $type}';
   }
 }
 
-class TsGetAccessor extends TsNode {
+class TsGetAccessor extends TsNode implements WithTypeParameters<TsGetAccessor> {
   final List<TsNode> modifiers;
   final TsNode name;
+  @override
   final List<TsNode> typeParameters;
   final TsNode? type;
 
@@ -825,6 +919,16 @@ class TsGetAccessor extends TsNode {
         ...typeParameters,
         if (type != null) type!,
       ];
+
+  @override
+  TsGetAccessor copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsGetAccessor(
+      modifiers,
+      name,
+      typeParameters,
+      type,
+    );
+  }
 
   @override
   String toString() {
@@ -1017,10 +1121,11 @@ class TsImportSpecifier extends TsNode {
   }
 }
 
-class TsImportType extends TsNode {
+class TsImportType extends TsNode implements WithTypeArguments<TsImportType> {
   final TsNode argument;
   final TsNode? attributes;
   final TsNode? qualifier;
+  @override
   final List<TsNode> typeArguments;
 
   TsImportType(this.argument, this.attributes, this.qualifier, this.typeArguments) : super(TsNodeKind.importType);
@@ -1041,6 +1146,16 @@ class TsImportType extends TsNode {
         if (qualifier != null) qualifier!,
         ...typeArguments,
       ];
+
+  @override
+  TsImportType copyWithTypeArguments(List<TsNode> typeArguments) {
+    return TsImportType(
+      argument,
+      attributes,
+      qualifier,
+      typeArguments,
+    );
+  }
 
   @override
   String toString() {
@@ -1124,10 +1239,11 @@ class TsInferType extends TsNode {
   }
 }
 
-class TsInterfaceDeclaration extends TsNode {
+class TsInterfaceDeclaration extends TsNode implements WithTypeParameters<TsInterfaceDeclaration> {
   final List<TsNode> modifiers;
   final TsIdentifier name;
-  final List<TsTypeParameter> typeParameters;
+  @override
+  final List<TsNode> typeParameters;
   final List<TsHeritageClause> heritageClauses;
   final List<TsNode> members;
 
@@ -1155,6 +1271,17 @@ class TsInterfaceDeclaration extends TsNode {
         ...heritageClauses,
         ...members,
       ];
+
+  @override
+  TsInterfaceDeclaration copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsInterfaceDeclaration(
+      modifiers,
+      name,
+      typeParameters,
+      heritageClauses,
+      members,
+    );
+  }
 
   @override
   String toString() {
@@ -1255,11 +1382,12 @@ class TsMappedType extends TsNode {
   }
 }
 
-class TsMethodDeclaration extends TsNode {
+class TsMethodDeclaration extends TsNode implements WithTypeParameters<TsMethodDeclaration> {
   final List<TsNode> modifiers;
   final TsNode name;
   final TsNode? asteriskToken;
   final TsNode? questionToken;
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -1295,14 +1423,28 @@ class TsMethodDeclaration extends TsNode {
       ];
 
   @override
+  TsMethodDeclaration copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsMethodDeclaration(
+      modifiers,
+      name,
+      asteriskToken,
+      questionToken,
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
+
+  @override
   String toString() {
     return 'TsMethodDeclaration{modifiers: $modifiers, name: $name, asteriskToken: $asteriskToken, questionToken: $questionToken, typeParameters: $typeParameters, parameters: $parameters, type: $type}';
   }
 }
 
-class TsMethodSignature extends TsNode {
+class TsMethodSignature extends TsNode implements WithTypeParameters<TsMethodSignature> {
   final TsNode name;
   final TsNode? questionToken;
+  @override
   final List<TsNode> typeParameters;
   final List<TsNode> parameters;
   final TsNode? type;
@@ -1331,6 +1473,17 @@ class TsMethodSignature extends TsNode {
         ...parameters,
         if (type != null) type!,
       ];
+
+  @override
+  TsMethodSignature copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsMethodSignature(
+      name,
+      questionToken,
+      typeParameters,
+      parameters,
+      type,
+    );
+  }
 
   @override
   String toString() {
@@ -1832,9 +1985,10 @@ class TsRestType extends TsNode {
   }
 }
 
-class TsSetAccessor extends TsNode {
+class TsSetAccessor extends TsNode implements WithTypeParameters<TsSetAccessor> {
   final List<TsNode> modifiers;
   final TsNode name;
+  @override
   final List<TsNode> typeParameters;
   final TsNode? type;
 
@@ -1859,6 +2013,16 @@ class TsSetAccessor extends TsNode {
         ...typeParameters,
         if (type != null) type!,
       ];
+
+  @override
+  TsSetAccessor copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsSetAccessor(
+      modifiers,
+      name,
+      typeParameters,
+      type,
+    );
+  }
 
   @override
   String toString() {
@@ -1987,10 +2151,11 @@ class TsTupleType extends TsNode {
   }
 }
 
-class TsTypeAliasDeclaration extends TsNode {
+class TsTypeAliasDeclaration extends TsNode implements WithTypeParameters<TsTypeAliasDeclaration> {
   final List<TsNode> modifiers;
   final TsIdentifier name;
-  final List<TsTypeParameter> typeParameters;
+  @override
+  final List<TsNode> typeParameters;
   final TsNode? type;
 
   TsTypeAliasDeclaration(this.modifiers, this.name, this.typeParameters, this.type)
@@ -2015,6 +2180,16 @@ class TsTypeAliasDeclaration extends TsNode {
         ...typeParameters,
         if (type != null) type!,
       ];
+
+  @override
+  TsTypeAliasDeclaration copyWithTypeParameters(List<TsNode> typeParameters) {
+    return TsTypeAliasDeclaration(
+      modifiers,
+      name,
+      typeParameters,
+      type,
+    );
+  }
 
   @override
   String toString() {
@@ -2154,8 +2329,9 @@ class TsTypeQuery extends TsNode {
   }
 }
 
-class TsTypeReference extends TsNode {
+class TsTypeReference extends TsNode implements WithTypeArguments<TsTypeReference> {
   final TsNode typeName;
+  @override
   final List<TsNode> typeArguments;
 
   TsTypeReference(this.typeName, this.typeArguments) : super(TsNodeKind.typeReference);
@@ -2175,6 +2351,14 @@ class TsTypeReference extends TsNode {
         typeName,
         ...typeArguments,
       ];
+
+  @override
+  TsTypeReference copyWithTypeArguments(List<TsNode> typeArguments) {
+    return TsTypeReference(
+      typeName,
+      typeArguments,
+    );
+  }
 
   @override
   String toString() {

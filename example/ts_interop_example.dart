@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:ts_interop/src/mapper/missing_type_argument_mapper.dart';
+import 'package:ts_interop/src/util/ts_node_search.dart';
 import 'package:ts_interop/ts_interop.dart';
 
 TsNode physicsEngineMapper(TsNode node) {
   if (node case TsClassDeclaration(name: TsIdentifier(text: 'PhysicsEngine'))) {
-    final parent = node.firstParent<TsSourceFile>();
+    final parent = node.searchUp<TsSourceFile>();
     if (parent != null) {
       if (parent.path.contains('v2')) {
         return TsClassDeclaration(
@@ -19,6 +21,21 @@ TsNode physicsEngineMapper(TsNode node) {
         );
       }
     }
+  }
+  return node;
+}
+
+TsNode tupleMapper(TsNode node) {
+  if (node case TsTypeAliasDeclaration(name: TsIdentifier(text: '_Tuple'), type: TsConditionalType())) {
+    return TsTypeAliasDeclaration(
+      node.modifiers,
+      node.name,
+      node.typeParameters,
+      TsTypeReference(
+        TsIdentifier('JSArray'),
+        [TsTypeReference(TsIdentifier('N'), [])],
+      ),
+    );
   }
   return node;
 }
@@ -61,12 +78,37 @@ final libs = {
   'TypedPropertyDescriptor': './types.dart',
 };
 
+class ComparableTsNode implements Comparable<ComparableTsNode> {
+  final TsNode? node;
+  final String value;
+
+  ComparableTsNode.byNode(this.node, String Function(TsNode node) valueProvider) : value = valueProvider(node!);
+
+  ComparableTsNode.byValue(this.value) : node = null;
+
+  @override
+  int compareTo(ComparableTsNode other) {
+    return value.compareTo(other.value);
+  }
+}
+
 void main() {
+  final sw = Stopwatch()..start();
+
+  stdout.write('Reading input file... ');
   final inFile = File('example/@babylonjs_core@7.16.0.json');
   final content = inFile.readAsStringSync();
   final json = jsonDecode(content);
   final package = TsPackage.fromJson(json);
+  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
+  sw.reset();
 
+  stdout.write('Building cache... ');
+  populateCache(package);
+  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
+  sw.reset();
+
+  stdout.write('Sanitizing... ');
   final sanitizedPackage = Sanitizer().addPhase([
     standardTypesMapper,
     missingTypeMapper,
@@ -75,7 +117,12 @@ void main() {
     mappedTypeMapper,
     instanceTypeMapper,
     physicsEngineMapper,
+    tupleMapper,
+  ]).addPhase([
+    missingTypeArgumentMapper,
   ]).sanitize(package);
+  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
+  sw.reset();
 
   final transpiler = Transpiler(TranspilerConfig(libs: libs));
   final lib = transpiler.transpile(sanitizedPackage, TranspilerConfig()).first;
