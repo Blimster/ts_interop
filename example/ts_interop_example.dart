@@ -3,18 +3,16 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
-import 'package:ts_interop/src/mapper/missing_type_argument_mapper.dart';
-import 'package:ts_interop/src/util/ts_node_search.dart';
 import 'package:ts_interop/ts_interop.dart';
 
 TsNode physicsEngineMapper(TsNode node) {
-  if (node case TsClassDeclaration(name: TsIdentifier(text: 'PhysicsEngine'))) {
+  if (node case TsClassDeclaration(name: SingleNode(value: TsIdentifier(text: 'PhysicsEngine')))) {
     final parent = node.searchUp<TsSourceFile>();
     if (parent != null) {
       if (parent.path.contains('v2')) {
         return TsClassDeclaration(
           node.modifiers,
-          TsIdentifier('PhysicsEngineV2'),
+          TsIdentifier('PhysicsEngineV2').toSingleNode(),
           node.typeParameters,
           node.heritageClauses,
           node.members,
@@ -26,15 +24,24 @@ TsNode physicsEngineMapper(TsNode node) {
 }
 
 TsNode tupleMapper(TsNode node) {
-  if (node case TsTypeAliasDeclaration(name: TsIdentifier(text: '_Tuple'), type: TsConditionalType())) {
+  if (node
+      case TsTypeAliasDeclaration(
+        name: SingleNode(value: TsIdentifier(text: '_Tuple')),
+        type: NullableNode(value: TsConditionalType())
+      )) {
     return TsTypeAliasDeclaration(
       node.modifiers,
       node.name,
       node.typeParameters,
       TsTypeReference(
-        TsIdentifier('JSArray'),
-        [TsTypeReference(TsIdentifier('N'), [])],
-      ),
+        TsIdentifier('JSArray').toSingleNode(),
+        [
+          TsTypeReference(
+            SingleNode(TsIdentifier('N')),
+            ListNode([]),
+          ),
+        ].toListNode(),
+      ).toNullableNode(),
     );
   }
   return node;
@@ -103,11 +110,6 @@ void main() {
   print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
   sw.reset();
 
-  stdout.write('Building cache... ');
-  populateCache(package);
-  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
-  sw.reset();
-
   stdout.write('Sanitizing... ');
   final sanitizedPackage = Sanitizer().addPhase([
     standardTypesMapper,
@@ -124,6 +126,7 @@ void main() {
   print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
   sw.reset();
 
+  stdout.write('Transpiling... ');
   final transpiler = Transpiler(TranspilerConfig(libs: libs));
   final lib = transpiler.transpile(sanitizedPackage, TranspilerConfig()).first;
 
@@ -138,4 +141,6 @@ void main() {
     print(e);
     outFile.writeAsStringSync(lib.accept(emitter).toString());
   }
+  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
+  sw.reset();
 }

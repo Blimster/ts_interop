@@ -133,7 +133,8 @@ SearchConstraint or(List<SearchConstraint> constraints) {
   return _OrConstraint(constraints);
 }
 
-void populateCache(TsPackage package) {
+void buildCache(TsPackage package) {
+  _cache.clear();
   package.forEachDown((node) {
     final all = _cache.putIfAbsent('t:TsNode', () => BinaryTree<TsNode>());
     all.insert(node);
@@ -155,51 +156,69 @@ void populateCache(TsPackage package) {
   });
 }
 
+void updateCache(List<TsNode> added, List<TsNode> removed) {
+  final all = _cache.putIfAbsent('t:TsNode', () => BinaryTree<TsNode>());
+  for (final node in removed) {
+    all.remove(node);
+
+    final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
+    isType.remove(node);
+
+    final hasQualifier = _cache.putIfAbsent('q:${node.nodeQualifier}', () => BinaryTree<TsNode>());
+    hasQualifier.remove(node);
+
+    if (node is WithTypeParameters) {
+      final hasTypeParameters = _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
+      hasTypeParameters.remove(node);
+    }
+    if (node is WithTypeArguments) {
+      final hasTypeArguments = _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
+      hasTypeArguments.remove(node);
+    }
+  }
+  for (final node in removed) {
+    all.insert(node);
+
+    final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
+    isType.insert(node);
+
+    final hasQualifier = _cache.putIfAbsent('q:${node.nodeQualifier}', () => BinaryTree<TsNode>());
+    hasQualifier.insert(node);
+
+    if (node is WithTypeParameters) {
+      final hasTypeParameters = _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
+      hasTypeParameters.insert(node);
+    }
+    if (node is WithTypeArguments) {
+      final hasTypeArguments = _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
+      hasTypeArguments.insert(node);
+    }
+  }
+}
+
+List<T> searchCache<T extends TsNode>([SearchConstraint? constraint]) {
+  return and([
+    _IsTypeConstraint<T>(),
+    if (constraint != null) constraint,
+  ])._matchingNodes().cast<T>().toList();
+}
+
 extension TsNodeSearch on TsNode {
-  TsNode get root {
-    var n = this;
-    while (n.parent != null) {
-      n = n.parent!;
-    }
-    return n;
-  }
-
-  T? _searchUp<T extends TsNode>(SearchConstraint constraint) {
-    var node = this;
-    final nodes = constraint._matchingNodes();
-    if (nodes.isNotEmpty) {
-      return nodes.first as T;
-    }
-    final parent = node.parent;
-    if (parent != null) {
-      return parent._searchUp<T>(constraint);
-    }
-    return null;
-  }
-
   T? searchUp<T extends TsNode>([SearchConstraint? constraint]) {
-    return _searchUp<T>(and([
+    final r1 = and([
       _IsTypeConstraint<T>(),
       if (constraint != null) constraint,
-    ]));
-  }
-
-  BinaryTree<TsNode> _searchDown<T extends TsNode>(SearchConstraint constraint) {
-    final nodes = constraint._matchingNodes();
-    if (nodes.isNotEmpty) {
-      return nodes;
-    }
-    for (var child in children) {
-      final result = child._searchDown<T>(constraint);
-      return result;
-    }
-    return BinaryTree<T>();
+    ])._matchingNodes();
+    final r2 = r1.where((node) => isChildOf(node)).cast<T>().toList();
+    return r2.firstOrNull;
   }
 
   List<T> searchDown<T extends TsNode>([SearchConstraint? constraint]) {
-    return _searchDown<T>(and([
-      if (constraint != null) constraint,
+    final r1 = and([
       _IsTypeConstraint<T>(),
-    ])).toList().cast<T>();
+      if (constraint != null) constraint,
+    ])._matchingNodes();
+    final r2 = r1.where((node) => isParentOf(node)).cast<T>().toList();
+    return r2;
   }
 }

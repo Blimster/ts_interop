@@ -57,7 +57,7 @@ class Transpiler {
       TypeReference((builder) {
         builder.symbol = 'JSArray';
         builder.url = config.libForType(builder.symbol);
-        final elementType = _transpileNode<Reference>(arrayType.elementType).toSpec(config);
+        final elementType = _transpileNode<Reference>(arrayType.elementType.value).toSpec(config);
         if (elementType.isNotEmpty) {
           builder.types.add(elementType.first);
         } else {
@@ -80,10 +80,10 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileClassDeclaration(TsClassDeclaration classDeclaration) {
-    final isAbstract = _containsNodeKind(classDeclaration.modifiers, TsNodeKind.abstractKeyword);
+    final isAbstract = _containsNodeKind(classDeclaration.modifiers.value, TsNodeKind.abstractKeyword);
     final extensionType = ExtensionType((builder) {
-      builder.name = classDeclaration.name.text;
-      builder.types.addAll(_transpileNodes<Reference>(classDeclaration.typeParameters).toSpec(config));
+      builder.name = classDeclaration.name.value.nodeQualifier;
+      builder.types.addAll(_transpileNodes<Reference>(classDeclaration.typeParameters.value).toSpec(config));
       builder.primaryConstructorName = isAbstract ? '_' : '';
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
@@ -96,14 +96,14 @@ class Transpiler {
         builder.symbol = 'JSObject';
         builder.url = config.libForType(builder.symbol);
       }));
-      builder.implements.addAll(_transpileNodes<Reference>(classDeclaration.heritageClauses).toSpec(config));
+      builder.implements.addAll(_transpileNodes<Reference>(classDeclaration.heritageClauses.value).toSpec(config));
     });
     return [extensionType].toDartNode;
   }
 
   List<DartNode<Spec>> _transpileEnumDeclaration(TsEnumDeclaration enumDeclaration) {
     final extensionType = ExtensionType((builder) {
-      builder.name = enumDeclaration.name.text;
+      builder.name = enumDeclaration.name.value.nodeQualifier;
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
@@ -119,15 +119,17 @@ class Transpiler {
     return [extensionType].toDartNode;
   }
 
-  List<DartNode<Spec>> _transpileExpressionWithTypeArguments(TsExpressionWithTypeArguments expressionWithTypeArgument) {
-    final expression = expressionWithTypeArgument.expression;
+  List<DartNode<Spec>> _transpileExpressionWithTypeArguments(
+      TsExpressionWithTypeArguments expressionWithTypeArguments) {
+    final expression = expressionWithTypeArguments.expression.value;
     final result = <Reference>[];
     switch (expression) {
       case TsIdentifier():
         result.add(TypeReference((builder) {
-          builder.symbol = expression.text;
+          builder.symbol = expression.nodeQualifier;
           builder.url = config.libForType(expression.nodeQualifier);
-          builder.types.addAll(_transpileNodes<Reference>(expressionWithTypeArgument.typeArguments).toSpec(config));
+          builder.types
+              .addAll(_transpileNodes<Reference>(expressionWithTypeArguments.typeArguments.value).toSpec(config));
         }));
       default:
         print('WARNING: Unsupported expression type ${expression.kind.name}:${expression.nodeQualifier}');
@@ -139,10 +141,10 @@ class Transpiler {
     return [
       Method((builder) {
         builder.external = true;
-        builder.name = functionDeclaration.name.text;
-        builder.returns = _transpileNode<Reference>(functionDeclaration.type).toSpec(config).firstOrNull;
-        builder.types.addAll(_transpileNodes<Reference>(functionDeclaration.typeParameters).toSpec(config));
-        builder.requiredParameters.addAll(_transpileNodes<Reference>(functionDeclaration.parameters)
+        builder.name = functionDeclaration.name.value.nodeQualifier;
+        builder.returns = _transpileNode<Reference>(functionDeclaration.type.value).toSpec(config).firstOrNull;
+        builder.types.addAll(_transpileNodes<Reference>(functionDeclaration.typeParameters.value).toSpec(config));
+        builder.requiredParameters.addAll(_transpileNodes<Reference>(functionDeclaration.parameters.value)
             .cast<DartParameter>()
             .map((node) => node.parameter)
             .toList());
@@ -167,9 +169,9 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileHeritageClause(TsHeritageClause heritageClause) {
-    heritageClause.types.map(_transpileNode).toList();
+    heritageClause.types.value.map(_transpileNode).toList();
     final result = <Reference>[];
-    for (final type in heritageClause.types) {
+    for (final type in heritageClause.types.value) {
       result.addAll(_transpileNode<Reference>(type).toSpec(config));
     }
     return result.toDartNode;
@@ -177,8 +179,8 @@ class Transpiler {
 
   List<DartNode<Spec>> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
     final extensionType = ExtensionType((builder) {
-      builder.name = interfaceDeclaration.name.text;
-      builder.types.addAll(_transpileNodes<Reference>(interfaceDeclaration.typeParameters).toSpec(config));
+      builder.name = interfaceDeclaration.name.value.nodeQualifier;
+      builder.types.addAll(_transpileNodes<Reference>(interfaceDeclaration.typeParameters.value).toSpec(config));
       builder.primaryConstructorName = '_';
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
@@ -191,7 +193,7 @@ class Transpiler {
         builder.symbol = 'JSObject';
         builder.url = config.libForType(builder.symbol);
       }));
-      builder.implements.addAll(_transpileNodes<Reference>(interfaceDeclaration.heritageClauses).toSpec(config));
+      builder.implements.addAll(_transpileNodes<Reference>(interfaceDeclaration.heritageClauses.value).toSpec(config));
     });
     return [extensionType].toDartNode;
   }
@@ -206,7 +208,7 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileLiteralType(TsLiteralType literalType) {
-    return _transpileNode(literalType.literal);
+    return _transpileNode(literalType.literal.value);
   }
 
   List<DartNode<Spec>> _transpileNumberKeyword(TsNumberKeyword numberKeyword) {
@@ -227,7 +229,7 @@ class Transpiler {
   List<DartNode<Spec>> _transpilePackage(TsPackage package) {
     return [
       Library((builder) {
-        builder.body.addAll(_transpileNodes(package.sourceFiles).toSpec(config));
+        builder.body.addAll(_transpileNodes(package.sourceFiles.value).toSpec(config));
       })
     ].toDartNode;
   }
@@ -236,16 +238,16 @@ class Transpiler {
     return [
       DartParameter(
         Parameter((builder) {
-          builder.name = parameter.name.nodeQualifier ?? '';
-          builder.type = _transpileNode<Reference>(parameter.type).toSpec(config).firstOrNull;
+          builder.name = parameter.name.value.nodeQualifier ?? '';
+          builder.type = _transpileNode<Reference>(parameter.type.value).toSpec(config).firstOrNull;
         }),
-        parameter.questionToken != null,
+        parameter.questionToken.value != null,
       )
     ];
   }
 
   List<DartNode<Spec>> _transpileSourceFile(TsSourceFile sourceFile) {
-    return _transpileNodes(sourceFile.statements);
+    return _transpileNodes(sourceFile.statements.value);
   }
 
   List<DartNode<Spec>> _transpileStringKeyword(TsStringKeyword stringKeyword) {
@@ -272,9 +274,9 @@ class Transpiler {
 
   List<DartNode<Spec>> _transpileTypeAliasDeclaration(TsTypeAliasDeclaration typeAliasDeclaration) {
     final typeDef = TypeDef((builder) {
-      builder.name = typeAliasDeclaration.name.text;
-      builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters).toSpec(config));
-      builder.definition = _transpileNode<Expression>(typeAliasDeclaration.type).toSpec(config).firstOrNull ??
+      builder.name = typeAliasDeclaration.name.value.nodeQualifier;
+      builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters.value).toSpec(config));
+      builder.definition = _transpileNode<Expression>(typeAliasDeclaration.type.value).toSpec(config).firstOrNull ??
           TypeReference((builder) {
             builder.symbol = 'JSAny';
             builder.url = config.libForType(builder.symbol);
@@ -293,8 +295,8 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileTypeParameter(TsTypeParameter typeParameter) {
-    final name = typeParameter.name.text;
-    final extendsClause = _transpileNode<Reference>(typeParameter.constraint).toSpec(config);
+    final name = typeParameter.name.value.nodeQualifier;
+    final extendsClause = _transpileNode<Reference>(typeParameter.constraint.value).toSpec(config);
     return [
       TypeReference((builder) {
         builder.symbol = name;
@@ -308,16 +310,11 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileTypeReference(TsTypeReference typeReference) {
-    final typeName = typeReference.typeName;
-    final symbol = switch (typeName) {
-      TsIdentifier() => typeName.text,
-      _ => null,
-    };
     return [
       TypeReference((builder) {
-        builder.symbol = symbol;
-        builder.url = config.libForType(symbol);
-        builder.types.addAll(_transpileNodes<Reference>(typeReference.typeArguments).toSpec(config));
+        builder.symbol = typeReference.typeName.value.nodeQualifier;
+        builder.url = config.libForType(typeReference.typeName.value.nodeQualifier);
+        builder.types.addAll(_transpileNodes<Reference>(typeReference.typeArguments.value).toSpec(config));
       })
     ].toDartNode;
   }
@@ -344,39 +341,34 @@ class Transpiler {
     if (node == null) {
       return [];
     }
-    final mappedNode = node; //config.mapNode(node);
-    // if (mappedNode == null) {
-    //   return [];
-    // }
-    // updateParentAndChilds(mappedNode, node.parent);
-
     final result = <DartNode<T>>[];
-    final List<DartNode<Spec>> transpiledNodes = switch (mappedNode) {
-      TsAnyKeyword() => _transpileAnyKeyword(mappedNode),
-      TsArrayType() => _transpileArrayType(mappedNode),
-      TsBooleanKeyword() => _transpileBooleanKeyword(mappedNode),
-      TsClassDeclaration() => _transpileClassDeclaration(mappedNode),
-      TsEnumDeclaration() => _transpileEnumDeclaration(mappedNode),
-      TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(mappedNode),
-      TsFunctionDeclaration() => _transpileFunctionDeclaration(mappedNode),
-      TsFunctionType() => _transpileFunctionType(mappedNode),
-      TsHeritageClause() => _transpileHeritageClause(mappedNode),
-      TsInterfaceDeclaration() => _transpileInterfaceDeclaration(mappedNode),
-      TsIntersectionType() => _transpileIntersectionType(mappedNode),
-      TsLiteralType() => _transpileLiteralType(mappedNode),
-      TsNumberKeyword() => _transpileNumberKeyword(mappedNode),
-      TsNumericLiteral() => _transpileNumericLiteral(mappedNode),
-      TsPackage() => _transpilePackage(mappedNode),
-      TsParameter() => _transpileParameter(mappedNode),
-      TsSourceFile() => _transpileSourceFile(mappedNode),
-      TsStringKeyword() => _transpileStringKeyword(mappedNode),
-      TsTupleType() => _transpileTupleType(mappedNode),
-      TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(mappedNode),
-      TsTypeLiteral() => _transpileTypeLiteral(mappedNode),
-      TsTypeParameter() => _transpileTypeParameter(mappedNode),
-      TsTypeReference() => _transpileTypeReference(mappedNode),
-      TsUnionType() => _transpileUnionType(mappedNode),
-      TsVoidKeyword() => _transpileVoidKeyword(mappedNode),
+    final List<DartNode<Spec>> transpiledNodes = switch (node) {
+      Ts$Removed() => [],
+      TsAnyKeyword() => _transpileAnyKeyword(node),
+      TsArrayType() => _transpileArrayType(node),
+      TsBooleanKeyword() => _transpileBooleanKeyword(node),
+      TsClassDeclaration() => _transpileClassDeclaration(node),
+      TsEnumDeclaration() => _transpileEnumDeclaration(node),
+      TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(node),
+      TsFunctionDeclaration() => _transpileFunctionDeclaration(node),
+      TsFunctionType() => _transpileFunctionType(node),
+      TsHeritageClause() => _transpileHeritageClause(node),
+      TsInterfaceDeclaration() => _transpileInterfaceDeclaration(node),
+      TsIntersectionType() => _transpileIntersectionType(node),
+      TsLiteralType() => _transpileLiteralType(node),
+      TsNumberKeyword() => _transpileNumberKeyword(node),
+      TsNumericLiteral() => _transpileNumericLiteral(node),
+      TsPackage() => _transpilePackage(node),
+      TsParameter() => _transpileParameter(node),
+      TsSourceFile() => _transpileSourceFile(node),
+      TsStringKeyword() => _transpileStringKeyword(node),
+      TsTupleType() => _transpileTupleType(node),
+      TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(node),
+      TsTypeLiteral() => _transpileTypeLiteral(node),
+      TsTypeParameter() => _transpileTypeParameter(node),
+      TsTypeReference() => _transpileTypeReference(node),
+      TsUnionType() => _transpileUnionType(node),
+      TsVoidKeyword() => _transpileVoidKeyword(node),
       _ => [],
     };
     if (transpiledNodes.isEmpty) {
@@ -388,7 +380,7 @@ class Transpiler {
         result.add(transpiledNode as DartNode<T>);
       } else {
         throw StateError(
-            'Transpiled node ${spec.runtimeType} is not of type $T. Source node=${node.kind.name}:${node.nodeQualifier}, mapped=${mappedNode.kind}:${mappedNode.nodeQualifier}');
+            'Transpiled node ${spec.runtimeType} is not of type $T. Source node=${node.kind.name}:${node.nodeQualifier}, mapped=${node.kind}:${node.nodeQualifier}');
       }
     }
     return result;

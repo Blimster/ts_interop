@@ -4,7 +4,7 @@ version: 0.1.0
 repository: https://github.com/blimster/ts_interop
 
 environment:
-  sdk: ^3.4.4
+  sdk: ^3.5.0
 
 dependencies:
   binary_tree: ^1.0.5
@@ -13,4 +13,4 @@ dependencies:
   web: ^1.0.0
 
 dev_dependencies:
-  lints: ^3.0.0
+  lints: ^4.0.0

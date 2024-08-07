@@ -5,7 +5,7 @@ import '../model/ts_node.dart';
 final _notFound = <String>{};
 final _found = <String, TsNode>{};
 
-TsNode? missingTypeArgumentMapper(TsNode node) {
+TsNode missingTypeArgumentMapper(TsNode node) {
   if (node is WithTypeArguments) {
     final typeArguments = (node as WithTypeArguments).typeArguments;
     final referencedName = node.nodeQualifier;
@@ -25,18 +25,17 @@ TsNode? missingTypeArgumentMapper(TsNode node) {
       if (referencedNodes.isNotEmpty) {
         _found[referencedName] = referencedNodes.first;
         final typeParameters = (referencedNodes.first as WithTypeParameters).typeParameters;
-        if (typeArguments.length < typeParameters.length) {
+        if (typeArguments.value.length < typeParameters.value.length) {
           final additionalTypeArguments = <TsNode>[];
-          for (var i = typeArguments.length; i < typeParameters.length; i++) {
-            final tp = typeParameters[i] as TsTypeParameter;
+          for (var i = typeArguments.value.length; i < typeParameters.value.length; i++) {
+            final tp = typeParameters.value[i] as TsTypeParameter;
             final defaultType = tp.defaultType;
-            if (defaultType != null) {
-              additionalTypeArguments.add(defaultType);
+            if (defaultType.value != null) {
+              additionalTypeArguments.add(defaultType.value!);
             }
-            //additionalTypeArguments.add(TsTypeReference(TsIdentifier('JSAny'), []));
           }
-          return (node as WithTypeArguments).copyWithTypeArguments([
-            ...typeArguments,
+          (node as WithTypeArguments).updateTypeArguments([
+            ...typeArguments.value,
             ...additionalTypeArguments,
           ]);
         }

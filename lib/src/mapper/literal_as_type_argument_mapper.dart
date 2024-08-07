@@ -5,13 +5,13 @@ TsNode literalAsTypeArgumentMapper(TsNode node) {
     final typeArguments = node.typeArguments;
     final newTypeArguments = <TsNode>[];
     bool changed = false;
-    for (final typeArgument in typeArguments) {
+    for (final typeArgument in typeArguments.value) {
       switch (typeArgument) {
-        case TsLiteralType(literal: TsNumericLiteral()):
+        case TsLiteralType(literal: SingleNode(value: TsNumericLiteral())):
           changed = true;
           newTypeArguments.add(TsNumberKeyword());
           break;
-        case TsLiteralType(literal: TsStringLiteral()):
+        case TsLiteralType(literal: SingleNode(value: TsStringLiteral())):
           changed = true;
           newTypeArguments.add(TsStringKeyword());
           break;
@@ -22,7 +22,7 @@ TsNode literalAsTypeArgumentMapper(TsNode node) {
     if (changed) {
       final result = TsTypeReference(
         node.typeName,
-        newTypeArguments,
+        newTypeArguments.toListNode(),
       );
       return result;
     }

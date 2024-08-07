@@ -13,6 +13,10 @@
 
 include: package:lints/recommended.yaml
 
+linter:
+  rules:
+    - invalid_runtime_check_with_js_interop_types
+
 # Uncomment the following section to specify additional rules.
 
 # linter:
