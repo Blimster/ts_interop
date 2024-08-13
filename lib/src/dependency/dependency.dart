@@ -9,19 +9,19 @@ class Dependency {
 }
 
 Future<Dependency> _remoteDependency(
-  Uri Function() uriProvider,
-  String prefix,
+  Uri Function() docUriProvider,
+  String Function() packageUriProvider,
   String package,
   String library,
   String? version,
 ) async {
-  final response = await http.get(uriProvider());
+  final response = await http.get(docUriProvider());
   final document = html.parse(response.body);
   final types = {
     ...document.querySelectorAll('#extension-types dt').map((element) => element.id),
     ...document.querySelectorAll('#typedefs dt').map((element) => element.id),
   };
-  return Dependency('$prefix:$package/$library.dart', types);
+  return Dependency(packageUriProvider(), types);
 }
 
 Future<Dependency> pubDevDependency(String package, String library, {String? packageVersion}) async {
@@ -35,7 +35,7 @@ Future<Dependency> pubDevDependency(String package, String library, {String? pac
           library,
           '$library-library.html',
         ].join('/')),
-    'package',
+    () => 'package:$package/$library.dart',
     package,
     library,
     packageVersion,
@@ -52,7 +52,7 @@ Future<Dependency> dartDependency(String package, String library, {String? dartV
           'dart-$library',
           'dart-$library-library.html',
         ].join('/')),
-    'dart',
+    () => 'dart:$package',
     package,
     library,
     dartVersion,

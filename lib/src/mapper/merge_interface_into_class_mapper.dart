@@ -7,7 +7,12 @@ TsNode mergeInterfaceIntoClassMapper(TsNode node) {
     if (className != null) {
       final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasQualifier(className));
       if (interfaces.isNotEmpty) {
-        // TODO merge members, modifiers and heritage clauses into class
+        // TODO merge modifiers and heritage clauses into class
+        final members = List.of(node.members.value);
+        for (final interfaze in interfaces) {
+          members.addAll(interfaze.members.value);
+        }
+        node.members.set(members);
       }
       final newHeritageClauses = <TsNode>[];
       for (final currentHeritageClause in node.heritageClauses.value

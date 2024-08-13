@@ -81,6 +81,7 @@ class TypeEvaluator {
       TsTypeReference() => node,
       TsUndefinedKeyword() => _typeRef('Null'),
       TsUnionType() => _unionType(node),
+      TsVoidKeyword() => _typeRef('__<VOID>__'),
       _ => throw UnimplementedError(node?.toShortString()),
     };
   }

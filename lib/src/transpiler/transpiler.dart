@@ -5,6 +5,8 @@ import 'package:ts_interop/ts_interop.dart';
 
 import '../model/ts_node.dart';
 
+const _voidType = Reference('void');
+
 bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
   for (final node in nodes) {
     if (node.kind == kind) {
@@ -83,7 +85,10 @@ class Transpiler {
 
   List<DartNode<Spec>> _transpileClassDeclaration(TsClassDeclaration classDeclaration) {
     final isAbstract = _containsNodeKind(classDeclaration.modifiers.value, TsNodeKind.abstractKeyword);
+    final members = _transpileNodes(classDeclaration.members.value).map((m) => m.toSpec(config));
+
     final extensionType = ExtensionType((builder) {
+      builder.docs.add('/// class ${classDeclaration.name.value.nodeQualifier}');
       builder.name = classDeclaration.name.value.nodeQualifier;
       builder.types.addAll(_transpileNodes<Reference>(classDeclaration.typeParameters.value).toSpec(config));
       builder.primaryConstructorName = isAbstract ? '_' : '';
@@ -99,12 +104,15 @@ class Transpiler {
         builder.url = config.libraryUrlForType(builder.symbol);
       }));
       builder.implements.addAll(_transpileNodes<Reference>(classDeclaration.heritageClauses.value).toSpec(config));
+      builder.fields.addAll(members.whereType<Field>());
+      builder.methods.addAll(members.whereType<Method>());
     });
     return [extensionType].toDartNode;
   }
 
   List<DartNode<Spec>> _transpileEnumDeclaration(TsEnumDeclaration enumDeclaration) {
     final extensionType = ExtensionType((builder) {
+      builder.docs.add('/// enum ${enumDeclaration.name.value.nodeQualifier}');
       builder.name = enumDeclaration.name.value.nodeQualifier;
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
@@ -179,13 +187,40 @@ class Transpiler {
     return result.toDartNode;
   }
 
+  List<DartNode<Spec>> _transpileIndexSignature(TsIndexSignature indexSignature) {
+    return <Spec>[
+      Method((builder) {
+        builder.external = true;
+        builder.name = 'operator []=';
+        builder.returns = _voidType;
+        builder.requiredParameters.addAll(_transpileNodes<Reference>(indexSignature.parameters.value)
+            .cast<DartParameter>()
+            .map((node) => node.parameter)
+            .toList());
+        builder.requiredParameters.add(Parameter((builder) {
+          builder.type = _transpileNode<Reference>(indexSignature.type.value).toSpec(config).firstOrNull;
+          builder.name = 'value';
+        }));
+      }),
+      Method((builder) {
+        builder.external = true;
+        builder.name = 'operator []';
+        builder.returns = _transpileNode<Reference>(indexSignature.type.value).toSpec(config).firstOrNull;
+        builder.requiredParameters.addAll(_transpileNodes<Reference>(indexSignature.parameters.value)
+            .cast<DartParameter>()
+            .map((node) => node.parameter)
+            .toList());
+      }),
+    ].toDartNode;
+  }
+
   List<DartNode<Spec>> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
     final members = _transpileNodes(interfaceDeclaration.members.value).map((m) => m.toSpec(config));
 
     final extensionType = ExtensionType((builder) {
+      builder.docs.add('/// interface ${interfaceDeclaration.name.value.nodeQualifier}');
       builder.name = interfaceDeclaration.name.value.nodeQualifier;
       builder.types.addAll(_transpileNodes<Reference>(interfaceDeclaration.typeParameters.value).toSpec(config));
-      builder.primaryConstructorName = '_';
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
@@ -199,6 +234,7 @@ class Transpiler {
       }));
       builder.implements.addAll(_transpileNodes<Reference>(interfaceDeclaration.heritageClauses.value).toSpec(config));
       builder.fields.addAll(members.whereType<Field>());
+      builder.methods.addAll(members.whereType<Method>());
     });
     return [extensionType].toDartNode;
   }
@@ -214,6 +250,22 @@ class Transpiler {
 
   List<DartNode<Spec>> _transpileLiteralType(TsLiteralType literalType) {
     return _transpileNode(literalType.literal.value);
+  }
+
+  List<DartNode<Spec>> _transpileMethodSignature(TsMethodSignature methodSignature) {
+    final methodName = methodSignature.name.value.nodeQualifier;
+    if (methodName == null) {
+      return [];
+    }
+    return [
+      Method((builder) {
+        builder.external = true;
+        builder.name = methodSignature.name.value.nodeQualifier;
+        builder.returns = _transpileNode<Reference>(typeEvaluator.evaluateType(methodSignature.type.value))
+            .toSpec(config)
+            .firstOrNull;
+      })
+    ].toDartNode;
   }
 
   List<DartNode<Spec>> _transpileNumberKeyword(TsNumberKeyword numberKeyword) {
@@ -252,15 +304,29 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpilePropertySignature(TsPropertySignature propertySignature) {
-    return [
-      Field((builder) {
-        builder.external = true;
-        builder.name = propertySignature.name.value.nodeQualifier;
-        builder.type = _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value))
-            .toSpec(config)
-            .firstOrNull;
-      }),
-    ].toDartNode;
+    final readonly = _containsNodeKind(propertySignature.modifiers.value, TsNodeKind.readonlyKeyword);
+    if (readonly) {
+      return [
+        Method((builder) {
+          builder.type = MethodType.getter;
+          builder.external = true;
+          builder.name = propertySignature.name.value.nodeQualifier;
+          builder.returns = _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value))
+              .toSpec(config)
+              .firstOrNull;
+        }),
+      ].toDartNode;
+    } else {
+      return [
+        Field((builder) {
+          builder.external = true;
+          builder.name = propertySignature.name.value.nodeQualifier;
+          builder.type = _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value))
+              .toSpec(config)
+              .firstOrNull;
+        }),
+      ].toDartNode;
+    }
   }
 
   List<DartNode<Spec>> _transpileSourceFile(TsSourceFile sourceFile) {
@@ -297,6 +363,7 @@ class Transpiler {
 
   List<DartNode<Spec>> _transpileTypeAliasDeclaration(TsTypeAliasDeclaration typeAliasDeclaration) {
     final typeDef = TypeDef((builder) {
+      builder.docs.add('/// typedef ${typeAliasDeclaration.name.value.nodeQualifier}');
       builder.name = typeAliasDeclaration.name.value.nodeQualifier;
       builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters.value).toSpec(config));
       builder.definition =
@@ -330,6 +397,9 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileTypeReference(TsTypeReference typeReference) {
+    if (typeReference.typeName.value.nodeQualifier == '__<VOID>__') {
+      return _transpileVoidKeyword(TsVoidKeyword());
+    }
     final isNullable = typeReference.typeName.value.nodeQualifier?.endsWith('?') ?? false;
     final name = isNullable
         ? typeReference.typeName.value.nodeQualifier!
@@ -357,10 +427,7 @@ class Transpiler {
 
   List<DartNode<Spec>> _transpileVoidKeyword(TsVoidKeyword voidKeyword) {
     return [
-      TypeReference((builder) {
-        builder.symbol = 'JSVoid';
-        builder.url = config.libraryUrlForType(builder.symbol);
-      })
+      _voidType,
     ].toDartNode;
   }
 
@@ -381,8 +448,10 @@ class Transpiler {
       TsFunctionType() => _transpileFunctionType(node),
       TsHeritageClause() => _transpileHeritageClause(node),
       TsInterfaceDeclaration() => _transpileInterfaceDeclaration(node),
+      TsIndexSignature() => _transpileIndexSignature(node),
       TsIntersectionType() => _transpileIntersectionType(node),
       TsLiteralType() => _transpileLiteralType(node),
+      TsMethodSignature() => _transpileMethodSignature(node),
       TsNumberKeyword() => _transpileNumberKeyword(node),
       TsNumericLiteral() => _transpileNumericLiteral(node),
       TsPackage() => _transpilePackage(node),

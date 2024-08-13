@@ -24,8 +24,8 @@ extension type Error._(JSObject _) implements JSObject {}
 
 extension type IteratorResult<T, TReturn>._(JSObject _) implements JSObject {}
 
+extension type IterableIterator<T>._(JSObject _) implements JSObject {}
+
 extension type AbortSignal._(JSObject _) implements JSObject {}
 
 extension type TypedPropertyDescriptor<T>._(JSObject _) implements JSObject {}
-
-extension type JSVoid._(JSAny _) implements JSAny {}

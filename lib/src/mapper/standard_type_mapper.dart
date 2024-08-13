@@ -13,10 +13,18 @@ TsNode standardTypesMapper(TsNode node) {
   if (node case TsTypeReference(typeName: SingleNode(value: TsIdentifier(text: final name)))) {
     if (_standardTypes.keys.contains(name)) {
       final newType = _standardTypes[name]!;
-      return TsTypeReference(
-        TsIdentifier(newType).toSingleNode(),
-        node.typeArguments,
-      );
+      if (newType == 'JSPromise' && node.typeArguments.value.isNotEmpty) {
+        final typeArg = node.typeArguments.value.first.kind;
+        return TsTypeReference(
+          TsIdentifier(newType).toSingleNode(),
+          typeArg == TsNodeKind.voidKeyword ? ListNode([]) : node.typeArguments,
+        );
+      } else {
+        return TsTypeReference(
+          TsIdentifier(newType).toSingleNode(),
+          node.typeArguments,
+        );
+      }
     }
   }
   return node;

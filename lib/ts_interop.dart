@@ -1,7 +1,7 @@
 library;
 
 export 'src/dependency/dependency.dart';
-export 'src/mapper/delete_duplicate_interfaces_mapper.dart';
+export 'src/mapper/remove_duplicate_interfaces_mapper.dart';
 export 'src/mapper/instance_type_mapper.dart';
 export 'src/mapper/literal_as_type_argument_mapper.dart';
 export 'src/mapper/mapped_type_mapper.dart';

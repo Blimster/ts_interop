@@ -1,7 +1,7 @@
 import '../model/ts_node.dart';
 import '../util/ts_node_search.dart';
 
-TsNode deleteDuplicateInterfacesMapper(TsNode node) {
+TsNode removeDuplicateInterfacesMapper(TsNode node) {
   if (node case TsInterfaceDeclaration()) {
     final interfaceName = node.nodeQualifier;
     if (interfaceName != null) {

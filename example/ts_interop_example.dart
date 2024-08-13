@@ -64,7 +64,6 @@ TsNode tupleMapper(TsNode node) {
 }
 
 final typesDependency = Dependency('./types.dart', {
-  'JSVoid',
   'Parameters',
   'Record',
   'ArrayBufferView',
@@ -77,6 +76,7 @@ final typesDependency = Dependency('./types.dart', {
   'Error',
   'GPURequestAdapterOptions',
   'IteratorResult',
+  'IterableIterator',
   'AbortSignal',
   'TypedPropertyDescriptor',
 });
@@ -96,10 +96,12 @@ class ComparableTsNode implements Comparable<ComparableTsNode> {
 }
 
 void main() async {
-  final sw = Stopwatch()..start();
+  final jsInteropDependency = await dartDependency('js_interop', 'js_interop');
+  final webDependency = await pubDevDependency('web', 'web');
 
+  final sw = Stopwatch()..start();
   stdout.write('Reading input file... ');
-  //final inFile = File('example/babylonjs@7.19.1.json');
+  // final inFile = File('example/babylonjs@7.19.1.json');
   final inFile = File('example/@types_webxr@0.5.19.json');
   final content = inFile.readAsStringSync();
   final json = jsonDecode(content);
@@ -107,10 +109,11 @@ void main() async {
   print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
   sw.reset();
 
-  await pubDevDependency('web', 'web');
-
   stdout.write('Sanitizing... ');
   final sanitizedPackage = Sanitizer()
+      .addPhase(SanitizerPhase('removeDependencies', PhaseDirection.topDown, [
+        // removeNodesByDependency(webDependency),
+      ]))
       .addPhase(SanitizerPhase('mergeInterfaces', PhaseDirection.topDown, [
         mergeInterfacesMapper,
       ]))
@@ -118,7 +121,7 @@ void main() async {
         mergeInterfaceIntoClassMapper,
       ]))
       .addPhase(SanitizerPhase('deleteDuplicateInterfacesMapper', PhaseDirection.topDown, [
-        deleteDuplicateInterfacesMapper,
+        removeDuplicateInterfacesMapper,
       ]))
       .addPhase(SanitizerPhase('defaultMappers', PhaseDirection.bottomUp, [
         standardTypesMapper,
@@ -156,17 +159,17 @@ void main() async {
 
   stdout.write('Transpiling... ');
   final transpiler = Transpiler(Dependencies(dependencies: [
-    await dartDependency('js_interop', 'js_interop'),
-    await pubDevDependency('web', 'web'),
     typesDependency,
+    jsInteropDependency,
+    webDependency,
   ]));
   final lib = transpiler.transpile(sanitizedPackage, Dependencies()).first;
 
   final emitter = DartEmitter.scoped(useNullSafetySyntax: true);
   final DartFormatter formatter = DartFormatter();
 
-  //final outFile = File('example/babylonjs.dart');
-  final outFile = File('example/webxr.dart');
+  // final outFile = File('web/babylonjs.dart');
+  final outFile = File('web/webxr.dart');
 
   try {
     outFile.writeAsStringSync(formatter.format(lib.accept(emitter).toString()));
