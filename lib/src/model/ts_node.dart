@@ -475,7 +475,7 @@ sealed class TsNode implements Comparable<TsNode> {
 
   @override
   int compareTo(TsNode other) {
-    return (id - other.id).sign;
+    return (id - other.id);
   }
 
   @override
@@ -499,13 +499,18 @@ class Ts$Unsupported extends TsNode {
 }
 
 class Ts$Removed extends TsNode {
-  final TsNode removedNode;
+  final String removedNode;
 
-  Ts$Removed(this.removedNode) : super(TsNodeKind.$unsupported);
+  Ts$Removed(TsNode node)
+      : removedNode = node.toShortString(),
+        super(TsNodeKind.$removed);
+
+  @override
+  String get nodeQualifier => removedNode;
 
   @override
   String toString() {
-    return 'Ts\$Removed{unsupportedNodeKind: $removedNode}';
+    return 'Ts\$Removed{removedNode: $removedNode}';
   }
 }
 

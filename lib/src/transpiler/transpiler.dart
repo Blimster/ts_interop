@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:ts_interop/src/model/dart_node.dart';
+import 'package:ts_interop/src/transpiler/type_evaluator.dart';
 import 'package:ts_interop/ts_interop.dart';
 
 import '../model/ts_node.dart';
@@ -35,8 +36,9 @@ extension _SpecToDartNode<T extends Spec> on Iterable<T> {
 
 class Transpiler {
   final TranspilerConfig config;
+  final TypeEvaluator typeEvaluator;
 
-  Transpiler(this.config);
+  Transpiler(this.config) : typeEvaluator = TypeEvaluator(config);
 
   List<Spec> transpile(TsPackage package, TranspilerConfig config) {
     updateParentAndChilds(package, package.parent);
@@ -178,6 +180,8 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
+    final members = _transpileNodes(interfaceDeclaration.members.value).map((m) => m.toSpec(config));
+
     final extensionType = ExtensionType((builder) {
       builder.name = interfaceDeclaration.name.value.nodeQualifier;
       builder.types.addAll(_transpileNodes<Reference>(interfaceDeclaration.typeParameters.value).toSpec(config));
@@ -194,6 +198,7 @@ class Transpiler {
         builder.url = config.libForType(builder.symbol);
       }));
       builder.implements.addAll(_transpileNodes<Reference>(interfaceDeclaration.heritageClauses.value).toSpec(config));
+      builder.fields.addAll(members.whereType<Field>());
     });
     return [extensionType].toDartNode;
   }
@@ -246,6 +251,18 @@ class Transpiler {
     ];
   }
 
+  List<DartNode<Spec>> _transpilePropertySignature(TsPropertySignature propertySignature) {
+    return [
+      Field((builder) {
+        builder.external = true;
+        builder.name = propertySignature.name.value.nodeQualifier;
+        builder.type = _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value))
+            .toSpec(config)
+            .firstOrNull;
+      }),
+    ].toDartNode;
+  }
+
   List<DartNode<Spec>> _transpileSourceFile(TsSourceFile sourceFile) {
     return _transpileNodes(sourceFile.statements.value);
   }
@@ -256,6 +273,12 @@ class Transpiler {
         builder.symbol = 'JSString';
         builder.url = config.libForType(builder.symbol);
       })
+    ].toDartNode;
+  }
+
+  List<DartNode<Spec>> _transpileStringLiteral(TsStringLiteral stringKeyword) {
+    return [
+      Code(stringKeyword.text),
     ].toDartNode;
   }
 
@@ -276,11 +299,8 @@ class Transpiler {
     final typeDef = TypeDef((builder) {
       builder.name = typeAliasDeclaration.name.value.nodeQualifier;
       builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters.value).toSpec(config));
-      builder.definition = _transpileNode<Expression>(typeAliasDeclaration.type.value).toSpec(config).firstOrNull ??
-          TypeReference((builder) {
-            builder.symbol = 'JSAny';
-            builder.url = config.libForType(builder.symbol);
-          });
+      builder.definition =
+          _transpileNode<Expression>(typeEvaluator.evaluateType(typeAliasDeclaration.type.value)).first.toSpec(config);
     });
     return [typeDef].toDartNode;
   }
@@ -310,10 +330,17 @@ class Transpiler {
   }
 
   List<DartNode<Spec>> _transpileTypeReference(TsTypeReference typeReference) {
+    final isNullable = typeReference.typeName.value.nodeQualifier?.endsWith('?') ?? false;
+    final name = isNullable
+        ? typeReference.typeName.value.nodeQualifier!
+            .substring(0, typeReference.typeName.value.nodeQualifier!.length - 1)
+        : typeReference.typeName.value.nodeQualifier;
+
     return [
       TypeReference((builder) {
-        builder.symbol = typeReference.typeName.value.nodeQualifier;
-        builder.url = config.libForType(typeReference.typeName.value.nodeQualifier);
+        builder.symbol = name;
+        builder.url = config.libForType(name);
+        builder.isNullable = isNullable;
         builder.types.addAll(_transpileNodes<Reference>(typeReference.typeArguments.value).toSpec(config));
       })
     ].toDartNode;
@@ -360,8 +387,10 @@ class Transpiler {
       TsNumericLiteral() => _transpileNumericLiteral(node),
       TsPackage() => _transpilePackage(node),
       TsParameter() => _transpileParameter(node),
+      TsPropertySignature() => _transpilePropertySignature(node),
       TsSourceFile() => _transpileSourceFile(node),
       TsStringKeyword() => _transpileStringKeyword(node),
+      TsStringLiteral() => _transpileStringLiteral(node),
       TsTupleType() => _transpileTupleType(node),
       TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(node),
       TsTypeLiteral() => _transpileTypeLiteral(node),
@@ -371,8 +400,8 @@ class Transpiler {
       TsVoidKeyword() => _transpileVoidKeyword(node),
       _ => [],
     };
-    if (transpiledNodes.isEmpty) {
-      // print('WARNING: No transpiled nodes for ${mappedNode.kind.name}:${mappedNode.nodeQualifier}');
+    if (transpiledNodes.isEmpty && node.kind != TsNodeKind.$removed) {
+      print('WARNING: No transpiled nodes for ${node.toShortString()}');
     }
     for (final transpiledNode in transpiledNodes) {
       final spec = transpiledNode.toSpec(config);

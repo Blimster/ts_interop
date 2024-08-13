@@ -1,9 +1,12 @@
 library;
 
 export 'src/config/config.dart';
+export 'src/mapper/delete_duplicate_interfaces_mapper.dart';
 export 'src/mapper/instance_type_mapper.dart';
 export 'src/mapper/literal_as_type_argument_mapper.dart';
 export 'src/mapper/mapped_type_mapper.dart';
+export 'src/mapper/merge_interface_into_class_mapper.dart';
+export 'src/mapper/merge_interfaces_mapper.dart';
 export 'src/mapper/missing_type_argument_mapper.dart';
 export 'src/mapper/missing_type_mapper.dart';
 export 'src/mapper/standard_type_mapper.dart';

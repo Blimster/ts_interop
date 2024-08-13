@@ -1,11 +1,17 @@
 import '../model/ts_node.dart';
 import '../util/ts_node_search.dart';
 
+enum PhaseDirection {
+  topDown,
+  bottomUp,
+}
+
 class SanitizerPhase {
-  final int phase;
+  final String name;
+  final PhaseDirection direction;
   final List<TsNodeMapper> nodeMappers;
 
-  SanitizerPhase._(this.phase, this.nodeMappers);
+  SanitizerPhase(this.name, this.direction, this.nodeMappers);
 
   TsNode _applyMappers(TsNode node) {
     if (nodeMappers.isEmpty) {
@@ -37,7 +43,7 @@ class SanitizerPhase {
     }
   }
 
-  TsNode _sanitizeNode(TsNode node) {
+  void _appleWrappers(TsNode node) {
     final wrappers = node.nodeWrappers;
     for (final wrapper in wrappers) {
       final (added, removed) = switch (wrapper) {
@@ -48,8 +54,18 @@ class SanitizerPhase {
       updateCache(added, removed);
       updateParentAndChilds(node, node.parent);
     }
+  }
 
-    return _applyMappers(node);
+  TsNode _sanitizeNode(TsNode node) {
+    switch (direction) {
+      case PhaseDirection.topDown:
+        final mappedNode = _applyMappers(node);
+        _appleWrappers(mappedNode);
+        return mappedNode;
+      case PhaseDirection.bottomUp:
+        _appleWrappers(node);
+        return _applyMappers(node);
+    }
   }
 
   TsNode? _sanitizeNullableNode(TsNode? node) {
@@ -72,16 +88,21 @@ class SanitizerPhase {
 }
 
 class Sanitizer {
-  final void Function(int phase)? _beforePhase;
-  final void Function(int phase)? _afterPhase;
+  final void Function(String name)? _beforePhase;
+  final void Function(String name)? _afterPhase;
   final List<SanitizerPhase> _phases = [];
 
-  Sanitizer({void Function(int phase)? beforePhase, void Function(int phase)? afterPhase})
+  Sanitizer({void Function(String name)? beforePhase, void Function(String name)? afterPhase})
       : _beforePhase = beforePhase,
         _afterPhase = afterPhase;
 
-  Sanitizer addPhase(List<TsNodeMapper> nodeMappers) {
-    _phases.add(SanitizerPhase._(_phases.length, nodeMappers));
+  Sanitizer addPhase(SanitizerPhase phase) {
+    _phases.add(phase);
+    return this;
+  }
+
+  Sanitizer addPhases(List<SanitizerPhase> phases) {
+    _phases.addAll(phases);
     return this;
   }
 
@@ -89,13 +110,13 @@ class Sanitizer {
     buildCache(package);
     TsPackage sanitizedPackage = package;
     for (final phase in _phases) {
-      _beforePhase?.call(phase.phase);
+      _beforePhase?.call(phase.name);
       final tempPackage = phase._sanitizeNode(sanitizedPackage);
       if (tempPackage is! TsPackage) {
         throw StateError('Node of type $TsPackage must be sanitized to a TsPackage.');
       }
       sanitizedPackage = tempPackage;
-      _afterPhase?.call(phase.phase);
+      _afterPhase?.call(phase.name);
     }
     return sanitizedPackage;
   }

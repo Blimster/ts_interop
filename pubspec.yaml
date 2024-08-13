@@ -7,7 +7,7 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
-  binary_tree: ^1.0.5
+  binary_tree: ^1.0.6
   code_builder: ^4.10.0
   dart_style: ^2.3.6
   web: ^1.0.0

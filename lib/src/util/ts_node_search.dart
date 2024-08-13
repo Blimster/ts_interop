@@ -204,21 +204,18 @@ List<T> searchCache<T extends TsNode>([SearchConstraint? constraint]) {
 }
 
 extension TsNodeSearch on TsNode {
-  T? searchUp<T extends TsNode>([SearchConstraint? constraint]) {
-    final r1 = and([
+  List<T> _search<T extends TsNode>(bool Function(TsNode) predicate, [SearchConstraint? constraint]) {
+    return and([
       _IsTypeConstraint<T>(),
       if (constraint != null) constraint,
-    ])._matchingNodes();
-    final r2 = r1.where((node) => isChildOf(node)).cast<T>().toList();
-    return r2.firstOrNull;
+    ])._matchingNodes().where((node) => predicate(node)).cast<T>().toList();
+  }
+
+  List<T> searchUp<T extends TsNode>([SearchConstraint? constraint]) {
+    return _search(isChildOf, constraint);
   }
 
   List<T> searchDown<T extends TsNode>([SearchConstraint? constraint]) {
-    final r1 = and([
-      _IsTypeConstraint<T>(),
-      if (constraint != null) constraint,
-    ])._matchingNodes();
-    final r2 = r1.where((node) => isParentOf(node)).cast<T>().toList();
-    return r2;
+    return _search(isParentOf, constraint);
   }
 }
