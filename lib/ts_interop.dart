@@ -1,6 +1,6 @@
 library;
 
-export 'src/config/config.dart';
+export 'src/dependency/dependency.dart';
 export 'src/mapper/delete_duplicate_interfaces_mapper.dart';
 export 'src/mapper/instance_type_mapper.dart';
 export 'src/mapper/literal_as_type_argument_mapper.dart';

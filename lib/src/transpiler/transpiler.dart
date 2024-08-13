@@ -15,7 +15,7 @@ bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
 }
 
 extension _DartNodeIterable<T extends Spec> on Iterable<DartNode<T>> {
-  List<T> toSpec(TranspilerConfig config) {
+  List<T> toSpec(Dependencies config) {
     final result = <T>[];
     for (final node in this) {
       result.add(node.toSpec(config));
@@ -35,12 +35,12 @@ extension _SpecToDartNode<T extends Spec> on Iterable<T> {
 }
 
 class Transpiler {
-  final TranspilerConfig config;
+  final Dependencies config;
   final TypeEvaluator typeEvaluator;
 
   Transpiler(this.config) : typeEvaluator = TypeEvaluator(config);
 
-  List<Spec> transpile(TsPackage package, TranspilerConfig config) {
+  List<Spec> transpile(TsPackage package, Dependencies config) {
     updateParentAndChilds(package, package.parent);
     return _transpileNode<Library>(package).toSpec(config);
   }
@@ -49,7 +49,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSAny';
-        builder.url = builder.url = config.libForType(builder.symbol);
+        builder.url = builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -58,14 +58,14 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSArray';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
         final elementType = _transpileNode<Reference>(arrayType.elementType.value).toSpec(config);
         if (elementType.isNotEmpty) {
           builder.types.add(elementType.first);
         } else {
           builder.types.add(TypeReference((builder) {
             builder.symbol = 'JSAny';
-            builder.url = config.libForType(builder.symbol);
+            builder.url = config.libraryUrlForType(builder.symbol);
           }));
         }
       })
@@ -76,7 +76,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSBoolean';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -91,12 +91,12 @@ class Transpiler {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
           builder.symbol = 'JSObject';
-          builder.url = config.libForType(builder.symbol);
+          builder.url = config.libraryUrlForType(builder.symbol);
         });
       });
       builder.implements.add(TypeReference((builder) {
         builder.symbol = 'JSObject';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       }));
       builder.implements.addAll(_transpileNodes<Reference>(classDeclaration.heritageClauses.value).toSpec(config));
     });
@@ -110,12 +110,12 @@ class Transpiler {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
           builder.symbol = 'JSObject';
-          builder.url = config.libForType(builder.symbol);
+          builder.url = config.libraryUrlForType(builder.symbol);
         });
       });
       builder.implements.add(TypeReference((builder) {
         builder.symbol = 'JSObject';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       }));
     });
     return [extensionType].toDartNode;
@@ -129,7 +129,7 @@ class Transpiler {
       case TsIdentifier():
         result.add(TypeReference((builder) {
           builder.symbol = expression.nodeQualifier;
-          builder.url = config.libForType(expression.nodeQualifier);
+          builder.url = config.libraryUrlForType(expression.nodeQualifier);
           builder.types
               .addAll(_transpileNodes<Reference>(expressionWithTypeArguments.typeArguments.value).toSpec(config));
         }));
@@ -165,7 +165,7 @@ class Transpiler {
       // }),
       TypeReference((builder) {
         builder.symbol = 'JSFunction';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -190,12 +190,12 @@ class Transpiler {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
           builder.symbol = 'JSObject';
-          builder.url = config.libForType(builder.symbol);
+          builder.url = config.libraryUrlForType(builder.symbol);
         });
       });
       builder.implements.add(TypeReference((builder) {
         builder.symbol = 'JSObject';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       }));
       builder.implements.addAll(_transpileNodes<Reference>(interfaceDeclaration.heritageClauses.value).toSpec(config));
       builder.fields.addAll(members.whereType<Field>());
@@ -207,7 +207,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSAny';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -220,7 +220,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSNumber';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -271,7 +271,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSString';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -286,10 +286,10 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSArray';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
         builder.types.add(TypeReference((builder) {
           builder.symbol = 'JSAny';
-          builder.url = config.libForType(builder.symbol);
+          builder.url = config.libraryUrlForType(builder.symbol);
         }));
       })
     ].toDartNode;
@@ -309,7 +309,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSObject';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -323,7 +323,7 @@ class Transpiler {
         builder.bound = extendsClause.firstOrNull ??
             TypeReference((builder) {
               builder.symbol = 'JSAny';
-              builder.url = config.libForType(builder.symbol);
+              builder.url = config.libraryUrlForType(builder.symbol);
             });
       })
     ].toDartNode;
@@ -339,7 +339,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = name;
-        builder.url = config.libForType(name);
+        builder.url = config.libraryUrlForType(name);
         builder.isNullable = isNullable;
         builder.types.addAll(_transpileNodes<Reference>(typeReference.typeArguments.value).toSpec(config));
       })
@@ -350,7 +350,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSAny';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }
@@ -359,7 +359,7 @@ class Transpiler {
     return [
       TypeReference((builder) {
         builder.symbol = 'JSVoid';
-        builder.url = config.libForType(builder.symbol);
+        builder.url = config.libraryUrlForType(builder.symbol);
       })
     ].toDartNode;
   }

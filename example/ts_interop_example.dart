@@ -63,50 +63,23 @@ TsNode tupleMapper(TsNode node) {
   return node;
 }
 
-final libs = {
-  'JSAny': 'dart:js_interop',
-  'JSObject': 'dart:js_interop',
-  'JSBoolean': 'dart:js_interop',
-  'JSString': 'dart:js_interop',
-  'JSNumber': 'dart:js_interop',
-  'JSArray': 'dart:js_interop',
-  'JSArrayBuffer': 'dart:js_interop',
-  'JSFunction': 'dart:js_interop',
-  'JSPromise': 'dart:js_interop',
-  'JSInt8Array': 'dart:js_interop',
-  'JSUint8Array': 'dart:js_interop',
-  'JSUint32Array': 'dart:js_interop',
-  'JSFloat32Array': 'dart:js_interop',
-  'Document': 'package:web/web.dart',
-  'DOMPointReadOnly': 'package:web/web.dart',
-  'Element': 'package:web/web.dart',
-  'Event': 'package:web/web.dart',
-  'EventTarget': 'package:web/web.dart',
-  'EventInit': 'package:web/web.dart',
-  'GLenum': 'package:web/web.dart',
-  'HTMLElement': 'package:web/web.dart',
-  'HTMLCanvasElement': 'package:web/web.dart',
-  'WebGLProgram': 'package:web/web.dart',
-  'WebGLShader': 'package:web/web.dart',
-  'WebGLTexture': 'package:web/web.dart',
-  'Worker': 'package:web/web.dart',
-  'WebGLContextAttributes': 'package:web/web.dart',
-  'JSVoid': './types.dart',
-  'Parameters': './types.dart',
-  'Record': './types.dart',
-  'ArrayBufferView': './types.dart',
-  'ImageBitmap': './types.dart',
-  'ImageBitmapOptions': './types.dart',
-  'XRFrame': './types.dart',
-  'XRInputSource': './types.dart',
-  'ReadonlyArray': './types.dart',
-  'Array': './types.dart',
-  'Error': './types.dart',
-  'GPURequestAdapterOptions': './types.dart',
-  'IteratorResult': './types.dart',
-  'AbortSignal': './types.dart',
-  'TypedPropertyDescriptor': './types.dart',
-};
+final typesDependency = Dependency('./types.dart', {
+  'JSVoid',
+  'Parameters',
+  'Record',
+  'ArrayBufferView',
+  'ImageBitmap',
+  'ImageBitmapOptions',
+  'XRFrame',
+  'XRInputSource',
+  'ReadonlyArray',
+  'Array',
+  'Error',
+  'GPURequestAdapterOptions',
+  'IteratorResult',
+  'AbortSignal',
+  'TypedPropertyDescriptor',
+});
 
 class ComparableTsNode implements Comparable<ComparableTsNode> {
   final TsNode? node;
@@ -122,7 +95,7 @@ class ComparableTsNode implements Comparable<ComparableTsNode> {
   }
 }
 
-void main() {
+void main() async {
   final sw = Stopwatch()..start();
 
   stdout.write('Reading input file... ');
@@ -133,6 +106,8 @@ void main() {
   final package = TsPackage.fromJson(json);
   print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
   sw.reset();
+
+  await pubDevDependency('web', 'web');
 
   stdout.write('Sanitizing... ');
   final sanitizedPackage = Sanitizer()
@@ -180,8 +155,12 @@ void main() {
   sw.reset();
 
   stdout.write('Transpiling... ');
-  final transpiler = Transpiler(TranspilerConfig(libs: libs));
-  final lib = transpiler.transpile(sanitizedPackage, TranspilerConfig()).first;
+  final transpiler = Transpiler(Dependencies(dependencies: [
+    await dartDependency('js_interop', 'js_interop'),
+    await pubDevDependency('web', 'web'),
+    typesDependency,
+  ]));
+  final lib = transpiler.transpile(sanitizedPackage, Dependencies()).first;
 
   final emitter = DartEmitter.scoped(useNullSafetySyntax: true);
   final DartFormatter formatter = DartFormatter();

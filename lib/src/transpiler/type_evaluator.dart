@@ -1,4 +1,4 @@
-import '../config/config.dart';
+import '../dependency/dependency.dart';
 import '../model/ts_node.dart';
 
 (List<TsTypeReference>, bool) _distinctTypes(List<TsTypeReference> types) {
@@ -18,7 +18,7 @@ import '../model/ts_node.dart';
 }
 
 class TypeEvaluator {
-  final TranspilerConfig config;
+  final Dependencies config;
 
   TypeEvaluator(this.config);
 
