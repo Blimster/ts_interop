@@ -12,7 +12,7 @@ Creates Dart interop types for JavaScript based on TypeScript declaration files.
 
 ## TODO
 
-- `WithType` trait for `TsNode`
-- Refactor mappers to use `WithTypeArguments` and `WithTypeParameters`
-- Refactor mappers to interfaces/classes to support callbacks
-- Notify mappers about changes in the `TsNode` tree
+- Merge types in dependencies into lib types
+- Support for constructor
+- Call Signatures
+- Add docs at many types

@@ -65,34 +65,34 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   external XRSystemSessionGrantedEventHandler? onsessiongranted;
 
   external _i1.JSPromise<XRSession> requestSession(
-    XRSessionMode mode,
+    XRSessionMode mode, [
     XRSessionInit options,
-  );
+  ]);
   external _i1.JSPromise<_i1.JSBoolean> isSessionSupported(XRSessionMode mode);
   @_i1.JS('addEventListener')
   external void addEventListener$1<K extends _i1.JSAny>(
     K type,
-    _i1.JSFunction listener,
+    _i1.JSFunction listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('addEventListener')
   external void addEventListener$2(
     _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener,
+    _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('removeEventListener')
   external void removeEventListener$1<K extends _i1.JSAny>(
     K type,
-    _i1.JSFunction listener,
+    _i1.JSFunction listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('removeEventListener')
   external void removeEventListener$2(
     _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener,
+    _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
-  );
+  ]);
 }
 
 /// class XRViewport
@@ -160,27 +160,27 @@ extension type XRReferenceSpace._(_i1.JSObject _) implements _i1.JSObject {
   @_i1.JS('addEventListener')
   external void addEventListener$1<K extends _i1.JSAny>(
     K type,
-    _i1.JSFunction listener,
+    _i1.JSFunction listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('addEventListener')
   external void addEventListener$2(
     _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener,
+    _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('removeEventListener')
   external void removeEventListener$1<K extends _i1.JSAny>(
     K type,
-    _i1.JSFunction listener,
+    _i1.JSFunction listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('removeEventListener')
   external void removeEventListener$2(
     _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener,
+    _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
-  );
+  ]);
 }
 
 /// class XRBoundedReferenceSpace
@@ -226,9 +226,9 @@ extension type XRInputSourceArray._(_i1.JSObject _) implements _i1.JSObject {
   external _i3.IterableIterator<_i1.JSNumber> keys();
   external _i3.IterableIterator<_i3.XRInputSource> values();
   external void forEach(
-    _i1.JSFunction callbackfn,
+    _i1.JSFunction callbackfn, [
     _i1.JSAny thisArg,
-  );
+  ]);
 }
 
 /// class XRPose
@@ -376,32 +376,32 @@ extension type XRSession._(_i1.JSObject _) implements _i1.JSObject {
   external _i1.JSNumber requestAnimationFrame(XRFrameRequestCallback callback);
   external _i1.JSPromise<_i1.JSAny> requestReferenceSpace(
       XRReferenceSpaceType type);
-  external _i1.JSPromise updateRenderState(XRRenderStateInit renderStateInit);
+  external _i1.JSPromise updateRenderState([XRRenderStateInit renderStateInit]);
   external _i1.JSPromise updateTargetFrameRate(_i1.JSNumber rate);
   @_i1.JS('addEventListener')
   external void addEventListener$1<K extends _i1.JSAny>(
     K type,
-    _i1.JSFunction listener,
+    _i1.JSFunction listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('addEventListener')
   external void addEventListener$2(
     _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener,
+    _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('removeEventListener')
   external void removeEventListener$1<K extends _i1.JSAny>(
     K type,
-    _i1.JSFunction listener,
+    _i1.JSFunction listener, [
     _i1.JSAny options,
-  );
+  ]);
   @_i1.JS('removeEventListener')
   external void removeEventListener$2(
     _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener,
+    _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
-  );
+  ]);
   external _i1.JSPromise initiateRoomCapture();
   external XRDOMOverlayState? get domOverlayState;
   external XRDepthUsage? get depthUsage;

@@ -3,7 +3,7 @@ import 'package:code_builder/code_builder.dart';
 import '../../ts_interop.dart';
 
 sealed class DartNode<S extends Spec> {
-  S toSpec(Dependencies config);
+  S toSpec(Dependencies dependencies);
 }
 
 class DartSpec<S extends Spec> extends DartNode<S> {
@@ -12,7 +12,7 @@ class DartSpec<S extends Spec> extends DartNode<S> {
   DartSpec(this.spec);
 
   @override
-  S toSpec(Dependencies config) => spec;
+  S toSpec(Dependencies dependencies) => spec;
 }
 
 class DartParameter extends DartNode<TypeReference> {
@@ -22,10 +22,10 @@ class DartParameter extends DartNode<TypeReference> {
   DartParameter(this.parameter, this.isNullable);
 
   @override
-  TypeReference toSpec(Dependencies config) {
+  TypeReference toSpec(Dependencies dependencies) {
     return TypeReference((builder) {
       builder.symbol = parameter.type is FunctionType ? 'JSFunction' : parameter.type?.symbol;
-      builder.url = config.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol);
       builder.isNullable = parameter.required == false;
       builder.types.addAll(parameter.types);
     });
