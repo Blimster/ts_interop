@@ -1,4 +1,7 @@
-// ignore_for_file: no_leading_underscores_for_library_prefixes, non_constant_identifier_names, camel_case_types
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: camel_case_types
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:js_interop' as _i1;
 import 'package:web/web.dart' as _i2;
 import './types.dart' as _i3;

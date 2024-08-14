@@ -165,7 +165,7 @@ void main() async {
 
   stdout.write('Transpiling... ');
   final transpiler = Transpiler(dependencies);
-  final lib = transpiler.transpile(sanitizedPackage, Dependencies()).first;
+  final lib = transpiler.transpile(sanitizedPackage).first;
 
   final emitter = DartEmitter.scoped(useNullSafetySyntax: true);
   final DartFormatter formatter = DartFormatter();

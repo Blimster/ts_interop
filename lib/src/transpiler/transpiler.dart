@@ -44,9 +44,9 @@ class Transpiler {
 
   Transpiler(this.dependencies) : typeEvaluator = TypeEvaluator(dependencies);
 
-  List<Spec> transpile(TsPackage package, Dependencies config) {
+  List<Spec> transpile(TsPackage package) {
     updateParentAndChilds(package, package.parent);
-    return _transpileNode<Library>(package).toSpec(config);
+    return _transpileNode<Library>(package).toSpec(dependencies);
   }
 
   List<DartNode<Spec>> _transpileAnyKeyword(TsAnyKeyword anyKeyword) {
@@ -323,6 +323,8 @@ class Transpiler {
   List<DartNode<Spec>> _transpilePackage(TsPackage package) {
     return [
       Library((builder) {
+        builder.comments.add('ignore_for_file: non_constant_identifier_names');
+        builder.comments.add('ignore_for_file: camel_case_types');
         builder.body.addAll(_transpileNodes(package.sourceFiles.value).toSpec(dependencies));
       })
     ].toDartNode;
