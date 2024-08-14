@@ -19,12 +19,12 @@ TsNode mergeInterfaceIntoClassMapper(TsNode node) {
           .cast<TsHeritageClause>()
           .expand((node) => node.types.value)
           .cast<TsExpressionWithTypeArguments>()
-          .map((node) => node.expression.value)) {
+          .where((node) => node.expression.value.nodeQualifier != className)) {
         if (currentHeritageClause.nodeQualifier != className) {
           newHeritageClauses.add(currentHeritageClause);
         }
       }
-      node.heritageClauses.set(newHeritageClauses);
+      node.heritageClauses.set([TsHeritageClause(SingleNode(TsImplementsKeyword()), ListNode(newHeritageClauses))]);
       return node;
     }
   }

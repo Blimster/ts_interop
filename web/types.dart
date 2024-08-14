@@ -29,3 +29,5 @@ extension type IterableIterator<T>._(JSObject _) implements JSObject {}
 extension type AbortSignal._(JSObject _) implements JSObject {}
 
 extension type TypedPropertyDescriptor<T>._(JSObject _) implements JSObject {}
+
+extension type EventListenerOrEventListenerObject._(JSAny _) implements JSAny {}

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:code_builder/code_builder.dart';
 import 'package:ts_interop/src/model/dart_node.dart';
 import 'package:ts_interop/src/transpiler/type_evaluator.dart';
@@ -151,8 +153,8 @@ class Transpiler {
     return [
       Method((builder) {
         builder.external = true;
-        builder.name = functionDeclaration.name.value.nodeQualifier;
         builder.returns = _transpileNode<Reference>(functionDeclaration.type.value).toSpec(config).firstOrNull;
+        builder.name = functionDeclaration.name.value.nodeQualifier;
         builder.types.addAll(_transpileNodes<Reference>(functionDeclaration.typeParameters.value).toSpec(config));
         builder.requiredParameters.addAll(_transpileNodes<Reference>(functionDeclaration.parameters.value)
             .cast<DartParameter>()
@@ -257,13 +259,34 @@ class Transpiler {
     if (methodName == null) {
       return [];
     }
+
+    final overloadIds = <int>[];
+    if (methodSignature.parent case final parent?) {
+      final overloads = parent.searchDown<TsMethodSignature>(hasQualifier(methodName));
+      for (final overload in overloads) {
+        overloadIds.add(overload.id);
+      }
+    }
+    overloadIds.sort();
+
     return [
       Method((builder) {
+        if (overloadIds.length > 1) {
+          final allocator = Allocator.simplePrefixing();
+          builder.annotations.add(CodeExpression(
+              Code("${allocator.allocate(refer('JS', config.libraryUrlForType('JS')))}('$methodName')")));
+        }
         builder.external = true;
-        builder.name = methodSignature.name.value.nodeQualifier;
         builder.returns = _transpileNode<Reference>(typeEvaluator.evaluateType(methodSignature.type.value))
             .toSpec(config)
             .firstOrNull;
+        builder.name =
+            '${methodSignature.name.value.nodeQualifier}${overloadIds.length > 1 ? '\$${overloadIds.indexOf(methodSignature.id) + 1}' : ''}';
+        builder.types.addAll(_transpileNodes<Reference>(methodSignature.typeParameters.value).toSpec(config));
+        builder.requiredParameters.addAll(_transpileNodes<Reference>(methodSignature.parameters.value)
+            .cast<DartParameter>()
+            .map((node) => node.parameter)
+            .toList());
       })
     ].toDartNode;
   }
@@ -301,6 +324,32 @@ class Transpiler {
         parameter.questionToken.value != null,
       )
     ];
+  }
+
+  List<DartNode<Spec>> _transpilePropertyDeclaration(TsPropertyDeclaration propertySignature) {
+    final readonly = _containsNodeKind(propertySignature.modifiers.value, TsNodeKind.readonlyKeyword);
+    if (readonly) {
+      return [
+        Method((builder) {
+          builder.type = MethodType.getter;
+          builder.external = true;
+          builder.name = propertySignature.name.value.nodeQualifier;
+          builder.returns = _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value))
+              .toSpec(config)
+              .firstOrNull;
+        }),
+      ].toDartNode;
+    } else {
+      return [
+        Field((builder) {
+          builder.external = true;
+          builder.name = propertySignature.name.value.nodeQualifier;
+          builder.type = _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value))
+              .toSpec(config)
+              .firstOrNull;
+        }),
+      ].toDartNode;
+    }
   }
 
   List<DartNode<Spec>> _transpilePropertySignature(TsPropertySignature propertySignature) {
@@ -456,6 +505,7 @@ class Transpiler {
       TsNumericLiteral() => _transpileNumericLiteral(node),
       TsPackage() => _transpilePackage(node),
       TsParameter() => _transpileParameter(node),
+      TsPropertyDeclaration() => _transpilePropertyDeclaration(node),
       TsPropertySignature() => _transpilePropertySignature(node),
       TsSourceFile() => _transpileSourceFile(node),
       TsStringKeyword() => _transpileStringKeyword(node),

@@ -20,6 +20,7 @@ Future<Dependency> _remoteDependency(
   final types = {
     ...document.querySelectorAll('#extension-types dt').map((element) => element.id),
     ...document.querySelectorAll('#typedefs dt').map((element) => element.id),
+    ...document.querySelectorAll('#classes dt').map((element) => element.id),
   };
   return Dependency(packageUriProvider(), types);
 }

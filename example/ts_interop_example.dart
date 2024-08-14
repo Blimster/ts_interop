@@ -79,6 +79,7 @@ final typesDependency = Dependency('./types.dart', {
   'IterableIterator',
   'AbortSignal',
   'TypedPropertyDescriptor',
+  'EventListenerOrEventListenerObject',
 });
 
 class ComparableTsNode implements Comparable<ComparableTsNode> {
