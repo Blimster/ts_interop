@@ -3,9 +3,9 @@ import '../util/ts_node_search.dart';
 
 TsNode mergeInterfacesMapper(TsNode node) {
   if (node case TsInterfaceDeclaration()) {
-    final interfaceName = node.nodeQualifier;
+    final interfaceName = node.nodeName;
     if (interfaceName != null) {
-      final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasQualifier(interfaceName));
+      final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasName(interfaceName));
       if (interfaces.length >= 2) {
         interfaces.sort((a, b) => a.id - b.id);
         if (node.id != interfaces.first.id) {

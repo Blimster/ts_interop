@@ -32,7 +32,7 @@ class SanitizerPhase {
           for (final executions in loopDetector.values) {
             if (executions > 3) {
               throw StateError(
-                  'Loop detected in sanitizer! Node mapper $index was called more than 3 times in phase $index for node ${node.kind.name}:${node.nodeQualifier}.');
+                  'Loop detected in sanitizer! Node mapper $index was called more than 3 times in phase $index for node ${node.kind.name}:${node.nodeName}.');
             }
           }
         }

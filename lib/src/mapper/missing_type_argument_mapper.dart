@@ -8,7 +8,7 @@ final _found = <String, TsNode>{};
 TsNode missingTypeArgumentMapper(TsNode node) {
   if (node is WithTypeArguments) {
     final typeArguments = (node as WithTypeArguments).typeArguments;
-    final referencedName = node.nodeQualifier;
+    final referencedName = node.nodeName;
     if (referencedName != null) {
       if (_notFound.contains(referencedName)) {
         return node;
@@ -18,7 +18,7 @@ TsNode missingTypeArgumentMapper(TsNode node) {
           ? [cachedNode]
           : node.root.searchDown(
               and([
-                hasQualifier(referencedName),
+                hasName(referencedName),
                 hasTypeParameters(),
               ]),
             );

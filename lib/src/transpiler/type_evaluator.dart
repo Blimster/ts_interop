@@ -5,7 +5,7 @@ import '../model/ts_node.dart';
   bool hasNull = false;
   final result = <String, TsTypeReference>{};
   for (final type in types) {
-    final name = type.nodeQualifier;
+    final name = type.nodeName;
     if (name != null) {
       if (name != 'Null') {
         result[name] = type;
@@ -35,7 +35,7 @@ class TypeEvaluator {
     return switch (operator) {
       TsReadonlyKeyword() => evaluateType(node.type.value),
       TsKeyOfKeyword() => _typeRef('JSString'),
-      _ => throw UnimplementedError(operator.toShortString()),
+      _ => throw UnimplementedError(operator.toString()),
     };
   }
 
@@ -50,7 +50,7 @@ class TypeEvaluator {
     final (types, hasNull) = _distinctTypes(evaluateTypes(node.types.value));
 
     if (types.length == 1) {
-      final name = '${types.first.nodeQualifier}${hasNull ? '?' : ''}';
+      final name = '${types.first.nodeName}${hasNull ? '?' : ''}';
       return TsTypeReference(
         TsIdentifier(name).toSingleNode(),
         types.first.typeArguments,
@@ -82,7 +82,7 @@ class TypeEvaluator {
       TsUndefinedKeyword() => _typeRef('Null'),
       TsUnionType() => _unionType(node),
       TsVoidKeyword() => _typeRef('__<VOID>__'),
-      _ => throw UnimplementedError(node?.toShortString()),
+      _ => throw UnimplementedError(node?.toString()),
     };
   }
 

@@ -15,10 +15,10 @@ class _IsTypeConstraint<T extends TsNode> implements SearchConstraint {
   String toString() => 'isType($T)';
 }
 
-class _HasQualifierConstraint implements SearchConstraint {
+class _HasNameConstraint implements SearchConstraint {
   final String qualifier;
 
-  _HasQualifierConstraint(this.qualifier);
+  _HasNameConstraint(this.qualifier);
 
   @override
   BinaryTree<TsNode> _matchingNodes() {
@@ -113,8 +113,8 @@ abstract class SearchConstraint {
   BinaryTree<TsNode> _matchingNodes();
 }
 
-SearchConstraint hasQualifier(String qualifier) {
-  return _HasQualifierConstraint(qualifier);
+SearchConstraint hasName(String name) {
+  return _HasNameConstraint(name);
 }
 
 SearchConstraint hasTypeParameters() {
@@ -142,7 +142,7 @@ void buildCache(TsPackage package) {
     final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
     isType.insert(node);
 
-    final hasQualifier = _cache.putIfAbsent('q:${node.nodeQualifier}', () => BinaryTree<TsNode>());
+    final hasQualifier = _cache.putIfAbsent('q:${node.nodeName}', () => BinaryTree<TsNode>());
     hasQualifier.insert(node);
 
     if (node is WithTypeParameters) {
@@ -164,7 +164,7 @@ void updateCache(List<TsNode> added, List<TsNode> removed) {
     final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
     isType.remove(node);
 
-    final hasQualifier = _cache.putIfAbsent('q:${node.nodeQualifier}', () => BinaryTree<TsNode>());
+    final hasQualifier = _cache.putIfAbsent('q:${node.nodeName}', () => BinaryTree<TsNode>());
     hasQualifier.remove(node);
 
     if (node is WithTypeParameters) {
@@ -182,7 +182,7 @@ void updateCache(List<TsNode> added, List<TsNode> removed) {
     final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
     isType.insert(node);
 
-    final hasQualifier = _cache.putIfAbsent('q:${node.nodeQualifier}', () => BinaryTree<TsNode>());
+    final hasQualifier = _cache.putIfAbsent('q:${node.nodeName}', () => BinaryTree<TsNode>());
     hasQualifier.insert(node);
 
     if (node is WithTypeParameters) {

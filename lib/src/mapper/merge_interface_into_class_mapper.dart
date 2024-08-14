@@ -3,9 +3,9 @@ import '../util/ts_node_search.dart';
 
 TsNode mergeInterfaceIntoClassMapper(TsNode node) {
   if (node case TsClassDeclaration()) {
-    final className = node.nodeQualifier;
+    final className = node.nodeName;
     if (className != null) {
-      final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasQualifier(className));
+      final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasName(className));
       if (interfaces.isNotEmpty) {
         // TODO merge modifiers and heritage clauses into class
         final members = List.of(node.members.value);
@@ -16,15 +16,19 @@ TsNode mergeInterfaceIntoClassMapper(TsNode node) {
       }
       final newHeritageClauses = <TsNode>[];
       for (final currentHeritageClause in node.heritageClauses.value
-          .cast<TsHeritageClause>()
+          .whereType<TsHeritageClause>()
           .expand((node) => node.types.value)
-          .cast<TsExpressionWithTypeArguments>()
-          .where((node) => node.expression.value.nodeQualifier != className)) {
-        if (currentHeritageClause.nodeQualifier != className) {
+          .where((node) => node.nodeName != className)) {
+        if (currentHeritageClause.nodeName != className) {
           newHeritageClauses.add(currentHeritageClause);
         }
       }
-      node.heritageClauses.set([TsHeritageClause(SingleNode(TsImplementsKeyword()), ListNode(newHeritageClauses))]);
+      node.heritageClauses.set([
+        TsHeritageClause(
+          SingleNode(TsImplementsKeyword()),
+          ListNode(newHeritageClauses),
+        )
+      ]);
       return node;
     }
   }

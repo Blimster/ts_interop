@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:ts_interop/src/mapper/merge_dependencies_mapper.dart';
 import 'package:ts_interop/ts_interop.dart';
 
 TsNode onlyBabylonModulesMapper(TsNode node) {
@@ -15,7 +16,7 @@ TsNode onlyBabylonModulesMapper(TsNode node) {
 }
 
 TsNode excludeXrMapper(TsNode node) {
-  if (node.nodeQualifier?.startsWith('XR') ?? false) {
+  if (node.nodeName?.startsWith('XR') ?? false) {
     return Ts$Removed(node);
   }
   return node;
@@ -97,8 +98,11 @@ class ComparableTsNode implements Comparable<ComparableTsNode> {
 }
 
 void main() async {
-  final jsInteropDependency = await dartDependency('js_interop', 'js_interop');
-  final webDependency = await pubDevDependency('web', 'web');
+  final dependencies = Dependencies(dependencies: [
+    typesDependency,
+    await dartDependency('js_interop', 'js_interop'),
+    await pubDevDependency('web', 'web'),
+  ]);
 
   final sw = Stopwatch()..start();
   stdout.write('Reading input file... ');
@@ -117,6 +121,7 @@ void main() async {
       ]))
       .addPhase(SanitizerPhase('mergeInterfaces', PhaseDirection.topDown, [
         mergeInterfacesMapper,
+        mergeDependenciesMapper(dependencies),
       ]))
       .addPhase(SanitizerPhase('mergeInterfaceIntoClassMapper', PhaseDirection.topDown, [
         mergeInterfaceIntoClassMapper,
@@ -159,11 +164,7 @@ void main() async {
   sw.reset();
 
   stdout.write('Transpiling... ');
-  final transpiler = Transpiler(Dependencies(dependencies: [
-    typesDependency,
-    jsInteropDependency,
-    webDependency,
-  ]));
+  final transpiler = Transpiler(dependencies);
   final lib = transpiler.transpile(sanitizedPackage, Dependencies()).first;
 
   final emitter = DartEmitter.scoped(useNullSafetySyntax: true);

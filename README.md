@@ -13,6 +13,7 @@ Creates Dart interop types for JavaScript based on TypeScript declaration files.
 ## TODO
 
 - Merge types in dependencies into lib types
+- Fix TODOs for merge delcaration
 - Support for constructor
 - Call Signatures
 - Add docs at many types

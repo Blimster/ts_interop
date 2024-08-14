@@ -418,7 +418,9 @@ sealed class TsNode implements Comparable<TsNode> {
 
   TsNode(this.kind) : id = _idCounter++;
 
-  String? get nodeQualifier => null;
+  String? get nodeName => null;
+
+  String? get qualifiedNodeName => nodeName;
 
   List<TsNode> get children {
     return nodeWrappers.expand((wrapper) => wrapper.nodes).toList();
@@ -457,7 +459,7 @@ sealed class TsNode implements Comparable<TsNode> {
 
   String printTree([int indent = 2]) {
     final sb = StringBuffer();
-    sb.writeln('${'  ' * indent}${toShortString()}');
+    sb.writeln('${'  ' * indent}${toString()}');
     for (final child in children) {
       sb.write(child.printTree(indent + 1));
     }
@@ -471,7 +473,8 @@ sealed class TsNode implements Comparable<TsNode> {
     }
   }
 
-  String toShortString() => '${kind.name}:$nodeQualifier ($id->${_parent?.id})';
+  @override
+  String toString() => '${kind.name}:$nodeName ($id->${_parent?.id})';
 
   @override
   int compareTo(TsNode other) {
@@ -493,43 +496,26 @@ class Ts$Unsupported extends TsNode {
   Ts$Unsupported(this.unsupportedNodeKind) : super(TsNodeKind.$unsupported);
 
   @override
-  String toString() {
-    return 'Ts\$Unsupported{unsupportedNodeKind: $unsupportedNodeKind}';
-  }
+  String? get nodeName => unsupportedNodeKind;
 }
 
 class Ts$Removed extends TsNode {
   final String removedNode;
 
   Ts$Removed(TsNode node)
-      : removedNode = node.toShortString(),
+      : removedNode = node.toString(),
         super(TsNodeKind.$removed);
 
   @override
-  String get nodeQualifier => removedNode;
-
-  @override
-  String toString() {
-    return 'Ts\$Removed{removedNode: $removedNode}';
-  }
+  String get nodeName => removedNode;
 }
 
 class TsAbstractKeyword extends TsNode {
   TsAbstractKeyword() : super(TsNodeKind.abstractKeyword);
-
-  @override
-  String toString() {
-    return 'TsAbstractKeyword{}';
-  }
 }
 
 class TsAnyKeyword extends TsNode {
   TsAnyKeyword() : super(TsNodeKind.anyKeyword);
-
-  @override
-  String toString() {
-    return 'TsAnyKeyword{}';
-  }
 }
 
 class TsArrayType extends TsNode {
@@ -545,20 +531,10 @@ class TsArrayType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elementType];
-
-  @override
-  String toString() {
-    return 'TsArrayType{elementType: $elementType}';
-  }
 }
 
 class TsBooleanKeyword extends TsNode {
   TsBooleanKeyword() : super(TsNodeKind.booleanKeyword);
-
-  @override
-  String toString() {
-    return 'TsBooleanKeyword{}';
-  }
 }
 
 class TsCallSignature extends TsNode with WithTypeParameters<TsCallSignature> {
@@ -583,11 +559,6 @@ class TsCallSignature extends TsNode with WithTypeParameters<TsCallSignature> {
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsCallSignature{typeParameters: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsClassDeclaration extends TsNode with WithTypeParameters<TsClassDeclaration> {
@@ -612,7 +583,7 @@ class TsClassDeclaration extends TsNode with WithTypeParameters<TsClassDeclarati
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -622,11 +593,6 @@ class TsClassDeclaration extends TsNode with WithTypeParameters<TsClassDeclarati
         heritageClauses,
         members,
       ];
-
-  @override
-  String toString() {
-    return 'TsClassDeclaration{modifiers: $modifiers, name: $name, heritageClauses: $heritageClauses, members: $members}';
-  }
 }
 
 class TsComputedPropertyName extends TsNode {
@@ -642,11 +608,6 @@ class TsComputedPropertyName extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [expression];
-
-  @override
-  String toString() {
-    return 'TsComputedPropertyName{expression: $expression}';
-  }
 }
 
 class TsConditionalType extends TsNode {
@@ -674,11 +635,6 @@ class TsConditionalType extends TsNode {
         trueType,
         falseType,
       ];
-
-  @override
-  String toString() {
-    return 'TsConditionalType{checkType: $checkType, extendsType: $extendsType, trueType: $trueType, falseType: $falseType}';
-  }
 }
 
 class TsConstructorDeclaration extends TsNode with WithTypeParameters<TsConstructorDeclaration> {
@@ -703,11 +659,6 @@ class TsConstructorDeclaration extends TsNode with WithTypeParameters<TsConstruc
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsConstructorDeclaration{modifiers: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsConstructorType extends TsNode with WithTypeParameters<TsConstructorType> {
@@ -736,11 +687,6 @@ class TsConstructorType extends TsNode with WithTypeParameters<TsConstructorType
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsConstructorType{modifiers: $modifiers, typeParameters: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsConstructSignature extends TsNode with WithTypeParameters<TsConstructSignature> {
@@ -765,20 +711,10 @@ class TsConstructSignature extends TsNode with WithTypeParameters<TsConstructSig
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsConstructSignature{typeParameters: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsDeclareKeyword extends TsNode {
   TsDeclareKeyword() : super(TsNodeKind.declareKeyword);
-
-  @override
-  String toString() {
-    return 'TsDeclareKeyword{}';
-  }
 }
 
 class TsEnumDeclaration extends TsNode {
@@ -797,7 +733,7 @@ class TsEnumDeclaration extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -805,11 +741,6 @@ class TsEnumDeclaration extends TsNode {
         name,
         members,
       ];
-
-  @override
-  String toString() {
-    return 'TsEnumDeclaration{modifiers: $modifiers, name: $name, members: $members}';
-  }
 }
 
 class TsEnumMember extends TsNode {
@@ -826,36 +757,21 @@ class TsEnumMember extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
         name,
         initializer,
       ];
-
-  @override
-  String toString() {
-    return 'TsEnumMember{name: $name, initializer: $initializer}';
-  }
 }
 
 class TsExportKeyword extends TsNode {
   TsExportKeyword() : super(TsNodeKind.exportKeyword);
-
-  @override
-  String toString() {
-    return 'TsExportKeyword{}';
-  }
 }
 
 class TsExclamationToken extends TsNode {
   TsExclamationToken() : super(TsNodeKind.exclamationToken);
-
-  @override
-  String toString() {
-    return 'TsExclamationToken{}';
-  }
 }
 
 class TsExpressionWithTypeArguments extends TsNode with WithTypeArguments<TsExpressionWithTypeArguments> {
@@ -873,33 +789,21 @@ class TsExpressionWithTypeArguments extends TsNode with WithTypeArguments<TsExpr
   }
 
   @override
+  String? get nodeName => expression.value.nodeName;
+
+  @override
   List<TsNodeWrapper> get nodeWrappers => [
         expression,
         typeArguments,
       ];
-
-  @override
-  String toString() {
-    return 'TsExpressionWithTypeArguments{expression: $expression, typeArguments: $typeArguments}';
-  }
 }
 
 class TsExtendsKeyword extends TsNode {
   TsExtendsKeyword() : super(TsNodeKind.extendsKeyword);
-
-  @override
-  String toString() {
-    return 'TsExtendsKeyword{}';
-  }
 }
 
 class TsFalseKeyword extends TsNode {
   TsFalseKeyword() : super(TsNodeKind.falseKeyword);
-
-  @override
-  String toString() {
-    return 'TsFalseKeyword{}';
-  }
 }
 
 class TsFunctionDeclaration extends TsNode with WithTypeParameters<TsFunctionDeclaration> {
@@ -926,7 +830,7 @@ class TsFunctionDeclaration extends TsNode with WithTypeParameters<TsFunctionDec
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -937,11 +841,6 @@ class TsFunctionDeclaration extends TsNode with WithTypeParameters<TsFunctionDec
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsFunctionDeclaration{modifiers: $modifiers, asteriskToken: $asteriskToken, name: $name, typeParameters: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
@@ -966,11 +865,6 @@ class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsFunctionType{typeParameters: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsGetAccessor extends TsNode with WithTypeParameters<TsGetAccessor> {
@@ -992,7 +886,7 @@ class TsGetAccessor extends TsNode with WithTypeParameters<TsGetAccessor> {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1001,11 +895,6 @@ class TsGetAccessor extends TsNode with WithTypeParameters<TsGetAccessor> {
         typeParameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsGetAccessor{modifiers: $modifiers, name: $name, typeParameters: $typeParameters, type: $type}';
-  }
 }
 
 class TsHeritageClause extends TsNode {
@@ -1026,11 +915,6 @@ class TsHeritageClause extends TsNode {
         token,
         types,
       ];
-
-  @override
-  String toString() {
-    return 'TsHeritageClause{token: $token, types: $types}';
-  }
 }
 
 class TsIdentifier extends TsNode {
@@ -1045,12 +929,7 @@ class TsIdentifier extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => text;
-
-  @override
-  String toString() {
-    return 'TsIdentifier{text: $text}';
-  }
+  String? get nodeName => text;
 }
 
 class TsImportAttribute extends TsNode {
@@ -1067,18 +946,13 @@ class TsImportAttribute extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
         name,
         value,
       ];
-
-  @override
-  String toString() {
-    return 'TsImportAttribute{name: $name, value: $value}';
-  }
 }
 
 class TsImportAttributes extends TsNode {
@@ -1094,11 +968,6 @@ class TsImportAttributes extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elements];
-
-  @override
-  String toString() {
-    return 'TsImportAttributes{elements: $elements}';
-  }
 }
 
 class TsImportClause extends TsNode {
@@ -1117,18 +986,13 @@ class TsImportClause extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value?.nodeQualifier;
+  String? get nodeName => name.value?.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
         name,
         namedBindings,
       ];
-
-  @override
-  String toString() {
-    return 'TsImportClause{isTypeOnly: $isTypeOnly, name: $name, namedBindings: $namedBindings}';
-  }
 }
 
 class TsImportDeclaration extends TsNode {
@@ -1156,11 +1020,6 @@ class TsImportDeclaration extends TsNode {
         moduleSpecifier,
         importAttributes,
       ];
-
-  @override
-  String toString() {
-    return 'TsImportDeclaration{modifiers: $modifiers, importClause: $importClause, moduleSpecifier: $moduleSpecifier, importAttributes: $importAttributes}';
-  }
 }
 
 class TsImportSpecifier extends TsNode {
@@ -1179,18 +1038,13 @@ class TsImportSpecifier extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
         name,
         propertyName,
       ];
-
-  @override
-  String toString() {
-    return 'TsImportSpecifier{isTypeOnly: $isTypeOnly, name: $name, propertyName: $propertyName}';
-  }
 }
 
 class TsImportType extends TsNode with WithTypeArguments<TsImportType> {
@@ -1218,20 +1072,10 @@ class TsImportType extends TsNode with WithTypeArguments<TsImportType> {
         qualifier,
         typeArguments,
       ];
-
-  @override
-  String toString() {
-    return 'TsImportType{argument: $argument, attributes: $attributes, qualifier: $qualifier, typeArguments: $typeArguments}';
-  }
 }
 
 class TsImplementsKeyword extends TsNode {
   TsImplementsKeyword() : super(TsNodeKind.implementsKeyword);
-
-  @override
-  String toString() {
-    return 'TsImplementsKeyword{}';
-  }
 }
 
 class TsIndexedAccessType extends TsNode {
@@ -1252,11 +1096,6 @@ class TsIndexedAccessType extends TsNode {
         objectType,
         indexType,
       ];
-
-  @override
-  String toString() {
-    return 'TsIndexedAccessType{objectType: $objectType, indexType: $indexType}';
-  }
 }
 
 class TsIndexSignature extends TsNode {
@@ -1280,11 +1119,6 @@ class TsIndexSignature extends TsNode {
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsIndexSignature{modifiers: $modifiers, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsInferType extends TsNode {
@@ -1300,11 +1134,6 @@ class TsInferType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [typeParameter];
-
-  @override
-  String toString() {
-    return 'TsInferType{typeParameter: $typeParameter}';
-  }
 }
 
 class TsInterfaceDeclaration extends TsNode with WithTypeParameters<TsInterfaceDeclaration> {
@@ -1329,7 +1158,7 @@ class TsInterfaceDeclaration extends TsNode with WithTypeParameters<TsInterfaceD
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1339,11 +1168,6 @@ class TsInterfaceDeclaration extends TsNode with WithTypeParameters<TsInterfaceD
         heritageClauses,
         members,
       ];
-
-  @override
-  String toString() {
-    return 'TsInterfaceDeclaration{modifiers: $modifiers, name: $name, typeParameters: $typeParameters, heritageClauses: $heritageClauses, members: $members}';
-  }
 }
 
 class TsIntersectionType extends TsNode {
@@ -1359,20 +1183,10 @@ class TsIntersectionType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [types];
-
-  @override
-  String toString() {
-    return 'TsIntersectionType{types: $types}';
-  }
 }
 
 class TsKeyOfKeyword extends TsNode {
   TsKeyOfKeyword() : super(TsNodeKind.keyOfKeyword);
-
-  @override
-  String toString() {
-    return 'TsKeyOfKeyword{}';
-  }
 }
 
 class TsLiteralType extends TsNode {
@@ -1387,15 +1201,10 @@ class TsLiteralType extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => literal.value.nodeQualifier;
+  String? get nodeName => literal.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [literal];
-
-  @override
-  String toString() {
-    return 'TsLiteralType{literal: $literal}';
-  }
 }
 
 class TsMappedType extends TsNode {
@@ -1421,7 +1230,7 @@ class TsMappedType extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => nameType.value?.nodeQualifier;
+  String? get nodeName => nameType.value?.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1432,11 +1241,6 @@ class TsMappedType extends TsNode {
         type,
         members,
       ];
-
-  @override
-  String toString() {
-    return 'TsMappedType{readonlyToken: $readonlyToken, typeParameter: $typeParameter, nameType: $nameType, questionToken: $questionToken, type: $type, members: $members}';
-  }
 }
 
 class TsMethodDeclaration extends TsNode with WithTypeParameters<TsMethodDeclaration> {
@@ -1466,7 +1270,7 @@ class TsMethodDeclaration extends TsNode with WithTypeParameters<TsMethodDeclara
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1478,11 +1282,6 @@ class TsMethodDeclaration extends TsNode with WithTypeParameters<TsMethodDeclara
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsMethodDeclaration{modifiers: $modifiers, name: $name, asteriskToken: $asteriskToken, questionToken: $questionToken, typeParameters: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsMethodSignature extends TsNode with WithTypeParameters<TsMethodSignature> {
@@ -1507,7 +1306,7 @@ class TsMethodSignature extends TsNode with WithTypeParameters<TsMethodSignature
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1517,29 +1316,14 @@ class TsMethodSignature extends TsNode with WithTypeParameters<TsMethodSignature
         parameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsMethodSignature{name: $name, questionToken: $questionToken, typeParameters: $typeParameters, parameters: $parameters, type: $type}';
-  }
 }
 
 class TsMinusToken extends TsNode {
   TsMinusToken() : super(TsNodeKind.minusToken);
-
-  @override
-  String toString() {
-    return 'TsMinusToken{}';
-  }
 }
 
 class TsMinusMinusToken extends TsNode {
   TsMinusMinusToken() : super(TsNodeKind.minusMinusToken);
-
-  @override
-  String toString() {
-    return 'TsMinus{}';
-  }
 }
 
 class TsModuleBlock extends TsNode {
@@ -1555,11 +1339,6 @@ class TsModuleBlock extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [statements];
-
-  @override
-  String toString() {
-    return 'TsModuleBlock{statements: $statements}';
-  }
 }
 
 class TsModuleDeclaration extends TsNode {
@@ -1578,7 +1357,7 @@ class TsModuleDeclaration extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1586,11 +1365,6 @@ class TsModuleDeclaration extends TsNode {
         name,
         body,
       ];
-
-  @override
-  String toString() {
-    return 'TsModuleDeclaration{modifiers: $modifiers, name: $name, body: $body}';
-  }
 }
 
 class TsNamedImports extends TsNode {
@@ -1606,11 +1380,6 @@ class TsNamedImports extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elements];
-
-  @override
-  String toString() {
-    return 'TsNamedImports{elements: $elements}';
-  }
 }
 
 class TsNamespaceImport extends TsNode {
@@ -1625,42 +1394,22 @@ class TsNamespaceImport extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name];
-
-  @override
-  String toString() {
-    return 'TsNamespaceImport{name: $name}';
-  }
 }
 
 class TsNeverKeyword extends TsNode {
   TsNeverKeyword() : super(TsNodeKind.neverKeyword);
-
-  @override
-  String toString() {
-    return 'TsNeverKeyword{}';
-  }
 }
 
 class TsNullKeyword extends TsNode {
   TsNullKeyword() : super(TsNodeKind.nullKeyword);
-
-  @override
-  String toString() {
-    return 'TsNullKeyword{}';
-  }
 }
 
 class TsNumberKeyword extends TsNode {
   TsNumberKeyword() : super(TsNodeKind.numberKeyword);
-
-  @override
-  String toString() {
-    return 'TsNumberKeyword{}';
-  }
 }
 
 class TsNumericLiteral extends TsNode {
@@ -1675,21 +1424,11 @@ class TsNumericLiteral extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => text;
-
-  @override
-  String toString() {
-    return 'TsNumericLiteral{text: $text}';
-  }
+  String? get nodeName => text;
 }
 
 class TsObjectKeyword extends TsNode {
   TsObjectKeyword() : super(TsNodeKind.objectKeyword);
-
-  @override
-  String toString() {
-    return 'TsObjectKeyword{}';
-  }
 }
 
 class TsPackage extends TsNode {
@@ -1711,15 +1450,10 @@ class TsPackage extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name;
+  String? get nodeName => name;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [sourceFiles];
-
-  @override
-  String toString() {
-    return 'TsPackage{name: $name, version: $version, sourceFiles: $sourceFiles}';
-  }
 }
 
 class TsParameter extends TsNode {
@@ -1742,7 +1476,7 @@ class TsParameter extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1752,11 +1486,6 @@ class TsParameter extends TsNode {
         type,
         initializer,
       ];
-
-  @override
-  String toString() {
-    return 'TsParameter{modifiers: $modifiers, name: $name, questionToken: $questionToken, type: $type, initializer: $initializer}';
-  }
 }
 
 class TsParenthesizedType extends TsNode {
@@ -1772,29 +1501,14 @@ class TsParenthesizedType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [type];
-
-  @override
-  String toString() {
-    return 'TsParenthesizedType{type: $type}';
-  }
 }
 
 class TsPlusToken extends TsNode {
   TsPlusToken() : super(TsNodeKind.plusToken);
-
-  @override
-  String toString() {
-    return 'TsPlus{}';
-  }
 }
 
 class TsPlusPlusToken extends TsNode {
   TsPlusPlusToken() : super(TsNodeKind.plusPlusToken);
-
-  @override
-  String toString() {
-    return 'TsPlusPlus{}';
-  }
 }
 
 class TsPrefixUnaryExpression extends TsNode {
@@ -1815,20 +1529,10 @@ class TsPrefixUnaryExpression extends TsNode {
         operator,
         operand,
       ];
-
-  @override
-  String toString() {
-    return 'TsPrefixUnaryExpression{operator: $operator, operand: $operand}';
-  }
 }
 
 class TsPrivateKeyword extends TsNode {
   TsPrivateKeyword() : super(TsNodeKind.privateKeyword);
-
-  @override
-  String toString() {
-    return 'TsPrivate{}';
-  }
 }
 
 class TsPropertyAccessExpression extends TsNode {
@@ -1848,7 +1552,7 @@ class TsPropertyAccessExpression extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1856,11 +1560,6 @@ class TsPropertyAccessExpression extends TsNode {
         questionDotToken,
         name,
       ];
-
-  @override
-  String toString() {
-    return 'TsPropertyAccessExpression{expression: $expression, questionDotToken: $questionDotToken, name: $name}';
-  }
 }
 
 class TsPropertyDeclaration extends TsNode {
@@ -1887,7 +1586,7 @@ class TsPropertyDeclaration extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1898,11 +1597,6 @@ class TsPropertyDeclaration extends TsNode {
         type,
         initializer,
       ];
-
-  @override
-  String toString() {
-    return 'TsPropertyDeclaration{modifiers: $modifiers, name: $name, questionToken: $questionToken, type: $type, initializer: $initializer}';
-  }
 }
 
 class TsPropertySignature extends TsNode {
@@ -1926,7 +1620,7 @@ class TsPropertySignature extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1936,20 +1630,10 @@ class TsPropertySignature extends TsNode {
         type,
         initializer,
       ];
-
-  @override
-  String toString() {
-    return 'TsPropertySignature{modifiers: $modifiers, name: $name, questionToken: $questionToken, type: $type, initializer: $initializer}';
-  }
 }
 
 class TsProtectedKeyword extends TsNode {
   TsProtectedKeyword() : super(TsNodeKind.protectedKeyword);
-
-  @override
-  String toString() {
-    return 'TsProtected{}';
-  }
 }
 
 class TsQualifiedName extends TsNode {
@@ -1966,36 +1650,21 @@ class TsQualifiedName extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => '${left.value.nodeQualifier}.${right.value.nodeQualifier}';
+  String? get nodeName => '${left.value.nodeName}.${right.value.nodeName}';
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
         left,
         right,
       ];
-
-  @override
-  String toString() {
-    return 'TsQualifiedName{left: $left, right: $right}';
-  }
 }
 
 class TsQuestionToken extends TsNode {
   TsQuestionToken() : super(TsNodeKind.questionToken);
-
-  @override
-  String toString() {
-    return 'TsQuestionToken{}';
-  }
 }
 
 class TsReadonlyKeyword extends TsNode {
   TsReadonlyKeyword() : super(TsNodeKind.readonlyKeyword);
-
-  @override
-  String toString() {
-    return 'TsReadonlyKeyword{}';
-  }
 }
 
 class TsRestType extends TsNode {
@@ -2011,11 +1680,6 @@ class TsRestType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [type];
-
-  @override
-  String toString() {
-    return 'TsRestType{type: $type}';
-  }
 }
 
 class TsSetAccessor extends TsNode with WithTypeParameters<TsSetAccessor> {
@@ -2037,7 +1701,7 @@ class TsSetAccessor extends TsNode with WithTypeParameters<TsSetAccessor> {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -2046,11 +1710,6 @@ class TsSetAccessor extends TsNode with WithTypeParameters<TsSetAccessor> {
         typeParameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsSetAccessor{modifiers: $modifiers, name: $name, typeParameters: $typeParameters, type: $type}';
-  }
 }
 
 class TsSourceFile extends TsNode {
@@ -2069,33 +1728,18 @@ class TsSourceFile extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => '$path$baseName';
+  String? get nodeName => '$path$baseName';
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [statements];
-
-  @override
-  String toString() {
-    return 'TsSourceFile{baseName: $baseName, statements: $statements}';
-  }
 }
 
 class TsStaticKeyword extends TsNode {
   TsStaticKeyword() : super(TsNodeKind.staticKeyword);
-
-  @override
-  String toString() {
-    return 'TsStatic{}';
-  }
 }
 
 class TsStringKeyword extends TsNode {
   TsStringKeyword() : super(TsNodeKind.stringKeyword);
-
-  @override
-  String toString() {
-    return 'TsString{}';
-  }
 }
 
 class TsStringLiteral extends TsNode {
@@ -2110,48 +1754,23 @@ class TsStringLiteral extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => text;
-
-  @override
-  String toString() {
-    return 'TsStringLiteral{text: $text}';
-  }
+  String? get nodeName => text;
 }
 
 class TsSymbolKeyword extends TsNode {
   TsSymbolKeyword() : super(TsNodeKind.symbolKeyword);
-
-  @override
-  String toString() {
-    return 'TsSymbolKeyword{}';
-  }
 }
 
 class TsTildeToken extends TsNode {
   TsTildeToken() : super(TsNodeKind.tildeToken);
-
-  @override
-  String toString() {
-    return 'TsTilde{}';
-  }
 }
 
 class TsThisType extends TsNode {
   TsThisType() : super(TsNodeKind.thisType);
-
-  @override
-  String toString() {
-    return 'TsThisType{}';
-  }
 }
 
 class TsTrueKeyword extends TsNode {
   TsTrueKeyword() : super(TsNodeKind.trueKeyword);
-
-  @override
-  String toString() {
-    return 'TsTrueKeyword{}';
-  }
 }
 
 class TsTupleType extends TsNode {
@@ -2167,11 +1786,6 @@ class TsTupleType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elements];
-
-  @override
-  String toString() {
-    return 'TsTupleType{elements: $elements}';
-  }
 }
 
 class TsTypeAliasDeclaration extends TsNode with WithTypeParameters<TsTypeAliasDeclaration> {
@@ -2194,7 +1808,7 @@ class TsTypeAliasDeclaration extends TsNode with WithTypeParameters<TsTypeAliasD
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -2203,11 +1817,6 @@ class TsTypeAliasDeclaration extends TsNode with WithTypeParameters<TsTypeAliasD
         typeParameters,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsTypeAliasDeclaration{modifiers: $modifiers, name: $name, typeParameters: $typeParameters, type: $type}';
-  }
 }
 
 class TsTypeLiteral extends TsNode {
@@ -2223,11 +1832,6 @@ class TsTypeLiteral extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [members];
-
-  @override
-  String toString() {
-    return 'TsTypeLiteral{members: $members}';
-  }
 }
 
 class TsTypeOperator extends TsNode {
@@ -2248,11 +1852,6 @@ class TsTypeOperator extends TsNode {
         operator,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsTypeOperator{operator: $operator, type: $type}';
-  }
 }
 
 class TsTypeParameter extends TsNode {
@@ -2273,7 +1872,7 @@ class TsTypeParameter extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -2282,11 +1881,6 @@ class TsTypeParameter extends TsNode {
         constraint,
         defaultType,
       ];
-
-  @override
-  String toString() {
-    return 'TsTypeParameter{modifiers: $modifiers, name: $name, constraint: $constraint, defaultType: $defaultType}';
-  }
 }
 
 class TsTypePredicate extends TsNode {
@@ -2310,11 +1904,6 @@ class TsTypePredicate extends TsNode {
         parameterName,
         type,
       ];
-
-  @override
-  String toString() {
-    return 'TsTypePredicate{assertModifier: $assertModifier, parameterName: $parameterName, type: $type}';
-  }
 }
 
 class TsTypeQuery extends TsNode {
@@ -2335,11 +1924,6 @@ class TsTypeQuery extends TsNode {
         exprName,
         typeArguments,
       ];
-
-  @override
-  String toString() {
-    return 'TsTypeQuery{exprName: $exprName, typeArguments: $typeArguments}';
-  }
 }
 
 class TsTypeReference extends TsNode with WithTypeArguments<TsTypeReference> {
@@ -2357,27 +1941,17 @@ class TsTypeReference extends TsNode with WithTypeArguments<TsTypeReference> {
   }
 
   @override
-  String? get nodeQualifier => typeName.value.nodeQualifier;
+  String? get nodeName => typeName.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
         typeName,
         typeArguments,
       ];
-
-  @override
-  String toString() {
-    return 'TsTypeReference{typeName: $typeName, typeArguments: $typeArguments}';
-  }
 }
 
 class TsUndefinedKeyword extends TsNode {
   TsUndefinedKeyword() : super(TsNodeKind.undefinedKeyword);
-
-  @override
-  String toString() {
-    return 'TsUndefinedKeyword{}';
-  }
 }
 
 class TsUnionType extends TsNode {
@@ -2393,29 +1967,14 @@ class TsUnionType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [types];
-
-  @override
-  String toString() {
-    return 'TsUnionType{types: $types}';
-  }
 }
 
 class TsUniqueKeyword extends TsNode {
   TsUniqueKeyword() : super(TsNodeKind.uniqueKeyword);
-
-  @override
-  String toString() {
-    return 'TsUniqueKeyword{}';
-  }
 }
 
 class TsUnknownKeyword extends TsNode {
   TsUnknownKeyword() : super(TsNodeKind.unknownKeyword);
-
-  @override
-  String toString() {
-    return 'TsUnknownKeyword{}';
-  }
 }
 
 class TsVariableDeclaration extends TsNode {
@@ -2437,7 +1996,7 @@ class TsVariableDeclaration extends TsNode {
   }
 
   @override
-  String? get nodeQualifier => name.value.nodeQualifier;
+  String? get nodeName => name.value.nodeName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -2446,11 +2005,6 @@ class TsVariableDeclaration extends TsNode {
         type,
         initializer,
       ];
-
-  @override
-  String toString() {
-    return 'TsVariableDeclaration{name: $name, exclamationToken: $exclamationToken, type: $type, initializer: $initializer}';
-  }
 }
 
 class TsVariableDeclarationList extends TsNode {
@@ -2466,11 +2020,6 @@ class TsVariableDeclarationList extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [declarations];
-
-  @override
-  String toString() {
-    return 'TsVariableDeclarationList{declarations: $declarations}';
-  }
 }
 
 class TsVariableStatement extends TsNode {
@@ -2491,18 +2040,8 @@ class TsVariableStatement extends TsNode {
         modifiers,
         declarationList,
       ];
-
-  @override
-  String toString() {
-    return 'TsVariableStatement{modifiers: $modifiers, declarationList: $declarationList}';
-  }
 }
 
 class TsVoidKeyword extends TsNode {
   TsVoidKeyword() : super(TsNodeKind.voidKeyword);
-
-  @override
-  String toString() {
-    return 'TsVoidKeyword{}';
-  }
 }

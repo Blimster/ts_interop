@@ -79,4 +79,8 @@ class Dependencies {
     }
     return null;
   }
+
+  bool containsType(String typeName) {
+    return libraryUrlForType(typeName) != null;
+  }
 }

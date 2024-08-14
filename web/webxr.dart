@@ -1,15 +1,17 @@
-// ignore_for_file: no_leading_underscores_for_library_prefixes
+// ignore_for_file: no_leading_underscores_for_library_prefixes, non_constant_identifier_names, camel_case_types
 import 'dart:js_interop' as _i1;
 import 'package:web/web.dart' as _i2;
 import './types.dart' as _i3;
 
 /// interface Navigator
-extension type Navigator(_i1.JSObject _) implements _i1.JSObject {
+extension type Navigator(_i1.JSObject _)
+    implements _i1.JSObject, _i2.Navigator {
   external XRSystem? xr;
 }
 
 /// interface WebGLContextAttributes
-extension type WebGLContextAttributes(_i1.JSObject _) implements _i1.JSObject {
+extension type WebGLContextAttributes(_i1.JSObject _)
+    implements _i1.JSObject, _i2.WebGLContextAttributes {
   external _i1.JSBoolean? xrCompatible;
 }
 
@@ -128,7 +130,7 @@ extension type XRRenderState._(_i1.JSObject _) implements _i1.JSObject {
 
 /// interface XRReferenceSpaceEventInit
 extension type XRReferenceSpaceEventInit(_i1.JSObject _)
-    implements _i1.JSObject, _i2.EventInit {
+    implements _i1.JSObject, _i2.EventInit, _i2.XRReferenceSpaceEventInit {
   external _i2.XRReferenceSpace? referenceSpace;
 
   external _i2.XRRigidTransform? transform;
@@ -201,7 +203,8 @@ extension type XRInputSource._(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// interface GamepadHapticActuator
-extension type GamepadHapticActuator(_i1.JSObject _) implements _i1.JSObject {
+extension type GamepadHapticActuator(_i1.JSObject _)
+    implements _i1.JSObject, _i2.GamepadHapticActuator {
   external _i1.JSPromise<_i1.JSBoolean> pulse(
     _i1.JSNumber value,
     _i1.JSNumber duration,
@@ -209,7 +212,7 @@ extension type GamepadHapticActuator(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// interface Gamepad
-extension type Gamepad(_i1.JSObject _) implements _i1.JSObject {
+extension type Gamepad(_i1.JSObject _) implements _i1.JSObject, _i2.Gamepad {
   external _i1.JSArray<_i2.GamepadHapticActuator> get hapticActuators;
 }
 
@@ -269,7 +272,7 @@ typedef XRInputSourceEventType = _i1.JSString;
 
 /// interface XRInputSourceEventInit
 extension type XRInputSourceEventInit(_i1.JSObject _)
-    implements _i1.JSObject, _i2.EventInit {
+    implements _i1.JSObject, _i2.EventInit, _i2.XRInputSourceEventInit {
   external _i3.XRFrame? frame;
 
   external _i3.XRInputSource? inputSource;
@@ -292,7 +295,7 @@ typedef XRSessionEventType = _i1.JSString;
 
 /// interface XRSessionEventInit
 extension type XRSessionEventInit(_i1.JSObject _)
-    implements _i1.JSObject, _i2.EventInit {
+    implements _i1.JSObject, _i2.EventInit, _i2.XRSessionEventInit {
   external XRSession session;
 }
 
@@ -337,71 +340,12 @@ extension type XRSessionEventMap(_i1.JSObject _) implements _i1.JSObject {
 
 /// class XRSession
 extension type XRSession._(_i1.JSObject _) implements _i1.JSObject {
-  external XRSessionEventHandler onend;
-
-  external XRInputSourcesChangeEventHandler oninputsourceschange;
-
-  external XRInputSourceEventHandler onselect;
-
-  external XRInputSourceEventHandler onselectstart;
-
-  external XRInputSourceEventHandler onselectend;
-
-  external XRInputSourceEventHandler onsqueeze;
-
-  external XRInputSourceEventHandler onsqueezestart;
-
-  external XRInputSourceEventHandler onsqueezeend;
-
-  external XRSessionEventHandler onvisibilitychange;
-
-  external XRSessionEventHandler onframeratechange;
-
   external _i1.JSFunction requestHitTestSource;
 
   external _i1.JSFunction requestHitTestSourceForTransientInput;
 
   external _i1.JSFunction requestHitTest;
 
-  external XRInputSourceArray get inputSources;
-  external XRRenderState get renderState;
-  external XREnvironmentBlendMode get environmentBlendMode;
-  external XRVisibilityState get visibilityState;
-  external _i1.JSNumber? get frameRate;
-  external _i1.JSFloat32Array? get supportedFrameRates;
-  external _i1.JSArray<_i1.JSString>? get enabledFeatures;
-  external _i1.JSBoolean get isSystemKeyboardSupported;
-  external void cancelAnimationFrame(_i1.JSNumber id);
-  external _i1.JSPromise end();
-  external _i1.JSNumber requestAnimationFrame(XRFrameRequestCallback callback);
-  external _i1.JSPromise<_i1.JSAny> requestReferenceSpace(
-      XRReferenceSpaceType type);
-  external _i1.JSPromise updateRenderState([XRRenderStateInit renderStateInit]);
-  external _i1.JSPromise updateTargetFrameRate(_i1.JSNumber rate);
-  @_i1.JS('addEventListener')
-  external void addEventListener$1<K extends _i1.JSAny>(
-    K type,
-    _i1.JSFunction listener, [
-    _i1.JSAny options,
-  ]);
-  @_i1.JS('addEventListener')
-  external void addEventListener$2(
-    _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener, [
-    _i1.JSAny options,
-  ]);
-  @_i1.JS('removeEventListener')
-  external void removeEventListener$1<K extends _i1.JSAny>(
-    K type,
-    _i1.JSFunction listener, [
-    _i1.JSAny options,
-  ]);
-  @_i1.JS('removeEventListener')
-  external void removeEventListener$2(
-    _i1.JSString type,
-    _i3.EventListenerOrEventListenerObject listener, [
-    _i1.JSAny options,
-  ]);
   external _i1.JSPromise initiateRoomCapture();
   external XRDOMOverlayState? get domOverlayState;
   external XRDepthUsage? get depthUsage;
@@ -432,7 +376,7 @@ extension type XRView._(_i1.JSObject _) implements _i1.JSObject {
 
 /// interface XRInputSourcesChangeEvent
 extension type XRInputSourcesChangeEvent(_i1.JSObject _)
-    implements _i1.JSObject, _i2.XRSessionEvent {
+    implements _i1.JSObject, _i2.XRSessionEvent, _i2.XRInputSourcesChangeEvent {
   external _i1.JSArray<_i3.XRInputSource> get removed;
   external _i1.JSArray<_i3.XRInputSource> get added;
 }
