@@ -515,6 +515,12 @@ sealed class TsNode implements Comparable<TsNode> {
   int get hashCode => id;
 }
 
+class Ts$Null extends TsNode {
+  Ts$Null({
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.$unsupported, meta ?? TsNodeMeta());
+}
+
 class Ts$Unsupported extends TsNode {
   final String unsupportedNodeKind;
 
