@@ -5,7 +5,13 @@ import 'package:ts_interop/ts_interop.dart';
 
 import '../model/ts_node.dart';
 
-const _voidType = Reference('void');
+final _voidType = TypeReference((builder) {
+  builder.symbol = 'void';
+});
+
+final _nullType = TypeReference((builder) {
+  builder.symbol = 'null';
+});
 
 bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
   for (final node in nodes) {
@@ -26,15 +32,23 @@ extension _DartNodeIterable<T extends Spec> on Iterable<DartNode<T>> {
   }
 }
 
-// extension _SpecToDartNode<T extends Spec> on Iterable<T> {
-//   List<DartNode<T>> toDartNode(TsNode tsNode) {
-//     final result = <DartNode<T>>[];
-//     for (final node in this) {
-//       result.add(DartSpec(node, tsNode));
-//     }
-//     return result;
-//   }
-// }
+extension on TypeReference {
+  TypeReference copyWith({
+    Reference? bound,
+    bool? isNullable,
+    String? symbol,
+    List<TypeReference>? types,
+    String? url,
+  }) {
+    return TypeReference((builder) {
+      builder.bound = bound ?? this.bound;
+      builder.isNullable = isNullable ?? this.isNullable;
+      builder.symbol = symbol ?? this.symbol;
+      builder.types.addAll(types ?? this.types);
+      builder.url = url ?? this.url;
+    });
+  }
+}
 
 class Transpiler {
   final TypeEvaluator typeEvaluator;
@@ -253,8 +267,10 @@ class Transpiler {
     return Method((builder) {
       builder.docs.addAll([
         '/// Method [${methodSignature.name.value.nodeName}]',
-        if (methodSignature.typeParameters.value.isNotEmpty) '///',
-        ...methodSignature.typeParameters.value.map((tp) => '/// ${tp.toCode()}'),
+        if (methodSignature.typeParameters.value.isNotEmpty) ...['///', '/// Type Parameters:'],
+        ...methodSignature.typeParameters.value.map((tp) => '/// - ${tp.toCode()}'),
+        if (methodSignature.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
+        ...methodSignature.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
       ]);
       if (overloadIds.length > 1) {
         final allocator = Allocator.simplePrefixing();
@@ -278,6 +294,10 @@ class Transpiler {
           .map((node) => node.parameter)
           .toList());
     }).toDartNode(methodSignature);
+  }
+
+  DartNode<TypeReference> _transpileNullKeyword(TsNullKeyword nullKeyword) {
+    return _nullType.toDartNode(nullKeyword);
   }
 
   DartNode<TypeReference> _transpileNumberKeyword(TsNumberKeyword numberKeyword) {
@@ -311,23 +331,31 @@ class Transpiler {
     );
   }
 
-  DartNode<Spec> _transpilePropertyDeclaration(TsPropertyDeclaration propertySignature) {
-    final readonly = _containsNodeKind(propertySignature.modifiers.value, TsNodeKind.readonlyKeyword);
+  DartNode<Spec> _transpilePropertyDeclaration(TsPropertyDeclaration propertyDeclaration) {
+    final readonly = _containsNodeKind(propertyDeclaration.modifiers.value, TsNodeKind.readonlyKeyword);
     if (readonly) {
       return Method((builder) {
+        builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
+        builder.docs.add('///');
+        builder.docs.add('/// ${propertyDeclaration.toCode()}');
         builder.type = MethodType.getter;
         builder.external = true;
-        builder.name = propertySignature.name.value.nodeName;
-        builder.returns =
-            _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value)).toSpec(dependencies);
-      }).toDartNode(propertySignature);
+        builder.name = propertyDeclaration.name.value.nodeName;
+        builder.returns = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertyDeclaration.type.value))
+            .toSpec(dependencies)
+            ?.copyWith(isNullable: propertyDeclaration.questionToken.value != null);
+      }).toDartNode(propertyDeclaration);
     } else {
       return Field((builder) {
+        builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
+        builder.docs.add('///');
+        builder.docs.add('/// ${propertyDeclaration.toCode()}');
         builder.external = true;
-        builder.name = propertySignature.name.value.nodeName;
-        builder.type =
-            _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value)).toSpec(dependencies);
-      }).toDartNode(propertySignature);
+        builder.name = propertyDeclaration.name.value.nodeName;
+        builder.type = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertyDeclaration.type.value))
+            .toSpec(dependencies)
+            ?.copyWith(isNullable: propertyDeclaration.questionToken.value != null);
+      }).toDartNode(propertyDeclaration);
     }
   }
 
@@ -335,18 +363,27 @@ class Transpiler {
     final readonly = _containsNodeKind(propertySignature.modifiers.value, TsNodeKind.readonlyKeyword);
     if (readonly) {
       return Method((builder) {
+        builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
+        builder.docs.add('///');
+        builder.docs.add('/// ${propertySignature.toCode()}');
+
         builder.type = MethodType.getter;
         builder.external = true;
         builder.name = propertySignature.name.value.nodeName;
-        builder.returns =
-            _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value)).toSpec(dependencies);
+        builder.returns = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertySignature.type.value))
+            .toSpec(dependencies)
+            ?.copyWith(isNullable: propertySignature.questionToken.value != null);
       }).toDartNode(propertySignature);
     } else {
       return Field((builder) {
+        builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
+        builder.docs.add('///');
+        builder.docs.add('/// ${propertySignature.toCode()}');
         builder.external = true;
         builder.name = propertySignature.name.value.nodeName;
-        builder.type =
-            _transpileNode<Reference>(typeEvaluator.evaluateType(propertySignature.type.value)).toSpec(dependencies);
+        builder.type = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertySignature.type.value))
+            .toSpec(dependencies)
+            ?.copyWith(isNullable: propertySignature.questionToken.value != null);
       }).toDartNode(propertySignature);
     }
   }
@@ -384,8 +421,7 @@ class Transpiler {
       builder.docs.addAll([
         '/// Typedef [${typeAliasDeclaration.name.value.nodeName}]',
         '///',
-        ...type.meta.documentation.map((doc) => '/// $doc'),
-        '/// ${_transpileNode(typeAliasDeclaration.type.value).toCode()}',
+        '/// ${typeAliasDeclaration.type.value?.toCode()}',
       ]);
       builder.name = typeAliasDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters.value).toSpecs(dependencies));
@@ -420,7 +456,7 @@ class Transpiler {
     }).toDartNode(typeParameter);
   }
 
-  DartNode<Reference> _transpileTypeReference(TsTypeReference typeReference) {
+  DartNode<TypeReference> _transpileTypeReference(TsTypeReference typeReference) {
     if (typeReference.typeName.value.nodeName == '__<VOID>__') {
       return _transpileVoidKeyword(TsVoidKeyword());
     }
@@ -448,7 +484,7 @@ class Transpiler {
     }).toDartNode(unionType);
   }
 
-  DartNode<Reference> _transpileVoidKeyword(TsVoidKeyword voidKeyword) {
+  DartNode<TypeReference> _transpileVoidKeyword(TsVoidKeyword voidKeyword) {
     return _voidType.toDartNode(voidKeyword);
   }
 
@@ -470,6 +506,7 @@ class Transpiler {
       TsIntersectionType() => _transpileIntersectionType(node),
       TsLiteralType() => _transpileLiteralType(node),
       TsMethodSignature() => _transpileMethodSignature(node),
+      TsNullKeyword() => _transpileNullKeyword(node),
       TsNumberKeyword() => _transpileNumberKeyword(node),
       TsNumericLiteral() => _transpileNumericLiteral(node),
       TsPackage() => _transpilePackage(node),

@@ -557,12 +557,18 @@ class TsAbstractKeyword extends TsNode {
   TsAbstractKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.abstractKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'abstract';
 }
 
 class TsAnyKeyword extends TsNode {
   TsAnyKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.anyKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'any';
 }
 
 class TsArrayType extends TsNode {
@@ -580,6 +586,9 @@ class TsArrayType extends TsNode {
   }
 
   @override
+  String toCode() => '${elementType.toCode()}[]';
+
+  @override
   List<TsNodeWrapper> get nodeWrappers => [elementType];
 }
 
@@ -587,6 +596,9 @@ class TsBooleanKeyword extends TsNode {
   TsBooleanKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.booleanKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'boolean';
 }
 
 class TsCallSignature extends TsNode with WithTypeParameters<TsCallSignature> {
@@ -913,6 +925,9 @@ class TsFalseKeyword extends TsNode {
   TsFalseKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.falseKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'false';
 }
 
 class TsFunctionDeclaration extends TsNode with WithTypeParameters<TsFunctionDeclaration> {
@@ -1264,6 +1279,9 @@ class TsIndexedAccessType extends TsNode {
   }
 
   @override
+  String toCode() => '${objectType.toCode()}[${indexType.toCode()}]';
+
+  @override
   List<TsNodeWrapper> get nodeWrappers => [
         objectType,
         indexType,
@@ -1399,6 +1417,9 @@ class TsLiteralType extends TsNode {
 
   @override
   String? get nodeName => literal.value.nodeName;
+
+  @override
+  String toCode() => literal.toCode();
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [literal];
@@ -1539,12 +1560,18 @@ class TsMinusToken extends TsNode {
   TsMinusToken({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.minusToken, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => '-';
 }
 
 class TsMinusMinusToken extends TsNode {
   TsMinusMinusToken({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.minusMinusToken, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => '--';
 }
 
 class TsModuleBlock extends TsNode {
@@ -1645,12 +1672,18 @@ class TsNullKeyword extends TsNode {
   TsNullKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.nullKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'null';
 }
 
 class TsNumberKeyword extends TsNode {
   TsNumberKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.numberKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'number';
 }
 
 class TsNumericLiteral extends TsNode {
@@ -1668,6 +1701,9 @@ class TsNumericLiteral extends TsNode {
   }
 
   @override
+  String toCode() => text;
+
+  @override
   String? get nodeName => text;
 }
 
@@ -1675,6 +1711,9 @@ class TsObjectKeyword extends TsNode {
   TsObjectKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.objectKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'object';
 }
 
 class TsPackage extends TsNode {
@@ -1766,18 +1805,27 @@ class TsParenthesizedType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [type];
+
+  @override
+  String toCode() => '(${type.toCode()})';
 }
 
 class TsPlusToken extends TsNode {
   TsPlusToken({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.plusToken, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => '+';
 }
 
 class TsPlusPlusToken extends TsNode {
   TsPlusPlusToken({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.plusPlusToken, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => '++';
 }
 
 class TsPrefixUnaryExpression extends TsNode {
@@ -1808,6 +1856,9 @@ class TsPrivateKeyword extends TsNode {
   TsPrivateKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.privateKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'private';
 }
 
 class TsPropertyAccessExpression extends TsNode {
@@ -1874,6 +1925,10 @@ class TsPropertyDeclaration extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
+  String toCode() =>
+      '${modifiers.toCode(separator: ' ', suffix: ' ')}${name.toCode()}${questionToken.toCode('?')}${exclamationToken.toCode('!')}${type.toCode(': &')}${initializer.toCode(' = &')}';
+
+  @override
   List<TsNodeWrapper> get nodeWrappers => [
         modifiers,
         name,
@@ -1912,6 +1967,10 @@ class TsPropertySignature extends TsNode {
 
   @override
   String? get nodeName => name.value.nodeName;
+
+  @override
+  String toCode() =>
+      '${modifiers.toCode(separator: ' ', suffix: ' ')}${name.toCode()}${questionToken.toCode('?')}${type.toCode(': &')}${initializer.toCode(' = &')}';
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1966,6 +2025,9 @@ class TsReadonlyKeyword extends TsNode {
   TsReadonlyKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.readonlyKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'readonly';
 }
 
 class TsRestType extends TsNode {
@@ -2053,12 +2115,18 @@ class TsStaticKeyword extends TsNode {
   TsStaticKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.staticKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'static';
 }
 
 class TsStringKeyword extends TsNode {
   TsStringKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.stringKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'string';
 }
 
 class TsStringLiteral extends TsNode {
@@ -2101,6 +2169,9 @@ class TsTrueKeyword extends TsNode {
   TsTrueKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.trueKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'true';
 }
 
 class TsTupleType extends TsNode {
@@ -2324,6 +2395,9 @@ class TsUndefinedKeyword extends TsNode {
   TsUndefinedKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.undefinedKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'undefined';
 }
 
 class TsUnionType extends TsNode {
@@ -2339,6 +2413,9 @@ class TsUnionType extends TsNode {
       ListNode(_fromJsonArray(json['types'])),
     );
   }
+
+  @override
+  String toCode() => types.toCode(separator: ' | ');
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [types];
