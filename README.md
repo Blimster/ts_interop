@@ -12,11 +12,9 @@ Creates Dart interop types for JavaScript based on TypeScript declaration files.
 
 ## TODO
 
-- Merge types in dependencies into lib types
-- Fix TODOs for merge delcaration
 - Support for constructor
 - Support for call Signatures
-- Add docs at many types
+- Fix TODOs for merge delcaration
 - Scrap properties and methods from types from pub.dev and api.dart.dev
 - Export sanitized TsNode tree to JSON
-- Only return 1 DartNode per TsNode in Transpiler
+- Rename Sanatizer to Customer?
