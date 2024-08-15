@@ -18,6 +18,22 @@ sealed class DartNode<S extends Spec> {
   String toCode() => tsNode.toCode();
 }
 
+final class DartUnsupported<S extends Spec> extends DartNode<S> {
+  DartUnsupported(super.tsNode);
+
+  @override
+  S toSpec(Dependencies dependencies) {
+    throw UnimplementedError();
+  }
+
+  @override
+  List<S> toSpecs(Dependencies dependencies) {
+    return [];
+  }
+
+  DartNode<S> toEmpty() => DartNode.empty<S>(tsNode);
+}
+
 class DartSpec<S extends Spec> extends DartNode<S> {
   final S spec;
 
@@ -36,26 +52,35 @@ extension SpecToDartNode on Spec {
   }
 }
 
-class DartParameter extends DartNode<TypeReference> {
+class DartConstructor extends DartNode<Reference> {
+  final Constructor constructor;
+
+  DartConstructor(this.constructor, super.tsNode);
+
+  @override
+  Reference? toSpec(Dependencies dependencies) => null;
+
+  @override
+  List<Reference> toSpecs(Dependencies dependencies) => [];
+}
+
+extension ConstructorToDartNode on Constructor {
+  DartConstructor toDartNode(TsNode tsNode) {
+    return DartConstructor(this, tsNode);
+  }
+}
+
+class DartParameter extends DartNode<Reference> {
   final Parameter parameter;
   final bool isNullable;
 
   DartParameter(this.parameter, this.isNullable, super.tsNode);
 
   @override
-  TypeReference toSpec(Dependencies dependencies) {
-    return TypeReference((builder) {
-      builder.symbol = parameter.type is FunctionType ? 'JSFunction' : parameter.type?.symbol;
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
-      builder.isNullable = isNullable;
-      builder.types.addAll(parameter.types);
-    });
-  }
+  Reference? toSpec(Dependencies dependencies) => null;
 
   @override
-  List<TypeReference> toSpecs(Dependencies dependencies) {
-    return [toSpec(dependencies)];
-  }
+  List<Reference> toSpecs(Dependencies dependencies) => [];
 }
 
 extension ParameterToDartNode on Parameter {

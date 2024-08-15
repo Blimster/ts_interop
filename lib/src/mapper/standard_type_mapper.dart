@@ -18,7 +18,9 @@ TsNode standardTypesMapper(TsNode node, TypeEvaluator typeEvaluator) {
         final typeArg = node.typeArguments.value.first.kind;
         return TsTypeReference(
           TsIdentifier(newType).toSingleNode(),
-          typeArg == TsNodeKind.voidKeyword ? ListNode([]) : node.typeArguments,
+          [TsNodeKind.voidKeyword, TsNodeKind.nullKeyword, TsNodeKind.undefinedKeyword].contains(typeArg)
+              ? ListNode([])
+              : node.typeArguments,
         );
       } else {
         return TsTypeReference(
