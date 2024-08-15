@@ -4,9 +4,10 @@ import 'dart:io';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:ts_interop/src/mapper/merge_dependencies_mapper.dart';
+import 'package:ts_interop/src/transpiler/type_evaluator.dart';
 import 'package:ts_interop/ts_interop.dart';
 
-TsNode onlyBabylonModulesMapper(TsNode node) {
+TsNode onlyBabylonModulesMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsModuleDeclaration(name: SingleNode(value: TsIdentifier(text: var name)))) {
     if (name != 'BABYLON') {
       return Ts$Removed(node);
@@ -22,7 +23,7 @@ TsNode excludeXrMapper(TsNode node) {
   return node;
 }
 
-TsNode physicsEngineMapper(TsNode node) {
+TsNode physicsEngineMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsClassDeclaration(name: SingleNode(value: TsIdentifier(text: 'PhysicsEngine')))) {
     final parent = node.searchUp<TsSourceFile>();
     if (parent.isNotEmpty) {
@@ -40,7 +41,7 @@ TsNode physicsEngineMapper(TsNode node) {
   return node;
 }
 
-TsNode tupleMapper(TsNode node) {
+TsNode tupleMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node
       case TsTypeAliasDeclaration(
         name: SingleNode(value: TsIdentifier(text: '_Tuple')),
@@ -105,6 +106,8 @@ void main() async {
     await pubDevDependency('web', 'web'),
   ]);
 
+  final typeEvaluator = TypeEvaluator();
+
   final sw = Stopwatch()..start();
   stdout.write('Reading input file... ');
   // final inFile = File('example/babylonjs@7.19.1.json');
@@ -116,7 +119,7 @@ void main() async {
   sw.reset();
 
   stdout.write('Sanitizing... ');
-  final sanitizedPackage = Sanitizer()
+  final sanitizedPackage = Sanitizer(typeEvaluator)
       .addPhase(SanitizerPhase('removeDependencies', PhaseDirection.topDown, [
         // removeNodesByDependency(webDependency),
       ]))
@@ -165,11 +168,11 @@ void main() async {
   sw.reset();
 
   stdout.write('Transpiling... ');
-  final transpiler = Transpiler(dependencies);
+  final transpiler = Transpiler(typeEvaluator, dependencies);
   final lib = transpiler.transpile(sanitizedPackage).first;
 
   final emitter = DartEmitter.scoped(useNullSafetySyntax: true);
-  final DartFormatter formatter = DartFormatter();
+  final DartFormatter formatter = DartFormatter(pageWidth: 120);
 
   // final outFile = File('web/babylonjs.dart');
   final outFile = File('web/webxr.dart');

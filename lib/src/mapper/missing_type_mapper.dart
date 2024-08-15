@@ -1,6 +1,7 @@
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 
-TsNode missingTypeMapper(TsNode node) {
+TsNode missingTypeMapper(TsNode node, TypeEvaluator typeEvaluator) {
   return switch (node) {
     TsParameter(type: NullableNode(value: null)) => TsParameter(
         node.modifiers,

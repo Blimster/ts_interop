@@ -1,7 +1,8 @@
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 import '../util/ts_node_search.dart';
 
-TsNode removeDuplicateInterfacesMapper(TsNode node) {
+TsNode removeDuplicateInterfacesMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsInterfaceDeclaration()) {
     final interfaceName = node.nodeName;
     if (interfaceName != null) {

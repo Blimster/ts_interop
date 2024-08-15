@@ -1,7 +1,8 @@
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 import '../util/ts_node_search.dart';
 
-TsNode mergeInterfaceIntoClassMapper(TsNode node) {
+TsNode mergeInterfaceIntoClassMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsClassDeclaration(name: SingleNode(value: TsNode(nodeName: final className?)))) {
     final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasName(className));
     if (interfaces.isNotEmpty) {

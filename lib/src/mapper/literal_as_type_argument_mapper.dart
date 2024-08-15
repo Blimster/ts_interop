@@ -1,6 +1,7 @@
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 
-TsNode literalAsTypeArgumentMapper(TsNode node) {
+TsNode literalAsTypeArgumentMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsTypeReference()) {
     final typeArguments = node.typeArguments;
     final newTypeArguments = <TsNode>[];

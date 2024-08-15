@@ -1,3 +1,5 @@
+import 'package:ts_interop/src/transpiler/type_evaluator.dart';
+
 import '../model/ts_node.dart';
 import '../util/ts_node_search.dart';
 
@@ -13,7 +15,7 @@ class SanitizerPhase {
 
   SanitizerPhase(this.name, this.direction, this.nodeMappers);
 
-  TsNode _applyMappers(TsNode node) {
+  TsNode _applyMappers(TsNode node, TypeEvaluator typeEvaluator) {
     if (nodeMappers.isEmpty) {
       return node;
     }
@@ -23,7 +25,7 @@ class SanitizerPhase {
     while (true) {
       var mapped = 0;
       for (final (index, nodeMapper) in nodeMappers.indexed) {
-        final tempNode = nodeMapper(mappedNode);
+        final tempNode = nodeMapper(mappedNode, typeEvaluator);
         updateParentAndChilds(mappedNode, node.parent);
         if (tempNode != mappedNode) {
           mappedNode = tempNode;
@@ -43,42 +45,42 @@ class SanitizerPhase {
     }
   }
 
-  void _appleWrappers(TsNode node) {
+  void _appleWrappers(TsNode node, TypeEvaluator typeEvaluator) {
     final wrappers = node.nodeWrappers;
     for (final wrapper in wrappers) {
       final (added, removed) = switch (wrapper) {
-        SingleNode() => wrapper.update(_sanitizeNode),
-        NullableNode() => wrapper.update(_sanitizeNullableNode),
-        ListNode() => wrapper.update(_sanitizeNodes),
+        SingleNode() => wrapper.update((node) => _sanitizeNode(node, typeEvaluator)),
+        NullableNode() => wrapper.update((node) => _sanitizeNullableNode(node, typeEvaluator)),
+        ListNode() => wrapper.update((nodes) => _sanitizeNodes(nodes, typeEvaluator)),
       };
       updateCache(added, removed);
       updateParentAndChilds(node, node.parent);
     }
   }
 
-  TsNode _sanitizeNode(TsNode node) {
+  TsNode _sanitizeNode(TsNode node, TypeEvaluator typeEvaluator) {
     switch (direction) {
       case PhaseDirection.topDown:
-        final mappedNode = _applyMappers(node);
-        _appleWrappers(mappedNode);
+        final mappedNode = _applyMappers(node, typeEvaluator);
+        _appleWrappers(mappedNode, typeEvaluator);
         return mappedNode;
       case PhaseDirection.bottomUp:
-        _appleWrappers(node);
-        return _applyMappers(node);
+        _appleWrappers(node, typeEvaluator);
+        return _applyMappers(node, typeEvaluator);
     }
   }
 
-  TsNode? _sanitizeNullableNode(TsNode? node) {
+  TsNode? _sanitizeNullableNode(TsNode? node, TypeEvaluator typeEvaluator) {
     if (node == null) {
       return null;
     }
-    return _sanitizeNode(node);
+    return _sanitizeNode(node, typeEvaluator);
   }
 
-  List<TsNode> _sanitizeNodes(List<TsNode> nodes) {
+  List<TsNode> _sanitizeNodes(List<TsNode> nodes, TypeEvaluator typeEvaluator) {
     final result = <TsNode>[];
     for (final node in nodes) {
-      final sanitizedNode = _sanitizeNullableNode(node);
+      final sanitizedNode = _sanitizeNullableNode(node, typeEvaluator);
       if (sanitizedNode != null) {
         result.add(sanitizedNode);
       }
@@ -88,11 +90,12 @@ class SanitizerPhase {
 }
 
 class Sanitizer {
+  final TypeEvaluator typeEvaluator;
   final void Function(String name)? _beforePhase;
   final void Function(String name)? _afterPhase;
   final List<SanitizerPhase> _phases = [];
 
-  Sanitizer({void Function(String name)? beforePhase, void Function(String name)? afterPhase})
+  Sanitizer(this.typeEvaluator, {void Function(String name)? beforePhase, void Function(String name)? afterPhase})
       : _beforePhase = beforePhase,
         _afterPhase = afterPhase;
 
@@ -111,7 +114,7 @@ class Sanitizer {
     TsPackage sanitizedPackage = package;
     for (final phase in _phases) {
       _beforePhase?.call(phase.name);
-      final tempPackage = phase._sanitizeNode(sanitizedPackage);
+      final tempPackage = phase._sanitizeNode(sanitizedPackage, typeEvaluator);
       if (tempPackage is! TsPackage) {
         throw StateError('Node of type $TsPackage must be sanitized to a TsPackage.');
       }

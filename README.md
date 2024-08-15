@@ -19,3 +19,4 @@ Creates Dart interop types for JavaScript based on TypeScript declaration files.
 - Add docs at many types
 - Scrap properties and methods from types from pub.dev and api.dart.dev
 - Export sanitized TsNode tree to JSON
+- Only return 1 DartNode per TsNode in Transpiler

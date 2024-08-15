@@ -1,4 +1,5 @@
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 
 const _standardTypes = {
   'Promise': 'JSPromise',
@@ -9,7 +10,7 @@ const _standardTypes = {
   'ArrayBuffer': 'JSArrayBuffer',
 };
 
-TsNode standardTypesMapper(TsNode node) {
+TsNode standardTypesMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsTypeReference(typeName: SingleNode(value: TsIdentifier(text: final name)))) {
     if (_standardTypes.keys.contains(name)) {
       final newType = _standardTypes[name]!;

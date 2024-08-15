@@ -1,4 +1,5 @@
 import 'package:binary_tree/binary_tree.dart';
+import 'package:ts_interop/src/transpiler/type_evaluator.dart';
 
 import '../util/ts_node_search.dart';
 
@@ -222,7 +223,7 @@ void updateParentAndChilds(TsNode node, TsNode? parent) {
   node._applyParentToChilds();
 }
 
-typedef TsNodeMapper = TsNode Function(TsNode node);
+typedef TsNodeMapper = TsNode Function(TsNode node, TypeEvaluator typeEvaluator);
 
 enum TsNodeKind {
   $unsupported,
@@ -369,6 +370,8 @@ final class SingleNode extends TsNodeWrapper<TsNode> {
 
   @override
   List<TsNode> get nodes => [_value];
+
+  String toCode() => _value.toCode();
 }
 
 final class NullableNode extends TsNodeWrapper<TsNode?> {
@@ -383,6 +386,8 @@ final class NullableNode extends TsNodeWrapper<TsNode?> {
 
   @override
   List<TsNode> get nodes => [if (_value != null) _value!];
+
+  String toCode(String code) => value != null ? code.replaceAll('&', value!.toCode()) : '';
 }
 
 final class ListNode extends TsNodeWrapper<List<TsNode>> {
@@ -439,6 +444,8 @@ sealed class TsNode implements Comparable<TsNode> {
   TsNode(this.kind, this.meta) : id = _idCounter++;
 
   String? get nodeName => null;
+
+  String toCode() => nodeName ?? '';
 
   List<TsNode> get children {
     return nodeWrappers.expand((wrapper) => wrapper.nodes).toList();
@@ -1354,6 +1361,9 @@ class TsKeyOfKeyword extends TsNode {
   TsKeyOfKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.keyOfKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'keyof';
 }
 
 class TsLiteralType extends TsNode {
@@ -2166,6 +2176,9 @@ class TsTypeOperator extends TsNode {
         operator,
         type,
       ];
+
+  @override
+  String toCode() => '${operator.value.toCode()} ${type.value.toCode()}';
 }
 
 class TsTypeParameter extends TsNode {
@@ -2193,6 +2206,9 @@ class TsTypeParameter extends TsNode {
 
   @override
   String? get nodeName => name.value.nodeName;
+
+  @override
+  String toCode() => '${name.toCode()}${constraint.toCode(' extends &')}${defaultType.toCode(' = &')}';
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [

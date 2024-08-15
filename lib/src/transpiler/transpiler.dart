@@ -29,20 +29,20 @@ extension _DartNodeIterable<T extends Spec> on Iterable<DartNode<T>> {
 }
 
 extension _SpecToDartNode<T extends Spec> on Iterable<T> {
-  List<DartNode<T>> get toDartNode {
+  List<DartNode<T>> toDartNode({TsNodeMeta? meta}) {
     final result = <DartNode<T>>[];
     for (final node in this) {
-      result.add(DartSpec(node));
+      result.add(DartSpec(node, meta: meta));
     }
     return result;
   }
 }
 
 class Transpiler {
-  final Dependencies dependencies;
   final TypeEvaluator typeEvaluator;
+  final Dependencies dependencies;
 
-  Transpiler(this.dependencies) : typeEvaluator = TypeEvaluator(dependencies);
+  Transpiler(this.typeEvaluator, this.dependencies);
 
   List<Spec> transpile(TsPackage package) {
     updateParentAndChilds(package, package.parent);
@@ -55,7 +55,7 @@ class Transpiler {
         builder.symbol = 'JSAny';
         builder.url = builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileArrayType(TsArrayType arrayType) {
@@ -73,7 +73,7 @@ class Transpiler {
           }));
         }
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileBooleanKeyword(TsBooleanKeyword booleanKeyword) {
@@ -82,7 +82,7 @@ class Transpiler {
         builder.symbol = 'JSBoolean';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileClassDeclaration(TsClassDeclaration classDeclaration) {
@@ -90,7 +90,7 @@ class Transpiler {
     final members = _transpileNodes(classDeclaration.members.value).map((m) => m.toSpec(dependencies));
 
     final extensionType = ExtensionType((builder) {
-      builder.docs.add('/// class ${classDeclaration.name.value.nodeName}');
+      builder.docs.add('/// Class [${classDeclaration.name.value.nodeName}]');
       builder.name = classDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(classDeclaration.typeParameters.value).toSpec(dependencies));
       builder.primaryConstructorName = isAbstract ? '_' : '';
@@ -110,7 +110,7 @@ class Transpiler {
       builder.fields.addAll(members.whereType<Field>());
       builder.methods.addAll(members.whereType<Method>());
     });
-    return [extensionType].toDartNode;
+    return [extensionType].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileEnumDeclaration(TsEnumDeclaration enumDeclaration) {
@@ -129,7 +129,7 @@ class Transpiler {
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       }));
     });
-    return [extensionType].toDartNode;
+    return [extensionType].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileExpressionWithTypeArguments(
@@ -147,7 +147,7 @@ class Transpiler {
       default:
         print('WARNING: Unsupported expression type ${expression.kind.name}:${expression.nodeName}');
     }
-    return result.toDartNode;
+    return result.toDartNode();
   }
 
   List<DartNode<Spec>> _transpileFunctionDeclaration(TsFunctionDeclaration functionDeclaration) {
@@ -168,7 +168,7 @@ class Transpiler {
             .map((node) => node.parameter)
             .toList());
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileFunctionType(TsFunctionType functionType) {
@@ -184,7 +184,7 @@ class Transpiler {
         builder.symbol = 'JSFunction';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileHeritageClause(TsHeritageClause heritageClause) {
@@ -193,7 +193,7 @@ class Transpiler {
     for (final type in heritageClause.types.value) {
       result.addAll(_transpileNode<Reference>(type).toSpec(dependencies));
     }
-    return result.toDartNode;
+    return result.toDartNode();
   }
 
   List<DartNode<Spec>> _transpileIndexSignature(TsIndexSignature indexSignature) {
@@ -220,14 +220,14 @@ class Transpiler {
             .map((node) => node.parameter)
             .toList());
       }),
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
     final members = _transpileNodes(interfaceDeclaration.members.value).map((m) => m.toSpec(dependencies));
 
     final extensionType = ExtensionType((builder) {
-      builder.docs.add('/// interface ${interfaceDeclaration.name.value.nodeName}');
+      builder.docs.add('/// Interface [${interfaceDeclaration.name.value.nodeName}]');
       builder.name = interfaceDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(interfaceDeclaration.typeParameters.value).toSpec(dependencies));
       builder.representationDeclaration = RepresentationDeclaration((builder) {
@@ -246,7 +246,7 @@ class Transpiler {
       builder.fields.addAll(members.whereType<Field>());
       builder.methods.addAll(members.whereType<Method>());
     });
-    return [extensionType].toDartNode;
+    return [extensionType].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileIntersectionType(TsIntersectionType intersectionType) {
@@ -255,7 +255,7 @@ class Transpiler {
         builder.symbol = 'JSAny';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileLiteralType(TsLiteralType literalType) {
@@ -279,6 +279,11 @@ class Transpiler {
 
     return [
       Method((builder) {
+        builder.docs.addAll([
+          '/// Method [${methodSignature.name.value.nodeName}]',
+          if (methodSignature.typeParameters.value.isNotEmpty) '///',
+          ...methodSignature.typeParameters.value.map((tp) => '/// ${tp.toCode()}'),
+        ]);
         if (overloadIds.length > 1) {
           final allocator = Allocator.simplePrefixing();
           builder.annotations.add(CodeExpression(
@@ -302,7 +307,7 @@ class Transpiler {
             .map((node) => node.parameter)
             .toList());
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileNumberKeyword(TsNumberKeyword numberKeyword) {
@@ -311,23 +316,25 @@ class Transpiler {
         builder.symbol = 'JSNumber';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileNumericLiteral(TsNumericLiteral numericLiteral) {
     return [
       literalNum(num.parse(numericLiteral.text)),
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpilePackage(TsPackage package) {
     return [
       Library((builder) {
-        builder.comments.add('ignore_for_file: non_constant_identifier_names');
-        builder.comments.add('ignore_for_file: camel_case_types');
+        builder.ignoreForFile.addAll([
+          'non_constant_identifier_names',
+          'camel_case_types',
+        ]);
         builder.body.addAll(_transpileNodes(package.sourceFiles.value).toSpec(dependencies));
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileParameter(TsParameter parameter) {
@@ -354,7 +361,7 @@ class Transpiler {
               .toSpec(dependencies)
               .firstOrNull;
         }),
-      ].toDartNode;
+      ].toDartNode();
     } else {
       return [
         Field((builder) {
@@ -364,7 +371,7 @@ class Transpiler {
               .toSpec(dependencies)
               .firstOrNull;
         }),
-      ].toDartNode;
+      ].toDartNode();
     }
   }
 
@@ -380,7 +387,7 @@ class Transpiler {
               .toSpec(dependencies)
               .firstOrNull;
         }),
-      ].toDartNode;
+      ].toDartNode();
     } else {
       return [
         Field((builder) {
@@ -390,7 +397,7 @@ class Transpiler {
               .toSpec(dependencies)
               .firstOrNull;
         }),
-      ].toDartNode;
+      ].toDartNode();
     }
   }
 
@@ -404,13 +411,13 @@ class Transpiler {
         builder.symbol = 'JSString';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileStringLiteral(TsStringLiteral stringKeyword) {
     return [
       Code(stringKeyword.text),
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileTupleType(TsTupleType tupleType) {
@@ -423,19 +430,23 @@ class Transpiler {
           builder.url = dependencies.libraryUrlForType(builder.symbol);
         }));
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileTypeAliasDeclaration(TsTypeAliasDeclaration typeAliasDeclaration) {
+    final type = typeEvaluator.evaluateType(typeAliasDeclaration.type.value);
+
     final typeDef = TypeDef((builder) {
-      builder.docs.add('/// typedef ${typeAliasDeclaration.name.value.nodeName}');
+      builder.docs.addAll([
+        '/// Typedef [${typeAliasDeclaration.name.value.nodeName}]',
+        '///',
+        ...type.meta.documentation.map((doc) => '/// $doc'),
+      ]);
       builder.name = typeAliasDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters.value).toSpec(dependencies));
-      builder.definition = _transpileNode<Expression>(typeEvaluator.evaluateType(typeAliasDeclaration.type.value))
-          .first
-          .toSpec(dependencies);
+      builder.definition = _transpileNode<Expression>(type).first.toSpec(dependencies);
     });
-    return [typeDef].toDartNode;
+    return [typeDef].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileTypeLiteral(TsTypeLiteral typeLiteral) {
@@ -444,7 +455,16 @@ class Transpiler {
         builder.symbol = 'JSObject';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
+  }
+
+  List<DartNode<Spec>> _transpileTypeOperator(TsTypeOperator typeOperator) {
+    return [
+      TypeReference((builder) {
+        builder.symbol = 'JSAny';
+        builder.url = dependencies.libraryUrlForType(builder.symbol);
+      })
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileTypeParameter(TsTypeParameter typeParameter) {
@@ -459,7 +479,7 @@ class Transpiler {
               builder.url = dependencies.libraryUrlForType(builder.symbol);
             });
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileTypeReference(TsTypeReference typeReference) {
@@ -478,22 +498,26 @@ class Transpiler {
         builder.isNullable = isNullable;
         builder.types.addAll(_transpileNodes<Reference>(typeReference.typeArguments.value).toSpec(dependencies));
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileUnionType(TsUnionType unionType) {
+    final types = typeEvaluator.evaluateTypes(unionType.types.value);
+    if (types.length == 1) {
+      return _transpileTypeReference(types.first);
+    }
     return [
       TypeReference((builder) {
         builder.symbol = 'JSAny';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       })
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<Spec>> _transpileVoidKeyword(TsVoidKeyword voidKeyword) {
     return [
       _voidType,
-    ].toDartNode;
+    ].toDartNode();
   }
 
   List<DartNode<T>> _transpileNode<T extends Spec>(TsNode? node) {
@@ -529,6 +553,7 @@ class Transpiler {
       TsTupleType() => _transpileTupleType(node),
       TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(node),
       TsTypeLiteral() => _transpileTypeLiteral(node),
+      TsTypeOperator() => _transpileTypeOperator(node),
       TsTypeParameter() => _transpileTypeParameter(node),
       TsTypeReference() => _transpileTypeReference(node),
       TsUnionType() => _transpileUnionType(node),

@@ -1,11 +1,12 @@
 import 'package:ts_interop/src/util/ts_node_search.dart';
 
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 
 final _notFound = <String>{};
 final _found = <String, TsNode>{};
 
-TsNode missingTypeArgumentMapper(TsNode node) {
+TsNode missingTypeArgumentMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node is WithTypeArguments) {
     final typeArguments = (node as WithTypeArguments).typeArguments;
     final referencedName = node.nodeName;

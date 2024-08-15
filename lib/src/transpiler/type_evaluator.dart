@@ -1,4 +1,3 @@
-import '../dependency/dependency.dart';
 import '../model/ts_node.dart';
 
 (List<TsTypeReference>, bool) _distinctTypes(List<TsTypeReference> types) {
@@ -18,10 +17,6 @@ import '../model/ts_node.dart';
 }
 
 class TypeEvaluator {
-  final Dependencies config;
-
-  TypeEvaluator(this.config);
-
   TsTypeReference _literalType(TsLiteralType node) {
     return evaluateType(node.literal.value);
   }
@@ -39,14 +34,17 @@ class TypeEvaluator {
     };
   }
 
-  TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const []}) {
+  TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
     return TsTypeReference(
       TsIdentifier(name).toSingleNode(affectsParent: true),
       typeArguments.toListNode(),
+      meta: meta,
     );
   }
 
   TsTypeReference _unionType(TsUnionType node) {
+    final doc = node.types.value.map((node) => node.nodeName).nonNulls.join(' | ');
+
     final (types, hasNull) = _distinctTypes(evaluateTypes(node.types.value));
 
     if (types.length == 1) {
@@ -54,10 +52,14 @@ class TypeEvaluator {
       return TsTypeReference(
         TsIdentifier(name).toSingleNode(),
         types.first.typeArguments,
+        meta: TsNodeMeta(documentation: [doc]),
       );
     }
 
-    return _typeRef('JSAny${hasNull ? '?' : ''}');
+    return _typeRef(
+      'JSAny${hasNull ? '?' : ''}',
+      meta: TsNodeMeta(documentation: [doc]),
+    );
   }
 
   TsTypeReference evaluateType(TsNode? node) {

@@ -1,8 +1,9 @@
 import '../dependency/dependency.dart';
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 
 TsNodeMapper mergeDependenciesMapper(Dependencies dependencies, {Set<String> excludes = const {}}) {
-  return (TsNode node) {
+  return (TsNode node, TypeEvaluator typeEvaluator) {
     if (node case TsInterfaceDeclaration(nodeName: var name?)) {
       if (!excludes.contains(name) && dependencies.containsType(name)) {
         node.heritageClauses.update((heritageClauses) {
