@@ -15,5 +15,7 @@ Creates Dart interop types for JavaScript based on TypeScript declaration files.
 - Merge types in dependencies into lib types
 - Fix TODOs for merge delcaration
 - Support for constructor
-- Call Signatures
+- Support for call Signatures
 - Add docs at many types
+- Scrap properties and methods from types from pub.dev and api.dart.dev
+- Export sanitized TsNode tree to JSON

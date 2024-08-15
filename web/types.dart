@@ -31,3 +31,5 @@ extension type AbortSignal._(JSObject _) implements JSObject {}
 extension type TypedPropertyDescriptor<T>._(JSObject _) implements JSObject {}
 
 extension type EventListenerOrEventListenerObject._(JSAny _) implements JSAny {}
+
+extension type Set<T>._(JSAny _) implements JSAny {}

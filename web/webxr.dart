@@ -379,7 +379,7 @@ extension type XRView._(_i1.JSObject _) implements _i1.JSObject {
 
 /// interface XRInputSourcesChangeEvent
 extension type XRInputSourcesChangeEvent(_i1.JSObject _)
-    implements _i1.JSObject, _i2.XRSessionEvent, _i2.XRInputSourcesChangeEvent {
+    implements _i1.JSObject, _i2.XRSessionEvent {
   external _i1.JSArray<_i3.XRInputSource> get removed;
   external _i1.JSArray<_i3.XRInputSource> get added;
 }
@@ -389,7 +389,7 @@ extension type XRInputSourcesChangeEventHandler(_i1.JSObject _)
     implements _i1.JSObject {}
 
 /// typedef XRAnchorSet
-typedef XRAnchorSet = Set<XRAnchor>;
+typedef XRAnchorSet = _i3.Set<XRAnchor>;
 
 /// class XRAnchor
 extension type XRAnchor._(_i1.JSObject _) implements _i1.JSObject {
@@ -460,7 +460,7 @@ extension type XRHitResult(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// typedef XRPlaneSet
-typedef XRPlaneSet = Set<XRPlane>;
+typedef XRPlaneSet = _i3.Set<XRPlane>;
 
 /// typedef XRPlaneOrientation
 typedef XRPlaneOrientation = _i1.JSString;
@@ -477,7 +477,7 @@ extension type XRPlane._(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// typedef XRMeshSet
-typedef XRMeshSet = Set<XRMesh>;
+typedef XRMeshSet = _i3.Set<XRMesh>;
 
 /// class XRMesh
 extension type XRMesh._(_i1.JSObject _) implements _i1.JSObject {

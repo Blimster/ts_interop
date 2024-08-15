@@ -81,6 +81,7 @@ final typesDependency = Dependency('./types.dart', {
   'AbortSignal',
   'TypedPropertyDescriptor',
   'EventListenerOrEventListenerObject',
+  'Set',
 });
 
 class ComparableTsNode implements Comparable<ComparableTsNode> {
@@ -121,7 +122,7 @@ void main() async {
       ]))
       .addPhase(SanitizerPhase('mergeInterfaces', PhaseDirection.topDown, [
         mergeInterfacesMapper,
-        mergeDependenciesMapper(dependencies),
+        mergeDependenciesMapper(dependencies, excludes: {'XRInputSourcesChangeEvent'}),
       ]))
       .addPhase(SanitizerPhase('mergeInterfaceIntoClassMapper', PhaseDirection.topDown, [
         mergeInterfaceIntoClassMapper,

@@ -1,11 +1,15 @@
+import 'dart:js_interop';
+
 import 'package:web/web.dart' as web;
 
 import './webxr.dart' as xr;
 
-void main() {
+void main() async {
   print('done');
   final navigator = xr.Navigator(web.window.navigator);
-  print(navigator.language);
   final system = navigator.xr;
-  print(system);
+  if (system != null) {
+    final session = await system.requestSession('inline'.toJS).toDart;
+    print(session.domOverlayState);
+  }
 }
