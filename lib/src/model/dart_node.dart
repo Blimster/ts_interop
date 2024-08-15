@@ -14,6 +14,8 @@ sealed class DartNode<S extends Spec> {
   S? toSpec(Dependencies dependencies);
 
   List<S> toSpecs(Dependencies dependencies);
+
+  String toCode() => tsNode.toCode();
 }
 
 class DartSpec<S extends Spec> extends DartNode<S> {

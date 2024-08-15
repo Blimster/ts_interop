@@ -24,40 +24,48 @@ extension type WebGLRenderingContextBase(_i1.JSObject _) implements _i1.JSObject
 /// Typedef [XRSessionMode]
 ///
 /// "inline" | "immersive-vr" | "immersive-ar"
+///
 typedef XRSessionMode = _i1.JSString;
 
 /// Typedef [XRReferenceSpaceType]
 ///
 /// "viewer" | "local" | "local-floor" | "bounded-floor" | "unbounded"
+///
 typedef XRReferenceSpaceType = _i1.JSString;
 
 /// Typedef [XREnvironmentBlendMode]
 ///
 /// "opaque" | "additive" | "alpha-blend"
+///
 typedef XREnvironmentBlendMode = _i1.JSString;
 
 /// Typedef [XRVisibilityState]
 ///
 /// "visible" | "visible-blurred" | "hidden"
+///
 typedef XRVisibilityState = _i1.JSString;
 
 /// Typedef [XRHandedness]
 ///
 /// "none" | "left" | "right"
+///
 typedef XRHandedness = _i1.JSString;
 
 /// Typedef [XRTargetRayMode]
 ///
 /// "gaze" | "tracked-pointer" | "screen" | "transient-pointer"
+///
 typedef XRTargetRayMode = _i1.JSString;
 
 /// Typedef [XREye]
 ///
 /// "none" | "left" | "right"
+///
 typedef XREye = _i1.JSString;
 
 /// Typedef [XRFrameRequestCallback]
 ///
+/// (time: DOMHighResTimeStamp, frame: XRFrame) => void
 typedef XRFrameRequestCallback = _i1.JSFunction;
 
 /// Interface [XRSystemDeviceChangeEvent]
@@ -323,6 +331,7 @@ extension type XRFrame._(_i1.JSObject _) implements _i1.JSObject {
 /// Typedef [XRInputSourceEventType]
 ///
 /// "select" | "selectend" | "selectstart" | "squeeze" | "squeezeend" | "squeezestart"
+///
 typedef XRInputSourceEventType = _i1.JSString;
 
 /// Interface [XRInputSourceEventInit]
@@ -346,6 +355,7 @@ extension type XRInputSourceEventHandler(_i1.JSObject _) implements _i1.JSObject
 /// Typedef [XRSessionEventType]
 ///
 /// "end" | "visibilitychange" | "frameratechange"
+///
 typedef XRSessionEventType = _i1.JSString;
 
 /// Interface [XRSessionEventInit]
@@ -441,6 +451,7 @@ extension type XRInputSourcesChangeEventHandler(_i1.JSObject _) implements _i1.J
 
 /// Typedef [XRAnchorSet]
 ///
+/// Set
 typedef XRAnchorSet = _i3.Set<XRAnchor>;
 
 /// Class [XRAnchor]
@@ -461,6 +472,7 @@ extension type XRRay(_i1.JSObject _) implements _i1.JSObject {
 /// Typedef [XRHitTestTrackableType]
 ///
 /// "point" | "plane" | "mesh"
+///
 typedef XRHitTestTrackableType = _i1.JSString;
 
 /// Class [XRTransientInputHitTestResult]
@@ -516,11 +528,13 @@ extension type XRHitResult(_i1.JSObject _) implements _i1.JSObject {
 
 /// Typedef [XRPlaneSet]
 ///
+/// Set
 typedef XRPlaneSet = _i3.Set<XRPlane>;
 
 /// Typedef [XRPlaneOrientation]
 ///
 /// "horizontal" | "vertical"
+///
 typedef XRPlaneOrientation = _i1.JSString;
 
 /// Class [XRPlane]
@@ -536,6 +550,7 @@ extension type XRPlane._(_i1.JSObject _) implements _i1.JSObject {
 
 /// Typedef [XRMeshSet]
 ///
+/// Set
 typedef XRMeshSet = _i3.Set<XRMesh>;
 
 /// Class [XRMesh]
@@ -554,6 +569,7 @@ extension type XRMesh._(_i1.JSObject _) implements _i1.JSObject {
 /// Typedef [XRHandJoint]
 ///
 /// "wrist" | "thumb-metacarpal" | "thumb-phalanx-proximal" | "thumb-phalanx-distal" | "thumb-tip" | "index-finger-metacarpal" | "index-finger-phalanx-proximal" | "index-finger-phalanx-intermediate" | "index-finger-phalanx-distal" | "index-finger-tip" | "middle-finger-metacarpal" | "middle-finger-phalanx-proximal" | "middle-finger-phalanx-intermediate" | "middle-finger-phalanx-distal" | "middle-finger-tip" | "ring-finger-metacarpal" | "ring-finger-phalanx-proximal" | "ring-finger-phalanx-intermediate" | "ring-finger-phalanx-distal" | "ring-finger-tip" | "pinky-finger-metacarpal" | "pinky-finger-phalanx-proximal" | "pinky-finger-phalanx-intermediate" | "pinky-finger-phalanx-distal" | "pinky-finger-tip"
+///
 typedef XRHandJoint = _i1.JSString;
 
 /// Class [XRJointSpace]
@@ -626,6 +642,7 @@ extension type XRWebGLLayer(_i1.JSObject _) implements _i1.JSObject, XRLayer {
 
 /// Typedef [XRLayerEventType]
 ///
+/// "redraw"
 typedef XRLayerEventType = _i1.JSString;
 
 /// Interface [XRLayerEvent]
@@ -645,16 +662,19 @@ extension type XRCompositionLayer._(_i1.JSObject _) implements _i1.JSObject {}
 /// Typedef [XRTextureType]
 ///
 /// "texture" | "texture-array"
+///
 typedef XRTextureType = _i1.JSString;
 
 /// Typedef [XRLayerLayout]
 ///
 /// "default" | "mono" | "stereo" | "stereo-left-right" | "stereo-top-bottom"
+///
 typedef XRLayerLayout = _i1.JSString;
 
 /// Typedef [XRLayerQuality]
 ///
 /// "default" | "text-optimized" | "graphics-optimized"
+///
 typedef XRLayerQuality = _i1.JSString;
 
 /// Interface [XRProjectionLayerInit]
@@ -873,7 +893,7 @@ extension type OCULUS_multiview._(_i1.JSObject _) implements _i1.JSObject {
   external void framebufferTextureMultisampleMultiviewOVR(
     _i2.GLenum target,
     _i2.GLenum attachment,
-    _i1.JSAny texture,
+    _i2.WebGLTexture? texture,
     _i2.GLint level,
     _i2.GLsizei samples,
     _i2.GLint baseViewIndex,
@@ -899,6 +919,7 @@ extension type XRDOMOverlayInit(_i1.JSObject _) implements _i1.JSObject {
 /// Typedef [XRDOMOverlayType]
 ///
 /// "screen" | "floating" | "head-locked"
+///
 typedef XRDOMOverlayType = _i1.JSString;
 
 /// Interface [XRDOMOverlayState]
@@ -909,11 +930,13 @@ extension type XRDOMOverlayState(_i1.JSObject _) implements _i1.JSObject {
 /// Typedef [XRDepthUsage]
 ///
 /// "cpu-optimized" | "gpu-optimized"
+///
 typedef XRDepthUsage = _i1.JSString;
 
 /// Typedef [XRDepthDataFormat]
 ///
 /// "luminance-alpha" | "float32" | "unsigned-short"
+///
 typedef XRDepthDataFormat = _i1.JSString;
 
 /// Interface [XRDepthStateInit]

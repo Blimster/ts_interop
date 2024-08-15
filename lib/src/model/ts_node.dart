@@ -409,6 +409,13 @@ final class ListNode extends TsNodeWrapper<List<TsNode>> {
 
   @override
   List<TsNode> get nodes => _value;
+
+  String toCode({
+    String separator = ', ',
+    String prefix = '',
+    String suffix = '',
+  }) =>
+      '${_value.isNotEmpty ? prefix : ''}${_value.map((e) => e.toCode()).join(separator)}${_value.isNotEmpty ? suffix : ''}';
 }
 
 extension ToListNode on List<TsNode> {
@@ -972,6 +979,10 @@ class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
       NullableNode(_fromNullableJsonObject(json['type'])),
     );
   }
+
+  @override
+  String toCode() =>
+      '${typeParameters.toCode(prefix: '<', suffix: '>')}(${parameters.toCode()})${type.toCode(' => &')}';
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -1726,6 +1737,10 @@ class TsParameter extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
+  String toCode() =>
+      '${modifiers.toCode(suffix: ' ')}${name.toCode()}${questionToken.toCode('&')}${type.toCode(': &')}${initializer.toCode(' = &')}';
+
+  @override
   List<TsNodeWrapper> get nodeWrappers => [
         modifiers,
         name,
@@ -2422,4 +2437,7 @@ class TsVoidKeyword extends TsNode {
   TsVoidKeyword({
     TsNodeMeta? meta,
   }) : super(TsNodeKind.voidKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'void';
 }

@@ -157,13 +157,6 @@ class Transpiler {
   }
 
   DartNode<TypeReference> _transpileFunctionType(TsFunctionType functionType) {
-    // FunctionType((builder) {
-    //   builder.symbol = 'JSFunction';
-    //   builder.url = config.libForType(builder.symbol);
-    //   builder.returnType = _transpileNode<Reference>(functionType.type).toSpec(config).firstOrNull;
-    //   builder.types.addAll(_transpileNodes<Reference>(functionType.typeParameters).toSpec(config));
-    //   builder.requiredParameters.addAll(_transpileNodes<Reference>(functionType.parameters).toSpec(config));
-    // }),
     return TypeReference((builder) {
       builder.symbol = 'JSFunction';
       builder.url = dependencies.libraryUrlForType(builder.symbol);
@@ -311,7 +304,7 @@ class Transpiler {
   DartNode<TypeReference> _transpileParameter(TsParameter parameter) {
     return Parameter((builder) {
       builder.name = parameter.name.value.nodeName ?? '';
-      builder.type = _transpileNode<Reference>(parameter.type.value).toSpec(dependencies);
+      builder.type = _transpileNode<Reference>(typeEvaluator.evaluateType(parameter.type.value)).toSpec(dependencies);
     }).toDartNode(
       parameter,
       parameter.questionToken.value != null,
@@ -392,6 +385,7 @@ class Transpiler {
         '/// Typedef [${typeAliasDeclaration.name.value.nodeName}]',
         '///',
         ...type.meta.documentation.map((doc) => '/// $doc'),
+        '/// ${_transpileNode(typeAliasDeclaration.type.value).toCode()}',
       ]);
       builder.name = typeAliasDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters.value).toSpecs(dependencies));
