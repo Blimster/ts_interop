@@ -274,6 +274,13 @@ class Transpiler {
     return _transpileNode(literalType.literal.value);
   }
 
+  DartNode<Method> _transpileMappedType(TsMappedType mappedType) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSObject';
+      builder.url = dependencies.libraryUrlForType(builder.symbol);
+    }).toDartNode(mappedType);
+  }
+
   DartNode<Method> _transpileMethodDeclaration(TsMethodDeclaration methodDeclaration) {
     final methodName = methodDeclaration.name.value.nodeName;
     if (methodName == null) {
@@ -532,6 +539,13 @@ class Transpiler {
     }).toDartNode(typeParameter);
   }
 
+  DartNode<TypeReference> _transpileTypeQuery(TsTypeQuery typeQuery) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSString';
+      builder.url = dependencies.libraryUrlForType(builder.symbol);
+    }).toDartNode(typeQuery);
+  }
+
   DartNode<TypeReference> _transpileTypeReference(TsTypeReference typeReference) {
     final type = typeEvaluator.evaluateType(typeReference);
 
@@ -589,6 +603,7 @@ class Transpiler {
       TsIndexSignature() => _transpileIndexSignature(node),
       TsIntersectionType() => _transpileIntersectionType(node),
       TsLiteralType() => _transpileLiteralType(node),
+      TsMappedType() => _transpileMappedType(node),
       TsMethodDeclaration() => _transpileMethodDeclaration(node),
       TsMethodSignature() => _transpileMethodSignature(node),
       TsNullKeyword() => _transpileNullKeyword(node),
@@ -606,6 +621,7 @@ class Transpiler {
       TsTypeLiteral() => _transpileTypeLiteral(node),
       TsTypeOperator() => _transpileTypeOperator(node),
       TsTypeParameter() => _transpileTypeParameter(node),
+      TsTypeQuery() => _transpileTypeQuery(node),
       TsTypeReference() => _transpileTypeReference(node),
       TsUndefinedKeyword() => _transpileUndefinedKeyword(node),
       TsUnionType() => _transpileUnionType(node),

@@ -136,8 +136,6 @@ void main() async {
       .addPhase(SanitizerPhase('defaultMappers', PhaseDirection.bottomUp, [
         missingTypeMapper,
         literalAsTypeArgumentMapper,
-        typeQueryMapper,
-        mappedTypeMapper,
         instanceTypeMapper,
         tupleMapper,
       ]))
