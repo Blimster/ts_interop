@@ -93,7 +93,8 @@ class Transpiler {
 
   DartNode<ExtensionType> _transpileClassDeclaration(TsClassDeclaration classDeclaration) {
     final isAbstract = _containsNodeKind(classDeclaration.modifiers.value, TsNodeKind.abstractKeyword);
-    final members = _transpileNodes(classDeclaration.members.value); //.toSpecs(dependencies);
+    final members = _transpileNodes(classDeclaration.members.value);
+    final hasCallSignature = classDeclaration.searchDown<TsCallSignature>().isNotEmpty;
 
     return ExtensionType((builder) {
       builder.docs.add('/// Class [${classDeclaration.name.value.nodeName}]');
@@ -103,12 +104,12 @@ class Transpiler {
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
-          builder.symbol = 'JSObject';
+          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
           builder.url = dependencies.libraryUrlForType(builder.symbol);
         });
       });
       builder.implements.add(TypeReference((builder) {
-        builder.symbol = 'JSObject';
+        builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       }));
       builder.implements
@@ -239,6 +240,7 @@ class Transpiler {
 
   DartNode<ExtensionType> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
     final members = _transpileNodes(interfaceDeclaration.members.value).toSpecs(dependencies);
+    final hasCallSignature = interfaceDeclaration.searchDown<TsCallSignature>().isNotEmpty;
 
     return ExtensionType((builder) {
       builder.docs.add('/// Interface [${interfaceDeclaration.name.value.nodeName}]');
@@ -248,12 +250,12 @@ class Transpiler {
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
-          builder.symbol = 'JSObject';
+          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
           builder.url = dependencies.libraryUrlForType(builder.symbol);
         });
       });
       builder.implements.add(TypeReference((builder) {
-        builder.symbol = 'JSObject';
+        builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
       }));
       builder.implements
@@ -592,6 +594,7 @@ class Transpiler {
       TsAnyKeyword() => _transpileAnyKeyword(node),
       TsArrayType() => _transpileArrayType(node),
       TsBooleanKeyword() => _transpileBooleanKeyword(node),
+      TsCallSignature() => DartNode.empty<S>(node),
       TsClassDeclaration() => _transpileClassDeclaration(node),
       TsConstructorDeclaration() => _transpileConstructorDeclaration(node),
       TsEnumDeclaration() => _transpileEnumDeclaration(node),

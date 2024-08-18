@@ -13,6 +13,7 @@ Creates Dart interop types for JavaScript based on TypeScript declaration files.
 ## TODO
 
 - Support for call Signatures
+- Mapper for type literal (to create an extension type)
 - handle nullable methods (see initiateRoomCapture)
 - Fix TODOs for merge delcaration
 - Scrap properties and methods from types from pub.dev and api.dart.dev

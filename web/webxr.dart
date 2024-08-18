@@ -81,7 +81,7 @@ extension type XRSystemDeviceChangeEvent.$(_i1.JSObject _) implements _i1.JSObje
 }
 
 /// Interface [XRSystemDeviceChangeEventHandler]
-extension type XRSystemDeviceChangeEventHandler.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type XRSystemDeviceChangeEventHandler.$(_i1.JSFunction _) implements _i1.JSFunction {}
 
 /// Interface [XRSystemEventMap]
 extension type XRSystemEventMap.$(_i1.JSObject _) implements _i1.JSObject {
@@ -316,7 +316,7 @@ extension type XRReferenceSpaceEvent.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [XRReferenceSpaceEventHandler]
-extension type XRReferenceSpaceEventHandler.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type XRReferenceSpaceEventHandler.$(_i1.JSFunction _) implements _i1.JSFunction {}
 
 /// Interface [XRReferenceSpaceEventMap]
 extension type XRReferenceSpaceEventMap.$(_i1.JSObject _) implements _i1.JSObject {
@@ -687,7 +687,7 @@ extension type XRInputSourceEvent.$(_i1.JSObject _) implements _i1.JSObject, _i2
 }
 
 /// Interface [XRInputSourceEventHandler]
-extension type XRInputSourceEventHandler.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type XRInputSourceEventHandler.$(_i1.JSFunction _) implements _i1.JSFunction {}
 
 /// Typedef [XRSessionEventType]
 ///
@@ -721,7 +721,7 @@ extension type XRSessionEvent.$(_i1.JSObject _) implements _i1.JSObject, _i2.Eve
 }
 
 /// Interface [XRSessionEventHandler]
-extension type XRSessionEventHandler.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type XRSessionEventHandler.$(_i1.JSFunction _) implements _i1.JSFunction {}
 
 /// Interface [XRSessionInit]
 extension type XRSessionInit.$(_i1.JSObject _) implements _i1.JSObject {
@@ -915,7 +915,7 @@ extension type XRInputSourcesChangeEvent.$(_i1.JSObject _) implements _i1.JSObje
 }
 
 /// Interface [XRInputSourcesChangeEventHandler]
-extension type XRInputSourcesChangeEventHandler.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type XRInputSourcesChangeEventHandler.$(_i1.JSFunction _) implements _i1.JSFunction {}
 
 /// Typedef [XRAnchorSet]
 ///
@@ -1950,7 +1950,7 @@ extension type XRSystemSessionGrantedEvent.$(_i1.JSObject _) implements _i1.JSOb
 }
 
 /// Interface [XRSystemSessionGrantedEventHandler]
-extension type XRSystemSessionGrantedEventHandler.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type XRSystemSessionGrantedEventHandler.$(_i1.JSFunction _) implements _i1.JSFunction {}
 
 /// Class [OCULUS_multiview]
 extension type OCULUS_multiview._(_i1.JSObject _) implements _i1.JSObject {
