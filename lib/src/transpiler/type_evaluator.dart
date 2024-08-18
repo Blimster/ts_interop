@@ -16,6 +16,14 @@ import '../model/ts_node.dart';
   return (result.values.toList(), hasNull);
 }
 
+TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
+  return TsTypeReference(
+    TsIdentifier(name).toSingleNode(affectsParent: true),
+    typeArguments.toListNode(),
+    meta: meta,
+  );
+}
+
 class TypeEvaluator {
   TsTypeReference _literalType(TsLiteralType node) {
     return evaluateType(node.literal.value);
@@ -34,12 +42,43 @@ class TypeEvaluator {
     };
   }
 
-  TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
-    return TsTypeReference(
-      TsIdentifier(name).toSingleNode(affectsParent: true),
-      typeArguments.toListNode(),
-      meta: meta,
-    );
+  TsTypeReference _typeReference(TsTypeReference node) {
+    const standardTypes = {
+      'Symbol': 'JSSymbol',
+      'BigInt': 'JSBigInt',
+      'Promise': 'JSPromise',
+      'ArrayBuffer': 'JSArrayBuffer',
+      'Int8Array': 'JSInt8Array',
+      'Int16Array': 'JSInt16Array',
+      'Int32Array': 'JSInt32Array',
+      'Uint8Array': 'JSUint8Array',
+      'Uint16Array': 'JSUint16Array',
+      'Uint32Array': 'JSUint32Array',
+      'Float32Array': 'JSFloat32Array',
+      'Float64Array': 'JSFloat64Array',
+      'Uint8ClampedArray': 'JSUint8ClampedArray',
+    };
+
+    if (node case TsTypeReference(nodeName: final name?)) {
+      if (standardTypes.keys.contains(name)) {
+        final newType = standardTypes[name]!;
+        if (newType == 'JSPromise' && node.typeArguments.value.isNotEmpty) {
+          final typeArg = node.typeArguments.value.first.kind;
+          return TsTypeReference(
+            TsIdentifier(newType).toSingleNode(),
+            [TsNodeKind.voidKeyword, TsNodeKind.nullKeyword, TsNodeKind.undefinedKeyword].contains(typeArg)
+                ? ListNode([])
+                : node.typeArguments,
+          );
+        } else {
+          return TsTypeReference(
+            TsIdentifier(newType).toSingleNode(),
+            node.typeArguments,
+          );
+        }
+      }
+    }
+    return node;
   }
 
   TsTypeReference _unionType(TsUnionType node) {
@@ -75,12 +114,13 @@ class TypeEvaluator {
       TsNullKeyword() => _typeRef('Null'),
       TsNumberKeyword() => _typeRef('JSNumber'),
       TsNumericLiteral() => _typeRef('JSNumber'),
+      TsObjectKeyword() => _typeRef('JSObject'),
       TsParenthesizedType() => _parenthesizedType(node),
       TsStringKeyword() => _typeRef('JSString'),
       TsStringLiteral() => _typeRef('JSString'),
       TsTrueKeyword() => _typeRef('JSBoolean'),
       TsTypeOperator() => _typeOperator(node),
-      TsTypeReference() => node,
+      TsTypeReference() => _typeReference(node),
       TsUndefinedKeyword() => _typeRef('Null'),
       TsUnionType() => _unionType(node),
       TsVoidKeyword() => _typeRef('__<VOID>__'),

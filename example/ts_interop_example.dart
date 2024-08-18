@@ -134,7 +134,6 @@ void main() async {
         removeDuplicateInterfacesMapper,
       ]))
       .addPhase(SanitizerPhase('defaultMappers', PhaseDirection.bottomUp, [
-        standardTypesMapper,
         missingTypeMapper,
         literalAsTypeArgumentMapper,
         typeQueryMapper,

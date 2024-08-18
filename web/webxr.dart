@@ -2,7 +2,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:js_interop' as _i1;
+
 import 'package:web/web.dart' as _i2;
+
 import './types.dart' as _i3;
 
 /// Interface [Navigator]
@@ -26,7 +28,7 @@ extension type WebGLRenderingContextBase.$(_i1.JSObject _) implements _i1.JSObje
   /// Method [makeXRCompatible]
   ///
   /// Returns:
-  /// - JSPromise
+  /// - Promise
   external _i1.JSPromise makeXRCompatible();
 }
 
@@ -108,7 +110,7 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   /// - options: XRSessionInit
   ///
   /// Returns:
-  /// - JSPromise
+  /// - Promise
   external _i1.JSPromise<XRSession> requestSession(
     XRSessionMode mode, [
     XRSessionInit options,
@@ -120,7 +122,7 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   /// - mode: XRSessionMode
   ///
   /// Returns:
-  /// - JSPromise
+  /// - Promise
   external _i1.JSPromise<_i1.JSBoolean> isSessionSupported(XRSessionMode mode);
 
   /// Method [addEventListener]
@@ -466,7 +468,7 @@ extension type GamepadHapticActuator.$(_i1.JSObject _) implements _i1.JSObject, 
   /// - duration: number
   ///
   /// Returns:
-  /// - JSPromise
+  /// - Promise
   external _i1.JSPromise<_i1.JSBoolean> pulse(
     _i1.JSNumber value,
     _i1.JSNumber duration,
@@ -558,7 +560,7 @@ extension type XRFrame._(_i1.JSObject _) implements _i1.JSObject {
 
   /// Property [createAnchor]
   ///
-  /// createAnchor?: (pose: XRRigidTransform, space: XRSpace) => JSPromise | undefined
+  /// createAnchor?: (pose: XRRigidTransform, space: XRSpace) => Promise | undefined
   external _i1.JSFunction? createAnchor;
 
   /// Property [getJointPose]
@@ -791,24 +793,24 @@ extension type XRSessionEventMap.$(_i1.JSObject _) implements _i1.JSObject {
 extension type XRSession._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [requestHitTestSource]
   ///
-  /// requestHitTestSource?: (options: XRHitTestOptionsInit) => JSPromise | undefined
+  /// requestHitTestSource?: (options: XRHitTestOptionsInit) => Promise | undefined
   external _i1.JSFunction? requestHitTestSource;
 
   /// Property [requestHitTestSourceForTransientInput]
   ///
-  /// requestHitTestSourceForTransientInput?: (options: XRTransientInputHitTestOptionsInit) => JSPromise | undefined
+  /// requestHitTestSourceForTransientInput?: (options: XRTransientInputHitTestOptionsInit) => Promise | undefined
   external _i1.JSFunction? requestHitTestSourceForTransientInput;
 
   /// Property [requestHitTest]
   ///
-  /// requestHitTest?: (ray: XRRay, referenceSpace: XRReferenceSpace) => JSPromise | undefined
+  /// requestHitTest?: (ray: XRRay, referenceSpace: XRReferenceSpace) => Promise | undefined
   external _i1.JSFunction? requestHitTest;
 
   /// Method [initiateRoomCapture]
   ///
   /// Returns:
-  /// - JSPromise
-  external _i1.JSFunction? get initiateRoomCapture;
+  /// - Promise
+  external _i1.JSPromise initiateRoomCapture();
 
   /// Property [domOverlayState]
   ///
@@ -858,7 +860,7 @@ extension type XRRigidTransform.$(_i1.JSObject _) implements _i1.JSObject {
 
   /// Property [matrix]
   ///
-  /// readonly matrix: JSFloat32Array
+  /// readonly matrix: Float32Array
   external _i1.JSFloat32Array get matrix;
 
   /// Property [inverse]
@@ -876,7 +878,7 @@ extension type XRView._(_i1.JSObject _) implements _i1.JSObject {
 
   /// Property [projectionMatrix]
   ///
-  /// readonly projectionMatrix: JSFloat32Array
+  /// readonly projectionMatrix: Float32Array
   external _i1.JSFloat32Array get projectionMatrix;
 
   /// Property [transform]
@@ -958,7 +960,7 @@ extension type XRRay.$(_i1.JSObject _) implements _i1.JSObject {
 
   /// Property [matrix]
   ///
-  /// readonly matrix: JSFloat32Array
+  /// readonly matrix: Float32Array
   external _i1.JSFloat32Array get matrix;
 }
 
@@ -989,7 +991,7 @@ extension type XRTransientInputHitTestResult.$(_i1.JSObject _) implements _i1.JS
 extension type XRHitTestResult._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [createAnchor]
   ///
-  /// createAnchor?: (pose: XRRigidTransform) => JSPromise | undefined
+  /// createAnchor?: (pose: XRRigidTransform) => Promise | undefined
   external _i1.JSFunction? createAnchor;
 
   /// Method [getPose]
@@ -1060,7 +1062,7 @@ extension type XRTransientInputHitTestOptionsInit.$(_i1.JSObject _) implements _
 extension type XRHitResult.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [hitMatrix]
   ///
-  /// hitMatrix: JSFloat32Array
+  /// hitMatrix: Float32Array
   external _i1.JSFloat32Array hitMatrix;
 }
 
@@ -1111,12 +1113,12 @@ extension type XRMesh._(_i1.JSObject _) implements _i1.JSObject {
 
   /// Property [vertices]
   ///
-  /// vertices: JSFloat32Array
+  /// vertices: Float32Array
   external _i1.JSFloat32Array vertices;
 
   /// Property [indices]
   ///
-  /// indices: JSUint32Array
+  /// indices: Uint32Array
   external _i1.JSUint32Array indices;
 
   /// Property [lastChangedTime]
@@ -2063,7 +2065,7 @@ extension type XRDepthInformation.$(_i1.JSObject _) implements _i1.JSObject {
 extension type XRCPUDepthInformation.$(_i1.JSObject _) implements _i1.JSObject, XRDepthInformation {
   /// Property [data]
   ///
-  /// readonly data: JSArrayBuffer
+  /// readonly data: ArrayBuffer
   external _i1.JSArrayBuffer get data;
 
   /// Method [getDepthInMeters]

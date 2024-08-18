@@ -533,19 +533,22 @@ class Transpiler {
   }
 
   DartNode<TypeReference> _transpileTypeReference(TsTypeReference typeReference) {
-    if (typeReference.typeName.value.nodeName == '__<VOID>__') {
+    final type = typeEvaluator.evaluateType(typeReference);
+
+    if (type.nodeName == '__<VOID>__') {
       return _transpileVoidKeyword(TsVoidKeyword());
     }
-    final isNullable = typeReference.typeName.value.nodeName?.endsWith('?') ?? false;
+
+    final isNullable = type.typeName.value.nodeName?.endsWith('?') ?? false;
     final name = isNullable
-        ? typeReference.typeName.value.nodeName!.substring(0, typeReference.typeName.value.nodeName!.length - 1)
-        : typeReference.typeName.value.nodeName;
+        ? type.typeName.value.nodeName!.substring(0, type.typeName.value.nodeName!.length - 1)
+        : type.typeName.value.nodeName;
 
     return TypeReference((builder) {
       builder.symbol = name;
       builder.url = dependencies.libraryUrlForType(name);
       builder.isNullable = isNullable;
-      builder.types.addAll(_transpileNodes<Reference>(typeReference.typeArguments.value).toSpecs(dependencies));
+      builder.types.addAll(_transpileNodes<Reference>(type.typeArguments.value).toSpecs(dependencies));
     }).toDartNode(typeReference);
   }
 
