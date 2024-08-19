@@ -144,6 +144,8 @@ class Transpiler {
   }
 
   DartNode<ExtensionType> _transpileEnumDeclaration(TsEnumDeclaration enumDeclaration) {
+    final members = enumDeclaration.members.value.whereType<TsEnumMember>().toList();
+
     return ExtensionType((builder) {
       builder.docs.add('/// enum ${enumDeclaration.name.value.nodeName}');
       builder.name = enumDeclaration.name.value.nodeName;
@@ -157,6 +159,24 @@ class Transpiler {
       builder.implements.add(TypeReference((builder) {
         builder.symbol = 'JSObject';
         builder.url = dependencies.libraryUrlForType(builder.symbol);
+      }));
+      builder.fields.addAll(members.whereType<TsEnumMember>().map((member) {
+        return Field((builder) {
+          builder.docs.add('/// member ${member.toCode()}');
+          builder.external = true;
+          builder.name = member.name.value.nodeName;
+          builder.type =
+              _transpileNode<Reference>(typeEvaluator.evaluateType(member.initializer.value)).toSpec(dependencies);
+        });
+      }));
+      builder.methods.add(Method((builder) {
+        builder.external = true;
+        builder.name = 'operator []';
+        builder.returns = _transpileNode<Reference>(TsStringKeyword()).toSpec(dependencies);
+        builder.requiredParameters.add(Parameter((builder) {
+          builder.type = _transpileNode<Reference>(TsAnyKeyword()).toSpec(dependencies);
+          builder.name = 'value';
+        }));
       }));
     }).toDartNode(enumDeclaration);
   }

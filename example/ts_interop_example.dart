@@ -66,23 +66,23 @@ TsNode tupleMapper(TsNode node, TypeEvaluator typeEvaluator) {
 }
 
 final typesDependency = Dependency('./types.dart', {
-  'Parameters',
-  'Record',
-  'ArrayBufferView',
-  'ImageBitmap',
-  'ImageBitmapOptions',
-  'XRFrame',
-  'XRInputSource',
-  'ReadonlyArray',
-  'Array',
-  'Error',
-  'GPURequestAdapterOptions',
-  'IteratorResult',
+  // 'Parameters',
+  // 'Record',
+  // 'ArrayBufferView',
+  // 'ImageBitmap',
+  // 'ImageBitmapOptions',
+  // 'XRFrame',
+  // 'XRInputSource',
+  // 'ReadonlyArray',
+  // 'Array',
+  // 'Error',
+  // 'GPURequestAdapterOptions',
+  // 'IteratorResult',
   'IterableIterator',
-  'AbortSignal',
-  'TypedPropertyDescriptor',
+  // 'AbortSignal',
+  // 'TypedPropertyDescriptor',
   'EventListenerOrEventListenerObject',
-  'Set',
+  // 'Set',
 });
 
 class ComparableTsNode implements Comparable<ComparableTsNode> {

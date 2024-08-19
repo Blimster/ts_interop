@@ -869,6 +869,9 @@ class TsEnumMember extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
+  String toCode() => '${name.toCode()}${initializer.toCode(' = &')}';
+
+  @override
   List<TsNodeWrapper> get nodeWrappers => [
         name,
         initializer,

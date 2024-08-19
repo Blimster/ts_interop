@@ -2,9 +2,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:js_interop' as _i1;
-
 import 'package:web/web.dart' as _i2;
-
 import './types.dart' as _i3;
 
 /// Interface [Navigator]
@@ -492,9 +490,9 @@ extension type XRInputSourceArray._(_i1.JSObject _) implements _i1.JSObject {
 
   external void operator []=(
     _i1.JSNumber n,
-    _i3.XRInputSource value,
+    _i2.XRInputSource value,
   );
-  external _i3.XRInputSource operator [](_i1.JSNumber n);
+  external _i2.XRInputSource operator [](_i1.JSNumber n);
 
   /// Method [entries]
   ///
@@ -512,7 +510,7 @@ extension type XRInputSourceArray._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - IterableIterator
-  external _i3.IterableIterator<_i3.XRInputSource> values();
+  external _i3.IterableIterator<_i2.XRInputSource> values();
 
   /// Method [forEach]
   ///
@@ -650,12 +648,12 @@ extension type XRInputSourceEventInit.$(_i1.JSObject _)
   /// Property [frame]
   ///
   /// frame?: XRFrame | undefined
-  external _i3.XRFrame? frame;
+  external XRFrame? frame;
 
   /// Property [inputSource]
   ///
   /// inputSource?: XRInputSource | undefined
-  external _i3.XRInputSource? inputSource;
+  external _i2.XRInputSource? inputSource;
 }
 
 /// Class [XRInputSourceEvent]
@@ -678,12 +676,12 @@ extension type XRInputSourceEvent.$(_i1.JSObject _) implements _i1.JSObject, _i2
   /// Property [frame]
   ///
   /// readonly frame: XRFrame
-  external _i3.XRFrame get frame;
+  external XRFrame get frame;
 
   /// Property [inputSource]
   ///
   /// readonly inputSource: XRInputSource
-  external _i3.XRInputSource get inputSource;
+  external _i2.XRInputSource get inputSource;
 }
 
 /// Interface [XRInputSourceEventHandler]
@@ -906,12 +904,12 @@ extension type XRInputSourcesChangeEvent.$(_i1.JSObject _) implements _i1.JSObje
   /// Property [removed]
   ///
   /// readonly removed: readonly XRInputSource[]
-  external _i1.JSArray<_i3.XRInputSource> get removed;
+  external _i1.JSArray<_i2.XRInputSource> get removed;
 
   /// Property [added]
   ///
   /// readonly added: readonly XRInputSource[]
-  external _i1.JSArray<_i3.XRInputSource> get added;
+  external _i1.JSArray<_i2.XRInputSource> get added;
 }
 
 /// Interface [XRInputSourcesChangeEventHandler]
@@ -920,7 +918,7 @@ extension type XRInputSourcesChangeEventHandler.$(_i1.JSFunction _) implements _
 /// Typedef [XRAnchorSet]
 ///
 /// Set
-typedef XRAnchorSet = _i3.Set<XRAnchor>;
+typedef XRAnchorSet = Set<XRAnchor>;
 
 /// Class [XRAnchor]
 extension type XRAnchor._(_i1.JSObject _) implements _i1.JSObject {
@@ -979,7 +977,7 @@ extension type XRTransientInputHitTestResult.$(_i1.JSObject _) implements _i1.JS
   /// Property [inputSource]
   ///
   /// readonly inputSource: XRInputSource
-  external _i3.XRInputSource get inputSource;
+  external _i2.XRInputSource get inputSource;
 
   /// Property [results]
   ///
@@ -1069,7 +1067,7 @@ extension type XRHitResult.$(_i1.JSObject _) implements _i1.JSObject {
 /// Typedef [XRPlaneSet]
 ///
 /// Set
-typedef XRPlaneSet = _i3.Set<XRPlane>;
+typedef XRPlaneSet = Set<XRPlane>;
 
 /// Typedef [XRPlaneOrientation]
 ///
@@ -1102,7 +1100,7 @@ extension type XRPlane._(_i1.JSObject _) implements _i1.JSObject {
 /// Typedef [XRMeshSet]
 ///
 /// Set
-typedef XRMeshSet = _i3.Set<XRMesh>;
+typedef XRMeshSet = Set<XRMesh>;
 
 /// Class [XRMesh]
 extension type XRMesh._(_i1.JSObject _) implements _i1.JSObject {
@@ -1859,7 +1857,7 @@ extension type XRWebGLBinding.$(_i1.JSObject _) implements _i1.JSObject {
   /// - eye: XREye
   external XRWebGLSubImage getSubImage(
     XRCompositionLayer layer,
-    _i3.XRFrame frame, [
+    XRFrame frame, [
     XREye eye,
   ]);
 
@@ -1923,7 +1921,21 @@ extension type XRMediaBinding.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// enum XOVR_multiview2
-extension type XOVR_multiview2(_i1.JSObject _) implements _i1.JSObject {}
+extension type XOVR_multiview2(_i1.JSObject _) implements _i1.JSObject {
+  /// member FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR = 0x9630
+  external _i1.JSNumber FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR;
+
+  /// member FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR = 0x9632
+  external _i1.JSNumber FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR;
+
+  /// member MAX_VIEWS_OVR = 0x9631
+  external _i1.JSNumber MAX_VIEWS_OVR;
+
+  /// member FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR = 0x9633
+  external _i1.JSNumber FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR;
+
+  external _i1.JSString operator [](_i1.JSAny value);
+}
 
 /// Class [OVR_multiview2]
 extension type OVR_multiview2._(_i1.JSObject _) implements _i1.JSObject {}
