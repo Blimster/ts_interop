@@ -18,7 +18,7 @@ const _defaultKinds = {
   TsNodeKind.enumDeclaration,
 };
 
-TsNodeMapper removeNodesByDependency(Dependency dependency, {Set<TsNodeKind> kinds = _defaultKinds}) {
+TsNodeMapper removeNodesByDependency(StaticDependency dependency, {Set<TsNodeKind> kinds = _defaultKinds}) {
   return (TsNode node, TypeEvaluator typeEvaluator) {
     if (kinds.contains(node.kind) && dependency.types.contains(node.nodeName)) {
       return Ts$Removed(node);

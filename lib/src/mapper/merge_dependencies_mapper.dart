@@ -5,7 +5,7 @@ import '../transpiler/type_evaluator.dart';
 TsNodeMapper mergeDependenciesMapper(Dependencies dependencies, {Set<String> excludes = const {}}) {
   return (TsNode node, TypeEvaluator typeEvaluator) {
     if (node case TsInterfaceDeclaration(nodeName: var name?)) {
-      if (!excludes.contains(name) && dependencies.containsType(name)) {
+      if (!excludes.contains(name) && dependencies.containsType(name, node)) {
         node.heritageClauses.update((heritageClauses) {
           final result = List.of(heritageClauses);
           result.add(TsHeritageClause(
@@ -23,7 +23,7 @@ TsNodeMapper mergeDependenciesMapper(Dependencies dependencies, {Set<String> exc
       }
     }
     if (node case TsClassDeclaration(nodeName: var name?)) {
-      if (!excludes.contains(name) && dependencies.containsType(name)) {
+      if (!excludes.contains(name) && dependencies.containsType(name, node)) {
         node.heritageClauses.update((heritageClauses) {
           final result = List.of(heritageClauses);
           result.add(TsHeritageClause(

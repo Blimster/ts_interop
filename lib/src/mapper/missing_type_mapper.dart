@@ -5,6 +5,7 @@ TsNode missingTypeMapper(TsNode node, TypeEvaluator typeEvaluator) {
   return switch (node) {
     TsParameter(type: NullableNode(value: null)) => TsParameter(
         node.modifiers,
+        node.dotDotDotToken,
         node.name,
         node.questionToken,
         TsTypeReference(

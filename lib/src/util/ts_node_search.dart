@@ -218,4 +218,12 @@ extension TsNodeSearch on TsNode {
   List<T> searchDown<T extends TsNode>([SearchConstraint? constraint]) {
     return _search(isParentOf, constraint);
   }
+
+  List<T> searchParent<T extends TsNode>([SearchConstraint? constraint]) {
+    return _search(isDirectParentOf, constraint);
+  }
+
+  List<T> searchChilds<T extends TsNode>([SearchConstraint? constraint]) {
+    return _search(isDirectChildOf, constraint);
+  }
 }

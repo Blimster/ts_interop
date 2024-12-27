@@ -13,6 +13,107 @@ final _nullType = TypeReference((builder) {
   builder.symbol = 'null';
 });
 
+String? _sanitizeTypeName(String? name) {
+  const invalidNames = {
+    'assert',
+    'class',
+    'default',
+    'false',
+    'Function',
+    'is',
+    'new',
+    'null',
+    'return',
+    'super',
+    'this',
+    'throw',
+    'true',
+    'void',
+    'with',
+  };
+  if (invalidNames.contains(name)) {
+    return '$name\$';
+  }
+  return name ?? '_';
+}
+
+String? _sanitizePropertyName(String? name) {
+  const invalidNames = {
+    'assert',
+    'class',
+    'default',
+    'hashCode',
+    'false',
+    'is',
+    'new',
+    'null',
+    'return',
+    'runtimeType',
+    'super',
+    'this',
+    'throw',
+    'true',
+    'void',
+    'with',
+  };
+  if (invalidNames.contains(name)) {
+    return '$name\$';
+  }
+  return name ?? '_';
+}
+
+String? _sanitizeMethodName(String? name) {
+  const invalidNames = {
+    'assert',
+    'class',
+    'default',
+    'false',
+    'is',
+    'new',
+    'noSuchMethod',
+    'null',
+    'return',
+    'super',
+    'this',
+    'throw',
+    'toString',
+    'true',
+    'void',
+    'with',
+  };
+  if (invalidNames.contains(name)) {
+    return '$name\$';
+  }
+  return name ?? '_';
+}
+
+String? _sanitizedFunctionName(String? name) {
+  return _sanitizeMethodName(name);
+}
+
+String _sanitizeParamName(String? name) {
+  const invalidNames = {
+    'assert',
+    'class',
+    'default',
+    'false',
+    'is',
+    'new',
+    'null',
+    'return',
+    'super',
+    'this',
+    'throw',
+    'true',
+    'void',
+    'with',
+  };
+  if (invalidNames.contains(name)) {
+    return '$name\$';
+  }
+  return name ?? '_';
+}
+
 bool _containsNodeKind(List<TsNode> nodes, TsNodeKind kind) {
   for (final node in nodes) {
     if (node.kind == kind) {
@@ -53,32 +154,35 @@ extension on TypeReference {
 class Transpiler {
   final TypeEvaluator typeEvaluator;
   final Dependencies dependencies;
+  final List<Library> libraries = [];
 
   Transpiler(this.typeEvaluator, this.dependencies);
 
   List<Library> transpile(TsPackage package) {
+    dependencies.dependencies.insert(0, PackageDependency(package));
     updateParentAndChilds(package, package.parent);
-    return _transpileNode<Library>(package).toSpecs(dependencies);
+    _transpileNode<Library>(package).toSpecs(dependencies);
+    return libraries;
   }
 
   DartNode<TypeReference> _transpileAnyKeyword(TsAnyKeyword anyKeyword) {
     return TypeReference((builder) {
       builder.symbol = 'JSAny';
-      builder.url = builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, anyKeyword);
     }).toDartNode(anyKeyword);
   }
 
   DartNode<TypeReference> _transpileArrayType(TsArrayType arrayType) {
     return TypeReference((builder) {
       builder.symbol = 'JSArray';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, arrayType);
       final elementType = _transpileNode<Reference>(arrayType.elementType.value).toSpecs(dependencies);
       if (elementType.isNotEmpty) {
         builder.types.add(elementType.first);
       } else {
         builder.types.add(TypeReference((builder) {
           builder.symbol = 'JSAny';
-          builder.url = dependencies.libraryUrlForType(builder.symbol);
+          builder.url = dependencies.libraryUrlForType(builder.symbol, arrayType);
         }));
       }
     }).toDartNode(arrayType);
@@ -87,7 +191,7 @@ class Transpiler {
   DartNode<TypeReference> _transpileBooleanKeyword(TsBooleanKeyword booleanKeyword) {
     return TypeReference((builder) {
       builder.symbol = 'JSBoolean';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, booleanKeyword);
     }).toDartNode(booleanKeyword);
   }
 
@@ -95,22 +199,29 @@ class Transpiler {
     final isAbstract = _containsNodeKind(classDeclaration.modifiers.value, TsNodeKind.abstractKeyword);
     final members = _transpileNodes(classDeclaration.members.value);
     final hasCallSignature = classDeclaration.searchDown<TsCallSignature>().isNotEmpty;
+    final className = classDeclaration.name.value.nodeName;
+    final sanitizedClassName = _sanitizeTypeName(className);
 
     return ExtensionType((builder) {
       builder.docs.add('/// Class [${classDeclaration.name.value.nodeName}]');
-      builder.name = classDeclaration.name.value.nodeName;
+      if (sanitizedClassName != className) {
+        final allocator = Allocator.simplePrefixing();
+        builder.annotations.add(CodeExpression(Code(
+            "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', classDeclaration)))}('$className')")));
+      }
+      builder.name = sanitizedClassName;
       builder.types.addAll(_transpileNodes<Reference>(classDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.primaryConstructorName = isAbstract ? '_' : '\$';
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
           builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
-          builder.url = dependencies.libraryUrlForType(builder.symbol);
+          builder.url = dependencies.libraryUrlForType(builder.symbol, classDeclaration);
         });
       });
       builder.implements.add(TypeReference((builder) {
         builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
-        builder.url = dependencies.libraryUrlForType(builder.symbol);
+        builder.url = dependencies.libraryUrlForType(builder.symbol, classDeclaration);
       }));
       builder.implements
           .addAll(_transpileNodes<Reference>(classDeclaration.heritageClauses.value).toSpecs(dependencies));
@@ -143,6 +254,13 @@ class Transpiler {
     }).toDartNode(constructorDeclaration);
   }
 
+  DartNode<Reference> _transpileConstructorType(TsConstructorType constructorType) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSFunction';
+      builder.url = dependencies.libraryUrlForType(builder.symbol, constructorType);
+    }).toDartNode(constructorType);
+  }
+
   DartNode<ExtensionType> _transpileEnumDeclaration(TsEnumDeclaration enumDeclaration) {
     final members = enumDeclaration.members.value.whereType<TsEnumMember>().toList();
 
@@ -153,12 +271,12 @@ class Transpiler {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
           builder.symbol = 'JSObject';
-          builder.url = dependencies.libraryUrlForType(builder.symbol);
+          builder.url = dependencies.libraryUrlForType(builder.symbol, enumDeclaration);
         });
       });
       builder.implements.add(TypeReference((builder) {
         builder.symbol = 'JSObject';
-        builder.url = dependencies.libraryUrlForType(builder.symbol);
+        builder.url = dependencies.libraryUrlForType(builder.symbol, enumDeclaration);
       }));
       builder.fields.addAll(members.whereType<TsEnumMember>().map((member) {
         return Field((builder) {
@@ -186,8 +304,8 @@ class Transpiler {
     final expression = expressionWithTypeArguments.expression.value;
     return switch (expression) {
       TsIdentifier() => TypeReference((builder) {
-          builder.symbol = expression.nodeName;
-          builder.url = dependencies.libraryUrlForType(expression.nodeName);
+          builder.symbol = _sanitizeTypeName(expression.nodeName);
+          builder.url = dependencies.libraryUrlForType(expression.nodeName, expressionWithTypeArguments);
           builder.types.addAll(
               _transpileNodes<Reference>(expressionWithTypeArguments.typeArguments.value).toSpecs(dependencies));
         }),
@@ -197,10 +315,39 @@ class Transpiler {
   }
 
   DartNode<Method> _transpileFunctionDeclaration(TsFunctionDeclaration functionDeclaration) {
+    final functionName = functionDeclaration.name.value.nodeName;
+    if (functionName == null) {
+      return DartNode.empty<Method>(functionDeclaration);
+    }
+
+    final overloadIds = <int>[];
+    if (functionDeclaration.parent case final parent?) {
+      final overloads = parent.searchChilds<TsFunctionDeclaration>(hasName(functionName));
+      for (final overload in overloads) {
+        overloadIds.add(overload.id);
+      }
+    }
+    overloadIds.sort();
+
+    final sanitizedFunctionName = _sanitizedFunctionName(functionName);
     return Method((builder) {
+      builder.docs.addAll([
+        '/// Method [${functionDeclaration.name.value.nodeName}]',
+        if (functionDeclaration.typeParameters.value.isNotEmpty) ...['///', '/// Type Parameters:'],
+        ...functionDeclaration.typeParameters.value.map((tp) => '/// - ${tp.toCode()}'),
+        if (functionDeclaration.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
+        ...functionDeclaration.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
+      ]);
+      if (overloadIds.length > 1 || sanitizedFunctionName != functionName) {
+        final allocator = Allocator.simplePrefixing();
+        builder.annotations.add(CodeExpression(Code(
+            "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', functionDeclaration)))}('$functionName')")));
+      }
       builder.external = true;
       builder.returns = _transpileNode<Reference>(functionDeclaration.type.value).toSpecs(dependencies).firstOrNull;
-      builder.name = functionDeclaration.name.value.nodeName;
+      builder.name = overloadIds.length > 1
+          ? '${functionDeclaration.name.value.nodeName}\$${overloadIds.indexOf(functionDeclaration.id) + 1}'
+          : sanitizedFunctionName;
       builder.types.addAll(_transpileNodes<Reference>(functionDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(_transpileNodes<Reference>(functionDeclaration.parameters.value)
           .cast<DartParameter>()
@@ -218,7 +365,7 @@ class Transpiler {
   DartNode<TypeReference> _transpileFunctionType(TsFunctionType functionType) {
     return TypeReference((builder) {
       builder.symbol = 'JSFunction';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, functionType);
     }).toDartNode(functionType);
   }
 
@@ -261,22 +408,29 @@ class Transpiler {
   DartNode<ExtensionType> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
     final members = _transpileNodes(interfaceDeclaration.members.value).toSpecs(dependencies);
     final hasCallSignature = interfaceDeclaration.searchDown<TsCallSignature>().isNotEmpty;
+    final interfaceName = interfaceDeclaration.name.value.nodeName;
+    final sanitizedInterfaceName = _sanitizeTypeName(interfaceName);
 
     return ExtensionType((builder) {
       builder.docs.add('/// Interface [${interfaceDeclaration.name.value.nodeName}]');
-      builder.name = interfaceDeclaration.name.value.nodeName;
+      if (sanitizedInterfaceName != interfaceName) {
+        final allocator = Allocator.simplePrefixing();
+        builder.annotations.add(CodeExpression(Code(
+            "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', interfaceDeclaration)))}('$interfaceName')")));
+      }
+      builder.name = sanitizedInterfaceName;
       builder.types.addAll(_transpileNodes<Reference>(interfaceDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.primaryConstructorName = '\$';
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
           builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
-          builder.url = dependencies.libraryUrlForType(builder.symbol);
+          builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
         });
       });
       builder.implements.add(TypeReference((builder) {
         builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
-        builder.url = dependencies.libraryUrlForType(builder.symbol);
+        builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
       }));
       builder.implements
           .addAll(_transpileNodes<Reference>(interfaceDeclaration.heritageClauses.value).toSpecs(dependencies));
@@ -288,7 +442,7 @@ class Transpiler {
   DartNode<TypeReference> _transpileIntersectionType(TsIntersectionType intersectionType) {
     return TypeReference((builder) {
       builder.symbol = 'JSAny';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, intersectionType);
     }).toDartNode(intersectionType);
   }
 
@@ -299,7 +453,7 @@ class Transpiler {
   DartNode<Method> _transpileMappedType(TsMappedType mappedType) {
     return TypeReference((builder) {
       builder.symbol = 'JSObject';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, mappedType);
     }).toDartNode(mappedType);
   }
 
@@ -311,13 +465,14 @@ class Transpiler {
 
     final overloadIds = <int>[];
     if (methodDeclaration.parent case final parent?) {
-      final overloads = parent.searchDown<TsMethodSignature>(hasName(methodName));
+      final overloads = parent.searchChilds<TsMethodSignature>(hasName(methodName));
       for (final overload in overloads) {
         overloadIds.add(overload.id);
       }
     }
     overloadIds.sort();
 
+    final sanitizedMethodName = _sanitizeMethodName(methodName);
     return Method((builder) {
       builder.docs.addAll([
         '/// Method [${methodDeclaration.name.value.nodeName}]',
@@ -326,17 +481,18 @@ class Transpiler {
         if (methodDeclaration.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
         ...methodDeclaration.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
       ]);
-      if (overloadIds.length > 1) {
+      if (overloadIds.length > 1 || sanitizedMethodName != methodName) {
         final allocator = Allocator.simplePrefixing();
-        builder.annotations.add(CodeExpression(
-            Code("${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS')))}('$methodName')")));
+        builder.annotations.add(CodeExpression(Code(
+            "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', methodDeclaration)))}('$methodName')")));
       }
       builder.external = true;
       builder.static = _containsNodeKind(methodDeclaration.modifiers.value, TsNodeKind.staticKeyword);
       builder.returns =
           _transpileNode<Reference>(typeEvaluator.evaluateType(methodDeclaration.type.value)).toSpec(dependencies);
-      builder.name =
-          '${methodDeclaration.name.value.nodeName}${overloadIds.length > 1 ? '\$${overloadIds.indexOf(methodDeclaration.id) + 1}' : ''}';
+      builder.name = overloadIds.length > 1
+          ? '${methodDeclaration.name.value.nodeName}\$${overloadIds.indexOf(methodDeclaration.id) + 1}'
+          : sanitizedMethodName;
       builder.types.addAll(_transpileNodes<Reference>(methodDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(_transpileNodes<Reference>(methodDeclaration.parameters.value)
           .cast<DartParameter>()
@@ -366,6 +522,7 @@ class Transpiler {
     }
     overloadIds.sort();
 
+    final sanitizedMethodName = _sanitizeMethodName(methodName);
     return Method((builder) {
       builder.docs.addAll([
         '/// Method [${methodSignature.name.value.nodeName}]',
@@ -377,16 +534,17 @@ class Transpiler {
         '/// Returns:',
         '/// - ${methodSignature.type.value?.toCode()}',
       ]);
-      if (overloadIds.length > 1) {
+      if (overloadIds.length > 1 || sanitizedMethodName != methodName) {
         final allocator = Allocator.simplePrefixing();
-        builder.annotations.add(CodeExpression(
-            Code("${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS')))}('$methodName')")));
+        builder.annotations.add(CodeExpression(Code(
+            "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', methodSignature)))}('$methodName')")));
       }
       builder.external = true;
       builder.returns =
           _transpileNode<Reference>(typeEvaluator.evaluateType(methodSignature.type.value)).toSpec(dependencies);
-      builder.name =
-          '${methodSignature.name.value.nodeName}${overloadIds.length > 1 ? '\$${overloadIds.indexOf(methodSignature.id) + 1}' : ''}';
+      builder.name = overloadIds.length > 1
+          ? '${methodSignature.name.value.nodeName}\$${overloadIds.indexOf(methodSignature.id) + 1}'
+          : sanitizedMethodName;
       builder.types.addAll(_transpileNodes<Reference>(methodSignature.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(_transpileNodes<Reference>(methodSignature.parameters.value)
           .cast<DartParameter>()
@@ -401,6 +559,22 @@ class Transpiler {
     }).toDartNode(methodSignature);
   }
 
+  DartNode<Library> _transpileModuleDeclaration(TsModuleDeclaration moduleDeclaration) {
+    final library = Library((builder) {
+      builder.name = moduleDeclaration.name.value.nodeName?.toLowerCase();
+      builder.ignoreForFile.addAll([
+        'non_constant_identifier_names',
+        'camel_case_types',
+      ]);
+      final body = moduleDeclaration.body.value;
+      if (body != null) {
+        builder.body.addAll(_transpileNodes(body.children).toSpecs(dependencies));
+      }
+    });
+    libraries.add(library);
+    return library.toDartNode<Library>(moduleDeclaration);
+  }
+
   DartNode<TypeReference> _transpileNullKeyword(TsNullKeyword nullKeyword) {
     return _nullType.toDartNode(nullKeyword);
   }
@@ -408,7 +582,7 @@ class Transpiler {
   DartNode<TypeReference> _transpileNumberKeyword(TsNumberKeyword numberKeyword) {
     return TypeReference((builder) {
       builder.symbol = 'JSNumber';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, numberKeyword);
     }).toDartNode(numberKeyword);
   }
 
@@ -417,18 +591,21 @@ class Transpiler {
   }
 
   DartNode<Library> _transpilePackage(TsPackage package) {
-    return Library((builder) {
+    final library = Library((builder) {
       builder.ignoreForFile.addAll([
         'non_constant_identifier_names',
         'camel_case_types',
       ]);
-      builder.body.addAll(_transpileNodes(package.sourceFiles.value).toSpecs(dependencies));
-    }).toDartNode(package);
+      builder.name = package.name;
+      builder.body.addAll(_transpileNodes(package.sourceFiles.value).toSpecs(dependencies).where((s) => s is! Library));
+    });
+    libraries.add(library);
+    return library.toDartNode<Library>(package);
   }
 
   DartNode<Reference> _transpileParameter(TsParameter parameter) {
     return Parameter((builder) {
-      builder.name = parameter.name.value.nodeName ?? '';
+      builder.name = _sanitizeParamName(parameter.name.value.nodeName);
       builder.type = _transpileNode<Reference>(typeEvaluator.evaluateType(parameter.type.value)).toSpec(dependencies);
     }).toDartNode(
       parameter,
@@ -438,14 +615,20 @@ class Transpiler {
 
   DartNode<Spec> _transpilePropertyDeclaration(TsPropertyDeclaration propertyDeclaration) {
     final readonly = _containsNodeKind(propertyDeclaration.modifiers.value, TsNodeKind.readonlyKeyword);
+    final sanitizedPropertyName = _sanitizePropertyName(propertyDeclaration.name.value.nodeName);
     if (readonly) {
       return Method((builder) {
         builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertyDeclaration.toCode()}');
+        if (propertyDeclaration.name.value.nodeName != sanitizedPropertyName) {
+          final allocator = Allocator.simplePrefixing();
+          builder.annotations.add(CodeExpression(Code(
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', propertyDeclaration)))}('${propertyDeclaration.name.value.nodeName}')")));
+        }
         builder.type = MethodType.getter;
         builder.external = true;
-        builder.name = propertyDeclaration.name.value.nodeName;
+        builder.name = sanitizedPropertyName;
         builder.returns = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertyDeclaration.type.value))
             .toSpec(dependencies)
             ?.copyWith(isNullable: propertyDeclaration.questionToken.value != null);
@@ -455,8 +638,13 @@ class Transpiler {
         builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertyDeclaration.toCode()}');
+        if (propertyDeclaration.name.value.nodeName != sanitizedPropertyName) {
+          final allocator = Allocator.simplePrefixing();
+          builder.annotations.add(CodeExpression(Code(
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', propertyDeclaration)))}('${propertyDeclaration.name.value.nodeName}')")));
+        }
         builder.external = true;
-        builder.name = propertyDeclaration.name.value.nodeName;
+        builder.name = sanitizedPropertyName;
         builder.type = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertyDeclaration.type.value))
             .toSpec(dependencies)
             ?.copyWith(isNullable: propertyDeclaration.questionToken.value != null);
@@ -466,15 +654,20 @@ class Transpiler {
 
   DartNode<Spec> _transpilePropertySignature(TsPropertySignature propertySignature) {
     final readonly = _containsNodeKind(propertySignature.modifiers.value, TsNodeKind.readonlyKeyword);
+    final sanitizedPropertyName = _sanitizePropertyName(propertySignature.name.value.nodeName);
     if (readonly) {
       return Method((builder) {
         builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertySignature.toCode()}');
-
+        if (propertySignature.name.value.nodeName != sanitizedPropertyName) {
+          final allocator = Allocator.simplePrefixing();
+          builder.annotations.add(CodeExpression(Code(
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', propertySignature)))}('${propertySignature.name.value.nodeName}')")));
+        }
         builder.type = MethodType.getter;
         builder.external = true;
-        builder.name = propertySignature.name.value.nodeName;
+        builder.name = sanitizedPropertyName;
         builder.returns = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertySignature.type.value))
             .toSpec(dependencies)
             ?.copyWith(isNullable: propertySignature.questionToken.value != null);
@@ -484,8 +677,13 @@ class Transpiler {
         builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertySignature.toCode()}');
+        if (propertySignature.name.value.nodeName != sanitizedPropertyName) {
+          final allocator = Allocator.simplePrefixing();
+          builder.annotations.add(CodeExpression(Code(
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', propertySignature)))}('${propertySignature.name.value.nodeName}')")));
+        }
         builder.external = true;
-        builder.name = propertySignature.name.value.nodeName;
+        builder.name = sanitizedPropertyName;
         builder.type = _transpileNode<TypeReference>(typeEvaluator.evaluateType(propertySignature.type.value))
             .toSpec(dependencies)
             ?.copyWith(isNullable: propertySignature.questionToken.value != null);
@@ -500,7 +698,7 @@ class Transpiler {
   DartNode<TypeReference> _transpileStringKeyword(TsStringKeyword stringKeyword) {
     return TypeReference((builder) {
       builder.symbol = 'JSString';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, stringKeyword);
     }).toDartNode(stringKeyword);
   }
 
@@ -511,10 +709,10 @@ class Transpiler {
   DartNode<TypeReference> _transpileTupleType(TsTupleType tupleType) {
     return TypeReference((builder) {
       builder.symbol = 'JSArray';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, tupleType);
       builder.types.add(TypeReference((builder) {
         builder.symbol = 'JSAny';
-        builder.url = dependencies.libraryUrlForType(builder.symbol);
+        builder.url = dependencies.libraryUrlForType(builder.symbol, tupleType);
       }));
     }).toDartNode(tupleType);
   }
@@ -537,14 +735,14 @@ class Transpiler {
   DartNode<TypeReference> _transpileTypeLiteral(TsTypeLiteral typeLiteral) {
     return TypeReference((builder) {
       builder.symbol = 'JSObject';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, typeLiteral);
     }).toDartNode(typeLiteral);
   }
 
   DartNode<TypeReference> _transpileTypeOperator(TsTypeOperator typeOperator) {
     return TypeReference((builder) {
       builder.symbol = 'JSAny';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, typeOperator);
     }).toDartNode(typeOperator);
   }
 
@@ -556,7 +754,7 @@ class Transpiler {
       builder.bound = extendsClause.firstOrNull ??
           TypeReference((builder) {
             builder.symbol = 'JSAny';
-            builder.url = dependencies.libraryUrlForType(builder.symbol);
+            builder.url = dependencies.libraryUrlForType(builder.symbol, typeParameter);
           });
     }).toDartNode(typeParameter);
   }
@@ -564,7 +762,7 @@ class Transpiler {
   DartNode<TypeReference> _transpileTypeQuery(TsTypeQuery typeQuery) {
     return TypeReference((builder) {
       builder.symbol = 'JSString';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, typeQuery);
     }).toDartNode(typeQuery);
   }
 
@@ -576,13 +774,14 @@ class Transpiler {
     }
 
     final isNullable = type.typeName.value.nodeName?.endsWith('?') ?? false;
-    final name = isNullable
+    final name = _sanitizeTypeName(isNullable
         ? type.typeName.value.nodeName!.substring(0, type.typeName.value.nodeName!.length - 1)
-        : type.typeName.value.nodeName;
+        : type.typeName.value.nodeName);
+    final nameWithoutQualifier = name?.contains('.') ?? false ? name?.split('.').last : name;
 
     return TypeReference((builder) {
-      builder.symbol = name;
-      builder.url = dependencies.libraryUrlForType(name);
+      builder.symbol = nameWithoutQualifier;
+      builder.url = dependencies.libraryUrlForType(name, typeReference);
       builder.isNullable = isNullable;
       builder.types.addAll(_transpileNodes<Reference>(type.typeArguments.value).toSpecs(dependencies));
     }).toDartNode(typeReference);
@@ -599,7 +798,7 @@ class Transpiler {
     }
     return TypeReference((builder) {
       builder.symbol = 'JSAny';
-      builder.url = dependencies.libraryUrlForType(builder.symbol);
+      builder.url = dependencies.libraryUrlForType(builder.symbol, unionType);
     }).toDartNode(unionType);
   }
 
@@ -609,7 +808,7 @@ class Transpiler {
 
   DartNode<S> _transpileNode<S extends Spec>(TsNode? node) {
     final DartNode<S> transpiledNode = switch (node) {
-      null => DartNode.empty(Ts$Null()),
+      null => DartNode.empty<S>(Ts$Null()),
       Ts$Removed() => DartNode.empty<S>(node),
       TsAnyKeyword() => _transpileAnyKeyword(node),
       TsArrayType() => _transpileArrayType(node),
@@ -617,6 +816,7 @@ class Transpiler {
       TsCallSignature() => DartNode.empty<S>(node),
       TsClassDeclaration() => _transpileClassDeclaration(node),
       TsConstructorDeclaration() => _transpileConstructorDeclaration(node),
+      TsConstructorType() => _transpileConstructorType(node),
       TsEnumDeclaration() => _transpileEnumDeclaration(node),
       TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(node),
       TsFunctionDeclaration() => _transpileFunctionDeclaration(node),
@@ -629,6 +829,7 @@ class Transpiler {
       TsMappedType() => _transpileMappedType(node),
       TsMethodDeclaration() => _transpileMethodDeclaration(node),
       TsMethodSignature() => _transpileMethodSignature(node),
+      TsModuleDeclaration() => _transpileModuleDeclaration(node),
       TsNullKeyword() => _transpileNullKeyword(node),
       TsNumberKeyword() => _transpileNumberKeyword(node),
       TsNumericLiteral() => _transpileNumericLiteral(node),

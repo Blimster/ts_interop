@@ -19,6 +19,8 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
         return TsAnyKeyword() as T;
       case TsNodeKind.arrayType:
         return TsArrayType.fromJson(json) as T;
+      case TsNodeKind.bigIntKeyword:
+        return TsBigIntKeyword() as T;
       case TsNodeKind.booleanKeyword:
         return TsBooleanKeyword() as T;
       case TsNodeKind.callSignature:
@@ -85,6 +87,8 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
         return TsInterfaceDeclaration.fromJson(json) as T;
       case TsNodeKind.intersectionType:
         return TsIntersectionType.fromJson(json) as T;
+      case TsNodeKind.intrinsicKeyword:
+        return TsIntrinsicKeyword() as T;
       case TsNodeKind.keyOfKeyword:
         return TsKeyOfKeyword() as T;
       case TsNodeKind.literalType:
@@ -159,6 +163,16 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
         return TsStringLiteral.fromJson(json) as T;
       case TsNodeKind.symbolKeyword:
         return TsSymbolKeyword() as T;
+      case TsNodeKind.templateHead:
+        return TsTemplateHead.fromJson(json) as T;
+      case TsNodeKind.templateLiteralType:
+        return TsTemplateLiteralType.fromJson(json) as T;
+      case TsNodeKind.templateLiteralTypeSpan:
+        return TsTemplateLiteralTypeSpan.fromJson(json) as T;
+      case TsNodeKind.templateMiddle:
+        return TsTemplateMiddle.fromJson(json) as T;
+      case TsNodeKind.templateTail:
+        return TsTemplateTail.fromJson(json) as T;
       case TsNodeKind.thisType:
         return TsThisType() as T;
       case TsNodeKind.tildeToken:
@@ -231,6 +245,7 @@ enum TsNodeKind {
   abstractKeyword,
   anyKeyword,
   arrayType,
+  bigIntKeyword,
   booleanKeyword,
   callSignature,
   classDeclaration,
@@ -264,6 +279,7 @@ enum TsNodeKind {
   inferType,
   interfaceDeclaration,
   intersectionType,
+  intrinsicKeyword,
   keyOfKeyword,
   literalType,
   mappedType,
@@ -301,6 +317,11 @@ enum TsNodeKind {
   stringKeyword,
   stringLiteral,
   symbolKeyword,
+  templateHead,
+  templateLiteralType,
+  templateLiteralTypeSpan,
+  templateMiddle,
+  templateTail,
   thisType,
   tildeToken,
   trueKeyword,
@@ -483,6 +504,14 @@ sealed class TsNode implements Comparable<TsNode> {
     return node.isChildOf(this);
   }
 
+  bool isDirectChildOf(TsNode node) {
+    return node.parent == this;
+  }
+
+  bool isDirectParentOf(TsNode node) {
+    return node.isDirectChildOf(node);
+  }
+
   List<TsNodeWrapper> get nodeWrappers => [];
 
   SingleNode toSingleNode({bool affectsParent = false}) => SingleNode(this, affectsParent: affectsParent);
@@ -590,6 +619,15 @@ class TsArrayType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elementType];
+}
+
+class TsBigIntKeyword extends TsNode {
+  TsBigIntKeyword({
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.bigIntKeyword, meta ?? TsNodeMeta());
+
+  @override
+  String toCode() => 'bigint';
 }
 
 class TsBooleanKeyword extends TsNode {
@@ -1395,6 +1433,12 @@ class TsIntersectionType extends TsNode {
   List<TsNodeWrapper> get nodeWrappers => [types];
 }
 
+class TsIntrinsicKeyword extends TsNode {
+  TsIntrinsicKeyword({
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.intrinsicKeyword, meta ?? TsNodeMeta());
+}
+
 class TsKeyOfKeyword extends TsNode {
   TsKeyOfKeyword({
     TsNodeMeta? meta,
@@ -1751,6 +1795,7 @@ class TsPackage extends TsNode {
 
 class TsParameter extends TsNode {
   final ListNode modifiers;
+  final bool dotDotDotToken;
   final SingleNode name;
   final NullableNode questionToken;
   final NullableNode type;
@@ -1758,6 +1803,7 @@ class TsParameter extends TsNode {
 
   TsParameter(
     this.modifiers,
+    this.dotDotDotToken,
     this.name,
     this.questionToken,
     this.type,
@@ -1768,6 +1814,7 @@ class TsParameter extends TsNode {
   factory TsParameter.fromJson(Map<String, dynamic> json) {
     return TsParameter(
       ListNode(_fromJsonArray(json['modifiers'])),
+      json['dotDotDotToken'],
       SingleNode(_fromJsonObject(json['name']), affectsParent: true),
       NullableNode(_fromNullableJsonObject(json['questionToken'])),
       NullableNode(_fromNullableJsonObject(json['type'])),
@@ -1780,7 +1827,7 @@ class TsParameter extends TsNode {
 
   @override
   String toCode() =>
-      '${modifiers.toCode(suffix: ' ')}${name.toCode()}${questionToken.toCode('&')}${type.toCode(': &')}${initializer.toCode(' = &')}';
+      '${modifiers.toCode(suffix: ' ')}${dotDotDotToken ? '...' : ''}${name.toCode()}${questionToken.toCode('&')}${type.toCode(': &')}${initializer.toCode(' = &')}';
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
@@ -2162,6 +2209,117 @@ class TsTildeToken extends TsNode {
   }) : super(TsNodeKind.tildeToken, meta ?? TsNodeMeta());
 }
 
+class TsTemplateHead extends TsNode {
+  final String text;
+
+  TsTemplateHead(
+    this.text, {
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.templateHead, meta ?? TsNodeMeta());
+
+  factory TsTemplateHead.fromJson(Map<String, dynamic> json) {
+    return TsTemplateHead(
+      json['text'] as String,
+    );
+  }
+
+  @override
+  String toCode() => text;
+
+  @override
+  String? get nodeName => text;
+}
+
+class TsTemplateLiteralType extends TsNode {
+  final SingleNode head;
+  final ListNode templateSpans;
+
+  TsTemplateLiteralType(
+    this.head,
+    this.templateSpans, {
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.templateLiteralType, meta ?? TsNodeMeta());
+
+  factory TsTemplateLiteralType.fromJson(Map<String, dynamic> json) {
+    return TsTemplateLiteralType(
+      SingleNode(_fromJsonObject(json['head'])),
+      ListNode(_fromJsonArray(json['templateSpans'])),
+    );
+  }
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [
+        head,
+        templateSpans,
+      ];
+}
+
+class TsTemplateLiteralTypeSpan extends TsNode {
+  final SingleNode type;
+  final SingleNode literal;
+
+  TsTemplateLiteralTypeSpan(
+    this.type,
+    this.literal, {
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.templateLiteralTypeSpan, meta ?? TsNodeMeta());
+
+  factory TsTemplateLiteralTypeSpan.fromJson(Map<String, dynamic> json) {
+    return TsTemplateLiteralTypeSpan(
+      SingleNode(_fromJsonObject(json['type'])),
+      SingleNode(_fromJsonObject(json['literal'])),
+    );
+  }
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [
+        type,
+        literal,
+      ];
+}
+
+class TsTemplateMiddle extends TsNode {
+  final String text;
+
+  TsTemplateMiddle(
+    this.text, {
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.templateMiddle, meta ?? TsNodeMeta());
+
+  factory TsTemplateMiddle.fromJson(Map<String, dynamic> json) {
+    return TsTemplateMiddle(
+      json['text'] as String,
+    );
+  }
+
+  @override
+  String toCode() => text;
+
+  @override
+  String? get nodeName => text;
+}
+
+class TsTemplateTail extends TsNode {
+  final String text;
+
+  TsTemplateTail(
+    this.text, {
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.templateTail, meta ?? TsNodeMeta());
+
+  factory TsTemplateTail.fromJson(Map<String, dynamic> json) {
+    return TsTemplateTail(
+      json['text'] as String,
+    );
+  }
+
+  @override
+  String toCode() => text;
+
+  @override
+  String? get nodeName => text;
+}
+
 class TsThisType extends TsNode {
   TsThisType({
     TsNodeMeta? meta,
@@ -2193,6 +2351,9 @@ class TsTupleType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elements];
+
+  @override
+  String toCode() => '[${elements.toCode(separator: ', ')}]';
 }
 
 class TsTypeAliasDeclaration extends TsNode with WithTypeParameters<TsTypeAliasDeclaration> {

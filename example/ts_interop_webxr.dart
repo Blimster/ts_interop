@@ -65,7 +65,7 @@ TsNode tupleMapper(TsNode node, TypeEvaluator typeEvaluator) {
   return node;
 }
 
-final typesDependency = Dependency('./types.dart', {
+final typesDependency = StaticDependency('./types.dart', {
   // 'Parameters',
   // 'Record',
   // 'ArrayBufferView',

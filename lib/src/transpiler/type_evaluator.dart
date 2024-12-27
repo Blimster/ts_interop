@@ -25,19 +25,12 @@ TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const [], Ts
 }
 
 class TypeEvaluator {
-  TsTypeReference _literalType(TsLiteralType node) {
-    return evaluateType(node.literal.value);
-  }
-
-  TsTypeReference _parenthesizedType(TsParenthesizedType node) {
-    return evaluateType(node.type.value);
-  }
-
   TsTypeReference _typeOperator(TsTypeOperator node) {
     final operator = node.operator.value;
     return switch (operator) {
-      TsReadonlyKeyword() => evaluateType(node.type.value),
       TsKeyOfKeyword() => _typeRef('JSString'),
+      TsReadonlyKeyword() => evaluateType(node.type.value),
+      TsUniqueKeyword() => evaluateType(node.type.value),
       _ => throw UnimplementedError(operator.toString()),
     };
   }
@@ -102,27 +95,46 @@ class TypeEvaluator {
   }
 
   TsTypeReference evaluateType(TsNode? node) {
-    if (node == null) {}
-
     return switch (node) {
       TsAnyKeyword() => _typeRef('JSAny'),
       TsArrayType() => _typeRef('JSArray', typeArguments: [evaluateType(node.elementType.value)]),
+      TsBigIntKeyword() => _typeRef('JSBigInt'),
       TsBooleanKeyword() => _typeRef('JSBoolean'),
+      TsConditionalType() => _typeRef('JSAny'),
+      TsConstructorType() => evaluateType(node.type.value),
       TsFalseKeyword() => _typeRef('JSBoolean'),
       TsFunctionType() => _typeRef('JSFunction'),
-      TsLiteralType() => _literalType(node),
+      TsIndexedAccessType() => _typeRef('JSAny'),
+      TsIntersectionType() => _typeRef('JSAny'),
+      TsIntrinsicKeyword() => _typeRef('JSAny'),
+      TsLiteralType() => evaluateType(node.literal.value),
+      TsMappedType() => _typeRef('JSObject'),
+      TsNeverKeyword() => _typeRef('Never'),
       TsNullKeyword() => _typeRef('Null'),
       TsNumberKeyword() => _typeRef('JSNumber'),
       TsNumericLiteral() => _typeRef('JSNumber'),
       TsObjectKeyword() => _typeRef('JSObject'),
-      TsParenthesizedType() => _parenthesizedType(node),
+      TsParenthesizedType() => evaluateType(node.type.value),
       TsStringKeyword() => _typeRef('JSString'),
       TsStringLiteral() => _typeRef('JSString'),
+      TsSymbolKeyword() => _typeRef('JSSymbol'),
+      TsTemplateLiteralType() => _typeRef('JSString'),
+      TsThisType() => _typeRef('JSAny'),
       TsTrueKeyword() => _typeRef('JSBoolean'),
+      TsTupleType() => _typeRef('JSArray', typeArguments: [
+          TsTypeParameter(
+            ListNode([]),
+            SingleNode(TsIdentifier('JSAny')),
+            NullableNode(null),
+            NullableNode(null),
+          )
+        ]),
+      TsTypeLiteral() => _typeRef('JSObject'),
       TsTypeOperator() => _typeOperator(node),
       TsTypeReference() => _typeReference(node),
       TsUndefinedKeyword() => _typeRef('Null'),
       TsUnionType() => _unionType(node),
+      TsUnknownKeyword() => _typeRef('JSAny'),
       TsVoidKeyword() => _typeRef('__<VOID>__'),
       _ => throw UnimplementedError(node?.toString()),
     };
