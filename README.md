@@ -19,3 +19,4 @@ Creates Dart interop types for JavaScript based on TypeScript declaration files.
 - Scrap properties and methods from types from pub.dev and api.dart.dev
 - Export sanitized TsNode tree to JSON
 - Rename Sanatizer to Customer?
+

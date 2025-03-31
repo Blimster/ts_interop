@@ -16,7 +16,8 @@ import '../model/ts_node.dart';
   return (result.values.toList(), hasNull);
 }
 
-TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
+TsTypeReference _typeRef(String name,
+    {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
   return TsTypeReference(
     TsIdentifier(name).toSingleNode(affectsParent: true),
     typeArguments.toListNode(),
@@ -59,7 +60,11 @@ class TypeEvaluator {
           final typeArg = node.typeArguments.value.first.kind;
           return TsTypeReference(
             TsIdentifier(newType).toSingleNode(),
-            [TsNodeKind.voidKeyword, TsNodeKind.nullKeyword, TsNodeKind.undefinedKeyword].contains(typeArg)
+            [
+              TsNodeKind.voidKeyword,
+              TsNodeKind.nullKeyword,
+              TsNodeKind.undefinedKeyword
+            ].contains(typeArg)
                 ? ListNode([])
                 : node.typeArguments,
           );
@@ -75,7 +80,8 @@ class TypeEvaluator {
   }
 
   TsTypeReference _unionType(TsUnionType node) {
-    final doc = node.types.value.map((node) => node.nodeName).nonNulls.join(' | ');
+    final doc =
+        node.types.value.map((node) => node.nodeName).nonNulls.join(' | ');
 
     final (types, hasNull) = _distinctTypes(evaluateTypes(node.types.value));
 
@@ -97,7 +103,8 @@ class TypeEvaluator {
   TsTypeReference evaluateType(TsNode? node) {
     return switch (node) {
       TsAnyKeyword() => _typeRef('JSAny'),
-      TsArrayType() => _typeRef('JSArray', typeArguments: [evaluateType(node.elementType.value)]),
+      TsArrayType() => _typeRef('JSArray',
+          typeArguments: [evaluateType(node.elementType.value)]),
       TsBigIntKeyword() => _typeRef('JSBigInt'),
       TsBooleanKeyword() => _typeRef('JSBoolean'),
       TsConditionalType() => _typeRef('JSAny'),
@@ -131,6 +138,7 @@ class TypeEvaluator {
         ]),
       TsTypeLiteral() => _typeRef('JSObject'),
       TsTypeOperator() => _typeOperator(node),
+      TsTypePredicate() => _typeRef('JSBoolean'),
       TsTypeReference() => _typeReference(node),
       TsUndefinedKeyword() => _typeRef('Null'),
       TsUnionType() => _unionType(node),

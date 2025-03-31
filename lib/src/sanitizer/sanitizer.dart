@@ -49,9 +49,12 @@ class SanitizerPhase {
     final wrappers = node.nodeWrappers;
     for (final wrapper in wrappers) {
       final (added, removed) = switch (wrapper) {
-        SingleNode() => wrapper.update((node) => _sanitizeNode(node, typeEvaluator)),
-        NullableNode() => wrapper.update((node) => _sanitizeNullableNode(node, typeEvaluator)),
-        ListNode() => wrapper.update((nodes) => _sanitizeNodes(nodes, typeEvaluator)),
+        SingleNode() =>
+          wrapper.update((node) => _sanitizeNode(node, typeEvaluator)),
+        NullableNode() =>
+          wrapper.update((node) => _sanitizeNullableNode(node, typeEvaluator)),
+        ListNode() =>
+          wrapper.update((nodes) => _sanitizeNodes(nodes, typeEvaluator)),
       };
       updateCache(added, removed);
       updateParentAndChilds(node, node.parent);
@@ -95,7 +98,9 @@ class Sanitizer {
   final void Function(String name)? _afterPhase;
   final List<SanitizerPhase> _phases = [];
 
-  Sanitizer(this.typeEvaluator, {void Function(String name)? beforePhase, void Function(String name)? afterPhase})
+  Sanitizer(this.typeEvaluator,
+      {void Function(String name)? beforePhase,
+      void Function(String name)? afterPhase})
       : _beforePhase = beforePhase,
         _afterPhase = afterPhase;
 
@@ -116,7 +121,8 @@ class Sanitizer {
       _beforePhase?.call(phase.name);
       final tempPackage = phase._sanitizeNode(sanitizedPackage, typeEvaluator);
       if (tempPackage is! TsPackage) {
-        throw StateError('Node of type $TsPackage must be sanitized to a TsPackage.');
+        throw StateError(
+            'Node of type $TsPackage must be sanitized to a TsPackage.');
       }
       sanitizedPackage = tempPackage;
       _afterPhase?.call(phase.name);

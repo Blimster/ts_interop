@@ -548,7 +548,7 @@ sealed class TsNode implements Comparable<TsNode> {
   }
 
   @override
-  int get hashCode => id;
+  int get hashCode => id.hashCode;
 }
 
 class Ts$Null extends TsNode {

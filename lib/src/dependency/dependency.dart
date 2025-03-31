@@ -103,14 +103,17 @@ Future<StaticDependency> _remoteDependency(
   final response = await http.get(docUriProvider());
   final document = html.parse(response.body);
   final types = {
-    ...document.querySelectorAll('#extension-types dt').map((element) => element.id),
+    ...document
+        .querySelectorAll('#extension-types dt')
+        .map((element) => element.id),
     ...document.querySelectorAll('#typedefs dt').map((element) => element.id),
     ...document.querySelectorAll('#classes dt').map((element) => element.id),
   };
   return StaticDependency(packageUriProvider(), types);
 }
 
-Future<StaticDependency> pubDevDependency(String package, String library, {String? packageVersion}) async {
+Future<StaticDependency> pubDevDependency(String package, String library,
+    {String? packageVersion}) async {
   return _remoteDependency(
     () => Uri.https(
         'pub.dev',
@@ -128,14 +131,16 @@ Future<StaticDependency> pubDevDependency(String package, String library, {Strin
   );
 }
 
-Future<StaticDependency> dartDependency(String package, String library, {String? dartVersion}) async {
+Future<StaticDependency> dartDependency(String package, String library,
+    {String? dartVersion}) async {
   return _remoteDependency(
     () => Uri.https(
         'api.dart.dev',
         [
-          if (dartVersion != null) dartVersion,
+          'stable',
+          dartVersion ?? 'latest',
           'dart-$library',
-          'dart-$library-library.html',
+          'index.html',
         ].join('/')),
     () => 'dart:$package',
     package,
@@ -150,7 +155,8 @@ class Dependencies {
 
   Dependencies._(this.dependencies, this.parent);
 
-  factory Dependencies({List<Dependency> dependencies = const [], Dependencies? parent}) {
+  factory Dependencies(
+      {List<Dependency> dependencies = const [], Dependencies? parent}) {
     return Dependencies._(
       List.of(dependencies),
       parent,

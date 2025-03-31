@@ -30,11 +30,7 @@ external R apply$1<T extends _i1.JSAny, A extends _i1.JSAny, R extends _i1.JSAny
 /// - thisArgument: any
 /// - argumentsList: ArrayLike
 @_i1.JS('apply')
-external _i1.JSAny apply$2(
-  _i2.Function$ target,
-  _i1.JSAny thisArgument,
-  _i2.ArrayLike<_i1.JSAny> argumentsList,
-);
+external _i1.JSAny apply$2(_i2.Function$ target, _i1.JSAny thisArgument, _i2.ArrayLike<_i1.JSAny> argumentsList);
 
 /// Method [construct]
 ///
@@ -60,11 +56,7 @@ external R construct$1<A extends _i1.JSAny, R extends _i1.JSAny>(
 /// - argumentsList: ArrayLike
 /// - newTarget: Function
 @_i1.JS('construct')
-external _i1.JSAny construct$2(
-  _i2.Function$ target,
-  _i2.ArrayLike<_i1.JSAny> argumentsList, [
-  _i2.Function$ newTarget,
-]);
+external _i1.JSAny construct$2(_i2.Function$ target, _i2.ArrayLike<_i1.JSAny> argumentsList, [_i2.Function$ newTarget]);
 
 /// Method [defineProperty]
 ///
@@ -72,21 +64,14 @@ external _i1.JSAny construct$2(
 /// - target: object
 /// - propertyKey: PropertyKey
 /// - attributes:
-external _i1.JSBoolean defineProperty(
-  _i1.JSObject target,
-  _i2.PropertyKey propertyKey,
-  _i1.JSAny attributes,
-);
+external _i1.JSBoolean defineProperty(_i1.JSObject target, _i2.PropertyKey propertyKey, _i1.JSAny attributes);
 
 /// Method [deleteProperty]
 ///
 /// Parameters:
 /// - target: object
 /// - propertyKey: PropertyKey
-external _i1.JSBoolean deleteProperty(
-  _i1.JSObject target,
-  _i2.PropertyKey propertyKey,
-);
+external _i1.JSBoolean deleteProperty(_i1.JSObject target, _i2.PropertyKey propertyKey);
 
 /// Method [get]
 ///
@@ -98,11 +83,7 @@ external _i1.JSBoolean deleteProperty(
 /// - target: T
 /// - propertyKey: P
 /// - receiver:
-external get<T extends _i1.JSAny, P extends _i2.PropertyKey>(
-  T target,
-  P propertyKey, [
-  _i1.JSAny receiver,
-]);
+external get<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propertyKey, [_i1.JSAny receiver]);
 
 /// Method [getOwnPropertyDescriptor]
 ///
@@ -113,10 +94,7 @@ external get<T extends _i1.JSAny, P extends _i2.PropertyKey>(
 /// Parameters:
 /// - target: T
 /// - propertyKey: P
-external _i1.JSAny getOwnPropertyDescriptor<T extends _i1.JSAny, P extends _i2.PropertyKey>(
-  T target,
-  P propertyKey,
-);
+external _i1.JSAny getOwnPropertyDescriptor<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propertyKey);
 
 /// Method [getPrototypeOf]
 ///
@@ -129,10 +107,7 @@ external _i1.JSAny getPrototypeOf(_i1.JSObject target);
 /// Parameters:
 /// - target: object
 /// - propertyKey: PropertyKey
-external _i1.JSBoolean has(
-  _i1.JSObject target,
-  _i2.PropertyKey propertyKey,
-);
+external _i1.JSBoolean has(_i1.JSObject target, _i2.PropertyKey propertyKey);
 
 /// Method [isExtensible]
 ///
@@ -179,19 +154,11 @@ external _i1.JSBoolean set$1<T extends _i1.JSAny, P extends _i2.PropertyKey>(
 /// - value: any
 /// - receiver: any
 @_i1.JS('set')
-external _i1.JSBoolean set$2(
-  _i1.JSObject target,
-  _i2.PropertyKey propertyKey,
-  _i1.JSAny value, [
-  _i1.JSAny receiver,
-]);
+external _i1.JSBoolean set$2(_i1.JSObject target, _i2.PropertyKey propertyKey, _i1.JSAny value, [_i1.JSAny receiver]);
 
 /// Method [setPrototypeOf]
 ///
 /// Parameters:
 /// - target: object
 /// - proto: object | null
-external _i1.JSBoolean setPrototypeOf(
-  _i1.JSObject target,
-  _i1.JSObject? proto,
-);
+external _i1.JSBoolean setPrototypeOf(_i1.JSObject target, _i1.JSObject? proto);
