@@ -3,10 +3,7 @@ import 'package:ts_interop/src/transpiler/type_evaluator.dart';
 import '../model/ts_node.dart';
 import '../util/ts_node_search.dart';
 
-enum PhaseDirection {
-  topDown,
-  bottomUp,
-}
+enum PhaseDirection { topDown, bottomUp }
 
 class SanitizerPhase {
   final String name;
@@ -26,6 +23,11 @@ class SanitizerPhase {
       var mapped = 0;
       for (final (index, nodeMapper) in nodeMappers.indexed) {
         final tempNode = nodeMapper(mappedNode, typeEvaluator);
+        if (tempNode is Ts$Removed) {
+          mappedNode.parent?.removeChild(mappedNode);
+          updateCache([], [mappedNode]);
+          return tempNode;
+        }
         updateParentAndChilds(mappedNode, node.parent);
         if (tempNode != mappedNode) {
           mappedNode = tempNode;
@@ -34,7 +36,8 @@ class SanitizerPhase {
           for (final executions in loopDetector.values) {
             if (executions > 3) {
               throw StateError(
-                  'Loop detected in sanitizer! Node mapper $index was called more than 3 times in phase $index for node ${node.kind.name}:${node.nodeName}.');
+                'Loop detected in sanitizer! Node mapper $index was called more than 3 times in phase $index for node ${node.kind.name}:${node.nodeName}.',
+              );
             }
           }
         }
@@ -49,12 +52,9 @@ class SanitizerPhase {
     final wrappers = node.nodeWrappers;
     for (final wrapper in wrappers) {
       final (added, removed) = switch (wrapper) {
-        SingleNode() =>
-          wrapper.update((node) => _sanitizeNode(node, typeEvaluator)),
-        NullableNode() =>
-          wrapper.update((node) => _sanitizeNullableNode(node, typeEvaluator)),
-        ListNode() =>
-          wrapper.update((nodes) => _sanitizeNodes(nodes, typeEvaluator)),
+        SingleNode() => wrapper.update((node) => _sanitizeNode(node, typeEvaluator)),
+        NullableNode() => wrapper.update((node) => _sanitizeNullableNode(node, typeEvaluator)),
+        ListNode() => wrapper.update((nodes) => _sanitizeNodes(nodes, typeEvaluator)),
       };
       updateCache(added, removed);
       updateParentAndChilds(node, node.parent);
@@ -98,11 +98,9 @@ class Sanitizer {
   final void Function(String name)? _afterPhase;
   final List<SanitizerPhase> _phases = [];
 
-  Sanitizer(this.typeEvaluator,
-      {void Function(String name)? beforePhase,
-      void Function(String name)? afterPhase})
-      : _beforePhase = beforePhase,
-        _afterPhase = afterPhase;
+  Sanitizer(this.typeEvaluator, {void Function(String name)? beforePhase, void Function(String name)? afterPhase})
+    : _beforePhase = beforePhase,
+      _afterPhase = afterPhase;
 
   Sanitizer addPhase(SanitizerPhase phase) {
     _phases.add(phase);
@@ -121,8 +119,7 @@ class Sanitizer {
       _beforePhase?.call(phase.name);
       final tempPackage = phase._sanitizeNode(sanitizedPackage, typeEvaluator);
       if (tempPackage is! TsPackage) {
-        throw StateError(
-            'Node of type $TsPackage must be sanitized to a TsPackage.');
+        throw StateError('Node of type $TsPackage must be sanitized to a TsPackage.');
       }
       sanitizedPackage = tempPackage;
       _afterPhase?.call(phase.name);

@@ -56,8 +56,7 @@ class _AndConstraint implements SearchConstraint {
 
   @override
   BinaryTree<TsNode> _matchingNodes() {
-    final constraintResults =
-        constraints.map((c) => c._matchingNodes()).toList();
+    final constraintResults = constraints.map((c) => c._matchingNodes()).toList();
     if (constraintResults.isEmpty) {
       return BinaryTree<TsNode>();
     }
@@ -82,8 +81,7 @@ class _AndConstraint implements SearchConstraint {
   }
 
   @override
-  String toString() =>
-      'and(${constraints.map((c) => c.toString()).join(', ')})';
+  String toString() => 'and(${constraints.map((c) => c.toString()).join(', ')})';
 }
 
 class _OrConstraint implements SearchConstraint {
@@ -93,8 +91,7 @@ class _OrConstraint implements SearchConstraint {
 
   @override
   BinaryTree<TsNode> _matchingNodes() {
-    final constraintResults =
-        constraints.map((c) => c._matchingNodes()).toList();
+    final constraintResults = constraints.map((c) => c._matchingNodes()).toList();
     if (constraintResults.isEmpty) {
       return BinaryTree<TsNode>();
     }
@@ -142,27 +139,22 @@ void buildCache(TsPackage package) {
     final all = _cache.putIfAbsent('t:TsNode', () => BinaryTree<TsNode>());
     all.insert(node);
 
-    final isType = _cache.putIfAbsent(
-        't:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
+    final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
     isType.insert(node);
 
-    final hasName =
-        _cache.putIfAbsent('n:${node.nodeName}', () => BinaryTree<TsNode>());
+    final hasName = _cache.putIfAbsent('n:${node.nodeName}', () => BinaryTree<TsNode>());
     hasName.insert(node);
 
     if (node is WithTypeParameters) {
-      final hasTypeParameters =
-          _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
+      final hasTypeParameters = _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
       hasTypeParameters.insert(node);
     }
     if (node is WithTypeArguments) {
-      final hasTypeArguments =
-          _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
+      final hasTypeArguments = _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
       hasTypeArguments.insert(node);
     }
   });
-  print(
-      'build: ${_cache['n:ArrayBuffer']?.whereType<TsInterfaceDeclaration>().toList()}');
+  print('build: ${_cache['n:ArrayBuffer']?.whereType<TsInterfaceDeclaration>().toList()}');
 }
 
 void updateCache(List<TsNode> added, List<TsNode> removed) {
@@ -170,59 +162,47 @@ void updateCache(List<TsNode> added, List<TsNode> removed) {
   for (final node in removed) {
     all.remove(node);
 
-    final isType = _cache.putIfAbsent(
-        't:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
+    final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
     isType.remove(node);
 
-    final hasName =
-        _cache.putIfAbsent('n:${node.nodeName}', () => BinaryTree<TsNode>());
+    final hasName = _cache.putIfAbsent('n:${node.nodeName}', () => BinaryTree<TsNode>());
     hasName.remove(node);
 
     if (node is WithTypeParameters) {
-      final hasTypeParameters =
-          _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
+      final hasTypeParameters = _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
       hasTypeParameters.remove(node);
     }
     if (node is WithTypeArguments) {
-      final hasTypeArguments =
-          _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
+      final hasTypeArguments = _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
       hasTypeArguments.remove(node);
     }
   }
-  for (final node in removed) {
+  for (final node in added) {
     all.insert(node);
 
-    final isType = _cache.putIfAbsent(
-        't:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
+    final isType = _cache.putIfAbsent('t:${node.runtimeType.toString()}', () => BinaryTree<TsNode>());
     isType.insert(node);
 
-    final hasName =
-        _cache.putIfAbsent('n:${node.nodeName}', () => BinaryTree<TsNode>());
+    final hasName = _cache.putIfAbsent('n:${node.nodeName}', () => BinaryTree<TsNode>());
     hasName.insert(node);
 
     if (node is WithTypeParameters) {
-      final hasTypeParameters =
-          _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
+      final hasTypeParameters = _cache.putIfAbsent('tp', () => BinaryTree<TsNode>());
       hasTypeParameters.insert(node);
     }
     if (node is WithTypeArguments) {
-      final hasTypeArguments =
-          _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
+      final hasTypeArguments = _cache.putIfAbsent('ta', () => BinaryTree<TsNode>());
       hasTypeArguments.insert(node);
     }
   }
 }
 
 List<T> searchCache<T extends TsNode>([SearchConstraint? constraint]) {
-  return and([
-    _IsTypeConstraint<T>(),
-    if (constraint != null) constraint,
-  ])._matchingNodes().cast<T>().toList();
+  return and([_IsTypeConstraint<T>(), if (constraint != null) constraint])._matchingNodes().cast<T>().toList();
 }
 
 extension TsNodeSearch on TsNode {
-  List<T> _search<T extends TsNode>(bool Function(TsNode) predicate,
-      [SearchConstraint? constraint]) {
+  List<T> _search<T extends TsNode>(bool Function(TsNode) predicate, [SearchConstraint? constraint]) {
     return and([
       _IsTypeConstraint<T>(),
       if (constraint != null) constraint,

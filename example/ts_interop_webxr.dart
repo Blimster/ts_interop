@@ -42,23 +42,17 @@ TsNode physicsEngineMapper(TsNode node, TypeEvaluator typeEvaluator) {
 }
 
 TsNode tupleMapper(TsNode node, TypeEvaluator typeEvaluator) {
-  if (node
-      case TsTypeAliasDeclaration(
-        name: SingleNode(value: TsIdentifier(text: '_Tuple')),
-        type: NullableNode(value: TsConditionalType())
-      )) {
+  if (node case TsTypeAliasDeclaration(
+    name: SingleNode(value: TsIdentifier(text: '_Tuple')),
+    type: NullableNode(value: TsConditionalType()),
+  )) {
     return TsTypeAliasDeclaration(
       node.modifiers,
       node.name,
       node.typeParameters,
       TsTypeReference(
         TsIdentifier('JSArray').toSingleNode(),
-        [
-          TsTypeReference(
-            SingleNode(TsIdentifier('N')),
-            ListNode([]),
-          ),
-        ].toListNode(),
+        [TsTypeReference(SingleNode(TsIdentifier('N')), ListNode([]))].toListNode(),
       ).toNullableNode(),
     );
   }
@@ -100,11 +94,13 @@ class ComparableTsNode implements Comparable<ComparableTsNode> {
 }
 
 void main() async {
-  final dependencies = Dependencies(dependencies: [
-    typesDependency,
-    await dartDependency('js_interop', 'js_interop'),
-    await pubDevDependency('web', 'web'),
-  ]);
+  final dependencies = Dependencies(
+    dependencies: [
+      typesDependency,
+      await dartDependency('js_interop', 'js_interop'),
+      await pubDevDependency('web', 'web'),
+    ],
+  );
 
   final typeEvaluator = TypeEvaluator();
 
@@ -120,28 +116,32 @@ void main() async {
 
   stdout.write('Sanitizing... ');
   final sanitizedPackage = Sanitizer(typeEvaluator)
-      .addPhase(SanitizerPhase('removeDependencies', PhaseDirection.topDown, [
-        // removeNodesByDependency(webDependency),
-      ]))
-      .addPhase(SanitizerPhase('mergeInterfaces', PhaseDirection.topDown, [
-        mergeInterfacesMapper,
-        mergeDependenciesMapper(dependencies, excludes: {'XRInputSourcesChangeEvent'}),
-      ]))
-      .addPhase(SanitizerPhase('mergeInterfaceIntoClassMapper', PhaseDirection.topDown, [
-        mergeInterfaceIntoClassMapper,
-      ]))
-      .addPhase(SanitizerPhase('deleteDuplicateInterfacesMapper', PhaseDirection.topDown, [
-        removeDuplicateInterfacesMapper,
-      ]))
-      .addPhase(SanitizerPhase('defaultMappers', PhaseDirection.bottomUp, [
-        missingTypeMapper,
-        literalAsTypeArgumentMapper,
-        instanceTypeMapper,
-        tupleMapper,
-      ]))
-      .addPhase(SanitizerPhase('missingTypeArgumentMapper', PhaseDirection.bottomUp, [
-        missingTypeArgumentMapper,
-      ]))
+      .addPhase(
+        SanitizerPhase('removeDependencies', PhaseDirection.topDown, [
+          // removeNodesByDependency(webDependency),
+        ]),
+      )
+      .addPhase(
+        SanitizerPhase('mergeInterfaces', PhaseDirection.topDown, [
+          mergeDuplicateInterfacesMapper,
+          mergeDependenciesMapper(dependencies, excludes: {'XRInputSourcesChangeEvent'}),
+        ]),
+      )
+      .addPhase(
+        SanitizerPhase('mergeInterfaceIntoClassMapper', PhaseDirection.topDown, [mergeInterfaceIntoClassMapper]),
+      )
+      .addPhase(
+        SanitizerPhase('deleteDuplicateInterfacesMapper', PhaseDirection.topDown, [removeDuplicateInterfacesMapper]),
+      )
+      .addPhase(
+        SanitizerPhase('defaultMappers', PhaseDirection.bottomUp, [
+          missingTypeMapper,
+          literalAsTypeArgumentMapper,
+          instanceTypeMapper,
+          tupleMapper,
+        ]),
+      )
+      .addPhase(SanitizerPhase('missingTypeArgumentMapper', PhaseDirection.bottomUp, [missingTypeArgumentMapper]))
       .sanitize(package);
   // final sanitizedPackage = Sanitizer().addPhase(PhaseDirection.topDown, [
   //   //onlyBabylonModulesMapper,
@@ -169,7 +169,7 @@ void main() async {
   final lib = transpiler.transpile(sanitizedPackage).first;
 
   final emitter = DartEmitter.scoped(useNullSafetySyntax: true);
-  final DartFormatter formatter = DartFormatter(pageWidth: 120);
+  final DartFormatter formatter = DartFormatter(languageVersion: DartFormatter.latestLanguageVersion, pageWidth: 120);
 
   // final outFile = File('web/babylonjs.dart');
   final outFile = File('web/webxr.dart');

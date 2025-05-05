@@ -4,15 +4,15 @@ version: 0.1.0
 repository: https://github.com/blimster/ts_interop
 
 environment:
-  sdk: ^3.5.0
+  sdk: ^3.7.0
 
 dependencies:
   binary_tree: ^1.0.6
+  built_collection: ^5.2.0
   code_builder: ^4.10.0
   dart_style: ^3.0.1
   html: ^0.15.4
   http: ^1.2.2
-  pub_semver: ^2.2.0
   web: ^1.0.0
 
 dev_dependencies:

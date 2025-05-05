@@ -431,11 +431,7 @@ final class ListNode extends TsNodeWrapper<List<TsNode>> {
   @override
   List<TsNode> get nodes => _value;
 
-  String toCode({
-    String separator = ', ',
-    String prefix = '',
-    String suffix = '',
-  }) =>
+  String toCode({String separator = ', ', String prefix = '', String suffix = ''}) =>
       '${_value.isNotEmpty ? prefix : ''}${_value.map((e) => e.toCode()).join(separator)}${_value.isNotEmpty ? suffix : ''}';
 }
 
@@ -452,10 +448,7 @@ class TsNodeMeta {
     this.external = external ?? this.external;
   }
 
-  TsNodeMeta copy({
-    List<String>? documentation,
-    bool? external,
-  }) {
+  TsNodeMeta copy({List<String>? documentation, bool? external}) {
     return TsNodeMeta()
       ..documentation = documentation ?? List.of(this.documentation)
       ..external = external ?? this.external;
@@ -512,6 +505,22 @@ sealed class TsNode implements Comparable<TsNode> {
     return node.isDirectChildOf(node);
   }
 
+  void removeChild(TsNode node) {
+    for (final wrapper in nodeWrappers) {
+      if (wrapper.nodes.contains(node)) {
+        switch (wrapper) {
+          case SingleNode():
+            throw StateError('Cannot remove child from a single node!');
+          case NullableNode():
+            wrapper.set(null);
+          case ListNode():
+            wrapper.set(wrapper.nodes.where((n) => n != node).toList());
+        }
+        return;
+      }
+    }
+  }
+
   List<TsNodeWrapper> get nodeWrappers => [];
 
   SingleNode toSingleNode({bool affectsParent = false}) => SingleNode(this, affectsParent: affectsParent);
@@ -552,18 +561,13 @@ sealed class TsNode implements Comparable<TsNode> {
 }
 
 class Ts$Null extends TsNode {
-  Ts$Null({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.$unsupported, meta ?? TsNodeMeta());
+  Ts$Null({TsNodeMeta? meta}) : super(TsNodeKind.$unsupported, meta ?? TsNodeMeta());
 }
 
 class Ts$Unsupported extends TsNode {
   final String unsupportedNodeKind;
 
-  Ts$Unsupported(
-    this.unsupportedNodeKind, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.$unsupported, meta ?? TsNodeMeta());
+  Ts$Unsupported(this.unsupportedNodeKind, {TsNodeMeta? meta}) : super(TsNodeKind.$unsupported, meta ?? TsNodeMeta());
 
   @override
   String? get nodeName => unsupportedNodeKind;
@@ -572,29 +576,23 @@ class Ts$Unsupported extends TsNode {
 class Ts$Removed extends TsNode {
   final String removedNode;
 
-  Ts$Removed(
-    TsNode node, {
-    TsNodeMeta? meta,
-  })  : removedNode = node.toString(),
-        super(TsNodeKind.$removed, meta ?? TsNodeMeta());
+  Ts$Removed(TsNode node, {TsNodeMeta? meta})
+    : removedNode = node.toString(),
+      super(TsNodeKind.$removed, meta ?? TsNodeMeta());
 
   @override
   String get nodeName => removedNode;
 }
 
 class TsAbstractKeyword extends TsNode {
-  TsAbstractKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.abstractKeyword, meta ?? TsNodeMeta());
+  TsAbstractKeyword({TsNodeMeta? meta}) : super(TsNodeKind.abstractKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'abstract';
 }
 
 class TsAnyKeyword extends TsNode {
-  TsAnyKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.anyKeyword, meta ?? TsNodeMeta());
+  TsAnyKeyword({TsNodeMeta? meta}) : super(TsNodeKind.anyKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'any';
@@ -603,15 +601,10 @@ class TsAnyKeyword extends TsNode {
 class TsArrayType extends TsNode {
   final SingleNode elementType;
 
-  TsArrayType(
-    this.elementType, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.arrayType, meta ?? TsNodeMeta());
+  TsArrayType(this.elementType, {TsNodeMeta? meta}) : super(TsNodeKind.arrayType, meta ?? TsNodeMeta());
 
   factory TsArrayType.fromJson(Map<String, dynamic> json) {
-    return TsArrayType(
-      SingleNode(_fromJsonObject(json['elementType'])),
-    );
+    return TsArrayType(SingleNode(_fromJsonObject(json['elementType'])));
   }
 
   @override
@@ -622,18 +615,14 @@ class TsArrayType extends TsNode {
 }
 
 class TsBigIntKeyword extends TsNode {
-  TsBigIntKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.bigIntKeyword, meta ?? TsNodeMeta());
+  TsBigIntKeyword({TsNodeMeta? meta}) : super(TsNodeKind.bigIntKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'bigint';
 }
 
 class TsBooleanKeyword extends TsNode {
-  TsBooleanKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.booleanKeyword, meta ?? TsNodeMeta());
+  TsBooleanKeyword({TsNodeMeta? meta}) : super(TsNodeKind.booleanKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'boolean';
@@ -645,12 +634,8 @@ class TsCallSignature extends TsNode with WithTypeParameters<TsCallSignature> {
   final ListNode parameters;
   final NullableNode type;
 
-  TsCallSignature(
-    this.typeParameters,
-    this.parameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.callSignature, meta ?? TsNodeMeta());
+  TsCallSignature(this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.callSignature, meta ?? TsNodeMeta());
 
   factory TsCallSignature.fromJson(Map<String, dynamic> json) {
     return TsCallSignature(
@@ -661,11 +646,7 @@ class TsCallSignature extends TsNode with WithTypeParameters<TsCallSignature> {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        typeParameters,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
 class TsClassDeclaration extends TsNode with WithTypeParameters<TsClassDeclaration> {
@@ -699,27 +680,17 @@ class TsClassDeclaration extends TsNode with WithTypeParameters<TsClassDeclarati
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        typeParameters,
-        heritageClauses,
-        members,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, heritageClauses, members];
 }
 
 class TsComputedPropertyName extends TsNode {
   final SingleNode expression;
 
-  TsComputedPropertyName(
-    this.expression, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.computedPropertyName, meta ?? TsNodeMeta());
+  TsComputedPropertyName(this.expression, {TsNodeMeta? meta})
+    : super(TsNodeKind.computedPropertyName, meta ?? TsNodeMeta());
 
   factory TsComputedPropertyName.fromJson(Map<String, dynamic> json) {
-    return TsComputedPropertyName(
-      SingleNode(_fromJsonObject(json['expression'])),
-    );
+    return TsComputedPropertyName(SingleNode(_fromJsonObject(json['expression'])));
   }
 
   @override
@@ -732,13 +703,8 @@ class TsConditionalType extends TsNode {
   final SingleNode trueType;
   final SingleNode falseType;
 
-  TsConditionalType(
-    this.checkType,
-    this.extendsType,
-    this.trueType,
-    this.falseType, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.conditionalType, meta ?? TsNodeMeta());
+  TsConditionalType(this.checkType, this.extendsType, this.trueType, this.falseType, {TsNodeMeta? meta})
+    : super(TsNodeKind.conditionalType, meta ?? TsNodeMeta());
 
   factory TsConditionalType.fromJson(Map<String, dynamic> json) {
     return TsConditionalType(
@@ -750,12 +716,7 @@ class TsConditionalType extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        checkType,
-        extendsType,
-        trueType,
-        falseType,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [checkType, extendsType, trueType, falseType];
 }
 
 class TsConstructorDeclaration extends TsNode with WithTypeParameters<TsConstructorDeclaration> {
@@ -764,12 +725,8 @@ class TsConstructorDeclaration extends TsNode with WithTypeParameters<TsConstruc
   final ListNode parameters;
   final NullableNode type;
 
-  TsConstructorDeclaration(
-    this.typeParameters,
-    this.parameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.constructor, meta ?? TsNodeMeta());
+  TsConstructorDeclaration(this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.constructor, meta ?? TsNodeMeta());
 
   factory TsConstructorDeclaration.fromJson(Map<String, dynamic> json) {
     return TsConstructorDeclaration(
@@ -780,11 +737,7 @@ class TsConstructorDeclaration extends TsNode with WithTypeParameters<TsConstruc
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        typeParameters,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
 class TsConstructorType extends TsNode with WithTypeParameters<TsConstructorType> {
@@ -794,13 +747,8 @@ class TsConstructorType extends TsNode with WithTypeParameters<TsConstructorType
   final ListNode parameters;
   final NullableNode type;
 
-  TsConstructorType(
-    this.modifiers,
-    this.typeParameters,
-    this.parameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.constructorType, meta ?? TsNodeMeta());
+  TsConstructorType(this.modifiers, this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.constructorType, meta ?? TsNodeMeta());
 
   factory TsConstructorType.fromJson(Map<String, dynamic> json) {
     return TsConstructorType(
@@ -812,12 +760,7 @@ class TsConstructorType extends TsNode with WithTypeParameters<TsConstructorType
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        typeParameters,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, typeParameters, parameters, type];
 }
 
 class TsConstructSignature extends TsNode with WithTypeParameters<TsConstructSignature> {
@@ -826,12 +769,8 @@ class TsConstructSignature extends TsNode with WithTypeParameters<TsConstructSig
   final ListNode parameters;
   final NullableNode type;
 
-  TsConstructSignature(
-    this.typeParameters,
-    this.parameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.constructSignature, meta ?? TsNodeMeta());
+  TsConstructSignature(this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.constructSignature, meta ?? TsNodeMeta());
 
   factory TsConstructSignature.fromJson(Map<String, dynamic> json) {
     return TsConstructSignature(
@@ -842,17 +781,11 @@ class TsConstructSignature extends TsNode with WithTypeParameters<TsConstructSig
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        typeParameters,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
 class TsDeclareKeyword extends TsNode {
-  TsDeclareKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.declareKeyword, meta ?? TsNodeMeta());
+  TsDeclareKeyword({TsNodeMeta? meta}) : super(TsNodeKind.declareKeyword, meta ?? TsNodeMeta());
 }
 
 class TsEnumDeclaration extends TsNode {
@@ -860,12 +793,8 @@ class TsEnumDeclaration extends TsNode {
   final SingleNode name;
   final ListNode members;
 
-  TsEnumDeclaration(
-    this.modifiers,
-    this.name,
-    this.members, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.enumDeclaration, meta ?? TsNodeMeta());
+  TsEnumDeclaration(this.modifiers, this.name, this.members, {TsNodeMeta? meta})
+    : super(TsNodeKind.enumDeclaration, meta ?? TsNodeMeta());
 
   factory TsEnumDeclaration.fromJson(Map<String, dynamic> json) {
     return TsEnumDeclaration(
@@ -879,22 +808,14 @@ class TsEnumDeclaration extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        members,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, members];
 }
 
 class TsEnumMember extends TsNode {
   final SingleNode name;
   final NullableNode initializer;
 
-  TsEnumMember(
-    this.name,
-    this.initializer, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.enumMember, meta ?? TsNodeMeta());
+  TsEnumMember(this.name, this.initializer, {TsNodeMeta? meta}) : super(TsNodeKind.enumMember, meta ?? TsNodeMeta());
 
   factory TsEnumMember.fromJson(Map<String, dynamic> json) {
     return TsEnumMember(
@@ -910,22 +831,15 @@ class TsEnumMember extends TsNode {
   String toCode() => '${name.toCode()}${initializer.toCode(' = &')}';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        name,
-        initializer,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [name, initializer];
 }
 
 class TsExportKeyword extends TsNode {
-  TsExportKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.exportKeyword, meta ?? TsNodeMeta());
+  TsExportKeyword({TsNodeMeta? meta}) : super(TsNodeKind.exportKeyword, meta ?? TsNodeMeta());
 }
 
 class TsExclamationToken extends TsNode {
-  TsExclamationToken({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.exclamationToken, meta ?? TsNodeMeta());
+  TsExclamationToken({TsNodeMeta? meta}) : super(TsNodeKind.exclamationToken, meta ?? TsNodeMeta());
 }
 
 class TsExpressionWithTypeArguments extends TsNode with WithTypeArguments<TsExpressionWithTypeArguments> {
@@ -933,11 +847,8 @@ class TsExpressionWithTypeArguments extends TsNode with WithTypeArguments<TsExpr
   @override
   final ListNode typeArguments;
 
-  TsExpressionWithTypeArguments(
-    this.expression,
-    this.typeArguments, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.expressionWithTypeArguments, meta ?? TsNodeMeta());
+  TsExpressionWithTypeArguments(this.expression, this.typeArguments, {TsNodeMeta? meta})
+    : super(TsNodeKind.expressionWithTypeArguments, meta ?? TsNodeMeta());
 
   factory TsExpressionWithTypeArguments.fromJson(Map<String, dynamic> json) {
     return TsExpressionWithTypeArguments(
@@ -950,22 +861,15 @@ class TsExpressionWithTypeArguments extends TsNode with WithTypeArguments<TsExpr
   String? get nodeName => expression.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        expression,
-        typeArguments,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [expression, typeArguments];
 }
 
 class TsExtendsKeyword extends TsNode {
-  TsExtendsKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.extendsKeyword, meta ?? TsNodeMeta());
+  TsExtendsKeyword({TsNodeMeta? meta}) : super(TsNodeKind.extendsKeyword, meta ?? TsNodeMeta());
 }
 
 class TsFalseKeyword extends TsNode {
-  TsFalseKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.falseKeyword, meta ?? TsNodeMeta());
+  TsFalseKeyword({TsNodeMeta? meta}) : super(TsNodeKind.falseKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'false';
@@ -1005,14 +909,7 @@ class TsFunctionDeclaration extends TsNode with WithTypeParameters<TsFunctionDec
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        asteriskToken,
-        name,
-        typeParameters,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, asteriskToken, name, typeParameters, parameters, type];
 }
 
 class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
@@ -1021,12 +918,8 @@ class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
   final ListNode parameters;
   final NullableNode type;
 
-  TsFunctionType(
-    this.typeParameters,
-    this.parameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.functionType, meta ?? TsNodeMeta());
+  TsFunctionType(this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.functionType, meta ?? TsNodeMeta());
 
   factory TsFunctionType.fromJson(Map<String, dynamic> json) {
     return TsFunctionType(
@@ -1041,11 +934,7 @@ class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
       '${typeParameters.toCode(prefix: '<', suffix: '>')}(${parameters.toCode()})${type.toCode(' => &')}';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        typeParameters,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
 class TsGetAccessor extends TsNode with WithTypeParameters<TsGetAccessor> {
@@ -1055,13 +944,8 @@ class TsGetAccessor extends TsNode with WithTypeParameters<TsGetAccessor> {
   final ListNode typeParameters;
   final NullableNode type;
 
-  TsGetAccessor(
-    this.modifiers,
-    this.name,
-    this.typeParameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.getAccessor, meta ?? TsNodeMeta());
+  TsGetAccessor(this.modifiers, this.name, this.typeParameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.getAccessor, meta ?? TsNodeMeta());
 
   factory TsGetAccessor.fromJson(Map<String, dynamic> json) {
     return TsGetAccessor(
@@ -1076,50 +960,30 @@ class TsGetAccessor extends TsNode with WithTypeParameters<TsGetAccessor> {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        typeParameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, type];
 }
 
 class TsHeritageClause extends TsNode {
   final SingleNode token;
   final ListNode types;
 
-  TsHeritageClause(
-    this.token,
-    this.types, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.heritageClause, meta ?? TsNodeMeta());
+  TsHeritageClause(this.token, this.types, {TsNodeMeta? meta}) : super(TsNodeKind.heritageClause, meta ?? TsNodeMeta());
 
   factory TsHeritageClause.fromJson(Map<String, dynamic> json) {
-    return TsHeritageClause(
-      SingleNode(_fromJsonObject(json['token'])),
-      ListNode(_fromJsonArray(json['types'])),
-    );
+    return TsHeritageClause(SingleNode(_fromJsonObject(json['token'])), ListNode(_fromJsonArray(json['types'])));
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        token,
-        types,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [token, types];
 }
 
 class TsIdentifier extends TsNode {
   final String text;
 
-  TsIdentifier(
-    this.text, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.identifier, meta ?? TsNodeMeta());
+  TsIdentifier(this.text, {TsNodeMeta? meta}) : super(TsNodeKind.identifier, meta ?? TsNodeMeta());
 
   factory TsIdentifier.fromJson(Map<String, dynamic> json) {
-    return TsIdentifier(
-      json['text'] as String,
-    );
+    return TsIdentifier(json['text'] as String);
   }
 
   @override
@@ -1130,11 +994,8 @@ class TsImportAttribute extends TsNode {
   final SingleNode name;
   final SingleNode value;
 
-  TsImportAttribute(
-    this.name,
-    this.value, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.importAttribute, meta ?? TsNodeMeta());
+  TsImportAttribute(this.name, this.value, {TsNodeMeta? meta})
+    : super(TsNodeKind.importAttribute, meta ?? TsNodeMeta());
 
   factory TsImportAttribute.fromJson(Map<String, dynamic> json) {
     return TsImportAttribute(
@@ -1147,24 +1008,16 @@ class TsImportAttribute extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        name,
-        value,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [name, value];
 }
 
 class TsImportAttributes extends TsNode {
   final ListNode elements;
 
-  TsImportAttributes(
-    this.elements, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.importAttributes, meta ?? TsNodeMeta());
+  TsImportAttributes(this.elements, {TsNodeMeta? meta}) : super(TsNodeKind.importAttributes, meta ?? TsNodeMeta());
 
   factory TsImportAttributes.fromJson(Map<String, dynamic> json) {
-    return TsImportAttributes(
-      ListNode(_fromJsonArray(json['elements'])),
-    );
+    return TsImportAttributes(ListNode(_fromJsonArray(json['elements'])));
   }
 
   @override
@@ -1176,12 +1029,8 @@ class TsImportClause extends TsNode {
   final NullableNode name;
   final NullableNode namedBindings;
 
-  TsImportClause(
-    this.isTypeOnly,
-    this.name,
-    this.namedBindings, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.importClause, meta ?? TsNodeMeta());
+  TsImportClause(this.isTypeOnly, this.name, this.namedBindings, {TsNodeMeta? meta})
+    : super(TsNodeKind.importClause, meta ?? TsNodeMeta());
 
   factory TsImportClause.fromJson(Map<String, dynamic> json) {
     return TsImportClause(
@@ -1195,10 +1044,7 @@ class TsImportClause extends TsNode {
   String? get nodeName => name.value?.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        name,
-        namedBindings,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [name, namedBindings];
 }
 
 class TsImportDeclaration extends TsNode {
@@ -1225,12 +1071,7 @@ class TsImportDeclaration extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        importClause,
-        moduleSpecifier,
-        importAttributes,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, importClause, moduleSpecifier, importAttributes];
 }
 
 class TsImportSpecifier extends TsNode {
@@ -1238,12 +1079,8 @@ class TsImportSpecifier extends TsNode {
   final SingleNode name;
   final NullableNode propertyName;
 
-  TsImportSpecifier(
-    this.isTypeOnly,
-    this.name,
-    this.propertyName, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.importSpecifier, meta ?? TsNodeMeta());
+  TsImportSpecifier(this.isTypeOnly, this.name, this.propertyName, {TsNodeMeta? meta})
+    : super(TsNodeKind.importSpecifier, meta ?? TsNodeMeta());
 
   factory TsImportSpecifier.fromJson(Map<String, dynamic> json) {
     return TsImportSpecifier(
@@ -1257,10 +1094,7 @@ class TsImportSpecifier extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        name,
-        propertyName,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [name, propertyName];
 }
 
 class TsImportType extends TsNode with WithTypeArguments<TsImportType> {
@@ -1270,13 +1104,8 @@ class TsImportType extends TsNode with WithTypeArguments<TsImportType> {
   @override
   final ListNode typeArguments;
 
-  TsImportType(
-    this.argument,
-    this.attributes,
-    this.qualifier,
-    this.typeArguments, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.importType, meta ?? TsNodeMeta());
+  TsImportType(this.argument, this.attributes, this.qualifier, this.typeArguments, {TsNodeMeta? meta})
+    : super(TsNodeKind.importType, meta ?? TsNodeMeta());
 
   factory TsImportType.fromJson(Map<String, dynamic> json) {
     return TsImportType(
@@ -1288,29 +1117,19 @@ class TsImportType extends TsNode with WithTypeArguments<TsImportType> {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        argument,
-        attributes,
-        qualifier,
-        typeArguments,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [argument, attributes, qualifier, typeArguments];
 }
 
 class TsImplementsKeyword extends TsNode {
-  TsImplementsKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.implementsKeyword, meta ?? TsNodeMeta());
+  TsImplementsKeyword({TsNodeMeta? meta}) : super(TsNodeKind.implementsKeyword, meta ?? TsNodeMeta());
 }
 
 class TsIndexedAccessType extends TsNode {
   final SingleNode objectType;
   final SingleNode indexType;
 
-  TsIndexedAccessType(
-    this.objectType,
-    this.indexType, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.indexedAccessType, meta ?? TsNodeMeta());
+  TsIndexedAccessType(this.objectType, this.indexType, {TsNodeMeta? meta})
+    : super(TsNodeKind.indexedAccessType, meta ?? TsNodeMeta());
 
   factory TsIndexedAccessType.fromJson(Map<String, dynamic> json) {
     return TsIndexedAccessType(
@@ -1323,10 +1142,7 @@ class TsIndexedAccessType extends TsNode {
   String toCode() => '${objectType.toCode()}[${indexType.toCode()}]';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        objectType,
-        indexType,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [objectType, indexType];
 }
 
 class TsIndexSignature extends TsNode {
@@ -1334,12 +1150,8 @@ class TsIndexSignature extends TsNode {
   final ListNode parameters;
   final NullableNode type;
 
-  TsIndexSignature(
-    this.modifiers,
-    this.parameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.indexSignature, meta ?? TsNodeMeta());
+  TsIndexSignature(this.modifiers, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.indexSignature, meta ?? TsNodeMeta());
 
   factory TsIndexSignature.fromJson(Map<String, dynamic> json) {
     return TsIndexSignature(
@@ -1350,25 +1162,16 @@ class TsIndexSignature extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, parameters, type];
 }
 
 class TsInferType extends TsNode {
   final SingleNode typeParameter;
 
-  TsInferType(
-    this.typeParameter, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.inferType, meta ?? TsNodeMeta());
+  TsInferType(this.typeParameter, {TsNodeMeta? meta}) : super(TsNodeKind.inferType, meta ?? TsNodeMeta());
 
   factory TsInferType.fromJson(Map<String, dynamic> json) {
-    return TsInferType(
-      SingleNode(_fromJsonObject(json['typeParameter'])),
-    );
+    return TsInferType(SingleNode(_fromJsonObject(json['typeParameter'])));
   }
 
   @override
@@ -1406,27 +1209,16 @@ class TsInterfaceDeclaration extends TsNode with WithTypeParameters<TsInterfaceD
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        typeParameters,
-        heritageClauses,
-        members,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, heritageClauses, members];
 }
 
 class TsIntersectionType extends TsNode {
   final ListNode types;
 
-  TsIntersectionType(
-    this.types, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.intersectionType, meta ?? TsNodeMeta());
+  TsIntersectionType(this.types, {TsNodeMeta? meta}) : super(TsNodeKind.intersectionType, meta ?? TsNodeMeta());
 
   factory TsIntersectionType.fromJson(Map<String, dynamic> json) {
-    return TsIntersectionType(
-      ListNode(_fromJsonArray(json['types'])),
-    );
+    return TsIntersectionType(ListNode(_fromJsonArray(json['types'])));
   }
 
   @override
@@ -1434,15 +1226,11 @@ class TsIntersectionType extends TsNode {
 }
 
 class TsIntrinsicKeyword extends TsNode {
-  TsIntrinsicKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.intrinsicKeyword, meta ?? TsNodeMeta());
+  TsIntrinsicKeyword({TsNodeMeta? meta}) : super(TsNodeKind.intrinsicKeyword, meta ?? TsNodeMeta());
 }
 
 class TsKeyOfKeyword extends TsNode {
-  TsKeyOfKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.keyOfKeyword, meta ?? TsNodeMeta());
+  TsKeyOfKeyword({TsNodeMeta? meta}) : super(TsNodeKind.keyOfKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'keyof';
@@ -1451,15 +1239,10 @@ class TsKeyOfKeyword extends TsNode {
 class TsLiteralType extends TsNode {
   final SingleNode literal;
 
-  TsLiteralType(
-    this.literal, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.literalType, meta ?? TsNodeMeta());
+  TsLiteralType(this.literal, {TsNodeMeta? meta}) : super(TsNodeKind.literalType, meta ?? TsNodeMeta());
 
   factory TsLiteralType.fromJson(Map<String, dynamic> json) {
-    return TsLiteralType(
-      SingleNode(_fromJsonObject(json['literal']), affectsParent: true),
-    );
+    return TsLiteralType(SingleNode(_fromJsonObject(json['literal']), affectsParent: true));
   }
 
   @override
@@ -1505,14 +1288,7 @@ class TsMappedType extends TsNode {
   String? get nodeName => nameType.value?.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        readonlyToken,
-        typeParameter,
-        nameType,
-        questionToken,
-        type,
-        members,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [readonlyToken, typeParameter, nameType, questionToken, type, members];
 }
 
 class TsMethodDeclaration extends TsNode with WithTypeParameters<TsMethodDeclaration> {
@@ -1553,14 +1329,14 @@ class TsMethodDeclaration extends TsNode with WithTypeParameters<TsMethodDeclara
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        asteriskToken,
-        questionToken,
-        typeParameters,
-        parameters,
-        type,
-      ];
+    modifiers,
+    name,
+    asteriskToken,
+    questionToken,
+    typeParameters,
+    parameters,
+    type,
+  ];
 }
 
 class TsMethodSignature extends TsNode with WithTypeParameters<TsMethodSignature> {
@@ -1571,14 +1347,8 @@ class TsMethodSignature extends TsNode with WithTypeParameters<TsMethodSignature
   final ListNode parameters;
   final NullableNode type;
 
-  TsMethodSignature(
-    this.name,
-    this.questionToken,
-    this.typeParameters,
-    this.parameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.methodSignature, meta ?? TsNodeMeta());
+  TsMethodSignature(this.name, this.questionToken, this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.methodSignature, meta ?? TsNodeMeta());
 
   factory TsMethodSignature.fromJson(Map<String, dynamic> json) {
     return TsMethodSignature(
@@ -1594,28 +1364,18 @@ class TsMethodSignature extends TsNode with WithTypeParameters<TsMethodSignature
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        name,
-        questionToken,
-        typeParameters,
-        parameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [name, questionToken, typeParameters, parameters, type];
 }
 
 class TsMinusToken extends TsNode {
-  TsMinusToken({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.minusToken, meta ?? TsNodeMeta());
+  TsMinusToken({TsNodeMeta? meta}) : super(TsNodeKind.minusToken, meta ?? TsNodeMeta());
 
   @override
   String toCode() => '-';
 }
 
 class TsMinusMinusToken extends TsNode {
-  TsMinusMinusToken({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.minusMinusToken, meta ?? TsNodeMeta());
+  TsMinusMinusToken({TsNodeMeta? meta}) : super(TsNodeKind.minusMinusToken, meta ?? TsNodeMeta());
 
   @override
   String toCode() => '--';
@@ -1624,15 +1384,10 @@ class TsMinusMinusToken extends TsNode {
 class TsModuleBlock extends TsNode {
   final ListNode statements;
 
-  TsModuleBlock(
-    this.statements, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.moduleBlock, meta ?? TsNodeMeta());
+  TsModuleBlock(this.statements, {TsNodeMeta? meta}) : super(TsNodeKind.moduleBlock, meta ?? TsNodeMeta());
 
   factory TsModuleBlock.fromJson(Map<String, dynamic> json) {
-    return TsModuleBlock(
-      ListNode(_fromJsonArray(json['statements'])),
-    );
+    return TsModuleBlock(ListNode(_fromJsonArray(json['statements'])));
   }
 
   @override
@@ -1644,12 +1399,8 @@ class TsModuleDeclaration extends TsNode {
   final SingleNode name;
   final NullableNode body;
 
-  TsModuleDeclaration(
-    this.modifiers,
-    this.name,
-    this.body, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.moduleDeclaration, meta ?? TsNodeMeta());
+  TsModuleDeclaration(this.modifiers, this.name, this.body, {TsNodeMeta? meta})
+    : super(TsNodeKind.moduleDeclaration, meta ?? TsNodeMeta());
 
   factory TsModuleDeclaration.fromJson(Map<String, dynamic> json) {
     return TsModuleDeclaration(
@@ -1663,25 +1414,16 @@ class TsModuleDeclaration extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        body,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, body];
 }
 
 class TsNamedImports extends TsNode {
   final ListNode elements;
 
-  TsNamedImports(
-    this.elements, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.namedImports, meta ?? TsNodeMeta());
+  TsNamedImports(this.elements, {TsNodeMeta? meta}) : super(TsNodeKind.namedImports, meta ?? TsNodeMeta());
 
   factory TsNamedImports.fromJson(Map<String, dynamic> json) {
-    return TsNamedImports(
-      ListNode(_fromJsonArray(json['elements'])),
-    );
+    return TsNamedImports(ListNode(_fromJsonArray(json['elements'])));
   }
 
   @override
@@ -1691,15 +1433,10 @@ class TsNamedImports extends TsNode {
 class TsNamespaceImport extends TsNode {
   final SingleNode name;
 
-  TsNamespaceImport(
-    this.name, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.namespaceImport, meta ?? TsNodeMeta());
+  TsNamespaceImport(this.name, {TsNodeMeta? meta}) : super(TsNodeKind.namespaceImport, meta ?? TsNodeMeta());
 
   factory TsNamespaceImport.fromJson(Map<String, dynamic> json) {
-    return TsNamespaceImport(
-      SingleNode(_fromJsonObject(json['name'])),
-    );
+    return TsNamespaceImport(SingleNode(_fromJsonObject(json['name'])));
   }
 
   @override
@@ -1710,24 +1447,18 @@ class TsNamespaceImport extends TsNode {
 }
 
 class TsNeverKeyword extends TsNode {
-  TsNeverKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.neverKeyword, meta ?? TsNodeMeta());
+  TsNeverKeyword({TsNodeMeta? meta}) : super(TsNodeKind.neverKeyword, meta ?? TsNodeMeta());
 }
 
 class TsNullKeyword extends TsNode {
-  TsNullKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.nullKeyword, meta ?? TsNodeMeta());
+  TsNullKeyword({TsNodeMeta? meta}) : super(TsNodeKind.nullKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'null';
 }
 
 class TsNumberKeyword extends TsNode {
-  TsNumberKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.numberKeyword, meta ?? TsNodeMeta());
+  TsNumberKeyword({TsNodeMeta? meta}) : super(TsNodeKind.numberKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'number';
@@ -1736,15 +1467,10 @@ class TsNumberKeyword extends TsNode {
 class TsNumericLiteral extends TsNode {
   final String text;
 
-  TsNumericLiteral(
-    this.text, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.numericLiteral, meta ?? TsNodeMeta());
+  TsNumericLiteral(this.text, {TsNodeMeta? meta}) : super(TsNodeKind.numericLiteral, meta ?? TsNodeMeta());
 
   factory TsNumericLiteral.fromJson(Map<String, dynamic> json) {
-    return TsNumericLiteral(
-      json['text'] as String,
-    );
+    return TsNumericLiteral(json['text'] as String);
   }
 
   @override
@@ -1755,9 +1481,7 @@ class TsNumericLiteral extends TsNode {
 }
 
 class TsObjectKeyword extends TsNode {
-  TsObjectKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.objectKeyword, meta ?? TsNodeMeta());
+  TsObjectKeyword({TsNodeMeta? meta}) : super(TsNodeKind.objectKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'object';
@@ -1768,12 +1492,8 @@ class TsPackage extends TsNode {
   final String version;
   final ListNode sourceFiles;
 
-  TsPackage(
-    this.name,
-    this.version,
-    this.sourceFiles, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.package, meta ?? TsNodeMeta());
+  TsPackage(this.name, this.version, this.sourceFiles, {TsNodeMeta? meta})
+    : super(TsNodeKind.package, meta ?? TsNodeMeta());
 
   factory TsPackage.fromJson(Map<String, dynamic> json) {
     final result = TsPackage(
@@ -1830,27 +1550,16 @@ class TsParameter extends TsNode {
       '${modifiers.toCode(suffix: ' ')}${dotDotDotToken ? '...' : ''}${name.toCode()}${questionToken.toCode('&')}${type.toCode(': &')}${initializer.toCode(' = &')}';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        questionToken,
-        type,
-        initializer,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, questionToken, type, initializer];
 }
 
 class TsParenthesizedType extends TsNode {
   final SingleNode type;
 
-  TsParenthesizedType(
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.parenthesizedType, meta ?? TsNodeMeta());
+  TsParenthesizedType(this.type, {TsNodeMeta? meta}) : super(TsNodeKind.parenthesizedType, meta ?? TsNodeMeta());
 
   factory TsParenthesizedType.fromJson(Map<String, dynamic> json) {
-    return TsParenthesizedType(
-      SingleNode(_fromJsonObject(json['type'])),
-    );
+    return TsParenthesizedType(SingleNode(_fromJsonObject(json['type'])));
   }
 
   @override
@@ -1861,18 +1570,14 @@ class TsParenthesizedType extends TsNode {
 }
 
 class TsPlusToken extends TsNode {
-  TsPlusToken({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.plusToken, meta ?? TsNodeMeta());
+  TsPlusToken({TsNodeMeta? meta}) : super(TsNodeKind.plusToken, meta ?? TsNodeMeta());
 
   @override
   String toCode() => '+';
 }
 
 class TsPlusPlusToken extends TsNode {
-  TsPlusPlusToken({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.plusPlusToken, meta ?? TsNodeMeta());
+  TsPlusPlusToken({TsNodeMeta? meta}) : super(TsNodeKind.plusPlusToken, meta ?? TsNodeMeta());
 
   @override
   String toCode() => '++';
@@ -1882,11 +1587,8 @@ class TsPrefixUnaryExpression extends TsNode {
   final SingleNode operator;
   final SingleNode operand;
 
-  TsPrefixUnaryExpression(
-    this.operator,
-    this.operand, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.prefixUnaryExpression, meta ?? TsNodeMeta());
+  TsPrefixUnaryExpression(this.operator, this.operand, {TsNodeMeta? meta})
+    : super(TsNodeKind.prefixUnaryExpression, meta ?? TsNodeMeta());
 
   factory TsPrefixUnaryExpression.fromJson(Map<String, dynamic> json) {
     return TsPrefixUnaryExpression(
@@ -1896,16 +1598,11 @@ class TsPrefixUnaryExpression extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        operator,
-        operand,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [operator, operand];
 }
 
 class TsPrivateKeyword extends TsNode {
-  TsPrivateKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.privateKeyword, meta ?? TsNodeMeta());
+  TsPrivateKeyword({TsNodeMeta? meta}) : super(TsNodeKind.privateKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'private';
@@ -1916,12 +1613,8 @@ class TsPropertyAccessExpression extends TsNode {
   final NullableNode questionDotToken;
   final SingleNode name;
 
-  TsPropertyAccessExpression(
-    this.expression,
-    this.questionDotToken,
-    this.name, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.propertyAccessExpression, meta ?? TsNodeMeta());
+  TsPropertyAccessExpression(this.expression, this.questionDotToken, this.name, {TsNodeMeta? meta})
+    : super(TsNodeKind.propertyAccessExpression, meta ?? TsNodeMeta());
 
   factory TsPropertyAccessExpression.fromJson(Map<String, dynamic> json) {
     return TsPropertyAccessExpression(
@@ -1935,11 +1628,7 @@ class TsPropertyAccessExpression extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        expression,
-        questionDotToken,
-        name,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [expression, questionDotToken, name];
 }
 
 class TsPropertyDeclaration extends TsNode {
@@ -1979,14 +1668,7 @@ class TsPropertyDeclaration extends TsNode {
       '${modifiers.toCode(separator: ' ', suffix: ' ')}${name.toCode()}${questionToken.toCode('?')}${exclamationToken.toCode('!')}${type.toCode(': &')}${initializer.toCode(' = &')}';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        questionToken,
-        exclamationToken,
-        type,
-        initializer,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, questionToken, exclamationToken, type, initializer];
 }
 
 class TsPropertySignature extends TsNode {
@@ -1996,14 +1678,8 @@ class TsPropertySignature extends TsNode {
   final NullableNode type;
   final NullableNode initializer;
 
-  TsPropertySignature(
-    this.modifiers,
-    this.name,
-    this.questionToken,
-    this.type,
-    this.initializer, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.propertySignature, meta ?? TsNodeMeta());
+  TsPropertySignature(this.modifiers, this.name, this.questionToken, this.type, this.initializer, {TsNodeMeta? meta})
+    : super(TsNodeKind.propertySignature, meta ?? TsNodeMeta());
 
   factory TsPropertySignature.fromJson(Map<String, dynamic> json) {
     return TsPropertySignature(
@@ -2023,30 +1699,18 @@ class TsPropertySignature extends TsNode {
       '${modifiers.toCode(separator: ' ', suffix: ' ')}${name.toCode()}${questionToken.toCode('?')}${type.toCode(': &')}${initializer.toCode(' = &')}';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        questionToken,
-        type,
-        initializer,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, questionToken, type, initializer];
 }
 
 class TsProtectedKeyword extends TsNode {
-  TsProtectedKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.protectedKeyword, meta ?? TsNodeMeta());
+  TsProtectedKeyword({TsNodeMeta? meta}) : super(TsNodeKind.protectedKeyword, meta ?? TsNodeMeta());
 }
 
 class TsQualifiedName extends TsNode {
   final SingleNode left;
   final SingleNode right;
 
-  TsQualifiedName(
-    this.left,
-    this.right, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.qualifiedName, meta ?? TsNodeMeta());
+  TsQualifiedName(this.left, this.right, {TsNodeMeta? meta}) : super(TsNodeKind.qualifiedName, meta ?? TsNodeMeta());
 
   factory TsQualifiedName.fromJson(Map<String, dynamic> json) {
     return TsQualifiedName(
@@ -2059,22 +1723,15 @@ class TsQualifiedName extends TsNode {
   String? get nodeName => '${left.value.nodeName}.${right.value.nodeName}';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        left,
-        right,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [left, right];
 }
 
 class TsQuestionToken extends TsNode {
-  TsQuestionToken({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.questionToken, meta ?? TsNodeMeta());
+  TsQuestionToken({TsNodeMeta? meta}) : super(TsNodeKind.questionToken, meta ?? TsNodeMeta());
 }
 
 class TsReadonlyKeyword extends TsNode {
-  TsReadonlyKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.readonlyKeyword, meta ?? TsNodeMeta());
+  TsReadonlyKeyword({TsNodeMeta? meta}) : super(TsNodeKind.readonlyKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'readonly';
@@ -2083,15 +1740,10 @@ class TsReadonlyKeyword extends TsNode {
 class TsRestType extends TsNode {
   final SingleNode type;
 
-  TsRestType(
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.restType, meta ?? TsNodeMeta());
+  TsRestType(this.type, {TsNodeMeta? meta}) : super(TsNodeKind.restType, meta ?? TsNodeMeta());
 
   factory TsRestType.fromJson(Map<String, dynamic> json) {
-    return TsRestType(
-      SingleNode(_fromJsonObject(json['type'])),
-    );
+    return TsRestType(SingleNode(_fromJsonObject(json['type'])));
   }
 
   @override
@@ -2105,13 +1757,8 @@ class TsSetAccessor extends TsNode with WithTypeParameters<TsSetAccessor> {
   final ListNode typeParameters;
   final NullableNode type;
 
-  TsSetAccessor(
-    this.modifiers,
-    this.name,
-    this.typeParameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.setAccessor, meta ?? TsNodeMeta());
+  TsSetAccessor(this.modifiers, this.name, this.typeParameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.setAccessor, meta ?? TsNodeMeta());
 
   factory TsSetAccessor.fromJson(Map<String, dynamic> json) {
     return TsSetAccessor(
@@ -2126,12 +1773,7 @@ class TsSetAccessor extends TsNode with WithTypeParameters<TsSetAccessor> {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        typeParameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, type];
 }
 
 class TsSourceFile extends TsNode {
@@ -2139,19 +1781,11 @@ class TsSourceFile extends TsNode {
   final String baseName;
   final ListNode statements;
 
-  TsSourceFile(
-    this.path,
-    this.baseName,
-    this.statements, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.sourceFile, meta ?? TsNodeMeta());
+  TsSourceFile(this.path, this.baseName, this.statements, {TsNodeMeta? meta})
+    : super(TsNodeKind.sourceFile, meta ?? TsNodeMeta());
 
   factory TsSourceFile.fromJson(Map<String, dynamic> json) {
-    return TsSourceFile(
-      json['path'],
-      json['baseName'],
-      ListNode(_fromJsonArray(json['statements'])),
-    );
+    return TsSourceFile(json['path'], json['baseName'], ListNode(_fromJsonArray(json['statements'])));
   }
 
   @override
@@ -2162,18 +1796,14 @@ class TsSourceFile extends TsNode {
 }
 
 class TsStaticKeyword extends TsNode {
-  TsStaticKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.staticKeyword, meta ?? TsNodeMeta());
+  TsStaticKeyword({TsNodeMeta? meta}) : super(TsNodeKind.staticKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'static';
 }
 
 class TsStringKeyword extends TsNode {
-  TsStringKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.stringKeyword, meta ?? TsNodeMeta());
+  TsStringKeyword({TsNodeMeta? meta}) : super(TsNodeKind.stringKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'string';
@@ -2182,15 +1812,10 @@ class TsStringKeyword extends TsNode {
 class TsStringLiteral extends TsNode {
   final String text;
 
-  TsStringLiteral(
-    this.text, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.stringLiteral, meta ?? TsNodeMeta());
+  TsStringLiteral(this.text, {TsNodeMeta? meta}) : super(TsNodeKind.stringLiteral, meta ?? TsNodeMeta());
 
   factory TsStringLiteral.fromJson(Map<String, dynamic> json) {
-    return TsStringLiteral(
-      json['text'] as String,
-    );
+    return TsStringLiteral(json['text'] as String);
   }
 
   @override
@@ -2198,29 +1823,20 @@ class TsStringLiteral extends TsNode {
 }
 
 class TsSymbolKeyword extends TsNode {
-  TsSymbolKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.symbolKeyword, meta ?? TsNodeMeta());
+  TsSymbolKeyword({TsNodeMeta? meta}) : super(TsNodeKind.symbolKeyword, meta ?? TsNodeMeta());
 }
 
 class TsTildeToken extends TsNode {
-  TsTildeToken({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.tildeToken, meta ?? TsNodeMeta());
+  TsTildeToken({TsNodeMeta? meta}) : super(TsNodeKind.tildeToken, meta ?? TsNodeMeta());
 }
 
 class TsTemplateHead extends TsNode {
   final String text;
 
-  TsTemplateHead(
-    this.text, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.templateHead, meta ?? TsNodeMeta());
+  TsTemplateHead(this.text, {TsNodeMeta? meta}) : super(TsNodeKind.templateHead, meta ?? TsNodeMeta());
 
   factory TsTemplateHead.fromJson(Map<String, dynamic> json) {
-    return TsTemplateHead(
-      json['text'] as String,
-    );
+    return TsTemplateHead(json['text'] as String);
   }
 
   @override
@@ -2234,11 +1850,8 @@ class TsTemplateLiteralType extends TsNode {
   final SingleNode head;
   final ListNode templateSpans;
 
-  TsTemplateLiteralType(
-    this.head,
-    this.templateSpans, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.templateLiteralType, meta ?? TsNodeMeta());
+  TsTemplateLiteralType(this.head, this.templateSpans, {TsNodeMeta? meta})
+    : super(TsNodeKind.templateLiteralType, meta ?? TsNodeMeta());
 
   factory TsTemplateLiteralType.fromJson(Map<String, dynamic> json) {
     return TsTemplateLiteralType(
@@ -2248,21 +1861,15 @@ class TsTemplateLiteralType extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        head,
-        templateSpans,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [head, templateSpans];
 }
 
 class TsTemplateLiteralTypeSpan extends TsNode {
   final SingleNode type;
   final SingleNode literal;
 
-  TsTemplateLiteralTypeSpan(
-    this.type,
-    this.literal, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.templateLiteralTypeSpan, meta ?? TsNodeMeta());
+  TsTemplateLiteralTypeSpan(this.type, this.literal, {TsNodeMeta? meta})
+    : super(TsNodeKind.templateLiteralTypeSpan, meta ?? TsNodeMeta());
 
   factory TsTemplateLiteralTypeSpan.fromJson(Map<String, dynamic> json) {
     return TsTemplateLiteralTypeSpan(
@@ -2272,24 +1879,16 @@ class TsTemplateLiteralTypeSpan extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        type,
-        literal,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [type, literal];
 }
 
 class TsTemplateMiddle extends TsNode {
   final String text;
 
-  TsTemplateMiddle(
-    this.text, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.templateMiddle, meta ?? TsNodeMeta());
+  TsTemplateMiddle(this.text, {TsNodeMeta? meta}) : super(TsNodeKind.templateMiddle, meta ?? TsNodeMeta());
 
   factory TsTemplateMiddle.fromJson(Map<String, dynamic> json) {
-    return TsTemplateMiddle(
-      json['text'] as String,
-    );
+    return TsTemplateMiddle(json['text'] as String);
   }
 
   @override
@@ -2302,15 +1901,10 @@ class TsTemplateMiddle extends TsNode {
 class TsTemplateTail extends TsNode {
   final String text;
 
-  TsTemplateTail(
-    this.text, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.templateTail, meta ?? TsNodeMeta());
+  TsTemplateTail(this.text, {TsNodeMeta? meta}) : super(TsNodeKind.templateTail, meta ?? TsNodeMeta());
 
   factory TsTemplateTail.fromJson(Map<String, dynamic> json) {
-    return TsTemplateTail(
-      json['text'] as String,
-    );
+    return TsTemplateTail(json['text'] as String);
   }
 
   @override
@@ -2321,15 +1915,11 @@ class TsTemplateTail extends TsNode {
 }
 
 class TsThisType extends TsNode {
-  TsThisType({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.thisType, meta ?? TsNodeMeta());
+  TsThisType({TsNodeMeta? meta}) : super(TsNodeKind.thisType, meta ?? TsNodeMeta());
 }
 
 class TsTrueKeyword extends TsNode {
-  TsTrueKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.trueKeyword, meta ?? TsNodeMeta());
+  TsTrueKeyword({TsNodeMeta? meta}) : super(TsNodeKind.trueKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'true';
@@ -2338,15 +1928,10 @@ class TsTrueKeyword extends TsNode {
 class TsTupleType extends TsNode {
   final ListNode elements;
 
-  TsTupleType(
-    this.elements, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.tupleType, meta ?? TsNodeMeta());
+  TsTupleType(this.elements, {TsNodeMeta? meta}) : super(TsNodeKind.tupleType, meta ?? TsNodeMeta());
 
   factory TsTupleType.fromJson(Map<String, dynamic> json) {
-    return TsTupleType(
-      ListNode(_fromJsonArray(json['elements'])),
-    );
+    return TsTupleType(ListNode(_fromJsonArray(json['elements'])));
   }
 
   @override
@@ -2363,13 +1948,8 @@ class TsTypeAliasDeclaration extends TsNode with WithTypeParameters<TsTypeAliasD
   final ListNode typeParameters;
   final NullableNode type;
 
-  TsTypeAliasDeclaration(
-    this.modifiers,
-    this.name,
-    this.typeParameters,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.typeAliasDeclaration, meta ?? TsNodeMeta());
+  TsTypeAliasDeclaration(this.modifiers, this.name, this.typeParameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.typeAliasDeclaration, meta ?? TsNodeMeta());
 
   factory TsTypeAliasDeclaration.fromJson(Map<String, dynamic> json) {
     return TsTypeAliasDeclaration(
@@ -2384,26 +1964,16 @@ class TsTypeAliasDeclaration extends TsNode with WithTypeParameters<TsTypeAliasD
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        typeParameters,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, type];
 }
 
 class TsTypeLiteral extends TsNode {
   final ListNode members;
 
-  TsTypeLiteral(
-    this.members, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.typeLiteral, meta ?? TsNodeMeta());
+  TsTypeLiteral(this.members, {TsNodeMeta? meta}) : super(TsNodeKind.typeLiteral, meta ?? TsNodeMeta());
 
   factory TsTypeLiteral.fromJson(Map<String, dynamic> json) {
-    return TsTypeLiteral(
-      ListNode(_fromJsonArray(json['members'])),
-    );
+    return TsTypeLiteral(ListNode(_fromJsonArray(json['members'])));
   }
 
   @override
@@ -2414,24 +1984,14 @@ class TsTypeOperator extends TsNode {
   final SingleNode operator;
   final SingleNode type;
 
-  TsTypeOperator(
-    this.operator,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.typeOperator, meta ?? TsNodeMeta());
+  TsTypeOperator(this.operator, this.type, {TsNodeMeta? meta}) : super(TsNodeKind.typeOperator, meta ?? TsNodeMeta());
 
   factory TsTypeOperator.fromJson(Map<String, dynamic> json) {
-    return TsTypeOperator(
-      SingleNode(_fromJsonObject(json['operator'])),
-      SingleNode(_fromJsonObject(json['type'])),
-    );
+    return TsTypeOperator(SingleNode(_fromJsonObject(json['operator'])), SingleNode(_fromJsonObject(json['type'])));
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        operator,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [operator, type];
 
   @override
   String toCode() => '${operator.value.toCode()} ${type.value.toCode()}';
@@ -2443,13 +2003,8 @@ class TsTypeParameter extends TsNode {
   final NullableNode constraint;
   final NullableNode defaultType;
 
-  TsTypeParameter(
-    this.modifiers,
-    this.name,
-    this.constraint,
-    this.defaultType, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.typeParameter, meta ?? TsNodeMeta());
+  TsTypeParameter(this.modifiers, this.name, this.constraint, this.defaultType, {TsNodeMeta? meta})
+    : super(TsNodeKind.typeParameter, meta ?? TsNodeMeta());
 
   factory TsTypeParameter.fromJson(Map<String, dynamic> json) {
     return TsTypeParameter(
@@ -2467,12 +2022,7 @@ class TsTypeParameter extends TsNode {
   String toCode() => '${name.toCode()}${constraint.toCode(' extends &')}${defaultType.toCode(' = &')}';
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        name,
-        constraint,
-        defaultType,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, constraint, defaultType];
 }
 
 class TsTypePredicate extends TsNode {
@@ -2480,12 +2030,8 @@ class TsTypePredicate extends TsNode {
   final SingleNode parameterName;
   final NullableNode type;
 
-  TsTypePredicate(
-    this.assertModifier,
-    this.parameterName,
-    this.type, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.typePredicate, meta ?? TsNodeMeta());
+  TsTypePredicate(this.assertModifier, this.parameterName, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.typePredicate, meta ?? TsNodeMeta());
 
   factory TsTypePredicate.fromJson(Map<String, dynamic> json) {
     return TsTypePredicate(
@@ -2496,35 +2042,22 @@ class TsTypePredicate extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        assertModifier,
-        parameterName,
-        type,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [assertModifier, parameterName, type];
 }
 
 class TsTypeQuery extends TsNode {
   final SingleNode exprName;
   final ListNode typeArguments;
 
-  TsTypeQuery(
-    this.exprName,
-    this.typeArguments, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.typeQuery, meta ?? TsNodeMeta());
+  TsTypeQuery(this.exprName, this.typeArguments, {TsNodeMeta? meta})
+    : super(TsNodeKind.typeQuery, meta ?? TsNodeMeta());
 
   factory TsTypeQuery.fromJson(Map<String, dynamic> json) {
-    return TsTypeQuery(
-      SingleNode(_fromJsonObject(json['exprName'])),
-      ListNode(_fromJsonArray(json['typeArguments'])),
-    );
+    return TsTypeQuery(SingleNode(_fromJsonObject(json['exprName'])), ListNode(_fromJsonArray(json['typeArguments'])));
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        exprName,
-        typeArguments,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [exprName, typeArguments];
 }
 
 class TsTypeReference extends TsNode with WithTypeArguments<TsTypeReference> {
@@ -2532,11 +2065,8 @@ class TsTypeReference extends TsNode with WithTypeArguments<TsTypeReference> {
   @override
   final ListNode typeArguments;
 
-  TsTypeReference(
-    this.typeName,
-    this.typeArguments, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.typeReference, meta ?? TsNodeMeta());
+  TsTypeReference(this.typeName, this.typeArguments, {TsNodeMeta? meta})
+    : super(TsNodeKind.typeReference, meta ?? TsNodeMeta());
 
   factory TsTypeReference.fromJson(Map<String, dynamic> json) {
     return TsTypeReference(
@@ -2549,16 +2079,11 @@ class TsTypeReference extends TsNode with WithTypeArguments<TsTypeReference> {
   String? get nodeName => typeName.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        typeName,
-        typeArguments,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [typeName, typeArguments];
 }
 
 class TsUndefinedKeyword extends TsNode {
-  TsUndefinedKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.undefinedKeyword, meta ?? TsNodeMeta());
+  TsUndefinedKeyword({TsNodeMeta? meta}) : super(TsNodeKind.undefinedKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'undefined';
@@ -2567,15 +2092,10 @@ class TsUndefinedKeyword extends TsNode {
 class TsUnionType extends TsNode {
   final ListNode types;
 
-  TsUnionType(
-    this.types, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.unionType, meta ?? TsNodeMeta());
+  TsUnionType(this.types, {TsNodeMeta? meta}) : super(TsNodeKind.unionType, meta ?? TsNodeMeta());
 
   factory TsUnionType.fromJson(Map<String, dynamic> json) {
-    return TsUnionType(
-      ListNode(_fromJsonArray(json['types'])),
-    );
+    return TsUnionType(ListNode(_fromJsonArray(json['types'])));
   }
 
   @override
@@ -2586,15 +2106,11 @@ class TsUnionType extends TsNode {
 }
 
 class TsUniqueKeyword extends TsNode {
-  TsUniqueKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.uniqueKeyword, meta ?? TsNodeMeta());
+  TsUniqueKeyword({TsNodeMeta? meta}) : super(TsNodeKind.uniqueKeyword, meta ?? TsNodeMeta());
 }
 
 class TsUnknownKeyword extends TsNode {
-  TsUnknownKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.unknownKeyword, meta ?? TsNodeMeta());
+  TsUnknownKeyword({TsNodeMeta? meta}) : super(TsNodeKind.unknownKeyword, meta ?? TsNodeMeta());
 }
 
 class TsVariableDeclaration extends TsNode {
@@ -2603,13 +2119,8 @@ class TsVariableDeclaration extends TsNode {
   final NullableNode type;
   final NullableNode initializer;
 
-  TsVariableDeclaration(
-    this.name,
-    this.exclamationToken,
-    this.type,
-    this.initializer, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.variableDeclaration, meta ?? TsNodeMeta());
+  TsVariableDeclaration(this.name, this.exclamationToken, this.type, this.initializer, {TsNodeMeta? meta})
+    : super(TsNodeKind.variableDeclaration, meta ?? TsNodeMeta());
 
   factory TsVariableDeclaration.fromJson(Map<String, dynamic> json) {
     return TsVariableDeclaration(
@@ -2624,26 +2135,17 @@ class TsVariableDeclaration extends TsNode {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        name,
-        exclamationToken,
-        type,
-        initializer,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [name, exclamationToken, type, initializer];
 }
 
 class TsVariableDeclarationList extends TsNode {
   final ListNode declarations;
 
-  TsVariableDeclarationList(
-    this.declarations, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.variableDeclarationList, meta ?? TsNodeMeta());
+  TsVariableDeclarationList(this.declarations, {TsNodeMeta? meta})
+    : super(TsNodeKind.variableDeclarationList, meta ?? TsNodeMeta());
 
   factory TsVariableDeclarationList.fromJson(Map<String, dynamic> json) {
-    return TsVariableDeclarationList(
-      ListNode(_fromJsonArray(json['declarations'])),
-    );
+    return TsVariableDeclarationList(ListNode(_fromJsonArray(json['declarations'])));
   }
 
   @override
@@ -2654,11 +2156,8 @@ class TsVariableStatement extends TsNode {
   final ListNode modifiers;
   final SingleNode declarationList;
 
-  TsVariableStatement(
-    this.modifiers,
-    this.declarationList, {
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.variableStatement, meta ?? TsNodeMeta());
+  TsVariableStatement(this.modifiers, this.declarationList, {TsNodeMeta? meta})
+    : super(TsNodeKind.variableStatement, meta ?? TsNodeMeta());
 
   factory TsVariableStatement.fromJson(Map<String, dynamic> json) {
     return TsVariableStatement(
@@ -2668,16 +2167,11 @@ class TsVariableStatement extends TsNode {
   }
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [
-        modifiers,
-        declarationList,
-      ];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, declarationList];
 }
 
 class TsVoidKeyword extends TsNode {
-  TsVoidKeyword({
-    TsNodeMeta? meta,
-  }) : super(TsNodeKind.voidKeyword, meta ?? TsNodeMeta());
+  TsVoidKeyword({TsNodeMeta? meta}) : super(TsNodeKind.voidKeyword, meta ?? TsNodeMeta());
 
   @override
   String toCode() => 'void';

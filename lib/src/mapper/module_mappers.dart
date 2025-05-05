@@ -2,7 +2,7 @@ import '../model/ts_node.dart';
 import '../transpiler/type_evaluator.dart';
 import '../util/ts_node_search.dart';
 
-TsNode mergeModulesMapper(TsNode node, TypeEvaluator typeEvaluator) {
+TsNode mergeDuplicateModulesMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node is TsModuleDeclaration) {
     final moduleName = node.name.value.nodeName;
     if (moduleName != null) {
@@ -16,6 +16,20 @@ TsNode mergeModulesMapper(TsNode node, TypeEvaluator typeEvaluator) {
           }
           (node.body.value as TsModuleBlock?)?.statements.set(statements);
         }
+      }
+    }
+  }
+  return node;
+}
+
+TsNode removeDuplicateModulesMapper(TsNode node, TypeEvaluator typeEvaluator) {
+  if (node is TsModuleDeclaration) {
+    final moduleName = node.name.value.nodeName;
+    if (moduleName != null) {
+      final modules = node.root.searchDown<TsModuleDeclaration>(hasName(moduleName));
+      modules.sort((a, b) => a.id - b.id);
+      if (node.id != modules.first.id) {
+        return Ts$Removed(node);
       }
     }
   }
