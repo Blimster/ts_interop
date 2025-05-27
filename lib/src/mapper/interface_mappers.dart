@@ -30,7 +30,6 @@ TsNode removeDuplicateInterfacesMapper(TsNode node, TypeEvaluator typeEvaluator)
   if (node case TsInterfaceDeclaration(nodeName: final interfaceName?)) {
     final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasName(interfaceName));
     if (interfaces.length >= 2) {
-      print('Removing duplicate interface: $interfaceName, count=${interfaces.length}');
       interfaces.sort((a, b) => a.id - b.id);
       if (node.id != interfaces.first.id) {
         return Ts$Removed(node);

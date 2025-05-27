@@ -7,8 +7,8 @@ environment:
   sdk: ^3.7.0
 
 dependencies:
-  binary_tree: ^1.0.6
-  built_collection: ^5.2.0
+  binary_tree: ^1.0.7
+  built_collection: ^5.1.1
   code_builder: ^4.10.0
   dart_style: ^3.0.1
   html: ^0.15.4
@@ -19,7 +19,3 @@ dev_dependencies:
   lints: ^5.1.0
   build_runner: ^2.4.12
   build_web_compilers: ^4.0.11
-
-dependency_overrides:
-  binary_tree:
-    path: ../binary_tree

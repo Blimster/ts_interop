@@ -343,7 +343,7 @@ enum TsNodeKind {
   voidKeyword,
 }
 
-mixin WithTypeParameters<T extends TsNode> {
+mixin WithTypeParameters<T extends TsNode> on TsNode {
   ListNode get typeParameters;
   void updateTypeParameters(List<TsNode> typeArguments) {
     final (added, removed) = this.typeParameters.set(typeArguments);
@@ -351,7 +351,7 @@ mixin WithTypeParameters<T extends TsNode> {
   }
 }
 
-mixin WithTypeArguments<T extends TsNode> {
+mixin WithTypeArguments<T extends TsNode> on TsNode {
   ListNode get typeArguments;
   void updateTypeArguments(List<TsNode> typeArguments) {
     final (added, removed) = this.typeArguments.set(typeArguments);
@@ -418,10 +418,10 @@ final class ListNode extends TsNodeWrapper<List<TsNode>> {
   (List<TsNode>, List<TsNode>) set(List<TsNode> value) {
     final removed = BinaryTree<TsNode>(_value);
     final added = BinaryTree<TsNode>(value);
-    for (final node in _value) {
+    for (final node in value) {
       removed.remove(node);
     }
-    for (final node in value) {
+    for (final node in _value) {
       added.remove(node);
     }
     _value = value;

@@ -1,5 +1,5 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
-// ignore_for_file: unnecessary_library_name
+// ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
 
 library intl; // ignore_for_file: no_leading_underscores_for_library_prefixes
 
@@ -1339,7 +1339,7 @@ extension type ListFormat.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString format(_i2.Iterable<_i1.JSString> list);
+  external _i1.JSString format(_i2.Iterable<_i1.JSString, _i1.JSAny, _i1.JSAny> list);
 
   /// Method [formatToParts]
   ///
@@ -1348,7 +1348,7 @@ extension type ListFormat.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - []
-  external _i1.JSArray<_i1.JSObject> formatToParts(_i2.Iterable<_i1.JSString> list);
+  external _i1.JSArray<_i1.JSObject> formatToParts(_i2.Iterable<_i1.JSString, _i1.JSAny, _i1.JSAny> list);
 
   /// Method [resolvedOptions]
   ///
@@ -1400,6 +1400,10 @@ extension type ResolvedSegmenterOptions.$(_i1.JSObject _) implements _i1.JSObjec
   /// granularity: "grapheme" | "word" | "sentence"
   external _i1.JSString granularity;
 }
+
+/// Interface [SegmentIterator]
+extension type SegmentIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject, _i2.IteratorObject<T, _i2.BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [Segments]
 extension type Segments.$(_i1.JSObject _) implements _i1.JSObject {

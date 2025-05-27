@@ -16,13 +16,8 @@ import '../model/ts_node.dart';
   return (result.values.toList(), hasNull);
 }
 
-TsTypeReference _typeRef(String name,
-    {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
-  return TsTypeReference(
-    TsIdentifier(name).toSingleNode(affectsParent: true),
-    typeArguments.toListNode(),
-    meta: meta,
-  );
+TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
+  return TsTypeReference(TsIdentifier(name).toSingleNode(affectsParent: true), typeArguments.toListNode(), meta: meta);
 }
 
 class TypeEvaluator {
@@ -38,50 +33,47 @@ class TypeEvaluator {
 
   TsTypeReference _typeReference(TsTypeReference node) {
     const standardTypes = {
-      'Symbol': 'JSSymbol',
-      'BigInt': 'JSBigInt',
-      'Promise': 'JSPromise',
-      'ArrayBuffer': 'JSArrayBuffer',
-      'Int8Array': 'JSInt8Array',
-      'Int16Array': 'JSInt16Array',
-      'Int32Array': 'JSInt32Array',
-      'Uint8Array': 'JSUint8Array',
-      'Uint16Array': 'JSUint16Array',
-      'Uint32Array': 'JSUint32Array',
-      'Float32Array': 'JSFloat32Array',
-      'Float64Array': 'JSFloat64Array',
-      'Uint8ClampedArray': 'JSUint8ClampedArray',
+      'Symbol': ('JSSymbol', 0),
+      'BigInt': ('JSBigInt', 0),
+      'Promise': ('JSPromise', 1),
+      'ArrayBuffer': ('JSArrayBuffer', 0),
+      'Int8Array': ('JSInt8Array', 0),
+      'Int16Array': ('JSInt16Array', 0),
+      'Int32Array': ('JSInt32Array', 0),
+      'Uint8Array': ('JSUint8Array', 0),
+      'Uint16Array': ('JSUint16Array', 0),
+      'Uint32Array': ('JSUint32Array', 0),
+      'Float32Array': ('JSFloat32Array', 0),
+      'Float64Array': ('JSFloat64Array', 0),
+      'Uint8ClampedArray': ('JSUint8ClampedArray', 0),
     };
 
     if (node case TsTypeReference(nodeName: final name?)) {
       if (standardTypes.keys.contains(name)) {
-        final newType = standardTypes[name]!;
-        if (newType == 'JSPromise' && node.typeArguments.value.isNotEmpty) {
+        final (newType, typeParamCount) = standardTypes[name]!;
+
+        // Create type arguments based on typeParamCount
+        final limitedTypeArgs = ListNode([]);
+
+        // For types with exactly 1 type parameter, apply special void/null/undefined handling
+        if (typeParamCount == 1 && node.typeArguments.value.isNotEmpty) {
           final typeArg = node.typeArguments.value.first.kind;
-          return TsTypeReference(
-            TsIdentifier(newType).toSingleNode(),
-            [
-              TsNodeKind.voidKeyword,
-              TsNodeKind.nullKeyword,
-              TsNodeKind.undefinedKeyword
-            ].contains(typeArg)
-                ? ListNode([])
-                : node.typeArguments,
-          );
-        } else {
-          return TsTypeReference(
-            TsIdentifier(newType).toSingleNode(),
-            node.typeArguments,
-          );
+          if (![TsNodeKind.voidKeyword, TsNodeKind.nullKeyword, TsNodeKind.undefinedKeyword].contains(typeArg)) {
+            limitedTypeArgs.value.add(node.typeArguments.value.first);
+          }
+        } else if (typeParamCount > 0 && node.typeArguments.value.isNotEmpty) {
+          // For other types with type parameters, take the specified number of parameters
+          limitedTypeArgs.value.addAll(node.typeArguments.value.take(typeParamCount));
         }
+
+        return TsTypeReference(TsIdentifier(newType).toSingleNode(), limitedTypeArgs);
       }
     }
     return node;
   }
 
   TsTypeReference _unionType(TsUnionType node) {
-    final doc =
-        node.types.value.map((node) => node.nodeName).nonNulls.join(' | ');
+    final doc = node.types.value.map((node) => node.nodeName).nonNulls.join(' | ');
 
     final (types, hasNull) = _distinctTypes(evaluateTypes(node.types.value));
 
@@ -94,17 +86,13 @@ class TypeEvaluator {
       );
     }
 
-    return _typeRef(
-      'JSAny${hasNull ? '?' : ''}',
-      meta: TsNodeMeta(documentation: [doc]),
-    );
+    return _typeRef('JSAny${hasNull ? '?' : ''}', meta: TsNodeMeta(documentation: [doc]));
   }
 
   TsTypeReference evaluateType(TsNode? node) {
     return switch (node) {
       TsAnyKeyword() => _typeRef('JSAny'),
-      TsArrayType() => _typeRef('JSArray',
-          typeArguments: [evaluateType(node.elementType.value)]),
+      TsArrayType() => _typeRef('JSArray', typeArguments: [evaluateType(node.elementType.value)]),
       TsBigIntKeyword() => _typeRef('JSBigInt'),
       TsBooleanKeyword() => _typeRef('JSBoolean'),
       TsConditionalType() => _typeRef('JSAny'),
@@ -128,14 +116,12 @@ class TypeEvaluator {
       TsTemplateLiteralType() => _typeRef('JSString'),
       TsThisType() => _typeRef('JSAny'),
       TsTrueKeyword() => _typeRef('JSBoolean'),
-      TsTupleType() => _typeRef('JSArray', typeArguments: [
-          TsTypeParameter(
-            ListNode([]),
-            SingleNode(TsIdentifier('JSAny')),
-            NullableNode(null),
-            NullableNode(null),
-          )
-        ]),
+      TsTupleType() => _typeRef(
+        'JSArray',
+        typeArguments: [
+          TsTypeParameter(ListNode([]), SingleNode(TsIdentifier('JSAny')), NullableNode(null), NullableNode(null)),
+        ],
+      ),
       TsTypeLiteral() => _typeRef('JSObject'),
       TsTypeOperator() => _typeOperator(node),
       TsTypePredicate() => _typeRef('JSBoolean'),

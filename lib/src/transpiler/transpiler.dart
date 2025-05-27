@@ -6,6 +6,13 @@ import 'package:ts_interop/ts_interop.dart';
 
 import '../model/ts_node.dart';
 
+final _ignoreDirectives = [
+  'non_constant_identifier_names',
+  'camel_case_types',
+  'unnecessary_library_name',
+  'unintended_html_in_doc_comment',
+];
+
 final _voidType = TypeReference((builder) {
   builder.symbol = 'void';
 });
@@ -163,6 +170,27 @@ String _sanitizeParamName(String? name) {
   return name ?? '_';
 }
 
+Map<String, TsTypeParameter> _collectTypeParameters(
+  TsNodeWrapper nodeWrapper,
+  Map<String, TsTypeParameter> typeParameters,
+) {
+  final nodes = nodeWrapper.nodes;
+  for (final node in nodes) {
+    if (node is WithTypeParameters) {
+      final typeParams = node.typeParameters.value;
+      for (final typeParam in typeParams) {
+        if (typeParam is TsTypeParameter) {
+          typeParameters[typeParam.name.value.nodeName!] = typeParam;
+        }
+      }
+    }
+    for (final wrapper in node.nodeWrappers) {
+      _collectTypeParameters(wrapper, typeParameters);
+    }
+  }
+  return typeParameters;
+}
+
 extension on ListBuilder<Expression> {
   void addJsAnnotation(TsNode node, String? name, Dependencies dependencies) {
     final allocator = Allocator.simplePrefixing();
@@ -250,6 +278,13 @@ class Transpiler {
         );
       }
     }).toDartNode(arrayType);
+  }
+
+  DartNode<TypeReference> _transpileBigIntKeyword(TsBigIntKeyword bigIntKeyword) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSBigInt';
+      builder.url = dependencies.libraryUrlForType(builder.symbol, bigIntKeyword);
+    }).toDartNode(bigIntKeyword);
   }
 
   DartNode<TypeReference> _transpileBooleanKeyword(TsBooleanKeyword booleanKeyword) {
@@ -676,7 +711,7 @@ class Transpiler {
   DartNode<Library> _transpileModuleDeclaration(TsModuleDeclaration moduleDeclaration) {
     final library = Library((builder) {
       builder.name = moduleDeclaration.name.value.nodeName?.toLowerCase();
-      builder.ignoreForFile.addAll(['non_constant_identifier_names', 'camel_case_types', 'unnecessary_library_name']);
+      builder.ignoreForFile.addAll(_ignoreDirectives);
       final body = moduleDeclaration.body.value;
       if (body != null) {
         builder.body.addAll(_transpileNodes(body.children).toSpecs(dependencies));
@@ -703,7 +738,7 @@ class Transpiler {
 
   DartNode<Library> _transpilePackage(TsPackage package) {
     final library = Library((builder) {
-      builder.ignoreForFile.addAll(['non_constant_identifier_names', 'camel_case_types', 'unnecessary_library_name']);
+      builder.ignoreForFile.addAll(_ignoreDirectives);
       builder.name = package.name;
       builder.body.addAll(_transpileNodes(package.sourceFiles.value).toSpecs(dependencies).where((s) => s is! Library));
     });
@@ -827,6 +862,16 @@ class Transpiler {
   DartNode<TypeDef> _transpileTypeAliasDeclaration(TsTypeAliasDeclaration typeAliasDeclaration) {
     final type = typeEvaluator.evaluateType(typeAliasDeclaration.type.value);
 
+    final requiredTypeParameters = _collectTypeParameters(typeAliasDeclaration.type, {});
+    final currentTypeParameters = {
+      for (var tp in typeAliasDeclaration.typeParameters.value.whereType<TsTypeParameter>()) tp.name.value.nodeName: tp,
+    };
+    for (var entry in currentTypeParameters.entries) {
+      if (requiredTypeParameters.containsKey(entry.key)) {
+        requiredTypeParameters.remove(entry.key);
+      }
+    }
+
     return TypeDef((builder) {
       builder.docs.addAll([
         '/// Typedef [${typeAliasDeclaration.name.value.nodeName}]',
@@ -834,7 +879,12 @@ class Transpiler {
         '/// ${typeAliasDeclaration.type.value?.toCode()}',
       ]);
       builder.name = typeAliasDeclaration.name.value.nodeName;
-      builder.types.addAll(_transpileNodes<Reference>(typeAliasDeclaration.typeParameters.value).toSpecs(dependencies));
+      builder.types.addAll(
+        _transpileNodes<Reference>([
+          ...typeAliasDeclaration.typeParameters.value,
+          ...requiredTypeParameters.values,
+        ]).toSpecs(dependencies),
+      );
       builder.definition = _transpileNode<Expression>(type).toSpec(dependencies);
     }).toDartNode(typeAliasDeclaration);
   }
@@ -884,6 +934,10 @@ class Transpiler {
       return _transpileVoidKeyword(TsVoidKeyword());
     }
 
+    if (type.nodeName == 'Iterable') {
+      // print(type.parent?.parent?.nodeName);
+    }
+
     final isNullable = type.typeName.value.nodeName?.endsWith('?') ?? false;
     final name = _sanitizeTypeName(
       isNullable
@@ -915,6 +969,13 @@ class Transpiler {
     }).toDartNode(unionType);
   }
 
+  DartNode<Reference> _transpileUnknownKeyword(TsUnknownKeyword unknownKeyword) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSAny';
+      builder.url = dependencies.libraryUrlForType(builder.symbol, unknownKeyword);
+    }).toDartNode(unknownKeyword);
+  }
+
   DartNode<TypeReference> _transpileVoidKeyword(TsVoidKeyword voidKeyword) {
     return _voidType.toDartNode(voidKeyword);
   }
@@ -925,6 +986,7 @@ class Transpiler {
       Ts$Removed() => DartNode.empty<S>(node),
       TsAnyKeyword() => _transpileAnyKeyword(node),
       TsArrayType() => _transpileArrayType(node),
+      TsBigIntKeyword() => _transpileBigIntKeyword(node),
       TsBooleanKeyword() => _transpileBooleanKeyword(node),
       TsCallSignature() => DartNode.empty<S>(node),
       TsClassDeclaration() => _transpileClassDeclaration(node),
@@ -962,6 +1024,7 @@ class Transpiler {
       TsTypeReference() => _transpileTypeReference(node),
       TsUndefinedKeyword() => _transpileUndefinedKeyword(node),
       TsUnionType() => _transpileUnionType(node),
+      TsUnknownKeyword() => _transpileUnknownKeyword(node),
       TsVoidKeyword() => _transpileVoidKeyword(node),
       _ => DartUnsupported<S>(node),
     };

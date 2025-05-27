@@ -14,7 +14,7 @@ void main() async {
 
   final sw = Stopwatch()..start();
   stdout.write('Reading input file... ');
-  final inFile = File('example/es2023@v5.5.4.json');
+  final inFile = File('example/es2023@v5.8.3.json');
   final content = inFile.readAsStringSync();
   final json = jsonDecode(content);
   final package = TsPackage.fromJson(json);
@@ -50,7 +50,7 @@ void main() async {
           // missingTypeMapper,
           // literalAsTypeArgumentMapper,
           // instanceTypeMapper,
-          // missingTypeArgumentMapper,
+          missingTypeArgumentMapper,
         ]),
       )
       .sanitize(package);
