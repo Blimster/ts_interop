@@ -7330,15 +7330,17 @@ extension type SharedArrayBufferConstructor.$(_i1.JSObject _) implements _i1.JSO
 
 /// Interface [ArrayBufferTypes]
 extension type ArrayBufferTypes.$(_i1.JSObject _) implements _i1.JSObject {
-  /// Property [ArrayBuffer]
+  /// Property [ArrayBuffer$]
   ///
-  /// ArrayBuffer: ArrayBuffer
-  external _i1.JSArrayBuffer ArrayBuffer;
+  /// ArrayBuffer$: ArrayBuffer
+  @_i1.JS('ArrayBuffer')
+  external _i1.JSArrayBuffer ArrayBuffer$;
 
-  /// Property [SharedArrayBuffer]
+  /// Property [SharedArrayBuffer$]
   ///
-  /// SharedArrayBuffer: SharedArrayBuffer
-  external SharedArrayBuffer SharedArrayBuffer;
+  /// SharedArrayBuffer$: SharedArrayBuffer
+  @_i1.JS('SharedArrayBuffer')
+  external SharedArrayBuffer SharedArrayBuffer$;
 }
 
 /// Interface [Atomics]

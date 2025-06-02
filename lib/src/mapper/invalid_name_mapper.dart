@@ -25,7 +25,7 @@ String _sanitizeTypeName(String? name) {
   return name ?? '_';
 }
 
-String _sanitizePropertyName(String? name) {
+String _sanitizePropertyName(String? name, String? typeName) {
   if (name == null) {
     return 'null\$';
   }
@@ -85,7 +85,7 @@ String _sanitizePropertyName(String? name) {
     'void',
     'with',
   };
-  if (invalidNames.contains(name)) {
+  if (invalidNames.contains(name) || name == typeName) {
     return '$name\$';
   }
   return name!;
@@ -157,17 +157,18 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       }
       return node;
     case TsPropertyDeclaration(name: SingleNode(value: TsNode nameNode)):
+      final typeName = node.type.value?.nodeName;
       final originalName = nameNode.nodeName;
-      final sanitizedName = _sanitizePropertyName(originalName);
+      final sanitizedName = _sanitizePropertyName(originalName, typeName);
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
         node.name.set(TsIdentifier(sanitizedName));
-        print('RENAME: ${nameNode.runtimeType} $originalName -> $sanitizedName');
       }
       return node;
     case TsPropertySignature(name: SingleNode(value: TsNode nameNode)):
+      final typeName = node.type.value?.nodeName;
       final originalName = nameNode.nodeName;
-      final sanitizedName = _sanitizePropertyName(originalName);
+      final sanitizedName = _sanitizePropertyName(originalName, typeName);
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
         node.name.set(TsIdentifier(sanitizedName));
