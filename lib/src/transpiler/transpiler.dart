@@ -934,10 +934,6 @@ class Transpiler {
       return _transpileVoidKeyword(TsVoidKeyword());
     }
 
-    if (type.nodeName == 'Iterable') {
-      // print(type.parent?.parent?.nodeName);
-    }
-
     final isNullable = type.typeName.value.nodeName?.endsWith('?') ?? false;
     final name = _sanitizeTypeName(
       isNullable

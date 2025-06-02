@@ -343,16 +343,18 @@ enum TsNodeKind {
   voidKeyword,
 }
 
-mixin WithTypeParameters<T extends TsNode> on TsNode {
+mixin WithTypeParameters on TsNode {
   ListNode get typeParameters;
+
   void updateTypeParameters(List<TsNode> typeArguments) {
-    final (added, removed) = this.typeParameters.set(typeArguments);
+    final (added, removed) = typeParameters.set(typeArguments);
     updateCache(added, removed);
   }
 }
 
 mixin WithTypeArguments<T extends TsNode> on TsNode {
   ListNode get typeArguments;
+
   void updateTypeArguments(List<TsNode> typeArguments) {
     final (added, removed) = this.typeArguments.set(typeArguments);
     updateCache(added, removed);
@@ -628,7 +630,7 @@ class TsBooleanKeyword extends TsNode {
   String toCode() => 'boolean';
 }
 
-class TsCallSignature extends TsNode with WithTypeParameters<TsCallSignature> {
+class TsCallSignature extends TsNode with WithTypeParameters {
   @override
   final ListNode typeParameters;
   final ListNode parameters;
@@ -649,7 +651,7 @@ class TsCallSignature extends TsNode with WithTypeParameters<TsCallSignature> {
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
-class TsClassDeclaration extends TsNode with WithTypeParameters<TsClassDeclaration> {
+class TsClassDeclaration extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   final SingleNode name;
   @override
@@ -719,7 +721,7 @@ class TsConditionalType extends TsNode {
   List<TsNodeWrapper> get nodeWrappers => [checkType, extendsType, trueType, falseType];
 }
 
-class TsConstructorDeclaration extends TsNode with WithTypeParameters<TsConstructorDeclaration> {
+class TsConstructorDeclaration extends TsNode with WithTypeParameters {
   @override
   final ListNode typeParameters;
   final ListNode parameters;
@@ -740,7 +742,7 @@ class TsConstructorDeclaration extends TsNode with WithTypeParameters<TsConstruc
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
-class TsConstructorType extends TsNode with WithTypeParameters<TsConstructorType> {
+class TsConstructorType extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   @override
   final ListNode typeParameters;
@@ -763,7 +765,7 @@ class TsConstructorType extends TsNode with WithTypeParameters<TsConstructorType
   List<TsNodeWrapper> get nodeWrappers => [modifiers, typeParameters, parameters, type];
 }
 
-class TsConstructSignature extends TsNode with WithTypeParameters<TsConstructSignature> {
+class TsConstructSignature extends TsNode with WithTypeParameters {
   @override
   final ListNode typeParameters;
   final ListNode parameters;
@@ -875,7 +877,7 @@ class TsFalseKeyword extends TsNode {
   String toCode() => 'false';
 }
 
-class TsFunctionDeclaration extends TsNode with WithTypeParameters<TsFunctionDeclaration> {
+class TsFunctionDeclaration extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   final NullableNode asteriskToken;
   final SingleNode name;
@@ -912,7 +914,7 @@ class TsFunctionDeclaration extends TsNode with WithTypeParameters<TsFunctionDec
   List<TsNodeWrapper> get nodeWrappers => [modifiers, asteriskToken, name, typeParameters, parameters, type];
 }
 
-class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
+class TsFunctionType extends TsNode with WithTypeParameters {
   @override
   final ListNode typeParameters;
   final ListNode parameters;
@@ -937,7 +939,7 @@ class TsFunctionType extends TsNode with WithTypeParameters<TsFunctionType> {
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
-class TsGetAccessor extends TsNode with WithTypeParameters<TsGetAccessor> {
+class TsGetAccessor extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   final SingleNode name;
   @override
@@ -1178,7 +1180,7 @@ class TsInferType extends TsNode {
   List<TsNodeWrapper> get nodeWrappers => [typeParameter];
 }
 
-class TsInterfaceDeclaration extends TsNode with WithTypeParameters<TsInterfaceDeclaration> {
+class TsInterfaceDeclaration extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   final SingleNode name;
   @override
@@ -1291,7 +1293,7 @@ class TsMappedType extends TsNode {
   List<TsNodeWrapper> get nodeWrappers => [readonlyToken, typeParameter, nameType, questionToken, type, members];
 }
 
-class TsMethodDeclaration extends TsNode with WithTypeParameters<TsMethodDeclaration> {
+class TsMethodDeclaration extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   final SingleNode name;
   final NullableNode asteriskToken;
@@ -1339,7 +1341,7 @@ class TsMethodDeclaration extends TsNode with WithTypeParameters<TsMethodDeclara
   ];
 }
 
-class TsMethodSignature extends TsNode with WithTypeParameters<TsMethodSignature> {
+class TsMethodSignature extends TsNode with WithTypeParameters {
   final SingleNode name;
   final NullableNode questionToken;
   @override
@@ -1750,7 +1752,7 @@ class TsRestType extends TsNode {
   List<TsNodeWrapper> get nodeWrappers => [type];
 }
 
-class TsSetAccessor extends TsNode with WithTypeParameters<TsSetAccessor> {
+class TsSetAccessor extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   final SingleNode name;
   @override
@@ -1941,7 +1943,7 @@ class TsTupleType extends TsNode {
   String toCode() => '[${elements.toCode(separator: ', ')}]';
 }
 
-class TsTypeAliasDeclaration extends TsNode with WithTypeParameters<TsTypeAliasDeclaration> {
+class TsTypeAliasDeclaration extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   final SingleNode name;
   @override
