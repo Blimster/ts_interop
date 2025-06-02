@@ -21,132 +21,6 @@ final _nullType = TypeReference((builder) {
   builder.symbol = 'null';
 });
 
-String? _sanitizeTypeName(String? name) {
-  const invalidNames = {
-    'assert',
-    'class',
-    'default',
-    'false',
-    'Function',
-    'is',
-    'new',
-    'null',
-    'return',
-    'super',
-    'this',
-    'throw',
-    'true',
-    'void',
-    'with',
-  };
-  if (invalidNames.contains(name)) {
-    return '$name\$';
-  }
-  return name ?? '_';
-}
-
-String? _sanitizePropertyName(String? name) {
-  if (name == null) {
-    return 'null\$';
-  }
-  if (name.startsWith('"') && name.endsWith('"')) {
-    name = name.substring(1, name.length - 1);
-  }
-  final invalidCharacters = {
-    '&': 'ampersand',
-    '@': 'at',
-    '#': 'hash',
-    '^': 'caret',
-    "'": 'singlequote',
-    '"': 'doublequote',
-    '`': 'backquote',
-    '´': 'acute',
-    '!': 'exclamation',
-    '?': 'question',
-    ':': 'colon',
-    ';': 'semicolon',
-    '~': 'tilde',
-    '+': 'plus',
-    '-': 'minus',
-    '*': 'asterisk',
-    '/': 'slash',
-    '=': 'equals',
-    '0': 'zero',
-    '1': 'one',
-    '2': 'two',
-    '3': 'three',
-    '4': 'four',
-    '5': 'five',
-    '6': 'six',
-    '7': 'seven',
-    '8': 'eight',
-    '9': 'nine',
-    ' ': 'space',
-  };
-  invalidCharacters.forEach((key, value) {
-    name = name?.replaceAll(key, value);
-  });
-
-  const invalidNames = {
-    'assert',
-    'class',
-    'default',
-    'hashCode',
-    'false',
-    'is',
-    'new',
-    'null',
-    'return',
-    'runtimeType',
-    'super',
-    'this',
-    'throw',
-    'true',
-    'void',
-    'with',
-  };
-  if (invalidNames.contains(name)) {
-    return '$name\$';
-  }
-  return name;
-}
-
-String? _sanitizeMethodName(String? name) {
-  const invalidNames = {
-    'assert',
-    'catch',
-    'class',
-    'default',
-    'false',
-    'finally',
-    'for',
-    'if',
-    'is',
-    'new',
-    'noSuchMethod',
-    'null',
-    'return',
-    'super',
-    'switch',
-    'this',
-    'throw',
-    'toString',
-    'true',
-    'try',
-    'void',
-    'while',
-    'with',
-  };
-  if (invalidNames.contains(name)) {
-    return '$name\$';
-  }
-  return name ?? '_';
-}
-
-String? _sanitizedFunctionName(String? name) {
-  return _sanitizeMethodName(name);
-}
-
 String _sanitizeParamName(String? name) {
   const invalidNames = {
     'assert',
@@ -299,21 +173,20 @@ class Transpiler {
     final members = _transpileNodes(classDeclaration.members.value);
     final hasCallSignature = classDeclaration.searchDown<TsCallSignature>().isNotEmpty;
     final className = classDeclaration.name.value.nodeName;
-    final sanitizedClassName = _sanitizeTypeName(className);
 
     return ExtensionType((builder) {
       builder.docs.add('/// Class [${classDeclaration.name.value.nodeName}]');
-      if (sanitizedClassName != className) {
+      classDeclaration.meta.ifNotOriginalName(className, (String originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
             Code(
-              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', classDeclaration)))}('$className')",
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', classDeclaration)))}('$originalName')",
             ),
           ),
         );
-      }
-      builder.name = sanitizedClassName;
+      });
+      builder.name = className;
       builder.types.addAll(_transpileNodes<Reference>(classDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.primaryConstructorName = isAbstract ? '_' : '\$';
       builder.representationDeclaration = RepresentationDeclaration((builder) {
@@ -421,7 +294,7 @@ class Transpiler {
     final expression = expressionWithTypeArguments.expression.value;
     return switch (expression) {
       TsIdentifier() => TypeReference((builder) {
-        builder.symbol = _sanitizeTypeName(expression.nodeName);
+        builder.symbol = expression.nodeName;
         builder.url = dependencies.libraryUrlForType(expression.nodeName, expressionWithTypeArguments);
         builder.types.addAll(
           _transpileNodes<Reference>(expressionWithTypeArguments.typeArguments.value).toSpecs(dependencies),
@@ -437,16 +310,6 @@ class Transpiler {
       return DartNode.empty<Method>(functionDeclaration);
     }
 
-    final overloadIds = <int>[];
-    if (functionDeclaration.parent case final parent?) {
-      final overloads = parent.searchChilds<TsFunctionDeclaration>(hasName(functionName));
-      for (final overload in overloads) {
-        overloadIds.add(overload.id);
-      }
-    }
-    overloadIds.sort();
-
-    final sanitizedFunctionName = _sanitizedFunctionName(functionName);
     return Method((builder) {
       builder.docs.addAll([
         '/// Method [${functionDeclaration.name.value.nodeName}]',
@@ -455,22 +318,19 @@ class Transpiler {
         if (functionDeclaration.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
         ...functionDeclaration.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
       ]);
-      if (overloadIds.length > 1 || sanitizedFunctionName != functionName) {
+      functionDeclaration.meta.ifNotOriginalName(functionName, (String originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
             Code(
-              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', functionDeclaration)))}('$functionName')",
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', functionDeclaration)))}('$originalName')",
             ),
           ),
         );
-      }
+      });
       builder.external = true;
       builder.returns = _transpileNode<Reference>(functionDeclaration.type.value).toSpecs(dependencies).firstOrNull;
-      builder.name =
-          overloadIds.length > 1
-              ? '${functionDeclaration.name.value.nodeName}\$${overloadIds.indexOf(functionDeclaration.id) + 1}'
-              : sanitizedFunctionName;
+      builder.name = functionDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(functionDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(
         _transpileNodes<Reference>(
@@ -536,21 +396,20 @@ class Transpiler {
     final members = _transpileNodes(interfaceDeclaration.members.value).toSpecs(dependencies);
     final hasCallSignature = interfaceDeclaration.searchDown<TsCallSignature>().isNotEmpty;
     final interfaceName = interfaceDeclaration.name.value.nodeName;
-    final sanitizedInterfaceName = _sanitizeTypeName(interfaceName);
 
     return ExtensionType((builder) {
       builder.docs.add('/// Interface [${interfaceDeclaration.name.value.nodeName}]');
-      if (sanitizedInterfaceName != interfaceName) {
+      interfaceDeclaration.meta.ifNotOriginalName(interfaceName, (String originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
             Code(
-              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', interfaceDeclaration)))}('$interfaceName')",
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', interfaceDeclaration)))}('$originalName')",
             ),
           ),
         );
-      }
-      builder.name = sanitizedInterfaceName;
+      });
+      builder.name = interfaceName;
       builder.types.addAll(_transpileNodes<Reference>(interfaceDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.primaryConstructorName = '\$';
       builder.representationDeclaration = RepresentationDeclaration((builder) {
@@ -598,16 +457,6 @@ class Transpiler {
       return DartNode.empty<Method>(methodDeclaration);
     }
 
-    final overloadIds = <int>[];
-    if (methodDeclaration.parent case final parent?) {
-      final overloads = parent.searchChilds<TsMethodSignature>(hasName(methodName));
-      for (final overload in overloads) {
-        overloadIds.add(overload.id);
-      }
-    }
-    overloadIds.sort();
-
-    final sanitizedMethodName = _sanitizeMethodName(methodName);
     return Method((builder) {
       builder.docs.addAll([
         '/// Method [${methodDeclaration.name.value.nodeName}]',
@@ -616,25 +465,22 @@ class Transpiler {
         if (methodDeclaration.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
         ...methodDeclaration.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
       ]);
-      if (overloadIds.length > 1 || sanitizedMethodName != methodName) {
+      methodDeclaration.meta.ifNotOriginalName(methodName, (String originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
             Code(
-              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', methodDeclaration)))}('$methodName')",
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', methodDeclaration)))}('$originalName')",
             ),
           ),
         );
-      }
+      });
       builder.external = true;
       builder.static = _containsNodeKind(methodDeclaration.modifiers.value, TsNodeKind.staticKeyword);
       builder.returns = _transpileNode<Reference>(
         typeEvaluator.evaluateType(methodDeclaration.type.value),
       ).toSpec(dependencies);
-      builder.name =
-          overloadIds.length > 1
-              ? '${methodDeclaration.name.value.nodeName}\$${overloadIds.indexOf(methodDeclaration.id) + 1}'
-              : sanitizedMethodName;
+      builder.name = methodDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(methodDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(
         _transpileNodes<Reference>(
@@ -655,16 +501,6 @@ class Transpiler {
       return DartNode.empty<Method>(methodSignature);
     }
 
-    final overloadIds = <int>[];
-    if (methodSignature.parent case final parent?) {
-      final overloads = parent.searchDown<TsMethodSignature>(hasName(methodName));
-      for (final overload in overloads) {
-        overloadIds.add(overload.id);
-      }
-    }
-    overloadIds.sort();
-
-    final sanitizedMethodName = _sanitizeMethodName(methodName);
     return Method((builder) {
       builder.docs.addAll([
         '/// Method [${methodSignature.name.value.nodeName}]',
@@ -676,24 +512,21 @@ class Transpiler {
         '/// Returns:',
         '/// - ${methodSignature.type.value?.toCode()}',
       ]);
-      if (overloadIds.length > 1 || sanitizedMethodName != methodName) {
+      methodSignature.meta.ifNotOriginalName(methodName, (String originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
             Code(
-              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', methodSignature)))}('$methodName')",
+              "${allocator.allocate(refer('JS', dependencies.libraryUrlForType('JS', methodSignature)))}('$originalName')",
             ),
           ),
         );
-      }
+      });
       builder.external = true;
       builder.returns = _transpileNode<Reference>(
         typeEvaluator.evaluateType(methodSignature.type.value),
       ).toSpec(dependencies);
-      builder.name =
-          overloadIds.length > 1
-              ? '${methodSignature.name.value.nodeName}\$${overloadIds.indexOf(methodSignature.id) + 1}'
-              : sanitizedMethodName;
+      builder.name = methodSignature.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(methodSignature.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(
         _transpileNodes<Reference>(
@@ -755,22 +588,18 @@ class Transpiler {
 
   DartNode<Spec> _transpilePropertyDeclaration(TsPropertyDeclaration propertyDeclaration) {
     final readonly = _containsNodeKind(propertyDeclaration.modifiers.value, TsNodeKind.readonlyKeyword);
-    final sanitizedPropertyName = _sanitizePropertyName(propertyDeclaration.name.value.nodeName);
+    final propertyName = propertyDeclaration.name.value.nodeName;
     if (readonly) {
       return Method((builder) {
         builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertyDeclaration.toCode()}');
-        if (propertyDeclaration.name.value.nodeName != sanitizedPropertyName) {
-          builder.annotations.addJsAnnotation(
-            propertyDeclaration,
-            propertyDeclaration.name.value.nodeName,
-            dependencies,
-          );
-        }
+        propertyDeclaration.meta.ifNotOriginalName(propertyName, (String originalName) {
+          builder.annotations.addJsAnnotation(propertyDeclaration, originalName, dependencies);
+        });
         builder.type = MethodType.getter;
         builder.external = true;
-        builder.name = sanitizedPropertyName;
+        builder.name = propertyName;
         builder.returns = _transpileNode<TypeReference>(
           typeEvaluator.evaluateType(propertyDeclaration.type.value),
         ).toSpec(dependencies)?.copyWith(isNullable: propertyDeclaration.questionToken.value != null);
@@ -780,15 +609,11 @@ class Transpiler {
         builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertyDeclaration.toCode()}');
-        if (propertyDeclaration.name.value.nodeName != sanitizedPropertyName) {
-          builder.annotations.addJsAnnotation(
-            propertyDeclaration,
-            propertyDeclaration.name.value.nodeName,
-            dependencies,
-          );
-        }
+        propertyDeclaration.meta.ifNotOriginalName(propertyName, (String originalName) {
+          builder.annotations.addJsAnnotation(propertyDeclaration, originalName, dependencies);
+        });
         builder.external = true;
-        builder.name = sanitizedPropertyName;
+        builder.name = propertyName;
         builder.type = _transpileNode<TypeReference>(
           typeEvaluator.evaluateType(propertyDeclaration.type.value),
         ).toSpec(dependencies)?.copyWith(isNullable: propertyDeclaration.questionToken.value != null);
@@ -798,18 +623,18 @@ class Transpiler {
 
   DartNode<Spec> _transpilePropertySignature(TsPropertySignature propertySignature) {
     final readonly = _containsNodeKind(propertySignature.modifiers.value, TsNodeKind.readonlyKeyword);
-    final sanitizedPropertyName = _sanitizePropertyName(propertySignature.name.value.nodeName);
+    final propertyName = propertySignature.name.value.nodeName;
     if (readonly) {
       return Method((builder) {
         builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertySignature.toCode()}');
-        if (propertySignature.name.value.nodeName != sanitizedPropertyName) {
-          builder.annotations.addJsAnnotation(propertySignature, propertySignature.name.value.nodeName, dependencies);
-        }
+        propertySignature.meta.ifNotOriginalName(propertyName, (String originalName) {
+          builder.annotations.addJsAnnotation(propertySignature, originalName, dependencies);
+        });
         builder.type = MethodType.getter;
         builder.external = true;
-        builder.name = sanitizedPropertyName;
+        builder.name = propertyName;
         builder.returns = _transpileNode<TypeReference>(
           typeEvaluator.evaluateType(propertySignature.type.value),
         ).toSpec(dependencies)?.copyWith(isNullable: propertySignature.questionToken.value != null);
@@ -819,11 +644,11 @@ class Transpiler {
         builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertySignature.toCode()}');
-        if (propertySignature.name.value.nodeName != sanitizedPropertyName) {
-          builder.annotations.addJsAnnotation(propertySignature, propertySignature.name.value.nodeName, dependencies);
-        }
+        propertySignature.meta.ifNotOriginalName(propertyName, (String originalName) {
+          builder.annotations.addJsAnnotation(propertySignature, originalName, dependencies);
+        });
         builder.external = true;
-        builder.name = sanitizedPropertyName;
+        builder.name = propertyName;
         builder.type = _transpileNode<TypeReference>(
           typeEvaluator.evaluateType(propertySignature.type.value),
         ).toSpec(dependencies)?.copyWith(isNullable: propertySignature.questionToken.value != null);
@@ -935,11 +760,10 @@ class Transpiler {
     }
 
     final isNullable = type.typeName.value.nodeName?.endsWith('?') ?? false;
-    final name = _sanitizeTypeName(
-      isNullable
-          ? type.typeName.value.nodeName!.substring(0, type.typeName.value.nodeName!.length - 1)
-          : type.typeName.value.nodeName,
-    );
+    final name =
+        isNullable
+            ? type.typeName.value.nodeName?.substring(0, type.typeName.value.nodeName!.length - 1)
+            : type.typeName.value.nodeName;
     final nameWithoutQualifier = name?.contains('.') ?? false ? name?.split('.').last : name;
 
     return TypeReference((builder) {

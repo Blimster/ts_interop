@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:ts_interop/src/mapper/invalid_name_mapper.dart';
 import 'package:ts_interop/src/mapper/module_mappers.dart';
 import 'package:ts_interop/src/transpiler/type_evaluator.dart';
 import 'package:ts_interop/ts_interop.dart';
@@ -50,6 +51,7 @@ void main() async {
           // missingTypeMapper,
           // literalAsTypeArgumentMapper,
           // instanceTypeMapper,
+          invalidNameMapper,
           missingTypeArgumentMapper,
         ]),
       )

@@ -862,9 +862,9 @@ extension type DateTimeFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
   /// month?: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined
   external _i1.JSString? month;
 
-  /// Property [hour12]
+  /// Property [houronetwo]
   ///
-  /// hour12?: boolean | undefined
+  /// houronetwo?: boolean | undefined
   @_i1.JS('hour12')
   external _i1.JSBoolean? houronetwo;
 
@@ -1021,7 +1021,7 @@ extension type Locale.$(_i1.JSObject _) implements _i1.JSObject, LocaleOptions {
   /// - Locale
   external Locale minimize();
 
-  /// Method [toString]
+  /// Method [toString$]
   ///
   /// Returns:
   /// - UnicodeBCP47LocaleIdentifier
@@ -1212,9 +1212,9 @@ extension type ResolvedDateTimeFormatOptions.$(_i1.JSObject _) implements _i1.JS
   /// locale: string
   external _i1.JSString locale;
 
-  /// Property [hour12]
+  /// Property [houronetwo]
   ///
-  /// hour12?: boolean
+  /// houronetwo?: boolean
   @_i1.JS('hour12')
   external _i1.JSBoolean? houronetwo;
 
@@ -1453,9 +1453,9 @@ extension type NumberFormatOptionsUseGroupingRegistry.$(_i1.JSObject _) implemen
   /// auto:
   external Never auto;
 
-  /// Property [min2]
+  /// Property [mintwo]
   ///
-  /// min2:
+  /// mintwo:
   @_i1.JS('min2')
   external Never mintwo;
 

@@ -6,7 +6,7 @@ library reflect; // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:js_interop' as _i1;
 import 'es2023.dart' as _i2;
 
-/// Method [apply]
+/// Method [apply$1]
 ///
 /// Type Parameters:
 /// - T
@@ -24,16 +24,16 @@ external R apply$1<T extends _i1.JSAny, A extends _i1.JSAny, R extends _i1.JSAny
   _i2.Readonly<A> argumentsList,
 );
 
-/// Method [apply]
+/// Method [apply$2]
 ///
 /// Parameters:
-/// - target: Function
+/// - target: Function$
 /// - thisArgument: any
 /// - argumentsList: ArrayLike
 @_i1.JS('apply')
 external _i1.JSAny apply$2(_i2.Function$ target, _i1.JSAny thisArgument, _i2.ArrayLike<_i1.JSAny> argumentsList);
 
-/// Method [construct]
+/// Method [construct$1]
 ///
 /// Type Parameters:
 /// - A extends readonly any[]
@@ -50,12 +50,12 @@ external R construct$1<A extends _i1.JSAny, R extends _i1.JSAny>(
   _i1.JSAny newTarget,
 ]);
 
-/// Method [construct]
+/// Method [construct$2]
 ///
 /// Parameters:
-/// - target: Function
+/// - target: Function$
 /// - argumentsList: ArrayLike
-/// - newTarget: Function
+/// - newTarget: Function$
 @_i1.JS('construct')
 external _i1.JSAny construct$2(_i2.Function$ target, _i2.ArrayLike<_i1.JSAny> argumentsList, [_i2.Function$ newTarget]);
 
@@ -128,7 +128,7 @@ external _i1.JSArray<_i1.JSAny> ownKeys(_i1.JSObject target);
 /// - target: object
 external _i1.JSBoolean preventExtensions(_i1.JSObject target);
 
-/// Method [set]
+/// Method [set$1]
 ///
 /// Type Parameters:
 /// - T extends object
@@ -147,7 +147,7 @@ external _i1.JSBoolean set$1<T extends _i1.JSAny, P extends _i2.PropertyKey>(
   _i1.JSAny receiver,
 ]);
 
-/// Method [set]
+/// Method [set$2]
 ///
 /// Parameters:
 /// - target: object

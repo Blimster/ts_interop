@@ -25,9 +25,6 @@ class PackageDependency implements Dependency {
     if (typeName == null) {
       return null;
     }
-    if (typeName.endsWith('\$')) {
-      typeName = typeName.substring(0, typeName.length - 1);
-    }
 
     if (typeName.contains('.')) {
       return '${package.name}_${typeName.split('.').first.toLowerCase()}.dart';
@@ -103,27 +100,19 @@ Future<StaticDependency> _remoteDependency(
   final response = await http.get(docUriProvider());
   final document = html.parse(response.body);
   final types = {
-    ...document
-        .querySelectorAll('#extension-types dt')
-        .map((element) => element.id),
+    ...document.querySelectorAll('#extension-types dt').map((element) => element.id),
     ...document.querySelectorAll('#typedefs dt').map((element) => element.id),
     ...document.querySelectorAll('#classes dt').map((element) => element.id),
   };
   return StaticDependency(packageUriProvider(), types);
 }
 
-Future<StaticDependency> pubDevDependency(String package, String library,
-    {String? packageVersion}) async {
+Future<StaticDependency> pubDevDependency(String package, String library, {String? packageVersion}) async {
   return _remoteDependency(
     () => Uri.https(
-        'pub.dev',
-        [
-          'documentation',
-          package,
-          packageVersion ?? 'latest',
-          library,
-          '$library-library.html',
-        ].join('/')),
+      'pub.dev',
+      ['documentation', package, packageVersion ?? 'latest', library, '$library-library.html'].join('/'),
+    ),
     () => 'package:$package/$library.dart',
     package,
     library,
@@ -131,17 +120,9 @@ Future<StaticDependency> pubDevDependency(String package, String library,
   );
 }
 
-Future<StaticDependency> dartDependency(String package, String library,
-    {String? dartVersion}) async {
+Future<StaticDependency> dartDependency(String package, String library, {String? dartVersion}) async {
   return _remoteDependency(
-    () => Uri.https(
-        'api.dart.dev',
-        [
-          'stable',
-          dartVersion ?? 'latest',
-          'dart-$library',
-          'index.html',
-        ].join('/')),
+    () => Uri.https('api.dart.dev', ['stable', dartVersion ?? 'latest', 'dart-$library', 'index.html'].join('/')),
     () => 'dart:$package',
     package,
     library,
@@ -155,12 +136,8 @@ class Dependencies {
 
   Dependencies._(this.dependencies, this.parent);
 
-  factory Dependencies(
-      {List<Dependency> dependencies = const [], Dependencies? parent}) {
-    return Dependencies._(
-      List.of(dependencies),
-      parent,
-    );
+  factory Dependencies({List<Dependency> dependencies = const [], Dependencies? parent}) {
+    return Dependencies._(List.of(dependencies), parent);
   }
 
   String? libraryUrlForType(String? typeName, TsNode currentNode) {

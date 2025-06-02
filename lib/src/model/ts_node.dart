@@ -444,16 +444,25 @@ extension ToListNode on List<TsNode> {
 class TsNodeMeta {
   List<String> documentation = [];
   bool external = false;
+  String? originalName;
 
-  TsNodeMeta({List<String>? documentation, bool? external}) {
+  TsNodeMeta({List<String>? documentation, bool? external, String? originalName}) {
     this.documentation = documentation ?? this.documentation;
     this.external = external ?? this.external;
+    this.originalName = originalName ?? this.originalName;
   }
 
-  TsNodeMeta copy({List<String>? documentation, bool? external}) {
+  TsNodeMeta copy({List<String>? documentation, bool? external, String? originalName}) {
     return TsNodeMeta()
       ..documentation = documentation ?? List.of(this.documentation)
-      ..external = external ?? this.external;
+      ..external = external ?? this.external
+      ..originalName = originalName ?? this.originalName;
+  }
+
+  void ifNotOriginalName(String? name, void Function(String originalName) action) {
+    if (originalName != null && originalName != name) {
+      action(originalName!);
+    }
   }
 }
 
