@@ -17,10 +17,14 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
         return TsAbstractKeyword() as T;
       case TsNodeKind.anyKeyword:
         return TsAnyKeyword() as T;
+      case TsNodeKind.arrayBindingPattern:
+        return TsArrayBindingPattern.fromJson(json) as T;
       case TsNodeKind.arrayType:
         return TsArrayType.fromJson(json) as T;
       case TsNodeKind.bigIntKeyword:
         return TsBigIntKeyword() as T;
+      case TsNodeKind.bindingElement:
+        return TsBindingElement.fromJson(json) as T;
       case TsNodeKind.booleanKeyword:
         return TsBooleanKeyword() as T;
       case TsNodeKind.callSignature:
@@ -244,8 +248,10 @@ enum TsNodeKind {
   $removed,
   abstractKeyword,
   anyKeyword,
+  arrayBindingPattern,
   arrayType,
   bigIntKeyword,
+  bindingElement,
   booleanKeyword,
   callSignature,
   classDeclaration,
@@ -459,10 +465,14 @@ class TsNodeMeta {
       ..originalName = originalName ?? this.originalName;
   }
 
-  void ifNotOriginalName(String? name, void Function(String originalName) action) {
+  void ifNotOriginalName(String? name, void Function(String? originalName) action) {
     if (originalName != null && originalName != name) {
-      action(originalName!);
+      action(originalName);
     }
+  }
+
+  void withOriginalName(String? name, void Function(String? originalName) action) {
+    action(originalName ?? name);
   }
 }
 
@@ -609,6 +619,23 @@ class TsAnyKeyword extends TsNode {
   String toCode() => 'any';
 }
 
+class TsArrayBindingPattern extends TsNode {
+  final ListNode elements;
+
+  TsArrayBindingPattern(this.elements, {TsNodeMeta? meta})
+    : super(TsNodeKind.arrayBindingPattern, meta ?? TsNodeMeta());
+
+  factory TsArrayBindingPattern.fromJson(Map<String, dynamic> json) {
+    return TsArrayBindingPattern(ListNode(_fromJsonArray(json['elements'])));
+  }
+
+  @override
+  String toCode() => '[${elements.toCode()}]';
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [elements];
+}
+
 class TsArrayType extends TsNode {
   final SingleNode elementType;
 
@@ -630,6 +657,32 @@ class TsBigIntKeyword extends TsNode {
 
   @override
   String toCode() => 'bigint';
+}
+
+class TsBindingElement extends TsNode {
+  final NullableNode dotDotDotToken;
+  final NullableNode propertyName;
+  final SingleNode name;
+  final NullableNode initializer;
+
+  TsBindingElement(this.dotDotDotToken, this.propertyName, this.name, this.initializer, {TsNodeMeta? meta})
+    : super(TsNodeKind.bindingElement, meta ?? TsNodeMeta());
+
+  factory TsBindingElement.fromJson(Map<String, dynamic> json) {
+    return TsBindingElement(
+      NullableNode(_fromNullableJsonObject(json['dotDotDotToken'])),
+      NullableNode(_fromNullableJsonObject(json['propertyName'])),
+      SingleNode(_fromJsonObject(json['name']), affectsParent: true),
+      NullableNode(_fromNullableJsonObject(json['initializer'])),
+    );
+  }
+
+  @override
+  String toCode() =>
+      '${dotDotDotToken.toCode('...')}${propertyName.toCode('&')}${name.toCode()}${initializer.toCode(' = &')}';
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [dotDotDotToken, propertyName, name, initializer];
 }
 
 class TsBooleanKeyword extends TsNode {
@@ -751,6 +804,27 @@ class TsConstructorDeclaration extends TsNode with WithTypeParameters {
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
+class TsConstructSignature extends TsNode with WithTypeParameters {
+  @override
+  final ListNode typeParameters;
+  final ListNode parameters;
+  final NullableNode type;
+
+  TsConstructSignature(this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
+    : super(TsNodeKind.constructSignature, meta ?? TsNodeMeta());
+
+  factory TsConstructSignature.fromJson(Map<String, dynamic> json) {
+    return TsConstructSignature(
+      ListNode(_fromJsonArray(json['typeParameters'])),
+      ListNode(_fromJsonArray(json['parameters'])),
+      NullableNode(_fromNullableJsonObject(json['type'])),
+    );
+  }
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
+}
+
 class TsConstructorType extends TsNode with WithTypeParameters {
   final ListNode modifiers;
   @override
@@ -772,27 +846,6 @@ class TsConstructorType extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, typeParameters, parameters, type];
-}
-
-class TsConstructSignature extends TsNode with WithTypeParameters {
-  @override
-  final ListNode typeParameters;
-  final ListNode parameters;
-  final NullableNode type;
-
-  TsConstructSignature(this.typeParameters, this.parameters, this.type, {TsNodeMeta? meta})
-    : super(TsNodeKind.constructSignature, meta ?? TsNodeMeta());
-
-  factory TsConstructSignature.fromJson(Map<String, dynamic> json) {
-    return TsConstructSignature(
-      ListNode(_fromJsonArray(json['typeParameters'])),
-      ListNode(_fromJsonArray(json['parameters'])),
-      NullableNode(_fromNullableJsonObject(json['type'])),
-    );
-  }
-
-  @override
-  List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
 }
 
 class TsDeclareKeyword extends TsNode {

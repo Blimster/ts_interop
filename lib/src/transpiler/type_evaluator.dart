@@ -104,7 +104,7 @@ class TypeEvaluator {
       TsIntrinsicKeyword() => _typeRef('JSAny'),
       TsLiteralType() => evaluateType(node.literal.value),
       TsMappedType() => _typeRef('JSObject'),
-      TsNeverKeyword() => _typeRef('Never'),
+      TsNeverKeyword() => _typeRef('JSAny'),
       TsNullKeyword() => _typeRef('Null'),
       TsNumberKeyword() => _typeRef('JSNumber'),
       TsNumericLiteral() => _typeRef('JSNumber'),

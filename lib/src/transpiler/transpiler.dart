@@ -176,7 +176,7 @@ class Transpiler {
 
     return ExtensionType((builder) {
       builder.docs.add('/// Class [${classDeclaration.name.value.nodeName}]');
-      classDeclaration.meta.ifNotOriginalName(className, (String originalName) {
+      classDeclaration.meta.ifNotOriginalName(className, (originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
@@ -232,6 +232,29 @@ class Transpiler {
         ).cast<DartParameter>().where((p) => p.isNullable).map((node) => node.parameter).toList(),
       );
     }).toDartNode(constructorDeclaration);
+  }
+
+  DartNode<Spec> _transpileConstructSignature(TsConstructSignature constructSignature) {
+    return Constructor((builder) {
+      builder.docs.addAll([
+        '/// Constructor',
+        if (constructSignature.typeParameters.value.isNotEmpty) ...['///', '/// Type Parameters:'],
+        ...constructSignature.typeParameters.value.map((tp) => '/// - ${tp.toCode()}'),
+        if (constructSignature.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
+        ...constructSignature.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
+      ]);
+      builder.external = true;
+      builder.requiredParameters.addAll(
+        _transpileNodes<Reference>(
+          constructSignature.parameters.value,
+        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
+      );
+      builder.optionalParameters.addAll(
+        _transpileNodes<Reference>(
+          constructSignature.parameters.value,
+        ).cast<DartParameter>().where((p) => p.isNullable).map((node) => node.parameter).toList(),
+      );
+    }).toDartNode(constructSignature);
   }
 
   DartNode<Reference> _transpileConstructorType(TsConstructorType constructorType) {
@@ -318,7 +341,7 @@ class Transpiler {
         if (functionDeclaration.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
         ...functionDeclaration.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
       ]);
-      functionDeclaration.meta.ifNotOriginalName(functionName, (String originalName) {
+      functionDeclaration.meta.withOriginalName(functionName, (originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
@@ -393,13 +416,13 @@ class Transpiler {
   }
 
   DartNode<ExtensionType> _transpileInterfaceDeclaration(TsInterfaceDeclaration interfaceDeclaration) {
-    final members = _transpileNodes(interfaceDeclaration.members.value).toSpecs(dependencies);
+    final members = _transpileNodes(interfaceDeclaration.members.value);
     final hasCallSignature = interfaceDeclaration.searchDown<TsCallSignature>().isNotEmpty;
     final interfaceName = interfaceDeclaration.name.value.nodeName;
 
     return ExtensionType((builder) {
       builder.docs.add('/// Interface [${interfaceDeclaration.name.value.nodeName}]');
-      interfaceDeclaration.meta.ifNotOriginalName(interfaceName, (String originalName) {
+      interfaceDeclaration.meta.ifNotOriginalName(interfaceName, (originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
@@ -415,21 +438,23 @@ class Transpiler {
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
-          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
+          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSAny';
           builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
         });
       });
       builder.implements.add(
         TypeReference((builder) {
-          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
+          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSAny';
           builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
         }),
       );
       builder.implements.addAll(
         _transpileNodes<Reference>(interfaceDeclaration.heritageClauses.value).toSpecs(dependencies),
       );
-      builder.fields.addAll(members.whereType<Field>());
-      builder.methods.addAll(members.whereType<Method>());
+
+      builder.constructors.addAll(members.whereType<DartConstructor>().map((e) => e.constructor));
+      builder.fields.addAll(members.toSpecs(dependencies).whereType<Field>());
+      builder.methods.addAll(members.toSpecs(dependencies).whereType<Method>());
     }).toDartNode(interfaceDeclaration);
   }
 
@@ -465,7 +490,7 @@ class Transpiler {
         if (methodDeclaration.parameters.value.isNotEmpty) ...['///', '/// Parameters:'],
         ...methodDeclaration.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
       ]);
-      methodDeclaration.meta.ifNotOriginalName(methodName, (String originalName) {
+      methodDeclaration.meta.ifNotOriginalName(methodName, (originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
@@ -512,7 +537,7 @@ class Transpiler {
         '/// Returns:',
         '/// - ${methodSignature.type.value?.toCode()}',
       ]);
-      methodSignature.meta.ifNotOriginalName(methodName, (String originalName) {
+      methodSignature.meta.ifNotOriginalName(methodName, (originalName) {
         final allocator = Allocator.simplePrefixing();
         builder.annotations.add(
           CodeExpression(
@@ -594,7 +619,7 @@ class Transpiler {
         builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertyDeclaration.toCode()}');
-        propertyDeclaration.meta.ifNotOriginalName(propertyName, (String originalName) {
+        propertyDeclaration.meta.ifNotOriginalName(propertyName, (originalName) {
           builder.annotations.addJsAnnotation(propertyDeclaration, originalName, dependencies);
         });
         builder.type = MethodType.getter;
@@ -609,7 +634,7 @@ class Transpiler {
         builder.docs.add('/// Property [${propertyDeclaration.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertyDeclaration.toCode()}');
-        propertyDeclaration.meta.ifNotOriginalName(propertyName, (String originalName) {
+        propertyDeclaration.meta.ifNotOriginalName(propertyName, (originalName) {
           builder.annotations.addJsAnnotation(propertyDeclaration, originalName, dependencies);
         });
         builder.external = true;
@@ -629,7 +654,7 @@ class Transpiler {
         builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertySignature.toCode()}');
-        propertySignature.meta.ifNotOriginalName(propertyName, (String originalName) {
+        propertySignature.meta.ifNotOriginalName(propertyName, (originalName) {
           builder.annotations.addJsAnnotation(propertySignature, originalName, dependencies);
         });
         builder.type = MethodType.getter;
@@ -644,7 +669,7 @@ class Transpiler {
         builder.docs.add('/// Property [${propertySignature.name.value.nodeName}]');
         builder.docs.add('///');
         builder.docs.add('/// ${propertySignature.toCode()}');
-        propertySignature.meta.ifNotOriginalName(propertyName, (String originalName) {
+        propertySignature.meta.ifNotOriginalName(propertyName, (originalName) {
           builder.annotations.addJsAnnotation(propertySignature, originalName, dependencies);
         });
         builder.external = true;
@@ -811,6 +836,7 @@ class Transpiler {
       TsCallSignature() => DartNode.empty<S>(node),
       TsClassDeclaration() => _transpileClassDeclaration(node),
       TsConstructorDeclaration() => _transpileConstructorDeclaration(node),
+      TsConstructSignature() => _transpileConstructSignature(node),
       TsConstructorType() => _transpileConstructorType(node),
       TsEnumDeclaration() => _transpileEnumDeclaration(node),
       TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(node),

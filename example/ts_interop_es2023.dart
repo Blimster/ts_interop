@@ -14,15 +14,15 @@ void main() async {
   final typeEvaluator = TypeEvaluator();
 
   final sw = Stopwatch()..start();
-  stdout.write('Reading input file... ');
+  print('Reading input file... ');
   final inFile = File('example/es2023@v5.8.3.json');
   final content = inFile.readAsStringSync();
   final json = jsonDecode(content);
   final package = TsPackage.fromJson(json);
-  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
+  print('Done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
   sw.reset();
 
-  stdout.write('Sanitizing... ');
+  print('Sanitizing... ');
   final sanitizedPackage = Sanitizer(typeEvaluator)
       .addPhase(
         SanitizerPhase('removeDependencies', PhaseDirection.topDown, [
@@ -57,10 +57,10 @@ void main() async {
       )
       .sanitize(package);
 
-  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
+  print('Done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
   sw.reset();
 
-  stdout.write('Transpiling... ');
+  print('Transpiling... ');
   final transpiler = Transpiler(typeEvaluator, dependencies);
   final libs = transpiler.transpile(sanitizedPackage);
 
@@ -79,6 +79,6 @@ void main() async {
       outFile.writeAsStringSync(lib.accept(emitter).toString());
     }
   }
-  print('done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
+  print('Done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
   sw.reset();
 }

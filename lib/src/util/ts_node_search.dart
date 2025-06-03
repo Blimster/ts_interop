@@ -154,7 +154,6 @@ void buildCache(TsPackage package) {
       hasTypeArguments.insert(node);
     }
   });
-  print('build: ${_cache['n:ArrayBuffer']?.whereType<TsInterfaceDeclaration>().toList()}');
 }
 
 void updateCache(List<TsNode> added, List<TsNode> removed) {
