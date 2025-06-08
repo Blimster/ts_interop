@@ -1,4 +1,5 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: avoid_shadowing_type_parameters, camel_case_types
+// ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
 
 library reflect; // ignore_for_file: no_leading_underscores_for_library_prefixes
@@ -65,6 +66,7 @@ external _i1.JSAny construct$2(_i2.Function$ target, _i2.ArrayLike<_i1.JSAny> ar
 /// - target: object
 /// - propertyKey: PropertyKey
 /// - attributes:
+@_i1.JS('defineProperty')
 external _i1.JSBoolean defineProperty(_i1.JSObject target, _i2.PropertyKey propertyKey, _i1.JSAny attributes);
 
 /// Method [deleteProperty]
@@ -72,6 +74,7 @@ external _i1.JSBoolean defineProperty(_i1.JSObject target, _i2.PropertyKey prope
 /// Parameters:
 /// - target: object
 /// - propertyKey: PropertyKey
+@_i1.JS('deleteProperty')
 external _i1.JSBoolean deleteProperty(_i1.JSObject target, _i2.PropertyKey propertyKey);
 
 /// Method [get]
@@ -84,6 +87,7 @@ external _i1.JSBoolean deleteProperty(_i1.JSObject target, _i2.PropertyKey prope
 /// - target: T
 /// - propertyKey: P
 /// - receiver:
+@_i1.JS('get')
 external get<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propertyKey, [_i1.JSAny receiver]);
 
 /// Method [getOwnPropertyDescriptor]
@@ -95,12 +99,14 @@ external get<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propert
 /// Parameters:
 /// - target: T
 /// - propertyKey: P
+@_i1.JS('getOwnPropertyDescriptor')
 external _i1.JSAny getOwnPropertyDescriptor<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propertyKey);
 
 /// Method [getPrototypeOf]
 ///
 /// Parameters:
 /// - target: object
+@_i1.JS('getPrototypeOf')
 external _i1.JSAny getPrototypeOf(_i1.JSObject target);
 
 /// Method [has]
@@ -108,24 +114,28 @@ external _i1.JSAny getPrototypeOf(_i1.JSObject target);
 /// Parameters:
 /// - target: object
 /// - propertyKey: PropertyKey
+@_i1.JS('has')
 external _i1.JSBoolean has(_i1.JSObject target, _i2.PropertyKey propertyKey);
 
 /// Method [isExtensible]
 ///
 /// Parameters:
 /// - target: object
+@_i1.JS('isExtensible')
 external _i1.JSBoolean isExtensible(_i1.JSObject target);
 
 /// Method [ownKeys]
 ///
 /// Parameters:
 /// - target: object
+@_i1.JS('ownKeys')
 external _i1.JSArray<_i1.JSAny> ownKeys(_i1.JSObject target);
 
 /// Method [preventExtensions]
 ///
 /// Parameters:
 /// - target: object
+@_i1.JS('preventExtensions')
 external _i1.JSBoolean preventExtensions(_i1.JSObject target);
 
 /// Method [set$1]
@@ -162,4 +172,5 @@ external _i1.JSBoolean set$2(_i1.JSObject target, _i2.PropertyKey propertyKey, _
 /// Parameters:
 /// - target: object
 /// - proto: object | null
+@_i1.JS('setPrototypeOf')
 external _i1.JSBoolean setPrototypeOf(_i1.JSObject target, _i1.JSObject? proto);

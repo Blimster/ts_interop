@@ -1,4 +1,5 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: avoid_shadowing_type_parameters, camel_case_types
+// ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
 
 library es2023; // ignore_for_file: no_leading_underscores_for_library_prefixes
@@ -27,7 +28,7 @@ typedef DecoratorMetadataObject = _i1.JSAny;
 typedef DecoratorMetadata = _i1.JSAny;
 
 /// Interface [ClassDecoratorContext]
-extension type ClassDecoratorContext<Class extends _i1.JSFunction>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ClassDecoratorContext<Class extends _i1.JSFunction>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [kind]
   ///
   /// readonly kind: "class"
@@ -54,8 +55,8 @@ extension type ClassDecoratorContext<Class extends _i1.JSFunction>.$(_i1.JSObjec
 }
 
 /// Interface [ClassMethodDecoratorContext]
-extension type ClassMethodDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSFunction>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassMethodDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSFunction>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Property [kind]
   ///
   /// readonly kind: "method"
@@ -97,8 +98,8 @@ extension type ClassMethodDecoratorContext<This extends _i1.JSAny, Value extends
 }
 
 /// Interface [ClassGetterDecoratorContext]
-extension type ClassGetterDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassGetterDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Property [kind]
   ///
   /// readonly kind: "getter"
@@ -140,8 +141,8 @@ extension type ClassGetterDecoratorContext<This extends _i1.JSAny, Value extends
 }
 
 /// Interface [ClassSetterDecoratorContext]
-extension type ClassSetterDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassSetterDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Property [kind]
   ///
   /// readonly kind: "setter"
@@ -183,8 +184,8 @@ extension type ClassSetterDecoratorContext<This extends _i1.JSAny, Value extends
 }
 
 /// Interface [ClassAccessorDecoratorContext]
-extension type ClassAccessorDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassAccessorDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Property [kind]
   ///
   /// readonly kind: "accessor"
@@ -226,8 +227,8 @@ extension type ClassAccessorDecoratorContext<This extends _i1.JSAny, Value exten
 }
 
 /// Interface [ClassAccessorDecoratorTarget]
-extension type ClassAccessorDecoratorTarget<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassAccessorDecoratorTarget<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Method [get]
   ///
   /// Parameters:
@@ -249,8 +250,8 @@ extension type ClassAccessorDecoratorTarget<This extends _i1.JSAny, Value extend
 }
 
 /// Interface [ClassAccessorDecoratorResult]
-extension type ClassAccessorDecoratorResult<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassAccessorDecoratorResult<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Method [get]
   ///
   /// Parameters:
@@ -282,8 +283,8 @@ extension type ClassAccessorDecoratorResult<This extends _i1.JSAny, Value extend
 }
 
 /// Interface [ClassFieldDecoratorContext]
-extension type ClassFieldDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassFieldDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Property [kind]
   ///
   /// readonly kind: "field"
@@ -345,7 +346,7 @@ typedef MethodDecorator<T extends _i1.JSAny> = _i1.JSFunction;
 typedef ParameterDecorator = _i1.JSFunction;
 
 /// Interface [Map]
-extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -424,7 +425,11 @@ extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) i
 }
 
 /// Interface [MapConstructor]
-extension type MapConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Map')
+extension type MapConstructor<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  external MapConstructor.$1();
+
   /// Property [prototype]
   ///
   /// readonly prototype: Map
@@ -432,7 +437,7 @@ extension type MapConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ReadonlyMap]
-extension type ReadonlyMap<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ReadonlyMap<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -486,7 +491,7 @@ extension type ReadonlyMap<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObj
 }
 
 /// Interface [WeakMap]
-extension type WeakMap<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WeakMap<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [null$]
   ///
   /// readonly null$: string
@@ -531,7 +536,18 @@ extension type WeakMap<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSObject _)
 }
 
 /// Interface [WeakMapConstructor]
-extension type WeakMapConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('WeakMap')
+extension type WeakMapConstructor<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - K extends WeakKey = WeakKey
+  /// - V = any
+  ///
+  /// Parameters:
+  /// - entries: readonly (readonly [K, V])[] | null
+  external WeakMapConstructor([_i1.JSArray<_i1.JSArray<_i1.JSAny>>? entries]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: WeakMap
@@ -539,7 +555,7 @@ extension type WeakMapConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Set]
-extension type Set<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Set<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [add]
   ///
   /// Parameters:
@@ -608,7 +624,17 @@ extension type Set<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObjec
 }
 
 /// Interface [SetConstructor]
-extension type SetConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Set')
+extension type SetConstructor<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - T = any
+  ///
+  /// Parameters:
+  /// - values: readonly T[] | null
+  external SetConstructor([_i1.JSArray<T>? values]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: Set
@@ -616,7 +642,7 @@ extension type SetConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ReadonlySet]
-extension type ReadonlySet<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ReadonlySet<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -661,7 +687,7 @@ extension type ReadonlySet<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
 }
 
 /// Interface [WeakSet]
-extension type WeakSet<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WeakSet<T extends WeakKey>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [add]
   ///
   /// Parameters:
@@ -696,7 +722,17 @@ extension type WeakSet<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObj
 }
 
 /// Interface [WeakSetConstructor]
-extension type WeakSetConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('WeakSet')
+extension type WeakSetConstructor<T extends WeakKey>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - T extends WeakKey = WeakKey
+  ///
+  /// Parameters:
+  /// - values: readonly T[] | null
+  external WeakSetConstructor([_i1.JSArray<T>? values]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: WeakSet
@@ -704,7 +740,7 @@ extension type WeakSetConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Array]
-extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Array<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [length]
   ///
   /// length: number
@@ -1080,7 +1116,7 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
 }
 
 /// Interface [ArrayConstructor]
-extension type ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [isArray]
   ///
   /// Parameters:
@@ -1127,7 +1163,14 @@ extension type ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [DateConstructor]
-extension type DateConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Date')
+extension type DateConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - value: number | string | Date
+  external DateConstructor(_i1.JSAny value);
+
   /// Method [now]
   ///
   /// Returns:
@@ -1174,7 +1217,7 @@ extension type DateConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Interface [Function$]
 @_i1.JS('Function')
-extension type Function$.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Function$.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [caller]
   ///
   /// caller: Function$
@@ -1242,7 +1285,7 @@ extension type Function$.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Math]
-extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Math.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [sqrt]
   ///
   /// Parameters:
@@ -1611,7 +1654,14 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [NumberConstructor]
-extension type NumberConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Number')
+extension type NumberConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - value: any
+  external NumberConstructor([_i1.JSAny value]);
+
   /// Property [NEGATIVE_INFINITY]
   ///
   /// readonly NEGATIVE_INFINITY: number
@@ -1714,7 +1764,14 @@ extension type NumberConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ObjectConstructor]
-extension type ObjectConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Object')
+extension type ObjectConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - value: any
+  external ObjectConstructor([_i1.JSAny value]);
+
   /// Method [entries]
   ///
   /// Type Parameters:
@@ -1961,7 +2018,7 @@ extension type ObjectConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ReadonlyArray]
-extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -2260,7 +2317,7 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
 }
 
 /// Interface [RegExp]
-extension type RegExp.$(_i1.JSObject _) implements _i1.JSObject {
+extension type RegExp.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [lastIndex]
   ///
   /// lastIndex: number
@@ -2341,7 +2398,15 @@ extension type RegExp.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [RegExpConstructor]
+@_i1.JS('RegExp')
 extension type RegExpConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - pattern: RegExp | string
+  /// - flags: string
+  external RegExpConstructor(_i1.JSAny pattern, [_i1.JSString flags]);
+
   /// Property [input]
   ///
   /// input: string
@@ -2464,7 +2529,7 @@ extension type RegExpConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
 }
 
 /// Interface [String]
-extension type String.$(_i1.JSObject _) implements _i1.JSObject {
+extension type String.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [strike]
   ///
   /// Returns:
@@ -2868,7 +2933,14 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [StringConstructor]
-extension type StringConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('String')
+extension type StringConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - value: any
+  external StringConstructor([_i1.JSAny value]);
+
   /// Method [fromCodePoint]
   ///
   /// Parameters:
@@ -2904,7 +2976,7 @@ extension type StringConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Int8Array]
-extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -3225,7 +3297,7 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
 }
 
 /// Interface [Uint8Array]
-extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -3546,7 +3618,7 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
 }
 
 /// Interface [Uint8ClampedArray]
-extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -3867,7 +3939,7 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
 }
 
 /// Interface [Int16Array]
-extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -4188,7 +4260,7 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
 }
 
 /// Interface [Uint16Array]
-extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -4509,7 +4581,7 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
 }
 
 /// Interface [Int32Array]
-extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -4830,7 +4902,7 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
 }
 
 /// Interface [Uint32Array]
-extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -5151,7 +5223,7 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
 }
 
 /// Interface [Float32Array]
-extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -5472,7 +5544,7 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
 }
 
 /// Interface [Float64Array]
-extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [entries]
   ///
   /// Returns:
@@ -5793,16 +5865,16 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
 }
 
 /// Interface [Generator]
-extension type Generator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, TReturn, TNext> {
+extension type Generator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, IteratorObject<T, TReturn, TNext> {
   /// Method [next]
   ///
   /// Parameters:
-  /// - ...arrayBindingPattern: [] | [TNext]
+  /// - ...[value]: [] | [TNext]
   ///
   /// Returns:
   /// - IteratorResult
-  external IteratorResult<T, TReturn> next(_i1.JSArray<_i1.JSAny> arrayBindingPattern);
+  external IteratorResult<T, TReturn> next(_i1.JSArray<_i1.JSAny> _);
 
   /// Method [return$]
   ///
@@ -5826,7 +5898,14 @@ extension type Generator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext e
 }
 
 /// Interface [GeneratorFunction]
+@_i1.JS('Generator')
 extension type GeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - ...args: any[]
+  external GeneratorFunction(_i1.JSArray<_i1.JSAny> args);
+
   /// Property [length]
   ///
   /// readonly length: number
@@ -5844,7 +5923,14 @@ extension type GeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunction {
 }
 
 /// Interface [GeneratorFunctionConstructor]
+@_i1.JS('GeneratorFunction')
 extension type GeneratorFunctionConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - ...args: string[]
+  external GeneratorFunctionConstructor(_i1.JSArray<_i1.JSString> args);
+
   /// Property [length]
   ///
   /// readonly length: number
@@ -5954,7 +6040,7 @@ extension type SymbolConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
 }
 
 /// Interface [IteratorYieldResult]
-extension type IteratorYieldResult<TYield extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type IteratorYieldResult<TYield extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [done]
   ///
   /// done?: false
@@ -5967,7 +6053,7 @@ extension type IteratorYieldResult<TYield extends _i1.JSAny>.$(_i1.JSObject _) i
 }
 
 /// Interface [IteratorReturnResult]
-extension type IteratorReturnResult<TReturn extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type IteratorReturnResult<TReturn extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [done]
   ///
   /// done: true
@@ -5985,16 +6071,16 @@ extension type IteratorReturnResult<TReturn extends _i1.JSAny>.$(_i1.JSObject _)
 typedef IteratorResult<T extends _i1.JSAny, TReturn extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [Iterator]
-extension type Iterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type Iterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Method [next]
   ///
   /// Parameters:
-  /// - ...arrayBindingPattern: [] | [TNext]
+  /// - ...[value]: [] | [TNext]
   ///
   /// Returns:
   /// - IteratorResult
-  external IteratorResult<T, TReturn> next(_i1.JSArray<_i1.JSAny> arrayBindingPattern);
+  external IteratorResult<T, TReturn> next(_i1.JSArray<_i1.JSAny> _);
 
   /// Method [return$]
   ///
@@ -6018,18 +6104,16 @@ extension type Iterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext ex
 }
 
 /// Interface [Iterable]
-extension type Iterable<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {}
+extension type Iterable<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {}
 
 /// Interface [IterableIterator]
-extension type IterableIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(
-  _i1.JSObject _
-)
-    implements _i1.JSObject, Iterator<T, TReturn, TNext> {}
+extension type IterableIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, Iterator<T, TReturn, TNext> {}
 
 /// Interface [IteratorObject]
-extension type IteratorObject<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, Iterator<T, TReturn, TNext> {}
+extension type IteratorObject<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, Iterator<T, TReturn, TNext> {}
 
 /// Typedef [BuiltinIteratorReturn]
 ///
@@ -6037,11 +6121,11 @@ extension type IteratorObject<T extends _i1.JSAny, TReturn extends _i1.JSAny, TN
 typedef BuiltinIteratorReturn = _i1.JSAny;
 
 /// Interface [ArrayIterator]
-extension type ArrayIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+extension type ArrayIterator<T extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [IArguments]
-extension type IArguments.$(_i1.JSObject _) implements _i1.JSObject {
+extension type IArguments.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [length]
   ///
   /// length: number
@@ -6054,15 +6138,15 @@ extension type IArguments.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [MapIterator]
-extension type MapIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+extension type MapIterator<T extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [SetIterator]
-extension type SetIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+extension type SetIterator<T extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [Promise]
-extension type Promise<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Promise<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [finally$]
   ///
   /// Parameters:
@@ -6110,7 +6194,17 @@ extension type Promise<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSO
 }
 
 /// Interface [PromiseConstructor]
-extension type PromiseConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Promise')
+extension type PromiseConstructor<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - T
+  ///
+  /// Parameters:
+  /// - executor: (resolve: (value: T | PromiseLike) => void, reject: (reason: any) => void) => void
+  external PromiseConstructor(_i1.JSFunction executor);
+
   /// Method [any]
   ///
   /// Type Parameters:
@@ -6186,11 +6280,18 @@ extension type PromiseConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [StringIterator]
-extension type StringIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+extension type StringIterator<T extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [Int8ArrayConstructor]
-extension type Int8ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Int8Array')
+extension type Int8ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Int8ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6222,7 +6323,14 @@ extension type Int8ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Uint8ArrayConstructor]
-extension type Uint8ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Uint8Array')
+extension type Uint8ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Uint8ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6254,7 +6362,14 @@ extension type Uint8ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Uint8ClampedArrayConstructor]
-extension type Uint8ClampedArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Uint8ClampedArray')
+extension type Uint8ClampedArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Uint8ClampedArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6286,7 +6401,14 @@ extension type Uint8ClampedArrayConstructor.$(_i1.JSObject _) implements _i1.JSO
 }
 
 /// Interface [Int16ArrayConstructor]
-extension type Int16ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Int16Array')
+extension type Int16ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Int16ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6318,7 +6440,14 @@ extension type Int16ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Uint16ArrayConstructor]
-extension type Uint16ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Uint16Array')
+extension type Uint16ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Uint16ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6350,7 +6479,14 @@ extension type Uint16ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject 
 }
 
 /// Interface [Int32ArrayConstructor]
-extension type Int32ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Int32Array')
+extension type Int32ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Int32ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6382,7 +6518,14 @@ extension type Int32ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Uint32ArrayConstructor]
-extension type Uint32ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Uint32Array')
+extension type Uint32ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Uint32ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6414,7 +6557,14 @@ extension type Uint32ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject 
 }
 
 /// Interface [Float32ArrayConstructor]
-extension type Float32ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Float32Array')
+extension type Float32ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Float32ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6446,7 +6596,14 @@ extension type Float32ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject
 }
 
 /// Interface [Float64ArrayConstructor]
-extension type Float64ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('Float64Array')
+extension type Float64ArrayConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - elements: Iterable
+  external Float64ArrayConstructor(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -6478,7 +6635,7 @@ extension type Float64ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject
 }
 
 /// Interface [ProxyHandler]
-extension type ProxyHandler<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ProxyHandler<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [apply]
   ///
   /// Parameters:
@@ -6613,7 +6770,18 @@ extension type ProxyHandler<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i
 }
 
 /// Interface [ProxyConstructor]
-extension type ProxyConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('T')
+extension type ProxyConstructor<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - T extends object
+  ///
+  /// Parameters:
+  /// - target: T
+  /// - handler: ProxyHandler
+  external ProxyConstructor(T target, ProxyHandler<T> handler);
+
   /// Method [revocable]
   ///
   /// Type Parameters:
@@ -6629,7 +6797,7 @@ extension type ProxyConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Symbol]
-extension type Symbol.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Symbol.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [valueOf]
   ///
   /// Returns:
@@ -6650,7 +6818,7 @@ extension type Symbol.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Date]
-extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Date.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [setUTCDate]
   ///
   /// Parameters:
@@ -6990,7 +7158,7 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [JSON]
-extension type JSON.$(_i1.JSObject _) implements _i1.JSObject {
+extension type JSON.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [stringify]
   ///
   /// Parameters:
@@ -7019,7 +7187,7 @@ extension type JSON.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ArrayBuffer]
-extension type ArrayBuffer.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayBuffer.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [byteLength]
   ///
   /// readonly byteLength: number
@@ -7042,7 +7210,7 @@ extension type ArrayBuffer.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [DataView]
-extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [setUint8]
   ///
   /// Parameters:
@@ -7271,7 +7439,7 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
 }
 
 /// Interface [ArrayBufferConstructor]
-extension type ArrayBufferConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayBufferConstructor.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [null$]
   ///
   /// readonly null$: ArrayBufferConstructor
@@ -7293,7 +7461,7 @@ extension type ArrayBufferConstructor.$(_i1.JSObject _) implements _i1.JSObject 
 }
 
 /// Interface [SharedArrayBuffer]
-extension type SharedArrayBuffer.$(_i1.JSObject _) implements _i1.JSObject {
+extension type SharedArrayBuffer.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [byteLength]
   ///
   /// readonly byteLength: number
@@ -7316,7 +7484,14 @@ extension type SharedArrayBuffer.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [SharedArrayBufferConstructor]
-extension type SharedArrayBufferConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('SharedArrayBuffer')
+extension type SharedArrayBufferConstructor.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - byteLength: number
+  external SharedArrayBufferConstructor([_i1.JSNumber byteLength]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: SharedArrayBuffer
@@ -7329,7 +7504,7 @@ extension type SharedArrayBufferConstructor.$(_i1.JSObject _) implements _i1.JSO
 }
 
 /// Interface [ArrayBufferTypes]
-extension type ArrayBufferTypes.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayBufferTypes.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [ArrayBuffer$]
   ///
   /// ArrayBuffer$: ArrayBuffer
@@ -7344,7 +7519,7 @@ extension type ArrayBufferTypes.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Atomics]
-extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Atomics.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [add]
   ///
   /// Parameters:
@@ -7493,16 +7668,16 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [AsyncGenerator]
-extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, AsyncIteratorObject<T, TReturn, TNext> {
+extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, AsyncIteratorObject<T, TReturn, TNext> {
   /// Method [next]
   ///
   /// Parameters:
-  /// - ...arrayBindingPattern: [] | [TNext]
+  /// - ...[value]: [] | [TNext]
   ///
   /// Returns:
   /// - Promise
-  external _i1.JSPromise<IteratorResult<T, TReturn>> next(_i1.JSArray<_i1.JSAny> arrayBindingPattern);
+  external _i1.JSPromise<IteratorResult<T, TReturn>> next(_i1.JSArray<_i1.JSAny> _);
 
   /// Method [return$]
   ///
@@ -7526,7 +7701,14 @@ extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TN
 }
 
 /// Interface [AsyncGeneratorFunction]
+@_i1.JS('AsyncGenerator')
 extension type AsyncGeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - ...args: any[]
+  external AsyncGeneratorFunction(_i1.JSArray<_i1.JSAny> args);
+
   /// Property [length]
   ///
   /// readonly length: number
@@ -7544,7 +7726,14 @@ extension type AsyncGeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunct
 }
 
 /// Interface [AsyncGeneratorFunctionConstructor]
+@_i1.JS('AsyncGeneratorFunction')
 extension type AsyncGeneratorFunctionConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - ...args: string[]
+  external AsyncGeneratorFunctionConstructor(_i1.JSArray<_i1.JSString> args);
+
   /// Property [length]
   ///
   /// readonly length: number
@@ -7562,16 +7751,16 @@ extension type AsyncGeneratorFunctionConstructor.$(_i1.JSFunction _) implements 
 }
 
 /// Interface [AsyncIterator]
-extension type AsyncIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type AsyncIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {
   /// Method [next]
   ///
   /// Parameters:
-  /// - ...arrayBindingPattern: [] | [TNext]
+  /// - ...[value]: [] | [TNext]
   ///
   /// Returns:
   /// - Promise
-  external _i1.JSPromise<IteratorResult<T, TReturn>> next(_i1.JSArray<_i1.JSAny> arrayBindingPattern);
+  external _i1.JSPromise<IteratorResult<T, TReturn>> next(_i1.JSArray<_i1.JSAny> _);
 
   /// Method [return$]
   ///
@@ -7595,23 +7784,23 @@ extension type AsyncIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNe
 }
 
 /// Interface [AsyncIterable]
-extension type AsyncIterable<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {}
+extension type AsyncIterable<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny {}
 
 /// Interface [AsyncIterableIterator]
 extension type AsyncIterableIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(
-  _i1.JSObject _
+  _i1.JSAny _
 )
-    implements _i1.JSObject, AsyncIterator<T, TReturn, TNext> {}
+    implements _i1.JSAny, AsyncIterator<T, TReturn, TNext> {}
 
 /// Interface [AsyncIteratorObject]
 extension type AsyncIteratorObject<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(
-  _i1.JSObject _
+  _i1.JSAny _
 )
-    implements _i1.JSObject, AsyncIterator<T, TReturn, TNext> {}
+    implements _i1.JSAny, AsyncIterator<T, TReturn, TNext> {}
 
 /// Interface [RegExpMatchArray]
-extension type RegExpMatchArray.$(_i1.JSObject _) implements _i1.JSObject {
+extension type RegExpMatchArray.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [index]
   ///
   /// index?: number
@@ -7640,7 +7829,7 @@ extension type RegExpMatchArray.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [RegExpExecArray]
-extension type RegExpExecArray.$(_i1.JSObject _) implements _i1.JSObject {
+extension type RegExpExecArray.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [index]
   ///
   /// index: number
@@ -7674,7 +7863,7 @@ extension type RegExpExecArray.$(_i1.JSObject _) implements _i1.JSObject {
 typedef FlatArray<Arr extends _i1.JSAny, Depth extends _i1.JSNumber> = _i1.JSAny;
 
 /// Interface [BigIntToLocaleStringOptions]
-extension type BigIntToLocaleStringOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type BigIntToLocaleStringOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
   ///
   /// localeMatcher?: string
@@ -7752,7 +7941,7 @@ extension type BigIntToLocaleStringOptions.$(_i1.JSObject _) implements _i1.JSOb
 }
 
 /// Interface [BigInt]
-extension type BigInt.$(_i1.JSObject _) implements _i1.JSObject {
+extension type BigInt.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [toString$]
   ///
   /// Parameters:
@@ -7814,7 +8003,7 @@ extension type BigIntConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
 }
 
 /// Interface [BigInt64Array]
-extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [byteLength]
   ///
   /// readonly byteLength: number
@@ -8137,7 +8326,45 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
 }
 
 /// Interface [BigInt64ArrayConstructor]
-extension type BigInt64ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('BigInt64Array')
+extension type BigInt64ArrayConstructor<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - length: number
+  external BigInt64ArrayConstructor.$1([_i1.JSNumber length]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - array: ArrayLike | Iterable
+  external BigInt64ArrayConstructor.$2(_i1.JSAny array);
+
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - TArrayBuffer extends ArrayBufferLike = ArrayBuffer
+  ///
+  /// Parameters:
+  /// - buffer: TArrayBuffer
+  /// - byteOffset: number
+  /// - length: number
+  external BigInt64ArrayConstructor.$3(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - buffer: ArrayBuffer
+  /// - byteOffset: number
+  /// - length: number
+  external BigInt64ArrayConstructor.$4(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - array: ArrayLike | ArrayBuffer
+  external BigInt64ArrayConstructor.$5(_i1.JSAny array);
+
   /// Property [prototype]
   ///
   /// readonly prototype: BigInt64Array
@@ -8217,7 +8444,7 @@ extension type BigInt64ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObjec
 }
 
 /// Interface [BigUint64Array]
-extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [byteLength]
   ///
   /// readonly byteLength: number
@@ -8540,7 +8767,45 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
 }
 
 /// Interface [BigUint64ArrayConstructor]
-extension type BigUint64ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('BigUint64Array')
+extension type BigUint64ArrayConstructor<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - length: number
+  external BigUint64ArrayConstructor.$1([_i1.JSNumber length]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - array: ArrayLike | Iterable
+  external BigUint64ArrayConstructor.$2(_i1.JSAny array);
+
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - TArrayBuffer extends ArrayBufferLike = ArrayBuffer
+  ///
+  /// Parameters:
+  /// - buffer: TArrayBuffer
+  /// - byteOffset: number
+  /// - length: number
+  external BigUint64ArrayConstructor.$3(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - buffer: ArrayBuffer
+  /// - byteOffset: number
+  /// - length: number
+  external BigUint64ArrayConstructor.$4(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - array: ArrayLike | ArrayBuffer
+  external BigUint64ArrayConstructor.$5(_i1.JSAny array);
+
   /// Property [prototype]
   ///
   /// readonly prototype: BigUint64Array
@@ -8620,7 +8885,7 @@ extension type BigUint64ArrayConstructor.$(_i1.JSObject _) implements _i1.JSObje
 }
 
 /// Interface [Number]
-extension type Number.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Number.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [toLocaleString]
   ///
   /// Parameters:
@@ -8676,7 +8941,7 @@ extension type Number.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [PromiseFulfilledResult]
-extension type PromiseFulfilledResult<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PromiseFulfilledResult<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [status]
   ///
   /// status: "fulfilled"
@@ -8689,7 +8954,7 @@ extension type PromiseFulfilledResult<T extends _i1.JSAny>.$(_i1.JSObject _) imp
 }
 
 /// Interface [PromiseRejectedResult]
-extension type PromiseRejectedResult.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PromiseRejectedResult.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [status]
   ///
   /// status: "rejected"
@@ -8707,11 +8972,11 @@ extension type PromiseRejectedResult.$(_i1.JSObject _) implements _i1.JSObject {
 typedef PromiseSettledResult<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [RegExpStringIterator]
-extension type RegExpStringIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+extension type RegExpStringIterator<T extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [AggregateError]
-extension type AggregateError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type AggregateError.$(_i1.JSAny _) implements _i1.JSAny, Error {
   /// Property [errors]
   ///
   /// errors: any[]
@@ -8719,7 +8984,15 @@ extension type AggregateError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 }
 
 /// Interface [AggregateErrorConstructor]
+@_i1.JS('AggregateError')
 extension type AggregateErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - errors: Iterable
+  /// - message: string
+  external AggregateErrorConstructor(Iterable<_i1.JSAny, _i1.JSAny, _i1.JSAny> errors, [_i1.JSString message]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: AggregateError
@@ -8727,7 +9000,7 @@ extension type AggregateErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFu
 }
 
 /// Interface [WeakRef]
-extension type WeakRef<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WeakRef<T extends WeakKey>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [null$]
   ///
   /// readonly null$: "WeakRef"
@@ -8741,7 +9014,17 @@ extension type WeakRef<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObj
 }
 
 /// Interface [WeakRefConstructor]
-extension type WeakRefConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('WeakRef')
+extension type WeakRefConstructor<T extends WeakKey>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - T extends WeakKey
+  ///
+  /// Parameters:
+  /// - target: T
+  external WeakRefConstructor(T target);
+
   /// Property [prototype]
   ///
   /// readonly prototype: WeakRef
@@ -8749,7 +9032,7 @@ extension type WeakRefConstructor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [FinalizationRegistry]
-extension type FinalizationRegistry<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type FinalizationRegistry<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [null$]
   ///
   /// readonly null$: "FinalizationRegistry"
@@ -8777,7 +9060,17 @@ extension type FinalizationRegistry<T extends _i1.JSAny>.$(_i1.JSObject _) imple
 }
 
 /// Interface [FinalizationRegistryConstructor]
-extension type FinalizationRegistryConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('FinalizationRegistry')
+extension type FinalizationRegistryConstructor<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - T
+  ///
+  /// Parameters:
+  /// - cleanupCallback: (heldValue: T) => void
+  external FinalizationRegistryConstructor(_i1.JSFunction cleanupCallback);
+
   /// Property [prototype]
   ///
   /// readonly prototype: FinalizationRegistry
@@ -8785,7 +9078,7 @@ extension type FinalizationRegistryConstructor.$(_i1.JSObject _) implements _i1.
 }
 
 /// Interface [ErrorOptions]
-extension type ErrorOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ErrorOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [cause]
   ///
   /// cause?:
@@ -8793,7 +9086,7 @@ extension type ErrorOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Error]
-extension type Error.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Error.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [stack]
   ///
   /// stack?: string
@@ -8816,7 +9109,15 @@ extension type Error.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ErrorConstructor]
+@_i1.JS('Error')
 extension type ErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - message: string
+  /// - options: ErrorOptions
+  external ErrorConstructor([_i1.JSString message, ErrorOptions options]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: Error
@@ -8824,7 +9125,15 @@ extension type ErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
 }
 
 /// Interface [EvalErrorConstructor]
+@_i1.JS('EvalError')
 extension type EvalErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - message: string
+  /// - options: ErrorOptions
+  external EvalErrorConstructor([_i1.JSString message, ErrorOptions options]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: EvalError
@@ -8832,7 +9141,15 @@ extension type EvalErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunctio
 }
 
 /// Interface [RangeErrorConstructor]
+@_i1.JS('RangeError')
 extension type RangeErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - message: string
+  /// - options: ErrorOptions
+  external RangeErrorConstructor([_i1.JSString message, ErrorOptions options]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: RangeError
@@ -8840,7 +9157,15 @@ extension type RangeErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFuncti
 }
 
 /// Interface [ReferenceErrorConstructor]
+@_i1.JS('ReferenceError')
 extension type ReferenceErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - message: string
+  /// - options: ErrorOptions
+  external ReferenceErrorConstructor([_i1.JSString message, ErrorOptions options]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: ReferenceError
@@ -8848,7 +9173,15 @@ extension type ReferenceErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFu
 }
 
 /// Interface [SyntaxErrorConstructor]
+@_i1.JS('SyntaxError')
 extension type SyntaxErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - message: string
+  /// - options: ErrorOptions
+  external SyntaxErrorConstructor([_i1.JSString message, ErrorOptions options]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: SyntaxError
@@ -8856,7 +9189,15 @@ extension type SyntaxErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunct
 }
 
 /// Interface [TypeErrorConstructor]
+@_i1.JS('TypeError')
 extension type TypeErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - message: string
+  /// - options: ErrorOptions
+  external TypeErrorConstructor([_i1.JSString message, ErrorOptions options]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: TypeError
@@ -8864,7 +9205,15 @@ extension type TypeErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunctio
 }
 
 /// Interface [URIErrorConstructor]
+@_i1.JS('URIError')
 extension type URIErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - message: string
+  /// - options: ErrorOptions
+  external URIErrorConstructor([_i1.JSString message, ErrorOptions options]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: URIError
@@ -8872,7 +9221,7 @@ extension type URIErrorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction
 }
 
 /// Interface [RegExpIndicesArray]
-extension type RegExpIndicesArray.$(_i1.JSObject _) implements _i1.JSObject, Array<_i1.JSArray<_i1.JSAny>> {
+extension type RegExpIndicesArray.$(_i1.JSAny _) implements _i1.JSAny, Array<_i1.JSArray<_i1.JSAny>> {
   /// Property [groups]
   ///
   /// groups?:
@@ -8880,7 +9229,7 @@ extension type RegExpIndicesArray.$(_i1.JSObject _) implements _i1.JSObject, Arr
 }
 
 /// Interface [WeakKeyTypes]
-extension type WeakKeyTypes.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WeakKeyTypes.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [object]
   ///
   /// object: object
@@ -8896,6 +9245,7 @@ extension type WeakKeyTypes.$(_i1.JSObject _) implements _i1.JSObject {
 ///
 /// Parameters:
 /// - x: string
+@_i1.JS('eval')
 external _i1.JSAny eval(_i1.JSString x);
 
 /// Method [parseInt]
@@ -8903,60 +9253,70 @@ external _i1.JSAny eval(_i1.JSString x);
 /// Parameters:
 /// - string: string
 /// - radix: number
+@_i1.JS('parseInt')
 external _i1.JSNumber parseInt(_i1.JSString string, [_i1.JSNumber radix]);
 
 /// Method [parseFloat]
 ///
 /// Parameters:
 /// - string: string
+@_i1.JS('parseFloat')
 external _i1.JSNumber parseFloat(_i1.JSString string);
 
 /// Method [isNaN]
 ///
 /// Parameters:
 /// - number: number
+@_i1.JS('isNaN')
 external _i1.JSBoolean isNaN(_i1.JSNumber number);
 
 /// Method [isFinite]
 ///
 /// Parameters:
 /// - number: number
+@_i1.JS('isFinite')
 external _i1.JSBoolean isFinite(_i1.JSNumber number);
 
 /// Method [decodeURI]
 ///
 /// Parameters:
 /// - encodedURI: string
+@_i1.JS('decodeURI')
 external _i1.JSString decodeURI(_i1.JSString encodedURI);
 
 /// Method [decodeURIComponent]
 ///
 /// Parameters:
 /// - encodedURIComponent: string
+@_i1.JS('decodeURIComponent')
 external _i1.JSString decodeURIComponent(_i1.JSString encodedURIComponent);
 
 /// Method [encodeURI]
 ///
 /// Parameters:
 /// - uri: string
+@_i1.JS('encodeURI')
 external _i1.JSString encodeURI(_i1.JSString uri);
 
 /// Method [encodeURIComponent]
 ///
 /// Parameters:
 /// - uriComponent: string | number | boolean
+@_i1.JS('encodeURIComponent')
 external _i1.JSString encodeURIComponent(_i1.JSAny uriComponent);
 
 /// Method [escape]
 ///
 /// Parameters:
 /// - string: string
+@_i1.JS('escape')
 external _i1.JSString escape(_i1.JSString string);
 
 /// Method [unescape]
 ///
 /// Parameters:
 /// - string: string
+@_i1.JS('unescape')
 external _i1.JSString unescape(_i1.JSString string);
 
 /// Typedef [PropertyKey]
@@ -8965,7 +9325,7 @@ external _i1.JSString unescape(_i1.JSString string);
 typedef PropertyKey = _i1.JSAny;
 
 /// Interface [PropertyDescriptor]
-extension type PropertyDescriptor.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PropertyDescriptor.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [configurable]
   ///
   /// configurable?: boolean
@@ -9003,13 +9363,13 @@ extension type PropertyDescriptor.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [PropertyDescriptorMap]
-extension type PropertyDescriptorMap.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PropertyDescriptorMap.$(_i1.JSAny _) implements _i1.JSAny {
   external void operator []=(PropertyKey key, PropertyDescriptor value);
   external PropertyDescriptor operator [](PropertyKey key);
 }
 
 /// Interface [Object]
-extension type Object.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Object.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [constructor]
   ///
   /// constructor: Function$
@@ -9063,7 +9423,14 @@ extension type Object.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [FunctionConstructor]
+@_i1.JS('Function')
 extension type FunctionConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - ...args: string[]
+  external FunctionConstructor(_i1.JSArray<_i1.JSString> args);
+
   /// Property [prototype]
   ///
   /// readonly prototype: Function$
@@ -9081,7 +9448,7 @@ typedef ThisParameterType<T extends _i1.JSAny> = _i1.JSAny;
 typedef OmitThisParameter<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [CallableFunction]
-extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Function$ {
+extension type CallableFunction.$(_i1.JSAny _) implements _i1.JSAny, Function$ {
   /// Method [apply$1]
   ///
   /// Type Parameters:
@@ -9177,7 +9544,7 @@ extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Funct
 }
 
 /// Interface [NewableFunction]
-extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Function$ {
+extension type NewableFunction.$(_i1.JSAny _) implements _i1.JSAny, Function$ {
   /// Method [apply$1]
   ///
   /// Type Parameters:
@@ -9260,7 +9627,7 @@ extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Functi
 }
 
 /// Interface [Boolean]
-extension type Boolean.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Boolean.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [valueOf]
   ///
   /// Returns:
@@ -9269,7 +9636,14 @@ extension type Boolean.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [BooleanConstructor]
+@_i1.JS('Boolean')
 extension type BooleanConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - value: any
+  external BooleanConstructor([_i1.JSAny value]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: Boolean
@@ -9277,7 +9651,7 @@ extension type BooleanConstructor.$(_i1.JSFunction _) implements _i1.JSFunction 
 }
 
 /// Interface [TemplateStringsArray]
-extension type TemplateStringsArray.$(_i1.JSObject _) implements _i1.JSObject, ReadonlyArray<_i1.JSString> {
+extension type TemplateStringsArray.$(_i1.JSAny _) implements _i1.JSAny, ReadonlyArray<_i1.JSString> {
   /// Property [raw]
   ///
   /// readonly raw: readonly string[]
@@ -9285,10 +9659,10 @@ extension type TemplateStringsArray.$(_i1.JSObject _) implements _i1.JSObject, R
 }
 
 /// Interface [ImportMeta]
-extension type ImportMeta.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type ImportMeta.$(_i1.JSAny _) implements _i1.JSAny {}
 
 /// Interface [ImportCallOptions]
-extension type ImportCallOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ImportCallOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [assert$]
   ///
   /// assert$?: ImportAssertions
@@ -9303,37 +9677,37 @@ extension type ImportCallOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ImportAssertions]
-extension type ImportAssertions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ImportAssertions.$(_i1.JSAny _) implements _i1.JSAny {
   external void operator []=(_i1.JSString key, _i1.JSString value);
   external _i1.JSString operator [](_i1.JSString key);
 }
 
 /// Interface [ImportAttributes]
-extension type ImportAttributes.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ImportAttributes.$(_i1.JSAny _) implements _i1.JSAny {
   external void operator []=(_i1.JSString key, _i1.JSString value);
   external _i1.JSString operator [](_i1.JSString key);
 }
 
 /// Interface [EvalError]
-extension type EvalError.$(_i1.JSObject _) implements _i1.JSObject, Error {}
+extension type EvalError.$(_i1.JSAny _) implements _i1.JSAny, Error {}
 
 /// Interface [RangeError]
-extension type RangeError.$(_i1.JSObject _) implements _i1.JSObject, Error {}
+extension type RangeError.$(_i1.JSAny _) implements _i1.JSAny, Error {}
 
 /// Interface [ReferenceError]
-extension type ReferenceError.$(_i1.JSObject _) implements _i1.JSObject, Error {}
+extension type ReferenceError.$(_i1.JSAny _) implements _i1.JSAny, Error {}
 
 /// Interface [SyntaxError]
-extension type SyntaxError.$(_i1.JSObject _) implements _i1.JSObject, Error {}
+extension type SyntaxError.$(_i1.JSAny _) implements _i1.JSAny, Error {}
 
 /// Interface [TypeError]
-extension type TypeError.$(_i1.JSObject _) implements _i1.JSObject, Error {}
+extension type TypeError.$(_i1.JSAny _) implements _i1.JSAny, Error {}
 
 /// Interface [URIError]
-extension type URIError.$(_i1.JSObject _) implements _i1.JSObject, Error {}
+extension type URIError.$(_i1.JSAny _) implements _i1.JSAny, Error {}
 
 /// Interface [ConcatArray]
-extension type ConcatArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ConcatArray<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [length]
   ///
   /// readonly length: number
@@ -9362,7 +9736,7 @@ extension type ConcatArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
 }
 
 /// Interface [TypedPropertyDescriptor]
-extension type TypedPropertyDescriptor<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type TypedPropertyDescriptor<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [enumerable]
   ///
   /// enumerable?: boolean
@@ -9400,7 +9774,7 @@ extension type TypedPropertyDescriptor<T extends _i1.JSAny>.$(_i1.JSObject _) im
 typedef PromiseConstructorLike<T extends _i1.JSAny> = PromiseLike<T>;
 
 /// Interface [PromiseLike]
-extension type PromiseLike<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PromiseLike<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [then]
   ///
   /// Type Parameters:
@@ -9425,7 +9799,7 @@ extension type PromiseLike<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
 typedef Awaited<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [ArrayLike]
-extension type ArrayLike<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayLike<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [length]
   ///
   /// readonly length: number
@@ -9525,7 +9899,7 @@ typedef Uncapitalize<S extends _i1.JSString> = _i1.JSAny;
 typedef NoInfer<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [ThisType]
-extension type ThisType<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type ThisType<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {}
 
 /// Typedef [WeakKey]
 ///
@@ -9538,7 +9912,7 @@ typedef WeakKey = _i1.JSAny;
 typedef ArrayBufferLike = _i1.JSAny;
 
 /// Interface [ArrayBufferView]
-extension type ArrayBufferView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayBufferView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [buffer]
   ///
   /// readonly buffer: TArrayBuffer
@@ -9556,7 +9930,19 @@ extension type ArrayBufferView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObj
 }
 
 /// Interface [DataViewConstructor]
-extension type DataViewConstructor.$(_i1.JSObject _) implements _i1.JSObject {
+@_i1.JS('DataView')
+extension type DataViewConstructor<TArrayBuffer extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Type Parameters:
+  /// - TArrayBuffer extends
+  ///
+  /// Parameters:
+  /// - buffer: TArrayBuffer
+  /// - byteOffset: number
+  /// - byteLength: number
+  external DataViewConstructor(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber byteLength]);
+
   /// Property [prototype]
   ///
   /// readonly prototype: DataView

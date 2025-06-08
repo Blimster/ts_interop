@@ -1,4 +1,5 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: avoid_shadowing_type_parameters, camel_case_types
+// ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
 
 library intl; // ignore_for_file: no_leading_underscores_for_library_prefixes
@@ -10,10 +11,11 @@ import 'es2023.dart' as _i2;
 ///
 /// Parameters:
 /// - locale: string | readonly string[]
+@_i1.JS('getCanonicalLocales')
 external _i1.JSArray<_i1.JSString> getCanonicalLocales([_i1.JSAny locale]);
 
 /// Interface [DateTimeFormatPartTypesRegistry]
-extension type DateTimeFormatPartTypesRegistry.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DateTimeFormatPartTypesRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [hour]
   ///
   /// hour: any
@@ -47,7 +49,7 @@ extension type DateTimeFormatPartTypesRegistry.$(_i1.JSObject _) implements _i1.
   /// Property [unknown]
   ///
   /// unknown:
-  external Never unknown;
+  external _i1.JSAny unknown;
 
   /// Property [day]
   ///
@@ -86,7 +88,7 @@ extension type DateTimeFormatPartTypesRegistry.$(_i1.JSObject _) implements _i1.
 typedef DateTimeFormatPartTypes = _i1.JSString;
 
 /// Interface [DateTimeFormatPart]
-extension type DateTimeFormatPart.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DateTimeFormatPart.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [type]
   ///
   /// type: DateTimeFormatPartTypes
@@ -99,7 +101,7 @@ extension type DateTimeFormatPart.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [DateTimeFormat]
-extension type DateTimeFormat.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DateTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [formatRangeToParts]
   ///
   /// Parameters:
@@ -156,7 +158,7 @@ typedef LDMLPluralRule = _i1.JSString;
 typedef PluralRuleType = _i1.JSString;
 
 /// Interface [PluralRulesOptions]
-extension type PluralRulesOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PluralRulesOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
   ///
   /// localeMatcher?: "lookup" | "best fit" | undefined
@@ -194,7 +196,7 @@ extension type PluralRulesOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ResolvedPluralRulesOptions]
-extension type ResolvedPluralRulesOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedPluralRulesOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [locale]
   ///
   /// locale: string
@@ -237,7 +239,7 @@ extension type ResolvedPluralRulesOptions.$(_i1.JSObject _) implements _i1.JSObj
 }
 
 /// Interface [PluralRules]
-extension type PluralRules.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PluralRules.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [resolvedOptions]
   ///
   /// Returns:
@@ -255,7 +257,15 @@ extension type PluralRules.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [PluralRulesConstructor]
+@_i1.JS('PluralRules')
 extension type PluralRulesConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | readonly string[]
+  /// - options: PluralRulesOptions
+  external PluralRulesConstructor([_i1.JSAny locales, PluralRulesOptions options]);
+
   /// Method [supportedLocalesOf]
   ///
   /// Parameters:
@@ -268,96 +278,96 @@ extension type PluralRulesConstructor.$(_i1.JSFunction _) implements _i1.JSFunct
 }
 
 /// Interface [NumberFormatPartTypeRegistry]
-extension type NumberFormatPartTypeRegistry.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormatPartTypeRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [nan]
   ///
   /// nan:
-  external Never nan;
+  external _i1.JSAny nan;
 
   /// Property [percent]
   ///
   /// percent:
-  external Never percent;
+  external _i1.JSAny percent;
 
   /// Property [exponentSeparator]
   ///
   /// exponentSeparator:
-  external Never exponentSeparator;
+  external _i1.JSAny exponentSeparator;
 
   /// Property [plusSign]
   ///
   /// plusSign:
-  external Never plusSign;
+  external _i1.JSAny plusSign;
 
   /// Property [fraction]
   ///
   /// fraction:
-  external Never fraction;
+  external _i1.JSAny fraction;
 
   /// Property [literal]
   ///
   /// literal:
-  external Never literal;
+  external _i1.JSAny literal;
 
   /// Property [currency]
   ///
   /// currency:
-  external Never currency;
+  external _i1.JSAny currency;
 
   /// Property [group]
   ///
   /// group:
-  external Never group;
+  external _i1.JSAny group;
 
   /// Property [integer]
   ///
   /// integer:
-  external Never integer;
+  external _i1.JSAny integer;
 
   /// Property [unknown]
   ///
   /// unknown:
-  external Never unknown;
+  external _i1.JSAny unknown;
 
   /// Property [minusSign]
   ///
   /// minusSign:
-  external Never minusSign;
+  external _i1.JSAny minusSign;
 
   /// Property [exponentInteger]
   ///
   /// exponentInteger:
-  external Never exponentInteger;
+  external _i1.JSAny exponentInteger;
 
   /// Property [infinity]
   ///
   /// infinity:
-  external Never infinity;
+  external _i1.JSAny infinity;
 
   /// Property [compact]
   ///
   /// compact:
-  external Never compact;
+  external _i1.JSAny compact;
 
   /// Property [exponentMinusSign]
   ///
   /// exponentMinusSign:
-  external Never exponentMinusSign;
+  external _i1.JSAny exponentMinusSign;
 
   /// Property [unit]
   ///
   /// unit:
-  external Never unit;
+  external _i1.JSAny unit;
 
   /// Property [percentSign]
   ///
   /// percentSign:
-  external Never percentSign;
+  external _i1.JSAny percentSign;
 
   /// Property [decimal]
   ///
   /// decimal:
-  external Never decimal;
+  external _i1.JSAny decimal;
 }
 
 /// Typedef [NumberFormatPartTypes]
@@ -366,7 +376,7 @@ extension type NumberFormatPartTypeRegistry.$(_i1.JSObject _) implements _i1.JSO
 typedef NumberFormatPartTypes = _i1.JSString;
 
 /// Interface [NumberFormatPart]
-extension type NumberFormatPart.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormatPart.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [type]
   ///
   /// type: NumberFormatPartTypes
@@ -379,7 +389,7 @@ extension type NumberFormatPart.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [NumberFormat]
-extension type NumberFormat.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [formatRangeToParts]
   ///
   /// Parameters:
@@ -461,7 +471,7 @@ typedef RelativeTimeFormatStyle = _i1.JSString;
 typedef LocalesArgument = _i1.JSAny?;
 
 /// Interface [RelativeTimeFormatOptions]
-extension type RelativeTimeFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type RelativeTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
   ///
   /// localeMatcher?: RelativeTimeFormatLocaleMatcher
@@ -479,7 +489,7 @@ extension type RelativeTimeFormatOptions.$(_i1.JSObject _) implements _i1.JSObje
 }
 
 /// Interface [ResolvedRelativeTimeFormatOptions]
-extension type ResolvedRelativeTimeFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedRelativeTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [locale]
   ///
   /// locale: UnicodeBCP47LocaleIdentifier
@@ -507,7 +517,7 @@ extension type ResolvedRelativeTimeFormatOptions.$(_i1.JSObject _) implements _i
 typedef RelativeTimeFormatPart = _i1.JSObject;
 
 /// Interface [RelativeTimeFormat]
-extension type RelativeTimeFormat.$(_i1.JSObject _) implements _i1.JSObject {
+extension type RelativeTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [format]
   ///
   /// Parameters:
@@ -536,77 +546,77 @@ extension type RelativeTimeFormat.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [NumberFormatOptionsStyleRegistry]
-extension type NumberFormatOptionsStyleRegistry.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormatOptionsStyleRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [currency]
   ///
   /// currency:
-  external Never currency;
+  external _i1.JSAny currency;
 
   /// Property [unit]
   ///
   /// unit:
-  external Never unit;
+  external _i1.JSAny unit;
 
   /// Property [percent]
   ///
   /// percent:
-  external Never percent;
+  external _i1.JSAny percent;
 
   /// Property [decimal]
   ///
   /// decimal:
-  external Never decimal;
+  external _i1.JSAny decimal;
 }
 
 /// Interface [NumberFormatOptionsCurrencyDisplayRegistry]
-extension type NumberFormatOptionsCurrencyDisplayRegistry.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormatOptionsCurrencyDisplayRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [symbol]
   ///
   /// symbol:
-  external Never symbol;
+  external _i1.JSAny symbol;
 
   /// Property [name]
   ///
   /// name:
-  external Never name;
+  external _i1.JSAny name;
 
   /// Property [narrowSymbol]
   ///
   /// narrowSymbol:
-  external Never narrowSymbol;
+  external _i1.JSAny narrowSymbol;
 
   /// Property [code]
   ///
   /// code:
-  external Never code;
+  external _i1.JSAny code;
 }
 
 /// Interface [NumberFormatOptionsSignDisplayRegistry]
-extension type NumberFormatOptionsSignDisplayRegistry.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormatOptionsSignDisplayRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [auto]
   ///
   /// auto:
-  external Never auto;
+  external _i1.JSAny auto;
 
   /// Property [exceptZero]
   ///
   /// exceptZero:
-  external Never exceptZero;
+  external _i1.JSAny exceptZero;
 
   /// Property [negative]
   ///
   /// negative:
-  external Never negative;
+  external _i1.JSAny negative;
 
   /// Property [always]
   ///
   /// always:
-  external Never always;
+  external _i1.JSAny always;
 
   /// Property [never]
   ///
   /// never:
-  external Never never;
+  external _i1.JSAny never;
 }
 
 /// Typedef [NumberFormatOptionsSignDisplay]
@@ -615,7 +625,7 @@ extension type NumberFormatOptionsSignDisplayRegistry.$(_i1.JSObject _) implemen
 typedef NumberFormatOptionsSignDisplay = _i1.JSString;
 
 /// Interface [NumberFormatOptions]
-extension type NumberFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [maximumSignificantDigits]
   ///
   /// maximumSignificantDigits?: number | undefined
@@ -723,7 +733,7 @@ extension type NumberFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ResolvedNumberFormatOptions]
-extension type ResolvedNumberFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedNumberFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [maximumSignificantDigits]
   ///
   /// maximumSignificantDigits?: number
@@ -831,7 +841,7 @@ extension type ResolvedNumberFormatOptions.$(_i1.JSObject _) implements _i1.JSOb
 }
 
 /// Interface [DateTimeFormatOptions]
-extension type DateTimeFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DateTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [hour]
   ///
   /// hour?: "numeric" | "2-digit" | undefined
@@ -945,7 +955,7 @@ typedef LocaleHourCycleKey = _i1.JSString;
 typedef LocaleCollationCaseFirst = _i1.JSString;
 
 /// Interface [LocaleOptions]
-extension type LocaleOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type LocaleOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [baseName]
   ///
   /// baseName?: string
@@ -998,7 +1008,7 @@ extension type LocaleOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Locale]
-extension type Locale.$(_i1.JSObject _) implements _i1.JSObject, LocaleOptions {
+extension type Locale.$(_i1.JSAny _) implements _i1.JSAny, LocaleOptions {
   /// Property [baseName]
   ///
   /// baseName: string
@@ -1045,7 +1055,7 @@ typedef DisplayNamesType = _i1.JSString;
 typedef DisplayNamesLanguageDisplay = _i1.JSString;
 
 /// Interface [DisplayNamesOptions]
-extension type DisplayNamesOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DisplayNamesOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
   ///
   /// localeMatcher?: RelativeTimeFormatLocaleMatcher
@@ -1073,7 +1083,7 @@ extension type DisplayNamesOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ResolvedDisplayNamesOptions]
-extension type ResolvedDisplayNamesOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedDisplayNamesOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [locale]
   ///
   /// locale: UnicodeBCP47LocaleIdentifier
@@ -1101,7 +1111,7 @@ extension type ResolvedDisplayNamesOptions.$(_i1.JSObject _) implements _i1.JSOb
 }
 
 /// Interface [DisplayNames]
-extension type DisplayNames.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DisplayNames.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [of]
   ///
   /// Parameters:
@@ -1119,7 +1129,15 @@ extension type DisplayNames.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [CollatorConstructor]
+@_i1.JS('Collator')
 extension type CollatorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: CollatorOptions
+  external CollatorConstructor([LocalesArgument locales, CollatorOptions options]);
+
   /// Method [supportedLocalesOf]
   ///
   /// Parameters:
@@ -1132,7 +1150,15 @@ extension type CollatorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction
 }
 
 /// Interface [DateTimeFormatConstructor]
+@_i1.JS('DateTimeFormat')
 extension type DateTimeFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: DateTimeFormatOptions
+  external DateTimeFormatConstructor([LocalesArgument locales, DateTimeFormatOptions options]);
+
   /// Method [supportedLocalesOf]
   ///
   /// Parameters:
@@ -1150,7 +1176,15 @@ extension type DateTimeFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFu
 }
 
 /// Interface [NumberFormatConstructor]
+@_i1.JS('NumberFormat')
 extension type NumberFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: NumberFormatOptions
+  external NumberFormatConstructor([LocalesArgument locales, NumberFormatOptions options]);
+
   /// Method [supportedLocalesOf]
   ///
   /// Parameters:
@@ -1168,7 +1202,7 @@ extension type NumberFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFunc
 }
 
 /// Interface [DateTimeRangeFormatPart]
-extension type DateTimeRangeFormatPart.$(_i1.JSObject _) implements _i1.JSObject, DateTimeFormatPart {
+extension type DateTimeRangeFormatPart.$(_i1.JSAny _) implements _i1.JSAny, DateTimeFormatPart {
   /// Property [source]
   ///
   /// source: "startRange" | "endRange" | "shared"
@@ -1176,7 +1210,7 @@ extension type DateTimeRangeFormatPart.$(_i1.JSObject _) implements _i1.JSObject
 }
 
 /// Interface [ResolvedDateTimeFormatOptions]
-extension type ResolvedDateTimeFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedDateTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [hour]
   ///
   /// hour?: string
@@ -1295,7 +1329,7 @@ typedef ListFormatType = _i1.JSString;
 typedef ListFormatStyle = _i1.JSString;
 
 /// Interface [ListFormatOptions]
-extension type ListFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ListFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
   ///
   /// localeMatcher?: ListFormatLocaleMatcher | undefined
@@ -1313,7 +1347,7 @@ extension type ListFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ResolvedListFormatOptions]
-extension type ResolvedListFormatOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedListFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [locale]
   ///
   /// locale: string
@@ -1331,7 +1365,7 @@ extension type ResolvedListFormatOptions.$(_i1.JSObject _) implements _i1.JSObje
 }
 
 /// Interface [ListFormat]
-extension type ListFormat.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ListFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [format]
   ///
   /// Parameters:
@@ -1358,7 +1392,7 @@ extension type ListFormat.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [SegmenterOptions]
-extension type SegmenterOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type SegmenterOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
   ///
   /// localeMatcher?: "best fit" | "lookup" | undefined
@@ -1371,7 +1405,7 @@ extension type SegmenterOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [Segmenter]
-extension type Segmenter.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Segmenter.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [segment]
   ///
   /// Parameters:
@@ -1389,7 +1423,7 @@ extension type Segmenter.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ResolvedSegmenterOptions]
-extension type ResolvedSegmenterOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedSegmenterOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [locale]
   ///
   /// locale: string
@@ -1402,11 +1436,11 @@ extension type ResolvedSegmenterOptions.$(_i1.JSObject _) implements _i1.JSObjec
 }
 
 /// Interface [SegmentIterator]
-extension type SegmentIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, _i2.IteratorObject<T, _i2.BuiltinIteratorReturn, _i1.JSAny> {}
+extension type SegmentIterator<T extends _i1.JSAny>.$(_i1.JSAny _)
+    implements _i1.JSAny, _i2.IteratorObject<T, _i2.BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [Segments]
-extension type Segments.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Segments.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [containing]
   ///
   /// Parameters:
@@ -1418,7 +1452,7 @@ extension type Segments.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [SegmentData]
-extension type SegmentData.$(_i1.JSObject _) implements _i1.JSObject {
+extension type SegmentData.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [segment]
   ///
   /// segment: string
@@ -1444,29 +1478,30 @@ extension type SegmentData.$(_i1.JSObject _) implements _i1.JSObject {
 ///
 /// Parameters:
 /// - key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"
+@_i1.JS('supportedValuesOf')
 external _i1.JSArray<_i1.JSString> supportedValuesOf(_i1.JSString key);
 
 /// Interface [NumberFormatOptionsUseGroupingRegistry]
-extension type NumberFormatOptionsUseGroupingRegistry.$(_i1.JSObject _) implements _i1.JSObject {
+extension type NumberFormatOptionsUseGroupingRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [auto]
   ///
   /// auto:
-  external Never auto;
+  external _i1.JSAny auto;
 
   /// Property [mintwo]
   ///
   /// mintwo:
   @_i1.JS('min2')
-  external Never mintwo;
+  external _i1.JSAny mintwo;
 
   /// Property [always]
   ///
   /// always:
-  external Never always;
+  external _i1.JSAny always;
 }
 
 /// Interface [NumberRangeFormatPart]
-extension type NumberRangeFormatPart.$(_i1.JSObject _) implements _i1.JSObject, NumberFormatPart {
+extension type NumberRangeFormatPart.$(_i1.JSAny _) implements _i1.JSAny, NumberFormatPart {
   /// Property [source]
   ///
   /// source: "startRange" | "endRange" | "shared"
@@ -1479,7 +1514,7 @@ extension type NumberRangeFormatPart.$(_i1.JSObject _) implements _i1.JSObject, 
 typedef StringNumericLiteral = _i1.JSString;
 
 /// Interface [CollatorOptions]
-extension type CollatorOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type CollatorOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [usage]
   ///
   /// usage?: "sort" | "search" | undefined
@@ -1517,7 +1552,7 @@ extension type CollatorOptions.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ResolvedCollatorOptions]
-extension type ResolvedCollatorOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ResolvedCollatorOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [locale]
   ///
   /// locale: string
@@ -1555,7 +1590,7 @@ extension type ResolvedCollatorOptions.$(_i1.JSObject _) implements _i1.JSObject
 }
 
 /// Interface [Collator]
-extension type Collator.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Collator.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [compare]
   ///
   /// Parameters:

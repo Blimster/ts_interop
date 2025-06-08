@@ -11,6 +11,7 @@ final _ignoreDirectives = [
   'camel_case_types',
   'unnecessary_library_name',
   'unintended_html_in_doc_comment',
+  'avoid_shadowing_type_parameters',
 ];
 
 final _voidType = TypeReference((builder) {
@@ -235,6 +236,15 @@ class Transpiler {
   }
 
   DartNode<Spec> _transpileConstructSignature(TsConstructSignature constructSignature) {
+    final overloadIds = <int>[];
+    if (constructSignature.parent case final parent?) {
+      final overloads = parent.searchChilds<TsConstructSignature>();
+      for (final overload in overloads) {
+        overloadIds.add(overload.id);
+      }
+    }
+    overloadIds.sort();
+
     return Constructor((builder) {
       builder.docs.addAll([
         '/// Constructor',
@@ -244,6 +254,9 @@ class Transpiler {
         ...constructSignature.parameters.value.map((tp) => '/// - ${tp.toCode()}'),
       ]);
       builder.external = true;
+      if (overloadIds.length > 1) {
+        builder.name = '\$${overloadIds.indexOf(constructSignature.id) + 1}';
+      }
       builder.requiredParameters.addAll(
         _transpileNodes<Reference>(
           constructSignature.parameters.value,
