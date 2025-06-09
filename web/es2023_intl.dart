@@ -102,6 +102,13 @@ extension type DateTimeFormatPart.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [DateTimeFormat]
 extension type DateTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: DateTimeFormatOptions
+  external DateTimeFormat([LocalesArgument locales, DateTimeFormatOptions options]);
+
   /// Method [formatRangeToParts]
   ///
   /// Parameters:
@@ -240,6 +247,13 @@ extension type ResolvedPluralRulesOptions.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [PluralRules]
 extension type PluralRules.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | readonly string[]
+  /// - options: PluralRulesOptions
+  external PluralRules([_i1.JSAny locales, PluralRulesOptions options]);
+
   /// Method [resolvedOptions]
   ///
   /// Returns:
@@ -390,6 +404,13 @@ extension type NumberFormatPart.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [NumberFormat]
 extension type NumberFormat.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: NumberFormatOptions
+  external NumberFormat([LocalesArgument locales, NumberFormatOptions options]);
+
   /// Method [formatRangeToParts]
   ///
   /// Parameters:
@@ -1591,6 +1612,13 @@ extension type ResolvedCollatorOptions.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [Collator]
 extension type Collator.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: CollatorOptions
+  external Collator([LocalesArgument locales, CollatorOptions options]);
+
   /// Method [compare]
   ///
   /// Parameters:

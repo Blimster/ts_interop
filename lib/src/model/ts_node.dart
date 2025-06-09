@@ -401,6 +401,8 @@ final class SingleNode extends TsNodeWrapper<TsNode> {
   List<TsNode> get nodes => [_value];
 
   String toCode() => _value.toCode();
+
+  SingleNode copy() => SingleNode(_value.copy(), affectsParent: affectsParent);
 }
 
 final class NullableNode extends TsNodeWrapper<TsNode?> {
@@ -417,6 +419,8 @@ final class NullableNode extends TsNodeWrapper<TsNode?> {
   List<TsNode> get nodes => [if (_value != null) _value!];
 
   String toCode(String code) => value != null ? code.replaceAll('&', value!.toCode()) : '';
+
+  NullableNode copy() => NullableNode(_value?.copy(), affectsParent: affectsParent);
 }
 
 final class ListNode extends TsNodeWrapper<List<TsNode>> {
@@ -441,6 +445,8 @@ final class ListNode extends TsNodeWrapper<List<TsNode>> {
 
   String toCode({String separator = ', ', String prefix = '', String suffix = ''}) =>
       '${_value.isNotEmpty ? prefix : ''}${_value.map((e) => e.toCode()).join(separator)}${_value.isNotEmpty ? suffix : ''}';
+
+  ListNode copy() => ListNode(_value.map((e) => e.copy()).toList());
 }
 
 extension ToListNode on List<TsNode> {
@@ -564,6 +570,8 @@ sealed class TsNode implements Comparable<TsNode> {
     }
   }
 
+  TsNode copy();
+
   @override
   String toString() => '${kind.name}:$nodeName ($id->${_parent?.id})';
 
@@ -583,6 +591,9 @@ sealed class TsNode implements Comparable<TsNode> {
 
 class Ts$Null extends TsNode {
   Ts$Null({TsNodeMeta? meta}) : super(TsNodeKind.$unsupported, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => Ts$Null(meta: meta.copy());
 }
 
 class Ts$Unsupported extends TsNode {
@@ -592,6 +603,9 @@ class Ts$Unsupported extends TsNode {
 
   @override
   String? get nodeName => unsupportedNodeKind;
+
+  @override
+  TsNode copy() => Ts$Unsupported(unsupportedNodeKind, meta: meta.copy());
 }
 
 class Ts$Removed extends TsNode {
@@ -603,6 +617,9 @@ class Ts$Removed extends TsNode {
 
   @override
   String get nodeName => removedNode;
+
+  @override
+  TsNode copy() => Ts$Removed(this, meta: meta.copy());
 }
 
 class TsAbstractKeyword extends TsNode {
@@ -610,6 +627,9 @@ class TsAbstractKeyword extends TsNode {
 
   @override
   String toCode() => 'abstract';
+
+  @override
+  TsNode copy() => TsAbstractKeyword(meta: meta.copy());
 }
 
 class TsAnyKeyword extends TsNode {
@@ -617,6 +637,9 @@ class TsAnyKeyword extends TsNode {
 
   @override
   String toCode() => 'any';
+
+  @override
+  TsNode copy() => TsAnyKeyword(meta: meta.copy());
 }
 
 class TsArrayBindingPattern extends TsNode {
@@ -634,6 +657,9 @@ class TsArrayBindingPattern extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elements];
+
+  @override
+  TsNode copy() => TsArrayBindingPattern(elements.copy(), meta: meta.copy());
 }
 
 class TsArrayType extends TsNode {
@@ -650,6 +676,9 @@ class TsArrayType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elementType];
+
+  @override
+  TsNode copy() => TsArrayType(elementType.copy(), meta: meta.copy());
 }
 
 class TsBigIntKeyword extends TsNode {
@@ -657,6 +686,9 @@ class TsBigIntKeyword extends TsNode {
 
   @override
   String toCode() => 'bigint';
+
+  @override
+  TsNode copy() => TsBigIntKeyword(meta: meta.copy());
 }
 
 class TsBindingElement extends TsNode {
@@ -683,6 +715,10 @@ class TsBindingElement extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [dotDotDotToken, propertyName, name, initializer];
+
+  @override
+  TsNode copy() =>
+      TsBindingElement(dotDotDotToken.copy(), propertyName.copy(), name.copy(), initializer.copy(), meta: meta.copy());
 }
 
 class TsBooleanKeyword extends TsNode {
@@ -690,6 +726,9 @@ class TsBooleanKeyword extends TsNode {
 
   @override
   String toCode() => 'boolean';
+
+  @override
+  TsNode copy() => TsBooleanKeyword(meta: meta.copy());
 }
 
 class TsCallSignature extends TsNode with WithTypeParameters {
@@ -711,6 +750,9 @@ class TsCallSignature extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
+
+  @override
+  TsNode copy() => TsCallSignature(typeParameters.copy(), parameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsClassDeclaration extends TsNode with WithTypeParameters {
@@ -745,6 +787,16 @@ class TsClassDeclaration extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, heritageClauses, members];
+
+  @override
+  TsNode copy() => TsClassDeclaration(
+    modifiers.copy(),
+    name.copy(),
+    typeParameters.copy(),
+    heritageClauses.copy(),
+    members.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsComputedPropertyName extends TsNode {
@@ -759,6 +811,9 @@ class TsComputedPropertyName extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [expression];
+
+  @override
+  TsNode copy() => TsComputedPropertyName(expression.copy(), meta: meta.copy());
 }
 
 class TsConditionalType extends TsNode {
@@ -781,6 +836,10 @@ class TsConditionalType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [checkType, extendsType, trueType, falseType];
+
+  @override
+  TsNode copy() =>
+      TsConditionalType(checkType.copy(), extendsType.copy(), trueType.copy(), falseType.copy(), meta: meta.copy());
 }
 
 class TsConstructorDeclaration extends TsNode with WithTypeParameters {
@@ -802,6 +861,9 @@ class TsConstructorDeclaration extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
+
+  @override
+  TsNode copy() => TsConstructorDeclaration(typeParameters.copy(), parameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsConstructSignature extends TsNode with WithTypeParameters {
@@ -823,6 +885,9 @@ class TsConstructSignature extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
+
+  @override
+  TsNode copy() => TsConstructSignature(typeParameters.copy(), parameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsConstructorType extends TsNode with WithTypeParameters {
@@ -846,10 +911,17 @@ class TsConstructorType extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, typeParameters, parameters, type];
+
+  @override
+  TsNode copy() =>
+      TsConstructorType(modifiers.copy(), typeParameters.copy(), parameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsDeclareKeyword extends TsNode {
   TsDeclareKeyword({TsNodeMeta? meta}) : super(TsNodeKind.declareKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsDeclareKeyword(meta: meta.copy());
 }
 
 class TsEnumDeclaration extends TsNode {
@@ -873,6 +945,9 @@ class TsEnumDeclaration extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, members];
+
+  @override
+  TsNode copy() => TsEnumDeclaration(modifiers.copy(), name.copy(), members.copy(), meta: meta.copy());
 }
 
 class TsEnumMember extends TsNode {
@@ -896,14 +971,23 @@ class TsEnumMember extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name, initializer];
+
+  @override
+  TsNode copy() => TsEnumMember(name.copy(), initializer.copy(), meta: meta.copy());
 }
 
 class TsExportKeyword extends TsNode {
   TsExportKeyword({TsNodeMeta? meta}) : super(TsNodeKind.exportKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsExportKeyword(meta: meta.copy());
 }
 
 class TsExclamationToken extends TsNode {
   TsExclamationToken({TsNodeMeta? meta}) : super(TsNodeKind.exclamationToken, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsExclamationToken(meta: meta.copy());
 }
 
 class TsExpressionWithTypeArguments extends TsNode with WithTypeArguments<TsExpressionWithTypeArguments> {
@@ -926,10 +1010,16 @@ class TsExpressionWithTypeArguments extends TsNode with WithTypeArguments<TsExpr
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [expression, typeArguments];
+
+  @override
+  TsNode copy() => TsExpressionWithTypeArguments(expression.copy(), typeArguments.copy(), meta: meta.copy());
 }
 
 class TsExtendsKeyword extends TsNode {
   TsExtendsKeyword({TsNodeMeta? meta}) : super(TsNodeKind.extendsKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsExtendsKeyword(meta: meta.copy());
 }
 
 class TsFalseKeyword extends TsNode {
@@ -937,6 +1027,9 @@ class TsFalseKeyword extends TsNode {
 
   @override
   String toCode() => 'false';
+
+  @override
+  TsNode copy() => TsFalseKeyword(meta: meta.copy());
 }
 
 class TsFunctionDeclaration extends TsNode with WithTypeParameters {
@@ -974,6 +1067,17 @@ class TsFunctionDeclaration extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, asteriskToken, name, typeParameters, parameters, type];
+
+  @override
+  TsNode copy() => TsFunctionDeclaration(
+    modifiers.copy(),
+    asteriskToken.copy(),
+    name.copy(),
+    typeParameters.copy(),
+    parameters.copy(),
+    type.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsFunctionType extends TsNode with WithTypeParameters {
@@ -999,6 +1103,9 @@ class TsFunctionType extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [typeParameters, parameters, type];
+
+  @override
+  TsNode copy() => TsFunctionType(typeParameters.copy(), parameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsGetAccessor extends TsNode with WithTypeParameters {
@@ -1025,6 +1132,9 @@ class TsGetAccessor extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, type];
+
+  @override
+  TsNode copy() => TsGetAccessor(modifiers.copy(), name.copy(), typeParameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsHeritageClause extends TsNode {
@@ -1039,6 +1149,9 @@ class TsHeritageClause extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [token, types];
+
+  @override
+  TsNode copy() => TsHeritageClause(token.copy(), types.copy(), meta: meta.copy());
 }
 
 class TsIdentifier extends TsNode {
@@ -1052,6 +1165,9 @@ class TsIdentifier extends TsNode {
 
   @override
   String? get nodeName => text;
+
+  @override
+  TsNode copy() => TsIdentifier(text, meta: meta.copy());
 }
 
 class TsImportAttribute extends TsNode {
@@ -1073,6 +1189,9 @@ class TsImportAttribute extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name, value];
+
+  @override
+  TsNode copy() => TsImportAttribute(name.copy(), value.copy(), meta: meta.copy());
 }
 
 class TsImportAttributes extends TsNode {
@@ -1086,6 +1205,9 @@ class TsImportAttributes extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elements];
+
+  @override
+  TsNode copy() => TsImportAttributes(elements.copy(), meta: meta.copy());
 }
 
 class TsImportClause extends TsNode {
@@ -1109,6 +1231,9 @@ class TsImportClause extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name, namedBindings];
+
+  @override
+  TsNode copy() => TsImportClause(isTypeOnly, name.copy(), namedBindings.copy(), meta: meta.copy());
 }
 
 class TsImportDeclaration extends TsNode {
@@ -1136,6 +1261,15 @@ class TsImportDeclaration extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, importClause, moduleSpecifier, importAttributes];
+
+  @override
+  TsNode copy() => TsImportDeclaration(
+    modifiers.copy(),
+    importClause.copy(),
+    moduleSpecifier.copy(),
+    importAttributes.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsImportSpecifier extends TsNode {
@@ -1159,6 +1293,9 @@ class TsImportSpecifier extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name, propertyName];
+
+  @override
+  TsNode copy() => TsImportSpecifier(isTypeOnly, name.copy(), propertyName.copy(), meta: meta.copy());
 }
 
 class TsImportType extends TsNode with WithTypeArguments<TsImportType> {
@@ -1182,10 +1319,17 @@ class TsImportType extends TsNode with WithTypeArguments<TsImportType> {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [argument, attributes, qualifier, typeArguments];
+
+  @override
+  TsNode copy() =>
+      TsImportType(argument.copy(), attributes.copy(), qualifier.copy(), typeArguments.copy(), meta: meta.copy());
 }
 
 class TsImplementsKeyword extends TsNode {
   TsImplementsKeyword({TsNodeMeta? meta}) : super(TsNodeKind.implementsKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsImplementsKeyword(meta: meta.copy());
 }
 
 class TsIndexedAccessType extends TsNode {
@@ -1207,6 +1351,9 @@ class TsIndexedAccessType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [objectType, indexType];
+
+  @override
+  TsNode copy() => TsIndexedAccessType(objectType.copy(), indexType.copy(), meta: meta.copy());
 }
 
 class TsIndexSignature extends TsNode {
@@ -1227,6 +1374,9 @@ class TsIndexSignature extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, parameters, type];
+
+  @override
+  TsNode copy() => TsIndexSignature(modifiers.copy(), parameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsInferType extends TsNode {
@@ -1240,6 +1390,9 @@ class TsInferType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [typeParameter];
+
+  @override
+  TsNode copy() => TsInferType(typeParameter.copy(), meta: meta.copy());
 }
 
 class TsInterfaceDeclaration extends TsNode with WithTypeParameters {
@@ -1274,6 +1427,16 @@ class TsInterfaceDeclaration extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, heritageClauses, members];
+
+  @override
+  TsNode copy() => TsInterfaceDeclaration(
+    modifiers.copy(),
+    name.copy(),
+    typeParameters.copy(),
+    heritageClauses.copy(),
+    members.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsIntersectionType extends TsNode {
@@ -1287,10 +1450,16 @@ class TsIntersectionType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [types];
+
+  @override
+  TsNode copy() => TsIntersectionType(types.copy(), meta: meta.copy());
 }
 
 class TsIntrinsicKeyword extends TsNode {
   TsIntrinsicKeyword({TsNodeMeta? meta}) : super(TsNodeKind.intrinsicKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsIntrinsicKeyword(meta: meta.copy());
 }
 
 class TsKeyOfKeyword extends TsNode {
@@ -1298,6 +1467,9 @@ class TsKeyOfKeyword extends TsNode {
 
   @override
   String toCode() => 'keyof';
+
+  @override
+  TsNode copy() => TsKeyOfKeyword(meta: meta.copy());
 }
 
 class TsLiteralType extends TsNode {
@@ -1317,6 +1489,9 @@ class TsLiteralType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [literal];
+
+  @override
+  TsNode copy() => TsLiteralType(literal.copy(), meta: meta.copy());
 }
 
 class TsMappedType extends TsNode {
@@ -1353,6 +1528,17 @@ class TsMappedType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [readonlyToken, typeParameter, nameType, questionToken, type, members];
+
+  @override
+  TsNode copy() => TsMappedType(
+    readonlyToken.copy(),
+    typeParameter.copy(),
+    nameType.copy(),
+    questionToken.copy(),
+    type.copy(),
+    members.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsMethodDeclaration extends TsNode with WithTypeParameters {
@@ -1401,6 +1587,18 @@ class TsMethodDeclaration extends TsNode with WithTypeParameters {
     parameters,
     type,
   ];
+
+  @override
+  TsNode copy() => TsMethodDeclaration(
+    modifiers.copy(),
+    name.copy(),
+    asteriskToken.copy(),
+    questionToken.copy(),
+    typeParameters.copy(),
+    parameters.copy(),
+    type.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsMethodSignature extends TsNode with WithTypeParameters {
@@ -1429,6 +1627,16 @@ class TsMethodSignature extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name, questionToken, typeParameters, parameters, type];
+
+  @override
+  TsNode copy() => TsMethodSignature(
+    name.copy(),
+    questionToken.copy(),
+    typeParameters.copy(),
+    parameters.copy(),
+    type.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsMinusToken extends TsNode {
@@ -1436,6 +1644,9 @@ class TsMinusToken extends TsNode {
 
   @override
   String toCode() => '-';
+
+  @override
+  TsNode copy() => TsMinusToken(meta: meta.copy());
 }
 
 class TsMinusMinusToken extends TsNode {
@@ -1443,6 +1654,9 @@ class TsMinusMinusToken extends TsNode {
 
   @override
   String toCode() => '--';
+
+  @override
+  TsNode copy() => TsMinusMinusToken(meta: meta.copy());
 }
 
 class TsModuleBlock extends TsNode {
@@ -1456,6 +1670,9 @@ class TsModuleBlock extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [statements];
+
+  @override
+  TsNode copy() => TsModuleBlock(statements.copy(), meta: meta.copy());
 }
 
 class TsModuleDeclaration extends TsNode {
@@ -1479,6 +1696,9 @@ class TsModuleDeclaration extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, body];
+
+  @override
+  TsNode copy() => TsModuleDeclaration(modifiers.copy(), name.copy(), body.copy(), meta: meta.copy());
 }
 
 class TsNamedImports extends TsNode {
@@ -1492,6 +1712,9 @@ class TsNamedImports extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [elements];
+
+  @override
+  TsNode copy() => TsNamedImports(elements.copy(), meta: meta.copy());
 }
 
 class TsNamespaceImport extends TsNode {
@@ -1508,10 +1731,16 @@ class TsNamespaceImport extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name];
+
+  @override
+  TsNode copy() => TsNamespaceImport(name.copy(), meta: meta.copy());
 }
 
 class TsNeverKeyword extends TsNode {
   TsNeverKeyword({TsNodeMeta? meta}) : super(TsNodeKind.neverKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsNeverKeyword(meta: meta.copy());
 }
 
 class TsNullKeyword extends TsNode {
@@ -1519,6 +1748,9 @@ class TsNullKeyword extends TsNode {
 
   @override
   String toCode() => 'null';
+
+  @override
+  TsNode copy() => TsNullKeyword(meta: meta.copy());
 }
 
 class TsNumberKeyword extends TsNode {
@@ -1526,6 +1758,9 @@ class TsNumberKeyword extends TsNode {
 
   @override
   String toCode() => 'number';
+
+  @override
+  TsNode copy() => TsNumberKeyword(meta: meta.copy());
 }
 
 class TsNumericLiteral extends TsNode {
@@ -1542,6 +1777,9 @@ class TsNumericLiteral extends TsNode {
 
   @override
   String? get nodeName => text;
+
+  @override
+  TsNode copy() => TsNumericLiteral(text, meta: meta.copy());
 }
 
 class TsObjectKeyword extends TsNode {
@@ -1549,6 +1787,9 @@ class TsObjectKeyword extends TsNode {
 
   @override
   String toCode() => 'object';
+
+  @override
+  TsNode copy() => TsObjectKeyword(meta: meta.copy());
 }
 
 class TsPackage extends TsNode {
@@ -1575,6 +1816,9 @@ class TsPackage extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [sourceFiles];
+
+  @override
+  TsNode copy() => TsPackage(name, version, sourceFiles.copy(), meta: meta.copy());
 }
 
 class TsParameter extends TsNode {
@@ -1615,6 +1859,17 @@ class TsParameter extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, questionToken, type, initializer];
+
+  @override
+  TsNode copy() => TsParameter(
+    modifiers.copy(),
+    dotDotDotToken,
+    name.copy(),
+    questionToken.copy(),
+    type.copy(),
+    initializer.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsParenthesizedType extends TsNode {
@@ -1631,6 +1886,9 @@ class TsParenthesizedType extends TsNode {
 
   @override
   String toCode() => '(${type.toCode()})';
+
+  @override
+  TsNode copy() => TsParenthesizedType(type.copy(), meta: meta.copy());
 }
 
 class TsPlusToken extends TsNode {
@@ -1638,6 +1896,9 @@ class TsPlusToken extends TsNode {
 
   @override
   String toCode() => '+';
+
+  @override
+  TsNode copy() => TsPlusToken(meta: meta.copy());
 }
 
 class TsPlusPlusToken extends TsNode {
@@ -1645,6 +1906,9 @@ class TsPlusPlusToken extends TsNode {
 
   @override
   String toCode() => '++';
+
+  @override
+  TsNode copy() => TsPlusPlusToken(meta: meta.copy());
 }
 
 class TsPrefixUnaryExpression extends TsNode {
@@ -1663,6 +1927,9 @@ class TsPrefixUnaryExpression extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [operator, operand];
+
+  @override
+  TsNode copy() => TsPrefixUnaryExpression(operator.copy(), operand.copy(), meta: meta.copy());
 }
 
 class TsPrivateKeyword extends TsNode {
@@ -1670,6 +1937,9 @@ class TsPrivateKeyword extends TsNode {
 
   @override
   String toCode() => 'private';
+
+  @override
+  TsNode copy() => TsPrivateKeyword(meta: meta.copy());
 }
 
 class TsPropertyAccessExpression extends TsNode {
@@ -1693,6 +1963,10 @@ class TsPropertyAccessExpression extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [expression, questionDotToken, name];
+
+  @override
+  TsNode copy() =>
+      TsPropertyAccessExpression(expression.copy(), questionDotToken.copy(), name.copy(), meta: meta.copy());
 }
 
 class TsPropertyDeclaration extends TsNode {
@@ -1733,6 +2007,17 @@ class TsPropertyDeclaration extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, questionToken, exclamationToken, type, initializer];
+
+  @override
+  TsNode copy() => TsPropertyDeclaration(
+    modifiers.copy(),
+    name.copy(),
+    questionToken.copy(),
+    exclamationToken.copy(),
+    type.copy(),
+    initializer.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsPropertySignature extends TsNode {
@@ -1764,10 +2049,23 @@ class TsPropertySignature extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, questionToken, type, initializer];
+
+  @override
+  TsNode copy() => TsPropertySignature(
+    modifiers.copy(),
+    name.copy(),
+    questionToken.copy(),
+    type.copy(),
+    initializer.copy(),
+    meta: meta.copy(),
+  );
 }
 
 class TsProtectedKeyword extends TsNode {
   TsProtectedKeyword({TsNodeMeta? meta}) : super(TsNodeKind.protectedKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsProtectedKeyword(meta: meta.copy());
 }
 
 class TsQualifiedName extends TsNode {
@@ -1788,10 +2086,16 @@ class TsQualifiedName extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [left, right];
+
+  @override
+  TsNode copy() => TsQualifiedName(left.copy(), right.copy(), meta: meta.copy());
 }
 
 class TsQuestionToken extends TsNode {
   TsQuestionToken({TsNodeMeta? meta}) : super(TsNodeKind.questionToken, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsQuestionToken(meta: meta.copy());
 }
 
 class TsReadonlyKeyword extends TsNode {
@@ -1799,6 +2103,9 @@ class TsReadonlyKeyword extends TsNode {
 
   @override
   String toCode() => 'readonly';
+
+  @override
+  TsNode copy() => TsReadonlyKeyword(meta: meta.copy());
 }
 
 class TsRestType extends TsNode {
@@ -1812,6 +2119,9 @@ class TsRestType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [type];
+
+  @override
+  TsNode copy() => TsRestType(type.copy(), meta: meta.copy());
 }
 
 class TsSetAccessor extends TsNode with WithTypeParameters {
@@ -1838,6 +2148,9 @@ class TsSetAccessor extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, type];
+
+  @override
+  TsNode copy() => TsSetAccessor(modifiers.copy(), name.copy(), typeParameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsSourceFile extends TsNode {
@@ -1857,6 +2170,9 @@ class TsSourceFile extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [statements];
+
+  @override
+  TsNode copy() => TsSourceFile(path, baseName, statements.copy(), meta: meta.copy());
 }
 
 class TsStaticKeyword extends TsNode {
@@ -1864,6 +2180,9 @@ class TsStaticKeyword extends TsNode {
 
   @override
   String toCode() => 'static';
+
+  @override
+  TsNode copy() => TsStaticKeyword(meta: meta.copy());
 }
 
 class TsStringKeyword extends TsNode {
@@ -1871,6 +2190,9 @@ class TsStringKeyword extends TsNode {
 
   @override
   String toCode() => 'string';
+
+  @override
+  TsNode copy() => TsStringKeyword(meta: meta.copy());
 }
 
 class TsStringLiteral extends TsNode {
@@ -1884,14 +2206,23 @@ class TsStringLiteral extends TsNode {
 
   @override
   String? get nodeName => text;
+
+  @override
+  TsNode copy() => TsStringLiteral(text, meta: meta.copy());
 }
 
 class TsSymbolKeyword extends TsNode {
   TsSymbolKeyword({TsNodeMeta? meta}) : super(TsNodeKind.symbolKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsSymbolKeyword(meta: meta.copy());
 }
 
 class TsTildeToken extends TsNode {
   TsTildeToken({TsNodeMeta? meta}) : super(TsNodeKind.tildeToken, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsTildeToken(meta: meta.copy());
 }
 
 class TsTemplateHead extends TsNode {
@@ -1908,6 +2239,9 @@ class TsTemplateHead extends TsNode {
 
   @override
   String? get nodeName => text;
+
+  @override
+  TsNode copy() => TsTemplateHead(text, meta: meta.copy());
 }
 
 class TsTemplateLiteralType extends TsNode {
@@ -1926,6 +2260,9 @@ class TsTemplateLiteralType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [head, templateSpans];
+
+  @override
+  TsNode copy() => TsTemplateLiteralType(head.copy(), templateSpans.copy(), meta: meta.copy());
 }
 
 class TsTemplateLiteralTypeSpan extends TsNode {
@@ -1944,6 +2281,9 @@ class TsTemplateLiteralTypeSpan extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [type, literal];
+
+  @override
+  TsNode copy() => TsTemplateLiteralTypeSpan(type.copy(), literal.copy(), meta: meta.copy());
 }
 
 class TsTemplateMiddle extends TsNode {
@@ -1960,6 +2300,9 @@ class TsTemplateMiddle extends TsNode {
 
   @override
   String? get nodeName => text;
+
+  @override
+  TsNode copy() => TsTemplateMiddle(text, meta: meta.copy());
 }
 
 class TsTemplateTail extends TsNode {
@@ -1976,10 +2319,16 @@ class TsTemplateTail extends TsNode {
 
   @override
   String? get nodeName => text;
+
+  @override
+  TsNode copy() => TsTemplateTail(text, meta: meta.copy());
 }
 
 class TsThisType extends TsNode {
   TsThisType({TsNodeMeta? meta}) : super(TsNodeKind.thisType, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsThisType(meta: meta.copy());
 }
 
 class TsTrueKeyword extends TsNode {
@@ -1987,6 +2336,9 @@ class TsTrueKeyword extends TsNode {
 
   @override
   String toCode() => 'true';
+
+  @override
+  TsNode copy() => TsTrueKeyword(meta: meta.copy());
 }
 
 class TsTupleType extends TsNode {
@@ -2003,6 +2355,9 @@ class TsTupleType extends TsNode {
 
   @override
   String toCode() => '[${elements.toCode(separator: ', ')}]';
+
+  @override
+  TsNode copy() => TsTupleType(elements.copy(), meta: meta.copy());
 }
 
 class TsTypeAliasDeclaration extends TsNode with WithTypeParameters {
@@ -2029,6 +2384,10 @@ class TsTypeAliasDeclaration extends TsNode with WithTypeParameters {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, type];
+
+  @override
+  TsNode copy() =>
+      TsTypeAliasDeclaration(modifiers.copy(), name.copy(), typeParameters.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsTypeLiteral extends TsNode {
@@ -2042,6 +2401,9 @@ class TsTypeLiteral extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [members];
+
+  @override
+  TsNode copy() => TsTypeLiteral(members.copy(), meta: meta.copy());
 }
 
 class TsTypeOperator extends TsNode {
@@ -2059,6 +2421,9 @@ class TsTypeOperator extends TsNode {
 
   @override
   String toCode() => '${operator.value.toCode()} ${type.value.toCode()}';
+
+  @override
+  TsNode copy() => TsTypeOperator(operator.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsTypeParameter extends TsNode {
@@ -2087,6 +2452,10 @@ class TsTypeParameter extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, constraint, defaultType];
+
+  @override
+  TsNode copy() =>
+      TsTypeParameter(modifiers.copy(), name.copy(), constraint.copy(), defaultType.copy(), meta: meta.copy());
 }
 
 class TsTypePredicate extends TsNode {
@@ -2107,6 +2476,9 @@ class TsTypePredicate extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [assertModifier, parameterName, type];
+
+  @override
+  TsNode copy() => TsTypePredicate(assertModifier.copy(), parameterName.copy(), type.copy(), meta: meta.copy());
 }
 
 class TsTypeQuery extends TsNode {
@@ -2122,6 +2494,9 @@ class TsTypeQuery extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [exprName, typeArguments];
+
+  @override
+  TsNode copy() => TsTypeQuery(exprName.copy(), typeArguments.copy(), meta: meta.copy());
 }
 
 class TsTypeReference extends TsNode with WithTypeArguments<TsTypeReference> {
@@ -2144,6 +2519,9 @@ class TsTypeReference extends TsNode with WithTypeArguments<TsTypeReference> {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [typeName, typeArguments];
+
+  @override
+  TsNode copy() => TsTypeReference(typeName.copy(), typeArguments.copy(), meta: meta.copy());
 }
 
 class TsUndefinedKeyword extends TsNode {
@@ -2151,6 +2529,9 @@ class TsUndefinedKeyword extends TsNode {
 
   @override
   String toCode() => 'undefined';
+
+  @override
+  TsNode copy() => TsUndefinedKeyword(meta: meta.copy());
 }
 
 class TsUnionType extends TsNode {
@@ -2167,14 +2548,23 @@ class TsUnionType extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [types];
+
+  @override
+  TsNode copy() => TsUnionType(types.copy(), meta: meta.copy());
 }
 
 class TsUniqueKeyword extends TsNode {
   TsUniqueKeyword({TsNodeMeta? meta}) : super(TsNodeKind.uniqueKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsUniqueKeyword(meta: meta.copy());
 }
 
 class TsUnknownKeyword extends TsNode {
   TsUnknownKeyword({TsNodeMeta? meta}) : super(TsNodeKind.unknownKeyword, meta ?? TsNodeMeta());
+
+  @override
+  TsNode copy() => TsUnknownKeyword(meta: meta.copy());
 }
 
 class TsVariableDeclaration extends TsNode {
@@ -2200,6 +2590,10 @@ class TsVariableDeclaration extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [name, exclamationToken, type, initializer];
+
+  @override
+  TsNode copy() =>
+      TsVariableDeclaration(name.copy(), exclamationToken.copy(), type.copy(), initializer.copy(), meta: meta.copy());
 }
 
 class TsVariableDeclarationList extends TsNode {
@@ -2214,6 +2608,9 @@ class TsVariableDeclarationList extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [declarations];
+
+  @override
+  TsNode copy() => TsVariableDeclarationList(declarations.copy(), meta: meta.copy());
 }
 
 class TsVariableStatement extends TsNode {
@@ -2232,6 +2629,9 @@ class TsVariableStatement extends TsNode {
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [modifiers, declarationList];
+
+  @override
+  TsNode copy() => TsVariableStatement(modifiers.copy(), declarationList.copy(), meta: meta.copy());
 }
 
 class TsVoidKeyword extends TsNode {
@@ -2239,4 +2639,7 @@ class TsVoidKeyword extends TsNode {
 
   @override
   String toCode() => 'void';
+
+  @override
+  TsNode copy() => TsVoidKeyword(meta: meta.copy());
 }

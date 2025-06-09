@@ -53,12 +53,17 @@ void main() async {
           // missingTypeMapper,
           // literalAsTypeArgumentMapper,
           // instanceTypeMapper,
-          invalidNameMapper,
           missingTypeArgumentMapper,
           missingTypeParameterMapper,
-          constructorInterfaceMapper,
         ]),
       )
+      .addPhase(
+        SanitizerPhase('constructorInterfaceMapper', PhaseDirection.topDown, [
+          constructorInterfaceFixJsBindingMapper,
+          constructorInterfaceCopyMapper,
+        ]),
+      )
+      .addPhase(SanitizerPhase('invalidNameMapper', PhaseDirection.bottomUp, [invalidNameMapper]))
       .sanitize(package);
 
   print('Done (${(sw.elapsedMicroseconds / 1000).toStringAsFixed(2)} ms)');
