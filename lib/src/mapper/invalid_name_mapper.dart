@@ -169,9 +169,21 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       final typeName = node.type.value?.nodeName;
       final originalName = nameNode.nodeName;
       final sanitizedName = _sanitizePropertyName(originalName, typeName);
-      if (sanitizedName != originalName) {
+      final overloadIds = <int>[];
+      if (originalName != null) {
+        if (node.parent case final parent?) {
+          final overloads = parent.searchChilds<TsPropertySignature>(hasName(originalName));
+          for (final overload in overloads) {
+            overloadIds.add(overload.id);
+          }
+        }
+        overloadIds.sort();
+      }
+      if (sanitizedName != originalName || overloadIds.length > 1) {
         node.meta.originalName = originalName;
-        node.name.set(TsIdentifier(sanitizedName));
+        node.name.set(
+          TsIdentifier(overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName),
+        );
       }
       return node;
     case TsFunctionDeclaration(name: SingleNode(value: TsNode nameNode)):

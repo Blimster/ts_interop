@@ -16,70 +16,70 @@ external _i1.JSArray<_i1.JSString> getCanonicalLocales([_i1.JSAny locale]);
 
 /// Interface [DateTimeFormatPartTypesRegistry]
 extension type DateTimeFormatPartTypesRegistry.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [hour]
+  /// Property [day]
   ///
-  /// hour: any
-  external _i1.JSAny hour;
-
-  /// Property [fractionalSecond]
-  ///
-  /// fractionalSecond: any
-  external _i1.JSAny fractionalSecond;
-
-  /// Property [month]
-  ///
-  /// month: any
-  external _i1.JSAny month;
+  /// day: any
+  external _i1.JSAny day;
 
   /// Property [dayPeriod]
   ///
   /// dayPeriod: any
   external _i1.JSAny dayPeriod;
 
-  /// Property [timeZoneName]
+  /// Property [era]
   ///
-  /// timeZoneName: any
-  external _i1.JSAny timeZoneName;
+  /// era: any
+  external _i1.JSAny era;
+
+  /// Property [hour]
+  ///
+  /// hour: any
+  external _i1.JSAny hour;
 
   /// Property [literal]
   ///
   /// literal: any
   external _i1.JSAny literal;
 
-  /// Property [unknown]
+  /// Property [minute]
   ///
-  /// unknown:
-  external _i1.JSAny unknown;
+  /// minute: any
+  external _i1.JSAny minute;
 
-  /// Property [day]
+  /// Property [month]
   ///
-  /// day: any
-  external _i1.JSAny day;
-
-  /// Property [era]
-  ///
-  /// era: any
-  external _i1.JSAny era;
-
-  /// Property [weekday]
-  ///
-  /// weekday: any
-  external _i1.JSAny weekday;
+  /// month: any
+  external _i1.JSAny month;
 
   /// Property [second]
   ///
   /// second: any
   external _i1.JSAny second;
 
-  /// Property [minute]
+  /// Property [timeZoneName]
   ///
-  /// minute: any
-  external _i1.JSAny minute;
+  /// timeZoneName: any
+  external _i1.JSAny timeZoneName;
+
+  /// Property [weekday]
+  ///
+  /// weekday: any
+  external _i1.JSAny weekday;
 
   /// Property [year]
   ///
   /// year: any
   external _i1.JSAny year;
+
+  /// Property [unknown]
+  ///
+  /// unknown:
+  external _i1.JSAny unknown;
+
+  /// Property [fractionalSecond]
+  ///
+  /// fractionalSecond: any
+  external _i1.JSAny fractionalSecond;
 }
 
 /// Typedef [DateTimeFormatPartTypes]
@@ -107,7 +107,33 @@ extension type DateTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// Parameters:
   /// - locales: LocalesArgument
   /// - options: DateTimeFormatOptions
-  external DateTimeFormat([LocalesArgument locales, DateTimeFormatOptions options]);
+  external DateTimeFormat.$1([LocalesArgument locales, DateTimeFormatOptions options]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: DateTimeFormatOptions
+  external DateTimeFormat.$2([_i1.JSAny locales, DateTimeFormatOptions options]);
+
+  /// Method [formatToParts]
+  ///
+  /// Parameters:
+  /// - date: Date | number
+  ///
+  /// Returns:
+  /// - DateTimeFormatPart[]
+  external _i1.JSArray<DateTimeFormatPart> formatToParts([_i1.JSAny date]);
+
+  /// Method [formatRange]
+  ///
+  /// Parameters:
+  /// - startDate: Date | number | bigint
+  /// - endDate: Date | number | bigint
+  ///
+  /// Returns:
+  /// - string
+  external _i1.JSString formatRange(_i1.JSAny startDate, _i1.JSAny endDate);
 
   /// Method [formatRangeToParts]
   ///
@@ -133,25 +159,6 @@ extension type DateTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// Returns:
   /// - ResolvedDateTimeFormatOptions
   external ResolvedDateTimeFormatOptions resolvedOptions();
-
-  /// Method [formatToParts]
-  ///
-  /// Parameters:
-  /// - date: Date | number
-  ///
-  /// Returns:
-  /// - DateTimeFormatPart[]
-  external _i1.JSArray<DateTimeFormatPart> formatToParts([_i1.JSAny date]);
-
-  /// Method [formatRange]
-  ///
-  /// Parameters:
-  /// - startDate: Date | number | bigint
-  /// - endDate: Date | number | bigint
-  ///
-  /// Returns:
-  /// - string
-  external _i1.JSString formatRange(_i1.JSAny startDate, _i1.JSAny endDate);
 }
 
 /// Typedef [LDMLPluralRule]
@@ -252,7 +259,14 @@ extension type PluralRules.$(_i1.JSAny _) implements _i1.JSAny {
   /// Parameters:
   /// - locales: string | readonly string[]
   /// - options: PluralRulesOptions
-  external PluralRules([_i1.JSAny locales, PluralRulesOptions options]);
+  external PluralRules.$1([_i1.JSAny locales, PluralRulesOptions options]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: PluralRulesOptions
+  external PluralRules.$2([LocalesArgument locales, PluralRulesOptions options]);
 
   /// Method [resolvedOptions]
   ///
@@ -278,9 +292,16 @@ extension type PluralRulesConstructor.$(_i1.JSFunction _) implements _i1.JSFunct
   /// Parameters:
   /// - locales: string | readonly string[]
   /// - options: PluralRulesOptions
-  external PluralRulesConstructor([_i1.JSAny locales, PluralRulesOptions options]);
+  external PluralRulesConstructor.$1([_i1.JSAny locales, PluralRulesOptions options]);
 
-  /// Method [supportedLocalesOf]
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: PluralRulesOptions
+  external PluralRulesConstructor.$2([LocalesArgument locales, PluralRulesOptions options]);
+
+  /// Method [supportedLocalesOf$1]
   ///
   /// Parameters:
   /// - locales: string | readonly string[]
@@ -288,100 +309,112 @@ extension type PluralRulesConstructor.$(_i1.JSFunction _) implements _i1.JSFunct
   ///
   /// Returns:
   /// - string[]
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf(_i1.JSAny locales, [_i1.JSObject options]);
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(_i1.JSAny locales, [_i1.JSObject options]);
+
+  /// Method [supportedLocalesOf$2]
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options:
+  ///
+  /// Returns:
+  /// - string[]
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(LocalesArgument locales, [_i1.JSObject options]);
 }
 
 /// Interface [NumberFormatPartTypeRegistry]
 extension type NumberFormatPartTypeRegistry.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [nan]
-  ///
-  /// nan:
-  external _i1.JSAny nan;
-
-  /// Property [percent]
-  ///
-  /// percent:
-  external _i1.JSAny percent;
-
-  /// Property [exponentSeparator]
-  ///
-  /// exponentSeparator:
-  external _i1.JSAny exponentSeparator;
-
-  /// Property [plusSign]
-  ///
-  /// plusSign:
-  external _i1.JSAny plusSign;
-
-  /// Property [fraction]
-  ///
-  /// fraction:
-  external _i1.JSAny fraction;
-
   /// Property [literal]
   ///
   /// literal:
   external _i1.JSAny literal;
 
-  /// Property [currency]
+  /// Property [nan]
   ///
-  /// currency:
-  external _i1.JSAny currency;
-
-  /// Property [group]
-  ///
-  /// group:
-  external _i1.JSAny group;
-
-  /// Property [integer]
-  ///
-  /// integer:
-  external _i1.JSAny integer;
-
-  /// Property [unknown]
-  ///
-  /// unknown:
-  external _i1.JSAny unknown;
-
-  /// Property [minusSign]
-  ///
-  /// minusSign:
-  external _i1.JSAny minusSign;
-
-  /// Property [exponentInteger]
-  ///
-  /// exponentInteger:
-  external _i1.JSAny exponentInteger;
+  /// nan:
+  external _i1.JSAny nan;
 
   /// Property [infinity]
   ///
   /// infinity:
   external _i1.JSAny infinity;
 
-  /// Property [compact]
+  /// Property [percent]
   ///
-  /// compact:
-  external _i1.JSAny compact;
+  /// percent:
+  external _i1.JSAny percent;
 
-  /// Property [exponentMinusSign]
+  /// Property [integer]
   ///
-  /// exponentMinusSign:
-  external _i1.JSAny exponentMinusSign;
+  /// integer:
+  external _i1.JSAny integer;
 
-  /// Property [unit]
+  /// Property [group]
   ///
-  /// unit:
-  external _i1.JSAny unit;
+  /// group:
+  external _i1.JSAny group;
+
+  /// Property [decimal]
+  ///
+  /// decimal:
+  external _i1.JSAny decimal;
+
+  /// Property [fraction]
+  ///
+  /// fraction:
+  external _i1.JSAny fraction;
+
+  /// Property [plusSign]
+  ///
+  /// plusSign:
+  external _i1.JSAny plusSign;
+
+  /// Property [minusSign]
+  ///
+  /// minusSign:
+  external _i1.JSAny minusSign;
 
   /// Property [percentSign]
   ///
   /// percentSign:
   external _i1.JSAny percentSign;
 
-  /// Property [decimal]
+  /// Property [currency]
   ///
-  /// decimal:
-  external _i1.JSAny decimal;
+  /// currency:
+  external _i1.JSAny currency;
+
+  /// Property [compact]
+  ///
+  /// compact:
+  external _i1.JSAny compact;
+
+  /// Property [exponentInteger]
+  ///
+  /// exponentInteger:
+  external _i1.JSAny exponentInteger;
+
+  /// Property [exponentMinusSign]
+  ///
+  /// exponentMinusSign:
+  external _i1.JSAny exponentMinusSign;
+
+  /// Property [exponentSeparator]
+  ///
+  /// exponentSeparator:
+  external _i1.JSAny exponentSeparator;
+
+  /// Property [unit]
+  ///
+  /// unit:
+  external _i1.JSAny unit;
+
+  /// Property [unknown]
+  ///
+  /// unknown:
+  external _i1.JSAny unknown;
 }
 
 /// Typedef [NumberFormatPartTypes]
@@ -409,7 +442,64 @@ extension type NumberFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// Parameters:
   /// - locales: LocalesArgument
   /// - options: NumberFormatOptions
-  external NumberFormat([LocalesArgument locales, NumberFormatOptions options]);
+  external NumberFormat.$1([LocalesArgument locales, NumberFormatOptions options]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: NumberFormatOptions
+  external NumberFormat.$2([_i1.JSAny locales, NumberFormatOptions options]);
+
+  /// Method [formatToParts$1]
+  ///
+  /// Parameters:
+  /// - number: number | bigint
+  ///
+  /// Returns:
+  /// - NumberFormatPart[]
+  @_i1.JS('formatToParts')
+  external _i1.JSArray<NumberFormatPart> formatToParts$1([_i1.JSAny number]);
+
+  /// Method [format$1]
+  ///
+  /// Parameters:
+  /// - value: number | bigint
+  ///
+  /// Returns:
+  /// - string
+  @_i1.JS('format')
+  external _i1.JSString format$1(_i1.JSAny value);
+
+  /// Method [format$2]
+  ///
+  /// Parameters:
+  /// - value: number | bigint | StringNumericLiteral
+  ///
+  /// Returns:
+  /// - string
+  @_i1.JS('format')
+  external _i1.JSString format$2(_i1.JSAny value);
+
+  /// Method [formatToParts$2]
+  ///
+  /// Parameters:
+  /// - value: number | bigint | StringNumericLiteral
+  ///
+  /// Returns:
+  /// - NumberFormatPart[]
+  @_i1.JS('formatToParts')
+  external _i1.JSArray<NumberFormatPart> formatToParts$2(_i1.JSAny value);
+
+  /// Method [formatRange]
+  ///
+  /// Parameters:
+  /// - start: number | bigint | StringNumericLiteral
+  /// - end: number | bigint | StringNumericLiteral
+  ///
+  /// Returns:
+  /// - string
+  external _i1.JSString formatRange(_i1.JSAny start, _i1.JSAny end);
 
   /// Method [formatRangeToParts]
   ///
@@ -421,39 +511,21 @@ extension type NumberFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// - NumberRangeFormatPart[]
   external _i1.JSArray<NumberRangeFormatPart> formatRangeToParts(_i1.JSAny start, _i1.JSAny end);
 
-  /// Method [format]
+  /// Method [format$3]
   ///
   /// Parameters:
-  /// - value: number | bigint
+  /// - value: number
   ///
   /// Returns:
   /// - string
-  external _i1.JSString format(_i1.JSAny value);
+  @_i1.JS('format')
+  external _i1.JSString format$3(_i1.JSNumber value);
 
   /// Method [resolvedOptions]
   ///
   /// Returns:
   /// - ResolvedNumberFormatOptions
   external ResolvedNumberFormatOptions resolvedOptions();
-
-  /// Method [formatToParts]
-  ///
-  /// Parameters:
-  /// - number: number | bigint
-  ///
-  /// Returns:
-  /// - NumberFormatPart[]
-  external _i1.JSArray<NumberFormatPart> formatToParts([_i1.JSAny number]);
-
-  /// Method [formatRange]
-  ///
-  /// Parameters:
-  /// - start: number | bigint | StringNumericLiteral
-  /// - end: number | bigint | StringNumericLiteral
-  ///
-  /// Returns:
-  /// - string
-  external _i1.JSString formatRange(_i1.JSAny start, _i1.JSAny end);
 }
 
 /// Typedef [UnicodeBCP47LocaleIdentifier]
@@ -568,39 +640,29 @@ extension type RelativeTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [NumberFormatOptionsStyleRegistry]
 extension type NumberFormatOptionsStyleRegistry.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [currency]
-  ///
-  /// currency:
-  external _i1.JSAny currency;
-
   /// Property [unit]
   ///
   /// unit:
   external _i1.JSAny unit;
+
+  /// Property [decimal]
+  ///
+  /// decimal:
+  external _i1.JSAny decimal;
 
   /// Property [percent]
   ///
   /// percent:
   external _i1.JSAny percent;
 
-  /// Property [decimal]
+  /// Property [currency]
   ///
-  /// decimal:
-  external _i1.JSAny decimal;
+  /// currency:
+  external _i1.JSAny currency;
 }
 
 /// Interface [NumberFormatOptionsCurrencyDisplayRegistry]
 extension type NumberFormatOptionsCurrencyDisplayRegistry.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [symbol]
-  ///
-  /// symbol:
-  external _i1.JSAny symbol;
-
-  /// Property [name]
-  ///
-  /// name:
-  external _i1.JSAny name;
-
   /// Property [narrowSymbol]
   ///
   /// narrowSymbol:
@@ -610,6 +672,16 @@ extension type NumberFormatOptionsCurrencyDisplayRegistry.$(_i1.JSAny _) impleme
   ///
   /// code:
   external _i1.JSAny code;
+
+  /// Property [symbol]
+  ///
+  /// symbol:
+  external _i1.JSAny symbol;
+
+  /// Property [name]
+  ///
+  /// name:
+  external _i1.JSAny name;
 }
 
 /// Interface [NumberFormatOptionsSignDisplayRegistry]
@@ -618,6 +690,16 @@ extension type NumberFormatOptionsSignDisplayRegistry.$(_i1.JSAny _) implements 
   ///
   /// auto:
   external _i1.JSAny auto;
+
+  /// Property [never]
+  ///
+  /// never:
+  external _i1.JSAny never;
+
+  /// Property [always]
+  ///
+  /// always:
+  external _i1.JSAny always;
 
   /// Property [exceptZero]
   ///
@@ -628,16 +710,6 @@ extension type NumberFormatOptionsSignDisplayRegistry.$(_i1.JSAny _) implements 
   ///
   /// negative:
   external _i1.JSAny negative;
-
-  /// Property [always]
-  ///
-  /// always:
-  external _i1.JSAny always;
-
-  /// Property [never]
-  ///
-  /// never:
-  external _i1.JSAny never;
 }
 
 /// Typedef [NumberFormatOptionsSignDisplay]
@@ -647,251 +719,339 @@ typedef NumberFormatOptionsSignDisplay = _i1.JSString;
 
 /// Interface [NumberFormatOptions]
 extension type NumberFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [maximumSignificantDigits]
+  /// Property [numberingSystem]
   ///
-  /// maximumSignificantDigits?: number | undefined
-  external _i1.JSNumber? maximumSignificantDigits;
+  /// numberingSystem?: string | undefined
+  external _i1.JSString? numberingSystem;
 
   /// Property [compactDisplay]
   ///
   /// compactDisplay?: "short" | "long" | undefined
   external _i1.JSString? compactDisplay;
 
-  /// Property [maximumFractionDigits]
-  ///
-  /// maximumFractionDigits?: number | undefined
-  external _i1.JSNumber? maximumFractionDigits;
-
   /// Property [notation]
   ///
   /// notation?: "standard" | "scientific" | "engineering" | "compact" | undefined
   external _i1.JSString? notation;
-
-  /// Property [currency]
-  ///
-  /// currency?: string | undefined
-  external _i1.JSString? currency;
-
-  /// Property [localeMatcher]
-  ///
-  /// localeMatcher?: "lookup" | "best fit" | undefined
-  external _i1.JSString? localeMatcher;
-
-  /// Property [minimumFractionDigits]
-  ///
-  /// minimumFractionDigits?: number | undefined
-  external _i1.JSNumber? minimumFractionDigits;
-
-  /// Property [currencyDisplay]
-  ///
-  /// currencyDisplay?: NumberFormatOptionsCurrencyDisplay | undefined
-  external NumberFormatOptionsCurrencyDisplay? currencyDisplay;
-
-  /// Property [unitDisplay]
-  ///
-  /// unitDisplay?: "short" | "long" | "narrow" | undefined
-  external _i1.JSString? unitDisplay;
-
-  /// Property [roundingIncrement]
-  ///
-  /// roundingIncrement?: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000 | undefined
-  external _i1.JSNumber? roundingIncrement;
-
-  /// Property [currencySign]
-  ///
-  /// currencySign?: "standard" | "accounting" | undefined
-  external _i1.JSString? currencySign;
-
-  /// Property [useGrouping]
-  ///
-  /// useGrouping?: NumberFormatOptionsUseGrouping | undefined
-  external NumberFormatOptionsUseGrouping? useGrouping;
-
-  /// Property [style]
-  ///
-  /// style?: NumberFormatOptionsStyle | undefined
-  external NumberFormatOptionsStyle? style;
-
-  /// Property [numberingSystem]
-  ///
-  /// numberingSystem?: string | undefined
-  external _i1.JSString? numberingSystem;
 
   /// Property [signDisplay]
   ///
   /// signDisplay?: NumberFormatOptionsSignDisplay | undefined
   external NumberFormatOptionsSignDisplay? signDisplay;
 
-  /// Property [minimumSignificantDigits]
-  ///
-  /// minimumSignificantDigits?: number | undefined
-  external _i1.JSNumber? minimumSignificantDigits;
-
   /// Property [unit]
   ///
   /// unit?: string | undefined
   external _i1.JSString? unit;
+
+  /// Property [unitDisplay]
+  ///
+  /// unitDisplay?: "short" | "long" | "narrow" | undefined
+  external _i1.JSString? unitDisplay;
+
+  /// Property [currencySign]
+  ///
+  /// currencySign?: "standard" | "accounting" | undefined
+  external _i1.JSString? currencySign;
 
   /// Property [roundingPriority]
   ///
   /// roundingPriority?: "auto" | "morePrecision" | "lessPrecision" | undefined
   external _i1.JSString? roundingPriority;
 
+  /// Property [roundingIncrement]
+  ///
+  /// roundingIncrement?: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000 | undefined
+  external _i1.JSNumber? roundingIncrement;
+
+  /// Property [roundingMode]
+  ///
+  /// roundingMode?: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined
+  external _i1.JSString? roundingMode;
+
   /// Property [trailingZeroDisplay]
   ///
   /// trailingZeroDisplay?: "auto" | "stripIfInteger" | undefined
   external _i1.JSString? trailingZeroDisplay;
+
+  /// Property [localeMatcher]
+  ///
+  /// localeMatcher?: "lookup" | "best fit" | undefined
+  external _i1.JSString? localeMatcher;
+
+  /// Property [style]
+  ///
+  /// style?: NumberFormatOptionsStyle | undefined
+  external NumberFormatOptionsStyle? style;
+
+  /// Property [currency]
+  ///
+  /// currency?: string | undefined
+  external _i1.JSString? currency;
+
+  /// Property [currencyDisplay]
+  ///
+  /// currencyDisplay?: NumberFormatOptionsCurrencyDisplay | undefined
+  external NumberFormatOptionsCurrencyDisplay? currencyDisplay;
+
+  /// Property [useGrouping]
+  ///
+  /// useGrouping?: NumberFormatOptionsUseGrouping | undefined
+  external NumberFormatOptionsUseGrouping? useGrouping;
 
   /// Property [minimumIntegerDigits]
   ///
   /// minimumIntegerDigits?: number | undefined
   external _i1.JSNumber? minimumIntegerDigits;
 
-  /// Property [roundingMode]
+  /// Property [minimumFractionDigits]
   ///
-  /// roundingMode?: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined
-  external _i1.JSString? roundingMode;
+  /// minimumFractionDigits?: number | undefined
+  external _i1.JSNumber? minimumFractionDigits;
+
+  /// Property [maximumFractionDigits]
+  ///
+  /// maximumFractionDigits?: number | undefined
+  external _i1.JSNumber? maximumFractionDigits;
+
+  /// Property [minimumSignificantDigits]
+  ///
+  /// minimumSignificantDigits?: number | undefined
+  external _i1.JSNumber? minimumSignificantDigits;
+
+  /// Property [maximumSignificantDigits]
+  ///
+  /// maximumSignificantDigits?: number | undefined
+  external _i1.JSNumber? maximumSignificantDigits;
 }
 
 /// Interface [ResolvedNumberFormatOptions]
 extension type ResolvedNumberFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [maximumSignificantDigits]
-  ///
-  /// maximumSignificantDigits?: number
-  external _i1.JSNumber? maximumSignificantDigits;
-
   /// Property [compactDisplay]
   ///
   /// compactDisplay?: "short" | "long"
   external _i1.JSString? compactDisplay;
-
-  /// Property [locale]
-  ///
-  /// locale: string
-  external _i1.JSString locale;
-
-  /// Property [maximumFractionDigits]
-  ///
-  /// maximumFractionDigits?: number
-  external _i1.JSNumber? maximumFractionDigits;
 
   /// Property [notation]
   ///
   /// notation: "standard" | "scientific" | "engineering" | "compact"
   external _i1.JSString notation;
 
-  /// Property [currency]
-  ///
-  /// currency?: string
-  external _i1.JSString? currency;
-
-  /// Property [minimumFractionDigits]
-  ///
-  /// minimumFractionDigits?: number
-  external _i1.JSNumber? minimumFractionDigits;
-
-  /// Property [currencyDisplay]
-  ///
-  /// currencyDisplay?: NumberFormatOptionsCurrencyDisplay
-  external NumberFormatOptionsCurrencyDisplay? currencyDisplay;
-
-  /// Property [unitDisplay]
-  ///
-  /// unitDisplay?: "short" | "long" | "narrow"
-  external _i1.JSString? unitDisplay;
-
-  /// Property [roundingIncrement]
-  ///
-  /// roundingIncrement: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000
-  external _i1.JSNumber roundingIncrement;
-
-  /// Property [currencySign]
-  ///
-  /// currencySign?: "standard" | "accounting"
-  external _i1.JSString? currencySign;
-
-  /// Property [useGrouping]
-  ///
-  /// useGrouping: ResolvedNumberFormatOptionsUseGrouping
-  external ResolvedNumberFormatOptionsUseGrouping useGrouping;
-
-  /// Property [style]
-  ///
-  /// style: NumberFormatOptionsStyle
-  external NumberFormatOptionsStyle style;
-
-  /// Property [numberingSystem]
-  ///
-  /// numberingSystem: string
-  external _i1.JSString numberingSystem;
-
   /// Property [signDisplay]
   ///
   /// signDisplay: NumberFormatOptionsSignDisplay
   external NumberFormatOptionsSignDisplay signDisplay;
-
-  /// Property [minimumSignificantDigits]
-  ///
-  /// minimumSignificantDigits?: number
-  external _i1.JSNumber? minimumSignificantDigits;
 
   /// Property [unit]
   ///
   /// unit?: string
   external _i1.JSString? unit;
 
+  /// Property [unitDisplay]
+  ///
+  /// unitDisplay?: "short" | "long" | "narrow"
+  external _i1.JSString? unitDisplay;
+
+  /// Property [currencySign]
+  ///
+  /// currencySign?: "standard" | "accounting"
+  external _i1.JSString? currencySign;
+
   /// Property [roundingPriority]
   ///
   /// roundingPriority: "auto" | "morePrecision" | "lessPrecision"
   external _i1.JSString roundingPriority;
+
+  /// Property [roundingMode]
+  ///
+  /// roundingMode: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven"
+  external _i1.JSString roundingMode;
+
+  /// Property [roundingIncrement]
+  ///
+  /// roundingIncrement: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000
+  external _i1.JSNumber roundingIncrement;
 
   /// Property [trailingZeroDisplay]
   ///
   /// trailingZeroDisplay: "auto" | "stripIfInteger"
   external _i1.JSString trailingZeroDisplay;
 
+  /// Property [locale]
+  ///
+  /// locale: string
+  external _i1.JSString locale;
+
+  /// Property [numberingSystem]
+  ///
+  /// numberingSystem: string
+  external _i1.JSString numberingSystem;
+
+  /// Property [style]
+  ///
+  /// style: NumberFormatOptionsStyle
+  external NumberFormatOptionsStyle style;
+
+  /// Property [currency]
+  ///
+  /// currency?: string
+  external _i1.JSString? currency;
+
+  /// Property [currencyDisplay]
+  ///
+  /// currencyDisplay?: NumberFormatOptionsCurrencyDisplay
+  external NumberFormatOptionsCurrencyDisplay? currencyDisplay;
+
   /// Property [minimumIntegerDigits]
   ///
   /// minimumIntegerDigits: number
   external _i1.JSNumber minimumIntegerDigits;
 
-  /// Property [roundingMode]
+  /// Property [minimumFractionDigits]
   ///
-  /// roundingMode: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven"
-  external _i1.JSString roundingMode;
+  /// minimumFractionDigits?: number
+  external _i1.JSNumber? minimumFractionDigits;
+
+  /// Property [maximumFractionDigits]
+  ///
+  /// maximumFractionDigits?: number
+  external _i1.JSNumber? maximumFractionDigits;
+
+  /// Property [minimumSignificantDigits]
+  ///
+  /// minimumSignificantDigits?: number
+  external _i1.JSNumber? minimumSignificantDigits;
+
+  /// Property [maximumSignificantDigits]
+  ///
+  /// maximumSignificantDigits?: number
+  external _i1.JSNumber? maximumSignificantDigits;
+
+  /// Property [useGrouping]
+  ///
+  /// useGrouping: ResolvedNumberFormatOptionsUseGrouping
+  external ResolvedNumberFormatOptionsUseGrouping useGrouping;
 }
 
 /// Interface [DateTimeFormatOptions]
 extension type DateTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [hour]
+  /// Property [calendar]
   ///
-  /// hour?: "numeric" | "2-digit" | undefined
-  external _i1.JSString? hour;
+  /// calendar?: string | undefined
+  external _i1.JSString? calendar;
 
-  /// Property [dateStyle]
+  /// Property [dayPeriod$1]
   ///
-  /// dateStyle?: "full" | "long" | "medium" | "short" | undefined
-  external _i1.JSString? dateStyle;
+  /// dayPeriod$1?: "narrow" | "short" | "long" | undefined
+  @_i1.JS('dayPeriod')
+  external _i1.JSString? dayPeriod$1;
+
+  /// Property [numberingSystem]
+  ///
+  /// numberingSystem?: string | undefined
+  external _i1.JSString? numberingSystem;
+
+  /// Property [dateStyle$1]
+  ///
+  /// dateStyle$1?: "full" | "long" | "medium" | "short" | undefined
+  @_i1.JS('dateStyle')
+  external _i1.JSString? dateStyle$1;
+
+  /// Property [timeStyle$1]
+  ///
+  /// timeStyle$1?: "full" | "long" | "medium" | "short" | undefined
+  @_i1.JS('timeStyle')
+  external _i1.JSString? timeStyle$1;
 
   /// Property [hourCycle]
   ///
   /// hourCycle?: "h11" | "h12" | "h23" | "h24" | undefined
   external _i1.JSString? hourCycle;
 
-  /// Property [timeZoneName]
+  /// Property [formatMatcher$1]
   ///
-  /// timeZoneName?: "short" | "long" | "shortOffset" | "longOffset" | "shortGeneric" | "longGeneric" | undefined
-  external _i1.JSString? timeZoneName;
+  /// formatMatcher$1?: "basic" | "best fit" | "best fit" | undefined
+  @_i1.JS('formatMatcher')
+  external _i1.JSString? formatMatcher$1;
 
-  /// Property [dayPeriod]
+  /// Property [dateStyle$2]
   ///
-  /// dayPeriod?: "narrow" | "short" | "long" | undefined
-  external _i1.JSString? dayPeriod;
+  /// dateStyle$2?: "full" | "long" | "medium" | "short" | undefined
+  @_i1.JS('dateStyle')
+  external _i1.JSString? dateStyle$2;
+
+  /// Property [timeStyle$2]
+  ///
+  /// timeStyle$2?: "full" | "long" | "medium" | "short" | undefined
+  @_i1.JS('timeStyle')
+  external _i1.JSString? timeStyle$2;
+
+  /// Property [dayPeriod$2]
+  ///
+  /// dayPeriod$2?: "narrow" | "short" | "long" | undefined
+  @_i1.JS('dayPeriod')
+  external _i1.JSString? dayPeriod$2;
+
+  /// Property [fractionalSecondDigits]
+  ///
+  /// fractionalSecondDigits?: 1 | 2 | 3 | undefined
+  external _i1.JSNumber? fractionalSecondDigits;
+
+  /// Property [localeMatcher]
+  ///
+  /// localeMatcher?: "best fit" | "lookup" | undefined
+  external _i1.JSString? localeMatcher;
+
+  /// Property [weekday]
+  ///
+  /// weekday?: "long" | "short" | "narrow" | undefined
+  external _i1.JSString? weekday;
+
+  /// Property [era]
+  ///
+  /// era?: "long" | "short" | "narrow" | undefined
+  external _i1.JSString? era;
+
+  /// Property [year]
+  ///
+  /// year?: "numeric" | "2-digit" | undefined
+  external _i1.JSString? year;
 
   /// Property [month]
   ///
   /// month?: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined
   external _i1.JSString? month;
+
+  /// Property [day]
+  ///
+  /// day?: "numeric" | "2-digit" | undefined
+  external _i1.JSString? day;
+
+  /// Property [hour]
+  ///
+  /// hour?: "numeric" | "2-digit" | undefined
+  external _i1.JSString? hour;
+
+  /// Property [minute]
+  ///
+  /// minute?: "numeric" | "2-digit" | undefined
+  external _i1.JSString? minute;
+
+  /// Property [second]
+  ///
+  /// second?: "numeric" | "2-digit" | undefined
+  external _i1.JSString? second;
+
+  /// Property [timeZoneName]
+  ///
+  /// timeZoneName?: "short" | "long" | "shortOffset" | "longOffset" | "shortGeneric" | "longGeneric" | undefined
+  external _i1.JSString? timeZoneName;
+
+  /// Property [formatMatcher$2]
+  ///
+  /// formatMatcher$2?: "best fit" | "basic" | undefined
+  @_i1.JS('formatMatcher')
+  external _i1.JSString? formatMatcher$2;
 
   /// Property [houronetwo]
   ///
@@ -899,70 +1059,10 @@ extension type DateTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
   @_i1.JS('hour12')
   external _i1.JSBoolean? houronetwo;
 
-  /// Property [localeMatcher]
-  ///
-  /// localeMatcher?: "best fit" | "lookup" | undefined
-  external _i1.JSString? localeMatcher;
-
-  /// Property [fractionalSecondDigits]
-  ///
-  /// fractionalSecondDigits?: 1 | 2 | 3 | undefined
-  external _i1.JSNumber? fractionalSecondDigits;
-
-  /// Property [day]
-  ///
-  /// day?: "numeric" | "2-digit" | undefined
-  external _i1.JSString? day;
-
-  /// Property [era]
-  ///
-  /// era?: "long" | "short" | "narrow" | undefined
-  external _i1.JSString? era;
-
   /// Property [timeZone]
   ///
   /// timeZone?: string | undefined
   external _i1.JSString? timeZone;
-
-  /// Property [timeStyle]
-  ///
-  /// timeStyle?: "full" | "long" | "medium" | "short" | undefined
-  external _i1.JSString? timeStyle;
-
-  /// Property [weekday]
-  ///
-  /// weekday?: "long" | "short" | "narrow" | undefined
-  external _i1.JSString? weekday;
-
-  /// Property [formatMatcher]
-  ///
-  /// formatMatcher?: "basic" | "best fit" | "best fit" | undefined
-  external _i1.JSString? formatMatcher;
-
-  /// Property [second]
-  ///
-  /// second?: "numeric" | "2-digit" | undefined
-  external _i1.JSString? second;
-
-  /// Property [numberingSystem]
-  ///
-  /// numberingSystem?: string | undefined
-  external _i1.JSString? numberingSystem;
-
-  /// Property [calendar]
-  ///
-  /// calendar?: string | undefined
-  external _i1.JSString? calendar;
-
-  /// Property [minute]
-  ///
-  /// minute?: "numeric" | "2-digit" | undefined
-  external _i1.JSString? minute;
-
-  /// Property [year]
-  ///
-  /// year?: "numeric" | "2-digit" | undefined
-  external _i1.JSString? year;
 }
 
 /// Typedef [LocaleHourCycleKey]
@@ -1157,9 +1257,16 @@ extension type CollatorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction
   /// Parameters:
   /// - locales: LocalesArgument
   /// - options: CollatorOptions
-  external CollatorConstructor([LocalesArgument locales, CollatorOptions options]);
+  external CollatorConstructor.$1([LocalesArgument locales, CollatorOptions options]);
 
-  /// Method [supportedLocalesOf]
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: CollatorOptions
+  external CollatorConstructor.$2([_i1.JSAny locales, CollatorOptions options]);
+
+  /// Method [supportedLocalesOf$1]
   ///
   /// Parameters:
   /// - locales: LocalesArgument
@@ -1167,7 +1274,19 @@ extension type CollatorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction
   ///
   /// Returns:
   /// - string[]
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf(LocalesArgument locales, [CollatorOptions options]);
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(LocalesArgument locales, [CollatorOptions options]);
+
+  /// Method [supportedLocalesOf$2]
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: CollatorOptions
+  ///
+  /// Returns:
+  /// - string[]
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(_i1.JSAny locales, [CollatorOptions options]);
 }
 
 /// Interface [DateTimeFormatConstructor]
@@ -1178,9 +1297,16 @@ extension type DateTimeFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFu
   /// Parameters:
   /// - locales: LocalesArgument
   /// - options: DateTimeFormatOptions
-  external DateTimeFormatConstructor([LocalesArgument locales, DateTimeFormatOptions options]);
+  external DateTimeFormatConstructor.$1([LocalesArgument locales, DateTimeFormatOptions options]);
 
-  /// Method [supportedLocalesOf]
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: DateTimeFormatOptions
+  external DateTimeFormatConstructor.$2([_i1.JSAny locales, DateTimeFormatOptions options]);
+
+  /// Method [supportedLocalesOf$1]
   ///
   /// Parameters:
   /// - locales: LocalesArgument
@@ -1188,7 +1314,19 @@ extension type DateTimeFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFu
   ///
   /// Returns:
   /// - string[]
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf(LocalesArgument locales, [DateTimeFormatOptions options]);
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(LocalesArgument locales, [DateTimeFormatOptions options]);
+
+  /// Method [supportedLocalesOf$2]
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: DateTimeFormatOptions
+  ///
+  /// Returns:
+  /// - string[]
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(_i1.JSAny locales, [DateTimeFormatOptions options]);
 
   /// Property [prototype]
   ///
@@ -1204,9 +1342,16 @@ extension type NumberFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFunc
   /// Parameters:
   /// - locales: LocalesArgument
   /// - options: NumberFormatOptions
-  external NumberFormatConstructor([LocalesArgument locales, NumberFormatOptions options]);
+  external NumberFormatConstructor.$1([LocalesArgument locales, NumberFormatOptions options]);
 
-  /// Method [supportedLocalesOf]
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: NumberFormatOptions
+  external NumberFormatConstructor.$2([_i1.JSAny locales, NumberFormatOptions options]);
+
+  /// Method [supportedLocalesOf$1]
   ///
   /// Parameters:
   /// - locales: LocalesArgument
@@ -1214,7 +1359,19 @@ extension type NumberFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFunc
   ///
   /// Returns:
   /// - string[]
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf(LocalesArgument locales, [NumberFormatOptions options]);
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(LocalesArgument locales, [NumberFormatOptions options]);
+
+  /// Method [supportedLocalesOf$2]
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: NumberFormatOptions
+  ///
+  /// Returns:
+  /// - string[]
+  @_i1.JS('supportedLocalesOf')
+  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(_i1.JSAny locales, [NumberFormatOptions options]);
 
   /// Property [prototype]
   ///
@@ -1232,40 +1389,55 @@ extension type DateTimeRangeFormatPart.$(_i1.JSAny _) implements _i1.JSAny, Date
 
 /// Interface [ResolvedDateTimeFormatOptions]
 extension type ResolvedDateTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [hour]
+  /// Property [formatMatcher]
   ///
-  /// hour?: string
-  external _i1.JSString? hour;
+  /// formatMatcher?: "basic" | "best fit" | "best fit"
+  external _i1.JSString? formatMatcher;
 
   /// Property [dateStyle]
   ///
   /// dateStyle?: "full" | "long" | "medium" | "short"
   external _i1.JSString? dateStyle;
 
+  /// Property [timeStyle]
+  ///
+  /// timeStyle?: "full" | "long" | "medium" | "short"
+  external _i1.JSString? timeStyle;
+
   /// Property [hourCycle]
   ///
   /// hourCycle?: "h11" | "h12" | "h23" | "h24"
   external _i1.JSString? hourCycle;
-
-  /// Property [timeZoneName]
-  ///
-  /// timeZoneName?: string
-  external _i1.JSString? timeZoneName;
-
-  /// Property [month]
-  ///
-  /// month?: string
-  external _i1.JSString? month;
 
   /// Property [dayPeriod]
   ///
   /// dayPeriod?: "narrow" | "short" | "long"
   external _i1.JSString? dayPeriod;
 
+  /// Property [fractionalSecondDigits]
+  ///
+  /// fractionalSecondDigits?: 1 | 2 | 3
+  external _i1.JSNumber? fractionalSecondDigits;
+
   /// Property [locale]
   ///
   /// locale: string
   external _i1.JSString locale;
+
+  /// Property [calendar]
+  ///
+  /// calendar: string
+  external _i1.JSString calendar;
+
+  /// Property [numberingSystem]
+  ///
+  /// numberingSystem: string
+  external _i1.JSString numberingSystem;
+
+  /// Property [timeZone]
+  ///
+  /// timeZone: string
+  external _i1.JSString timeZone;
 
   /// Property [houronetwo]
   ///
@@ -1273,65 +1445,50 @@ extension type ResolvedDateTimeFormatOptions.$(_i1.JSAny _) implements _i1.JSAny
   @_i1.JS('hour12')
   external _i1.JSBoolean? houronetwo;
 
-  /// Property [fractionalSecondDigits]
+  /// Property [weekday]
   ///
-  /// fractionalSecondDigits?: 1 | 2 | 3
-  external _i1.JSNumber? fractionalSecondDigits;
-
-  /// Property [day]
-  ///
-  /// day?: string
-  external _i1.JSString? day;
+  /// weekday?: string
+  external _i1.JSString? weekday;
 
   /// Property [era]
   ///
   /// era?: string
   external _i1.JSString? era;
 
-  /// Property [timeStyle]
+  /// Property [year]
   ///
-  /// timeStyle?: "full" | "long" | "medium" | "short"
-  external _i1.JSString? timeStyle;
+  /// year?: string
+  external _i1.JSString? year;
 
-  /// Property [timeZone]
+  /// Property [month]
   ///
-  /// timeZone: string
-  external _i1.JSString timeZone;
+  /// month?: string
+  external _i1.JSString? month;
 
-  /// Property [weekday]
+  /// Property [day]
   ///
-  /// weekday?: string
-  external _i1.JSString? weekday;
+  /// day?: string
+  external _i1.JSString? day;
 
-  /// Property [formatMatcher]
+  /// Property [hour]
   ///
-  /// formatMatcher?: "basic" | "best fit" | "best fit"
-  external _i1.JSString? formatMatcher;
-
-  /// Property [second]
-  ///
-  /// second?: string
-  external _i1.JSString? second;
-
-  /// Property [numberingSystem]
-  ///
-  /// numberingSystem: string
-  external _i1.JSString numberingSystem;
-
-  /// Property [calendar]
-  ///
-  /// calendar: string
-  external _i1.JSString calendar;
+  /// hour?: string
+  external _i1.JSString? hour;
 
   /// Property [minute]
   ///
   /// minute?: string
   external _i1.JSString? minute;
 
-  /// Property [year]
+  /// Property [second]
   ///
-  /// year?: string
-  external _i1.JSString? year;
+  /// second?: string
+  external _i1.JSString? second;
+
+  /// Property [timeZoneName]
+  ///
+  /// timeZoneName?: string
+  external _i1.JSString? timeZoneName;
 }
 
 /// Typedef [ListFormatLocaleMatcher]
@@ -1504,16 +1661,16 @@ external _i1.JSArray<_i1.JSString> supportedValuesOf(_i1.JSString key);
 
 /// Interface [NumberFormatOptionsUseGroupingRegistry]
 extension type NumberFormatOptionsUseGroupingRegistry.$(_i1.JSAny _) implements _i1.JSAny {
-  /// Property [auto]
-  ///
-  /// auto:
-  external _i1.JSAny auto;
-
   /// Property [mintwo]
   ///
   /// mintwo:
   @_i1.JS('min2')
   external _i1.JSAny mintwo;
+
+  /// Property [auto]
+  ///
+  /// auto:
+  external _i1.JSAny auto;
 
   /// Property [always]
   ///
@@ -1617,7 +1774,14 @@ extension type Collator.$(_i1.JSAny _) implements _i1.JSAny {
   /// Parameters:
   /// - locales: LocalesArgument
   /// - options: CollatorOptions
-  external Collator([LocalesArgument locales, CollatorOptions options]);
+  external Collator.$1([LocalesArgument locales, CollatorOptions options]);
+
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: string | string[]
+  /// - options: CollatorOptions
+  external Collator.$2([_i1.JSAny locales, CollatorOptions options]);
 
   /// Method [compare]
   ///

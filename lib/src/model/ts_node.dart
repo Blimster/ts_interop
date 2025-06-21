@@ -9,6 +9,8 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
   try {
     final kind = TsNodeKind.values.byName(_toFirstLower(json['kind'] as String));
     switch (kind) {
+      case TsNodeKind.$null:
+        throw StateError('Node with kind ${TsNodeKind.$null.name} is not allowed in JSON!');
       case TsNodeKind.$unsupported:
         throw StateError('Node with kind ${TsNodeKind.$unsupported.name} is not allowed in JSON!');
       case TsNodeKind.$removed:
@@ -244,6 +246,7 @@ void updateParentAndChilds(TsNode node, TsNode? parent) {
 typedef TsNodeMapper = TsNode Function(TsNode node, TypeEvaluator typeEvaluator);
 
 enum TsNodeKind {
+  $null,
   $unsupported,
   $removed,
   abstractKeyword,
@@ -394,6 +397,7 @@ final class SingleNode extends TsNodeWrapper<TsNode> {
   (List<TsNode>, List<TsNode>) set(TsNode value) {
     final result = ([value], [_value]);
     _value = value;
+    updateCache(result.$1, result.$2);
     return result;
   }
 
@@ -412,6 +416,7 @@ final class NullableNode extends TsNodeWrapper<TsNode?> {
   (List<TsNode>, List<TsNode>) set(TsNode? value) {
     final result = ([if (value != null) value], [if (_value != null) _value!]);
     _value = value;
+    updateCache(result.$1, result.$2);
     return result;
   }
 
@@ -437,7 +442,9 @@ final class ListNode extends TsNodeWrapper<List<TsNode>> {
       added.remove(node);
     }
     _value = value;
-    return (added.toList(), removed.toList());
+    final result = (added.toList(), removed.toList());
+    updateCache(result.$1, result.$2);
+    return result;
   }
 
   @override
