@@ -10929,6 +10929,11 @@ extension type Atomics.$(_i1.JSAny _) implements _i1.JSAny {
   external _i1.JSBigInt xor$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
 }
 
+/// Variable [Atomics$]
+///
+/// Atomics$: Atomics
+external Atomics Atomics$;
+
 /// Interface [AsyncGenerator]
 extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSAny _)
     implements _i1.JSAny, AsyncIteratorObject<T, TReturn, TNext> {
@@ -12799,6 +12804,16 @@ extension type WeakKeyTypes.$(_i1.JSAny _) implements _i1.JSAny {
   external _i1.JSObject object;
 }
 
+/// Variable [NaN]
+///
+/// NaN: number
+external _i1.JSNumber NaN;
+
+/// Variable [Infinity]
+///
+/// Infinity: number
+external _i1.JSNumber Infinity;
+
 /// Method [eval]
 ///
 /// Parameters:
@@ -13258,6 +13273,11 @@ extension type ImportAttributes.$(_i1.JSAny _) implements _i1.JSAny {
   external _i1.JSString operator [](_i1.JSString key);
 }
 
+/// Variable [Math$]
+///
+/// Math$: Math
+external Math Math$;
+
 /// Interface [EvalError]
 extension type EvalError.$(_i1.JSAny _) implements _i1.JSAny, Error {
   /// Constructor
@@ -13353,6 +13373,11 @@ extension type URIError.$(_i1.JSAny _) implements _i1.JSAny, Error {
   /// - message: string
   external URIError.$2([_i1.JSString message]);
 }
+
+/// Variable [JSON$]
+///
+/// JSON$: JSON
+external JSON JSON$;
 
 /// Interface [ConcatArray]
 extension type ConcatArray<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {

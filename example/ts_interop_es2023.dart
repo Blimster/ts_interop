@@ -61,6 +61,7 @@ void main() async {
         SanitizerPhase('constructorInterfaceMapper', PhaseDirection.topDown, [
           constructorInterfaceFixJsBindingMapper,
           constructorInterfaceCopyMapper,
+          constructorInterfaceRemoveVariableMapper,
         ]),
       )
       .addPhase(SanitizerPhase('invalidNameMapper', PhaseDirection.bottomUp, [invalidNameMapper]))

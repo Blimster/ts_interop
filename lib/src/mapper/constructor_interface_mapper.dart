@@ -37,3 +37,13 @@ TsNode constructorInterfaceFixJsBindingMapper(TsNode node, TypeEvaluator typeEva
   }
   return node;
 }
+
+TsNode constructorInterfaceRemoveVariableMapper(TsNode node, TypeEvaluator typeEvaluator) {
+  if (node case TsVariableDeclaration? declaration) {
+    final typeName = declaration.type.value?.nodeName;
+    if (typeName == '${declaration.name.value.nodeName}Constructor') {
+      return Ts$Removed(declaration);
+    }
+  }
+  return node;
+}

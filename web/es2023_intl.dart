@@ -638,6 +638,11 @@ extension type RelativeTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
   external ResolvedRelativeTimeFormatOptions resolvedOptions();
 }
 
+/// Variable [RelativeTimeFormat]
+///
+/// RelativeTimeFormat:
+external _i1.JSObject RelativeTimeFormat;
+
 /// Interface [NumberFormatOptionsStyleRegistry]
 extension type NumberFormatOptionsStyleRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [unit]
@@ -1160,6 +1165,11 @@ extension type Locale.$(_i1.JSAny _) implements _i1.JSAny, LocaleOptions {
   external UnicodeBCP47LocaleIdentifier toString$();
 }
 
+/// Variable [Locale]
+///
+/// Locale:
+external _i1.JSObject Locale;
+
 /// Typedef [DisplayNamesFallback]
 ///
 /// "code" | "none"
@@ -1248,6 +1258,11 @@ extension type DisplayNames.$(_i1.JSAny _) implements _i1.JSAny {
   /// - ResolvedDisplayNamesOptions
   external ResolvedDisplayNamesOptions resolvedOptions();
 }
+
+/// Variable [DisplayNames]
+///
+/// DisplayNames:
+external _i1.JSObject DisplayNames;
 
 /// Interface [CollatorConstructor]
 @_i1.JS('Collator')
@@ -1569,6 +1584,11 @@ extension type ListFormat.$(_i1.JSAny _) implements _i1.JSAny {
   external ResolvedListFormatOptions resolvedOptions();
 }
 
+/// Variable [ListFormat]
+///
+/// ListFormat:
+external _i1.JSObject ListFormat;
+
 /// Interface [SegmenterOptions]
 extension type SegmenterOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
@@ -1651,6 +1671,11 @@ extension type SegmentData.$(_i1.JSAny _) implements _i1.JSAny {
   /// isWordLike?: boolean
   external _i1.JSBoolean? isWordLike;
 }
+
+/// Variable [Segmenter]
+///
+/// Segmenter:
+external _i1.JSObject Segmenter;
 
 /// Method [supportedValuesOf]
 ///

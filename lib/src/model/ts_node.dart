@@ -2599,6 +2599,10 @@ class TsVariableDeclaration extends TsNode {
   List<TsNodeWrapper> get nodeWrappers => [name, exclamationToken, type, initializer];
 
   @override
+  String toCode() =>
+      '${name.toCode()}${exclamationToken.toCode('!')}${type.toCode(': &')}${initializer.toCode(' = &')}';
+
+  @override
   TsNode copy() =>
       TsVariableDeclaration(name.copy(), exclamationToken.copy(), type.copy(), initializer.copy(), meta: meta.copy());
 }

@@ -186,6 +186,15 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
         );
       }
       return node;
+    case TsVariableDeclaration(name: SingleNode(value: TsNode nameNode)):
+      final typeName = node.type.value?.nodeName;
+      final originalName = nameNode.nodeName;
+      final sanitizedName = _sanitizePropertyName(originalName, typeName);
+      if (sanitizedName != originalName) {
+        node.meta.originalName = originalName;
+        node.name.set(TsIdentifier(sanitizedName));
+      }
+      return node;
     case TsFunctionDeclaration(name: SingleNode(value: TsNode nameNode)):
       final originalName = nameNode.nodeName;
       final sanitizedName = _sanitizeMethodName(originalName);

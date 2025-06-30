@@ -834,6 +834,28 @@ class Transpiler {
     }).toDartNode(unknownKeyword);
   }
 
+  DartNode<Spec> _transpileVariableDeclaration(TsVariableDeclaration variableDeclaration) {
+    return Code.scope((allocator) {
+      return [
+        '/// Variable [${variableDeclaration.name.value.nodeName}]',
+        '///',
+        '/// ${variableDeclaration.toCode()}',
+        'external ${allocator(_transpileNode<Reference>(variableDeclaration.type.value).toSpec(dependencies)!)} ${variableDeclaration.name.value.nodeName};',
+      ].join('\n');
+    }).toDartNode(variableDeclaration);
+  }
+
+  DartNode<Spec> _transpileVariableDeclarationList(TsVariableDeclarationList variableDeclarationList) {
+    return DartFragment(
+      _transpileNodes(variableDeclarationList.declarations.value).expand((e) => e.toSpecs(dependencies)).toList(),
+      variableDeclarationList,
+    );
+  }
+
+  DartNode<Spec> _transpileVariableStatement(TsVariableStatement variableStatement) {
+    return _transpileNode(variableStatement.declarationList.value);
+  }
+
   DartNode<TypeReference> _transpileVoidKeyword(TsVoidKeyword voidKeyword) {
     return _voidType.toDartNode(voidKeyword);
   }
@@ -884,6 +906,9 @@ class Transpiler {
       TsUndefinedKeyword() => _transpileUndefinedKeyword(node),
       TsUnionType() => _transpileUnionType(node),
       TsUnknownKeyword() => _transpileUnknownKeyword(node),
+      TsVariableDeclaration() => _transpileVariableDeclaration(node),
+      TsVariableDeclarationList() => _transpileVariableDeclarationList(node),
+      TsVariableStatement() => _transpileVariableStatement(node),
       TsVoidKeyword() => _transpileVoidKeyword(node),
       _ => DartUnsupported<S>(node),
     };
