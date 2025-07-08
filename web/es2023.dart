@@ -7106,7 +7106,7 @@ extension type StringIterator<T extends _i1.JSAny>.$(_i1.JSAny _)
     implements _i1.JSAny, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [ProxyHandler]
-extension type ProxyHandler<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Method [apply]
   ///
   /// Parameters:
@@ -7242,7 +7242,7 @@ extension type ProxyHandler<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.J
 
 /// Interface [ProxyConstructor]
 @_i1.JS('T')
-extension type ProxyConstructor<T extends _i1.JSAny>.$(_i1.JSAny _) implements _i1.JSAny {
+extension type ProxyConstructor<T extends _i1.JSObject>.$(_i1.JSAny _) implements _i1.JSAny {
   /// Constructor
   ///
   /// Type Parameters:
@@ -7264,7 +7264,7 @@ extension type ProxyConstructor<T extends _i1.JSAny>.$(_i1.JSAny _) implements _
   ///
   /// Returns:
   /// -
-  external _i1.JSObject revocable<T extends _i1.JSAny>(T target, ProxyHandler<T> handler);
+  external _i1.JSObject revocable<T extends _i1.JSObject>(T target, ProxyHandler<T> handler);
 }
 
 /// Interface [Symbol]

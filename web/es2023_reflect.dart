@@ -88,7 +88,7 @@ external _i1.JSBoolean deleteProperty(_i1.JSObject target, _i2.PropertyKey prope
 /// - propertyKey: P
 /// - receiver:
 @_i1.JS('get')
-external get<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propertyKey, [_i1.JSAny receiver]);
+external get<T extends _i1.JSObject, P extends _i2.PropertyKey>(T target, P propertyKey, [_i1.JSAny receiver]);
 
 /// Method [getOwnPropertyDescriptor]
 ///
@@ -100,7 +100,7 @@ external get<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propert
 /// - target: T
 /// - propertyKey: P
 @_i1.JS('getOwnPropertyDescriptor')
-external _i1.JSAny getOwnPropertyDescriptor<T extends _i1.JSAny, P extends _i2.PropertyKey>(T target, P propertyKey);
+external _i1.JSAny getOwnPropertyDescriptor<T extends _i1.JSObject, P extends _i2.PropertyKey>(T target, P propertyKey);
 
 /// Method [getPrototypeOf]
 ///
@@ -150,7 +150,7 @@ external _i1.JSBoolean preventExtensions(_i1.JSObject target);
 /// - value:
 /// - receiver: any
 @_i1.JS('set')
-external _i1.JSBoolean set$1<T extends _i1.JSAny, P extends _i2.PropertyKey>(
+external _i1.JSBoolean set$1<T extends _i1.JSObject, P extends _i2.PropertyKey>(
   T target,
   P propertyKey,
   _i1.JSAny value, [

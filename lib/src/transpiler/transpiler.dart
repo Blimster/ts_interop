@@ -603,6 +603,13 @@ class Transpiler {
     }).toDartNode(numberKeyword);
   }
 
+  DartNode<TypeReference> _transpileObjectKeyword(TsObjectKeyword objectKeyword) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSObject';
+      builder.url = dependencies.libraryUrlForType(builder.symbol, objectKeyword);
+    }).toDartNode(objectKeyword);
+  }
+
   DartNode<Expression> _transpileNumericLiteral(TsNumericLiteral numericLiteral) {
     return literalNum(num.parse(numericLiteral.text)).toDartNode(numericLiteral);
   }
@@ -893,6 +900,7 @@ class Transpiler {
       TsNullKeyword() => _transpileNullKeyword(node),
       TsNumberKeyword() => _transpileNumberKeyword(node),
       TsNumericLiteral() => _transpileNumericLiteral(node),
+      TsObjectKeyword() => _transpileObjectKeyword(node),
       TsPackage() => _transpilePackage(node),
       TsParameter() => _transpileParameter(node),
       TsPropertyDeclaration() => _transpilePropertyDeclaration(node),
