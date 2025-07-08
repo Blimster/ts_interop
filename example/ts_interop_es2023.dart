@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
-import 'package:ts_interop/src/mapper/constructor_interface_mapper.dart';
+import 'package:ts_interop/src/mapper/constructor_mapper.dart';
 import 'package:ts_interop/src/mapper/invalid_name_mapper.dart';
 import 'package:ts_interop/src/mapper/missing_type_parameter_mapper.dart';
 import 'package:ts_interop/src/mapper/module_mappers.dart';
@@ -60,8 +60,13 @@ void main() async {
       .addPhase(
         SanitizerPhase('constructorInterfaceMapper', PhaseDirection.topDown, [
           constructorInterfaceFixJsBindingMapper,
-          constructorInterfaceCopyMapper,
-          constructorInterfaceRemoveVariableMapper,
+          constructorCopyMapper,
+        ]),
+      )
+      .addPhase(
+        SanitizerPhase('constructorInterfaceMapper', PhaseDirection.topDown, [
+          constructorRemoveVariableMapper,
+          constructorRemoveInterfaceMapper,
         ]),
       )
       .addPhase(SanitizerPhase('invalidNameMapper', PhaseDirection.bottomUp, [invalidNameMapper]))

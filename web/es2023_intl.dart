@@ -284,46 +284,6 @@ extension type PluralRules.$(_i1.JSAny _) implements _i1.JSAny {
   external LDMLPluralRule select(_i1.JSNumber n);
 }
 
-/// Interface [PluralRulesConstructor]
-@_i1.JS('PluralRules')
-extension type PluralRulesConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: string | readonly string[]
-  /// - options: PluralRulesOptions
-  external PluralRulesConstructor.$1([_i1.JSAny locales, PluralRulesOptions options]);
-
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options: PluralRulesOptions
-  external PluralRulesConstructor.$2([LocalesArgument locales, PluralRulesOptions options]);
-
-  /// Method [supportedLocalesOf$1]
-  ///
-  /// Parameters:
-  /// - locales: string | readonly string[]
-  /// - options:
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(_i1.JSAny locales, [_i1.JSObject options]);
-
-  /// Method [supportedLocalesOf$2]
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options:
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(LocalesArgument locales, [_i1.JSObject options]);
-}
-
 /// Interface [NumberFormatPartTypeRegistry]
 extension type NumberFormatPartTypeRegistry.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [literal]
@@ -611,6 +571,13 @@ typedef RelativeTimeFormatPart = _i1.JSObject;
 
 /// Interface [RelativeTimeFormat]
 extension type RelativeTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: RelativeTimeFormatOptions
+  external RelativeTimeFormat([LocalesArgument locales, RelativeTimeFormatOptions options]);
+
   /// Method [format]
   ///
   /// Parameters:
@@ -637,11 +604,6 @@ extension type RelativeTimeFormat.$(_i1.JSAny _) implements _i1.JSAny {
   /// - ResolvedRelativeTimeFormatOptions
   external ResolvedRelativeTimeFormatOptions resolvedOptions();
 }
-
-/// Variable [RelativeTimeFormat]
-///
-/// RelativeTimeFormat:
-external _i1.JSObject RelativeTimeFormat;
 
 /// Interface [NumberFormatOptionsStyleRegistry]
 extension type NumberFormatOptionsStyleRegistry.$(_i1.JSAny _) implements _i1.JSAny {
@@ -1135,6 +1097,13 @@ extension type LocaleOptions.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [Locale]
 extension type Locale.$(_i1.JSAny _) implements _i1.JSAny, LocaleOptions {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - tag: UnicodeBCP47LocaleIdentifier | Locale
+  /// - options: LocaleOptions
+  external Locale(_i1.JSAny tag, [LocaleOptions options]);
+
   /// Property [baseName]
   ///
   /// baseName: string
@@ -1164,11 +1133,6 @@ extension type Locale.$(_i1.JSAny _) implements _i1.JSAny, LocaleOptions {
   @_i1.JS('toString')
   external UnicodeBCP47LocaleIdentifier toString$();
 }
-
-/// Variable [Locale]
-///
-/// Locale:
-external _i1.JSObject Locale;
 
 /// Typedef [DisplayNamesFallback]
 ///
@@ -1243,6 +1207,13 @@ extension type ResolvedDisplayNamesOptions.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [DisplayNames]
 extension type DisplayNames.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: DisplayNamesOptions
+  external DisplayNames(LocalesArgument locales, DisplayNamesOptions options);
+
   /// Method [of]
   ///
   /// Parameters:
@@ -1257,141 +1228,6 @@ extension type DisplayNames.$(_i1.JSAny _) implements _i1.JSAny {
   /// Returns:
   /// - ResolvedDisplayNamesOptions
   external ResolvedDisplayNamesOptions resolvedOptions();
-}
-
-/// Variable [DisplayNames]
-///
-/// DisplayNames:
-external _i1.JSObject DisplayNames;
-
-/// Interface [CollatorConstructor]
-@_i1.JS('Collator')
-extension type CollatorConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options: CollatorOptions
-  external CollatorConstructor.$1([LocalesArgument locales, CollatorOptions options]);
-
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: string | string[]
-  /// - options: CollatorOptions
-  external CollatorConstructor.$2([_i1.JSAny locales, CollatorOptions options]);
-
-  /// Method [supportedLocalesOf$1]
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options: CollatorOptions
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(LocalesArgument locales, [CollatorOptions options]);
-
-  /// Method [supportedLocalesOf$2]
-  ///
-  /// Parameters:
-  /// - locales: string | string[]
-  /// - options: CollatorOptions
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(_i1.JSAny locales, [CollatorOptions options]);
-}
-
-/// Interface [DateTimeFormatConstructor]
-@_i1.JS('DateTimeFormat')
-extension type DateTimeFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options: DateTimeFormatOptions
-  external DateTimeFormatConstructor.$1([LocalesArgument locales, DateTimeFormatOptions options]);
-
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: string | string[]
-  /// - options: DateTimeFormatOptions
-  external DateTimeFormatConstructor.$2([_i1.JSAny locales, DateTimeFormatOptions options]);
-
-  /// Method [supportedLocalesOf$1]
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options: DateTimeFormatOptions
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(LocalesArgument locales, [DateTimeFormatOptions options]);
-
-  /// Method [supportedLocalesOf$2]
-  ///
-  /// Parameters:
-  /// - locales: string | string[]
-  /// - options: DateTimeFormatOptions
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(_i1.JSAny locales, [DateTimeFormatOptions options]);
-
-  /// Property [prototype]
-  ///
-  /// readonly prototype: DateTimeFormat
-  external DateTimeFormat get prototype;
-}
-
-/// Interface [NumberFormatConstructor]
-@_i1.JS('NumberFormat')
-extension type NumberFormatConstructor.$(_i1.JSFunction _) implements _i1.JSFunction {
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options: NumberFormatOptions
-  external NumberFormatConstructor.$1([LocalesArgument locales, NumberFormatOptions options]);
-
-  /// Constructor
-  ///
-  /// Parameters:
-  /// - locales: string | string[]
-  /// - options: NumberFormatOptions
-  external NumberFormatConstructor.$2([_i1.JSAny locales, NumberFormatOptions options]);
-
-  /// Method [supportedLocalesOf$1]
-  ///
-  /// Parameters:
-  /// - locales: LocalesArgument
-  /// - options: NumberFormatOptions
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$1(LocalesArgument locales, [NumberFormatOptions options]);
-
-  /// Method [supportedLocalesOf$2]
-  ///
-  /// Parameters:
-  /// - locales: string | string[]
-  /// - options: NumberFormatOptions
-  ///
-  /// Returns:
-  /// - string[]
-  @_i1.JS('supportedLocalesOf')
-  external _i1.JSArray<_i1.JSString> supportedLocalesOf$2(_i1.JSAny locales, [NumberFormatOptions options]);
-
-  /// Property [prototype]
-  ///
-  /// readonly prototype: NumberFormat
-  external NumberFormat get prototype;
 }
 
 /// Interface [DateTimeRangeFormatPart]
@@ -1559,6 +1395,13 @@ extension type ResolvedListFormatOptions.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [ListFormat]
 extension type ListFormat.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: ListFormatOptions
+  external ListFormat([LocalesArgument locales, ListFormatOptions options]);
+
   /// Method [format]
   ///
   /// Parameters:
@@ -1584,11 +1427,6 @@ extension type ListFormat.$(_i1.JSAny _) implements _i1.JSAny {
   external ResolvedListFormatOptions resolvedOptions();
 }
 
-/// Variable [ListFormat]
-///
-/// ListFormat:
-external _i1.JSObject ListFormat;
-
 /// Interface [SegmenterOptions]
 extension type SegmenterOptions.$(_i1.JSAny _) implements _i1.JSAny {
   /// Property [localeMatcher]
@@ -1604,6 +1442,13 @@ extension type SegmenterOptions.$(_i1.JSAny _) implements _i1.JSAny {
 
 /// Interface [Segmenter]
 extension type Segmenter.$(_i1.JSAny _) implements _i1.JSAny {
+  /// Constructor
+  ///
+  /// Parameters:
+  /// - locales: LocalesArgument
+  /// - options: SegmenterOptions
+  external Segmenter([LocalesArgument locales, SegmenterOptions options]);
+
   /// Method [segment]
   ///
   /// Parameters:
@@ -1671,11 +1516,6 @@ extension type SegmentData.$(_i1.JSAny _) implements _i1.JSAny {
   /// isWordLike?: boolean
   external _i1.JSBoolean? isWordLike;
 }
-
-/// Variable [Segmenter]
-///
-/// Segmenter:
-external _i1.JSObject Segmenter;
 
 /// Method [supportedValuesOf]
 ///

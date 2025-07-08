@@ -840,6 +840,10 @@ class Transpiler {
         '/// Variable [${variableDeclaration.name.value.nodeName}]',
         '///',
         '/// ${variableDeclaration.toCode()}',
+        '@${allocator(TypeReference((builder) {
+          builder.symbol = 'JS';
+          builder.url = dependencies.libraryUrlForType(builder.symbol, variableDeclaration);
+        }))}(\'${variableDeclaration.meta.originalName}\')',
         'external ${allocator(_transpileNode<Reference>(variableDeclaration.type.value).toSpec(dependencies)!)} ${variableDeclaration.name.value.nodeName};',
       ].join('\n');
     }).toDartNode(variableDeclaration);
