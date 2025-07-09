@@ -212,6 +212,13 @@ class Transpiler {
     }).toDartNode(classDeclaration);
   }
 
+  DartNode<TypeReference> _transpileConditionalType(TsConditionalType conditionalType) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSAny';
+      builder.url = dependencies.libraryUrlForType(builder.symbol, conditionalType);
+    }).toDartNode(conditionalType);
+  }
+
   DartNode<Spec> _transpileConstructorDeclaration(TsConstructorDeclaration constructorDeclaration) {
     return Constructor((builder) {
       builder.docs.addAll([
@@ -881,6 +888,7 @@ class Transpiler {
       TsBooleanKeyword() => _transpileBooleanKeyword(node),
       TsCallSignature() => DartNode.empty<S>(node),
       TsClassDeclaration() => _transpileClassDeclaration(node),
+      TsConditionalType() => _transpileConditionalType(node),
       TsConstructorDeclaration() => _transpileConstructorDeclaration(node),
       TsConstructSignature() => _transpileConstructSignature(node),
       TsConstructorType() => _transpileConstructorType(node),

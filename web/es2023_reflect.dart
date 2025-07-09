@@ -88,7 +88,11 @@ external _i1.JSBoolean deleteProperty(_i1.JSObject target, _i2.PropertyKey prope
 /// - propertyKey: P
 /// - receiver:
 @_i1.JS('get')
-external get<T extends _i1.JSObject, P extends _i2.PropertyKey>(T target, P propertyKey, [_i1.JSAny receiver]);
+external _i1.JSAny get<T extends _i1.JSObject, P extends _i2.PropertyKey>(
+  T target,
+  P propertyKey, [
+  _i1.JSAny receiver,
+]);
 
 /// Method [getOwnPropertyDescriptor]
 ///
