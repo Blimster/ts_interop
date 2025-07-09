@@ -631,6 +631,10 @@ class Transpiler {
     return library.toDartNode<Library>(package);
   }
 
+  DartNode<Reference> _transpileParenthesizedType(TsParenthesizedType parenthesizedType) {
+    return _transpileNode<Reference>(parenthesizedType.type.value);
+  }
+
   DartNode<Reference> _transpileParameter(TsParameter parameter) {
     return Parameter((builder) {
       builder.name = _sanitizeParamName(parameter.name.value.nodeName);
@@ -910,6 +914,7 @@ class Transpiler {
       TsNumericLiteral() => _transpileNumericLiteral(node),
       TsObjectKeyword() => _transpileObjectKeyword(node),
       TsPackage() => _transpilePackage(node),
+      TsParenthesizedType() => _transpileParenthesizedType(node),
       TsParameter() => _transpileParameter(node),
       TsPropertyDeclaration() => _transpilePropertyDeclaration(node),
       TsPropertySignature() => _transpilePropertySignature(node),
