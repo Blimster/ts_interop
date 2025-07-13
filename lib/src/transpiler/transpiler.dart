@@ -458,13 +458,13 @@ class Transpiler {
       builder.representationDeclaration = RepresentationDeclaration((builder) {
         builder.name = '_';
         builder.declaredRepresentationType = TypeReference((builder) {
-          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSAny';
+          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
           builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
         });
       });
       builder.implements.add(
         TypeReference((builder) {
-          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSAny';
+          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
           builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
         }),
       );
@@ -624,7 +624,7 @@ class Transpiler {
   DartNode<Library> _transpilePackage(TsPackage package) {
     final library = Library((builder) {
       builder.ignoreForFile.addAll(_ignoreDirectives);
-      builder.name = package.name;
+      builder.name = package.name.split('/').last;
       builder.body.addAll(_transpileNodes(package.sourceFiles.value).toSpecs(dependencies).where((s) => s is! Library));
     });
     libraries.add(library);
