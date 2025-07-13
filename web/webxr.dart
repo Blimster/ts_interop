@@ -1,6 +1,9 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: avoid_shadowing_type_parameters, camel_case_types
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
 
-// ignore_for_file: no_leading_underscores_for_library_prefixes
+library webxr; // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'dart:js_interop' as _i1;
 import 'package:web/web.dart' as _i2;
 import './types.dart' as _i3;
@@ -28,6 +31,15 @@ extension type WebGLRenderingContextBase.$(_i1.JSObject _) implements _i1.JSObje
   /// Returns:
   /// - Promise
   external _i1.JSPromise makeXRCompatible();
+
+  /// Method [getExtension]
+  ///
+  /// Parameters:
+  /// - extensionName: "OCULUS_multiview"
+  ///
+  /// Returns:
+  /// - OCULUS_multiview | null
+  external OCULUS_multiview? getExtension(_i1.JSString extensionName);
 }
 
 /// Typedef [XRSessionMode]
@@ -87,10 +99,15 @@ extension type XRSystemEventMap.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// devicechange: XRSystemDeviceChangeEvent
   external XRSystemDeviceChangeEvent devicechange;
+
+  /// Property [sessiongranted]
+  ///
+  /// sessiongranted: XRSystemSessionGrantedEvent
+  external XRSystemSessionGrantedEvent sessiongranted;
 }
 
-/// Class [XRSystem]
-extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
+/// Interface [XRSystem]
+extension type XRSystem.$(_i1.JSObject _) implements _i1.JSObject, _i2.EventTarget {
   /// Property [ondevicechange]
   ///
   /// ondevicechange: XRSystemDeviceChangeEventHandler | null
@@ -109,10 +126,7 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - Promise
-  external _i1.JSPromise<XRSession> requestSession(
-    XRSessionMode mode, [
-    XRSessionInit options,
-  ]);
+  external _i1.JSPromise<XRSession> requestSession(XRSessionMode mode, [XRSessionInit options]);
 
   /// Method [isSessionSupported]
   ///
@@ -135,12 +149,7 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('addEventListener')
-  external void addEventListener$1<K extends _i1.JSAny>(
-    K type,
-    _i1.JSFunction listener, [
-    _i1.JSAny options,
-  ]);
+  external void addEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
 
   /// Method [addEventListener]
   ///
@@ -151,8 +160,7 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('addEventListener')
-  external void addEventListener$2(
+  external void addEventListener(
     _i1.JSString type,
     _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
@@ -170,12 +178,7 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('removeEventListener')
-  external void removeEventListener$1<K extends _i1.JSAny>(
-    K type,
-    _i1.JSFunction listener, [
-    _i1.JSAny options,
-  ]);
+  external void removeEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
 
   /// Method [removeEventListener]
   ///
@@ -186,12 +189,129 @@ extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('removeEventListener')
-  external void removeEventListener$2(
+  external void removeEventListener(
     _i1.JSString type,
     _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
   ]);
+}
+
+/// Class [XRSystem]
+extension type XRSystem._(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [ondevicechange]
+  ///
+  /// ondevicechange: XRSystemDeviceChangeEventHandler | null
+  external XRSystemDeviceChangeEventHandler ondevicechange;
+
+  /// Property [onsessiongranted]
+  ///
+  /// onsessiongranted: XRSystemSessionGrantedEventHandler | null
+  external XRSystemSessionGrantedEventHandler onsessiongranted;
+
+  /// Property [onsessiongranted]
+  ///
+  /// onsessiongranted: XRSystemSessionGrantedEventHandler | null
+  external XRSystemSessionGrantedEventHandler onsessiongranted;
+
+  /// Method [requestSession]
+  ///
+  /// Parameters:
+  /// - mode: XRSessionMode
+  /// - options: XRSessionInit
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise<XRSession> requestSession(XRSessionMode mode, [XRSessionInit options]);
+
+  /// Method [isSessionSupported]
+  ///
+  /// Parameters:
+  /// - mode: XRSessionMode
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise<_i1.JSBoolean> isSessionSupported(XRSessionMode mode);
+
+  /// Method [addEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRSystemEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRSystem, ev: XRSystemEventMap[K]) => any
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [addEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRSystemEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRSystem, ev: XRSystemEventMap[K]) => any
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+}
+
+/// Interface [XRViewport]
+extension type XRViewport.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRViewport {
+  /// Property [x]
+  ///
+  /// readonly x: number
+  external _i1.JSNumber get x;
+
+  /// Property [y]
+  ///
+  /// readonly y: number
+  external _i1.JSNumber get y;
+
+  /// Property [width]
+  ///
+  /// readonly width: number
+  external _i1.JSNumber get width;
+
+  /// Property [height]
+  ///
+  /// readonly height: number
+  external _i1.JSNumber get height;
 }
 
 /// Class [XRViewport]
@@ -217,6 +337,9 @@ extension type XRViewport._(_i1.JSObject _) implements _i1.JSObject {
   external _i1.JSNumber get height;
 }
 
+/// Interface [XRSpace]
+extension type XRSpace.$(_i1.JSObject _) implements _i1.JSObject, _i2.EventTarget, _i2.XRSpace {}
+
 /// Class [XRSpace]
 extension type XRSpace._(_i1.JSObject _) implements _i1.JSObject {}
 
@@ -241,6 +364,39 @@ extension type XRRenderStateInit.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// inlineVerticalFieldOfView?: number | undefined
   external _i1.JSNumber? inlineVerticalFieldOfView;
+
+  /// Property [layers]
+  ///
+  /// layers?: XRLayer[] | undefined
+  external _i1.JSArray<XRLayer>? layers;
+}
+
+/// Interface [XRRenderState]
+extension type XRRenderState.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [baseLayer]
+  ///
+  /// readonly baseLayer?: XRWebGLLayer | undefined
+  external XRWebGLLayer? get baseLayer;
+
+  /// Property [depthFar]
+  ///
+  /// readonly depthFar: number
+  external _i1.JSNumber get depthFar;
+
+  /// Property [depthNear]
+  ///
+  /// readonly depthNear: number
+  external _i1.JSNumber get depthNear;
+
+  /// Property [inlineVerticalFieldOfView]
+  ///
+  /// readonly inlineVerticalFieldOfView?: number | undefined
+  external _i1.JSNumber? get inlineVerticalFieldOfView;
+
+  /// Property [layers]
+  ///
+  /// readonly layers?: XRLayer[] | undefined
+  external _i1.JSArray<XRLayer>? get layers;
 }
 
 /// Class [XRRenderState]
@@ -269,6 +425,11 @@ extension type XRRenderState._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// readonly layers?: XRLayer[] | undefined
   external _i1.JSArray<XRLayer>? get layers;
+
+  /// Property [layers]
+  ///
+  /// readonly layers?: XRLayer[] | undefined
+  external _i1.JSArray<XRLayer>? get layers;
 }
 
 /// Interface [XRReferenceSpaceEventInit]
@@ -285,6 +446,24 @@ extension type XRReferenceSpaceEventInit.$(_i1.JSObject _)
   external _i2.XRRigidTransform? transform;
 }
 
+/// Interface [XRReferenceSpaceEvent]
+extension type XRReferenceSpaceEvent.$(_i1.JSObject _) implements _i1.JSObject, _i2.Event, _i2.XRReferenceSpaceEvent {
+  /// Property [type]
+  ///
+  /// readonly type: "reset"
+  external _i1.JSString get type;
+
+  /// Property [referenceSpace]
+  ///
+  /// readonly referenceSpace: XRReferenceSpace
+  external _i2.XRReferenceSpace get referenceSpace;
+
+  /// Property [transform]
+  ///
+  /// readonly transform?: XRRigidTransform | undefined
+  external _i2.XRRigidTransform? get transform;
+}
+
 /// Class [XRReferenceSpaceEvent]
 extension type XRReferenceSpaceEvent.$(_i1.JSObject _) implements _i1.JSObject {
   /// Constructor
@@ -292,10 +471,7 @@ extension type XRReferenceSpaceEvent.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - type: "reset"
   /// - eventInitDict: XRReferenceSpaceEventInit
-  external XRReferenceSpaceEvent(
-    _i1.JSString type, [
-    _i2.XRReferenceSpaceEventInit eventInitDict,
-  ]);
+  external XRReferenceSpaceEvent(_i1.JSString type, [_i2.XRReferenceSpaceEventInit eventInitDict]);
 
   /// Property [type]
   ///
@@ -322,6 +498,81 @@ extension type XRReferenceSpaceEventMap.$(_i1.JSObject _) implements _i1.JSObjec
   ///
   /// reset: XRReferenceSpaceEvent
   external _i2.XRReferenceSpaceEvent reset;
+}
+
+/// Interface [XRReferenceSpace]
+extension type XRReferenceSpace.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRSpace, _i2.XRReferenceSpace {
+  /// Property [onreset]
+  ///
+  /// onreset: XRReferenceSpaceEventHandler
+  external XRReferenceSpaceEventHandler onreset;
+
+  /// Method [getOffsetReferenceSpace]
+  ///
+  /// Parameters:
+  /// - originOffset: XRRigidTransform
+  ///
+  /// Returns:
+  /// - XRReferenceSpace
+  external _i2.XRReferenceSpace getOffsetReferenceSpace(_i2.XRRigidTransform originOffset);
+
+  /// Method [addEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRReferenceSpaceEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRReferenceSpace, ev: XRReferenceSpaceEventMap[K]) => any
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [addEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRReferenceSpaceEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRReferenceSpace, ev: XRReferenceSpaceEventMap[K]) => any
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
 }
 
 /// Class [XRReferenceSpace]
@@ -352,12 +603,7 @@ extension type XRReferenceSpace._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('addEventListener')
-  external void addEventListener$1<K extends _i1.JSAny>(
-    K type,
-    _i1.JSFunction listener, [
-    _i1.JSAny options,
-  ]);
+  external void addEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
 
   /// Method [addEventListener]
   ///
@@ -368,8 +614,7 @@ extension type XRReferenceSpace._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('addEventListener')
-  external void addEventListener$2(
+  external void addEventListener(
     _i1.JSString type,
     _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
@@ -387,12 +632,7 @@ extension type XRReferenceSpace._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('removeEventListener')
-  external void removeEventListener$1<K extends _i1.JSAny>(
-    K type,
-    _i1.JSFunction listener, [
-    _i1.JSAny options,
-  ]);
+  external void removeEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
 
   /// Method [removeEventListener]
   ///
@@ -403,12 +643,19 @@ extension type XRReferenceSpace._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  @_i1.JS('removeEventListener')
-  external void removeEventListener$2(
+  external void removeEventListener(
     _i1.JSString type,
     _i3.EventListenerOrEventListenerObject listener, [
     _i1.JSAny options,
   ]);
+}
+
+/// Interface [XRBoundedReferenceSpace]
+extension type XRBoundedReferenceSpace.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRReferenceSpace {
+  /// Property [boundsGeometry]
+  ///
+  /// readonly boundsGeometry: DOMPointReadOnly[]
+  external _i1.JSArray<_i2.DOMPointReadOnly> get boundsGeometry;
 }
 
 /// Class [XRBoundedReferenceSpace]
@@ -417,6 +664,44 @@ extension type XRBoundedReferenceSpace._(_i1.JSObject _) implements _i1.JSObject
   ///
   /// readonly boundsGeometry: DOMPointReadOnly[]
   external _i1.JSArray<_i2.DOMPointReadOnly> get boundsGeometry;
+}
+
+/// Interface [XRInputSource]
+extension type XRInputSource.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRInputSource {
+  /// Property [handedness]
+  ///
+  /// readonly handedness: XRHandedness
+  external _i2.XRHandedness get handedness;
+
+  /// Property [targetRayMode]
+  ///
+  /// readonly targetRayMode: XRTargetRayMode
+  external _i2.XRTargetRayMode get targetRayMode;
+
+  /// Property [targetRaySpace]
+  ///
+  /// readonly targetRaySpace: XRSpace
+  external _i2.XRSpace get targetRaySpace;
+
+  /// Property [gripSpace]
+  ///
+  /// readonly gripSpace?: XRSpace | undefined
+  external _i2.XRSpace? get gripSpace;
+
+  /// Property [gamepad]
+  ///
+  /// readonly gamepad?: Gamepad | undefined
+  external _i2.Gamepad? get gamepad;
+
+  /// Property [profiles]
+  ///
+  /// readonly profiles: string[]
+  external _i1.JSArray<_i1.JSString> get profiles;
+
+  /// Property [hand]
+  ///
+  /// readonly hand?: XRHand | undefined
+  external _i2.XRHand? get hand;
 }
 
 /// Class [XRInputSource]
@@ -467,10 +752,7 @@ extension type GamepadHapticActuator.$(_i1.JSObject _) implements _i1.JSObject, 
   ///
   /// Returns:
   /// - Promise
-  external _i1.JSPromise<_i1.JSBoolean> pulse(
-    _i1.JSNumber value,
-    _i1.JSNumber duration,
-  );
+  external _i1.JSPromise<_i1.JSBoolean> pulse(_i1.JSNumber value, _i1.JSNumber duration);
 }
 
 /// Interface [Gamepad]
@@ -481,17 +763,14 @@ extension type Gamepad.$(_i1.JSObject _) implements _i1.JSObject, _i2.Gamepad {
   external _i1.JSArray<_i2.GamepadHapticActuator> get hapticActuators;
 }
 
-/// Class [XRInputSourceArray]
-extension type XRInputSourceArray._(_i1.JSObject _) implements _i1.JSObject {
+/// Interface [XRInputSourceArray]
+extension type XRInputSourceArray.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [length]
   ///
   /// length: number
   external _i1.JSNumber length;
 
-  external void operator []=(
-    _i1.JSNumber n,
-    _i2.XRInputSource value,
-  );
+  external void operator []=(_i1.JSNumber n, _i2.XRInputSource value);
   external _i2.XRInputSource operator [](_i1.JSNumber n);
 
   /// Method [entries]
@@ -520,10 +799,69 @@ extension type XRInputSourceArray._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - void
-  external void forEach(
-    _i1.JSFunction callbackfn, [
-    _i1.JSAny thisArg,
-  ]);
+  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+}
+
+/// Class [XRInputSourceArray]
+extension type XRInputSourceArray._(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [length]
+  ///
+  /// length: number
+  external _i1.JSNumber length;
+
+  external void operator []=(_i1.JSNumber n, _i2.XRInputSource value);
+  external _i2.XRInputSource operator [](_i1.JSNumber n);
+
+  /// Method [entries]
+  ///
+  /// Returns:
+  /// - IterableIterator
+  external _i3.IterableIterator<_i1.JSArray<_i1.JSAny>> entries();
+
+  /// Method [keys]
+  ///
+  /// Returns:
+  /// - IterableIterator
+  external _i3.IterableIterator<_i1.JSNumber> keys();
+
+  /// Method [values]
+  ///
+  /// Returns:
+  /// - IterableIterator
+  external _i3.IterableIterator<_i2.XRInputSource> values();
+
+  /// Method [forEach]
+  ///
+  /// Parameters:
+  /// - callbackfn: (value: XRInputSource, index: number, array: XRInputSource[]) => void
+  /// - thisArg: any
+  ///
+  /// Returns:
+  /// - void
+  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+}
+
+/// Interface [XRPose]
+extension type XRPose.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRPose {
+  /// Property [transform]
+  ///
+  /// readonly transform: XRRigidTransform
+  external _i2.XRRigidTransform get transform;
+
+  /// Property [linearVelocity]
+  ///
+  /// readonly linearVelocity?: DOMPointReadOnly | undefined
+  external _i2.DOMPointReadOnly? get linearVelocity;
+
+  /// Property [angularVelocity]
+  ///
+  /// readonly angularVelocity?: DOMPointReadOnly | undefined
+  external _i2.DOMPointReadOnly? get angularVelocity;
+
+  /// Property [emulatedPosition]
+  ///
+  /// readonly emulatedPosition: boolean
+  external _i1.JSBoolean get emulatedPosition;
 }
 
 /// Class [XRPose]
@@ -549,8 +887,8 @@ extension type XRPose._(_i1.JSObject _) implements _i1.JSObject {
   external _i1.JSBoolean get emulatedPosition;
 }
 
-/// Class [XRFrame]
-extension type XRFrame._(_i1.JSObject _) implements _i1.JSObject {
+/// Interface [XRFrame]
+extension type XRFrame.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [trackedAnchors]
   ///
   /// trackedAnchors?: XRAnchorSet | undefined
@@ -584,10 +922,7 @@ extension type XRFrame._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - XRPose | undefined
-  external _i2.XRPose? getPose(
-    _i2.XRSpace space,
-    _i2.XRSpace baseSpace,
-  );
+  external _i2.XRPose? getPose(_i2.XRSpace space, _i2.XRSpace baseSpace);
 
   /// Method [getViewerPose]
   ///
@@ -615,7 +950,148 @@ extension type XRFrame._(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - XRTransientInputHitTestResult[]
   external _i1.JSArray<XRTransientInputHitTestResult> getHitTestResultsForTransientInput(
-      XRTransientInputHitTestSource hitTestSource);
+    XRTransientInputHitTestSource hitTestSource,
+  );
+
+  /// Property [detectedPlanes]
+  ///
+  /// readonly detectedPlanes?: XRPlaneSet
+  external XRPlaneSet? get detectedPlanes;
+
+  /// Property [detectedMeshes]
+  ///
+  /// readonly detectedMeshes?: XRMeshSet
+  external XRMeshSet? get detectedMeshes;
+
+  /// Method [getDepthInformation]
+  ///
+  /// Parameters:
+  /// - view: XRView
+  ///
+  /// Returns:
+  /// - XRCPUDepthInformation | null | undefined
+  external XRCPUDepthInformation? getDepthInformation(XRView view);
+}
+
+/// Class [XRFrame]
+extension type XRFrame._(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [trackedAnchors]
+  ///
+  /// trackedAnchors?: XRAnchorSet | undefined
+  external XRAnchorSet? trackedAnchors;
+
+  /// Property [createAnchor]
+  ///
+  /// createAnchor?: (pose: XRRigidTransform, space: XRSpace) => Promise | undefined
+  external _i1.JSFunction? createAnchor;
+
+  /// Property [getJointPose]
+  ///
+  /// getJointPose?: (joint: XRJointSpace, baseSpace: XRSpace) => XRJointPose | undefined
+  external _i1.JSFunction? getJointPose;
+
+  /// Property [trackedAnchors]
+  ///
+  /// trackedAnchors?: XRAnchorSet | undefined
+  external XRAnchorSet? trackedAnchors;
+
+  /// Property [createAnchor]
+  ///
+  /// createAnchor?: (pose: XRRigidTransform, space: XRSpace) => Promise | undefined
+  external _i1.JSFunction? createAnchor;
+
+  /// Property [getJointPose]
+  ///
+  /// getJointPose?: (joint: XRJointSpace, baseSpace: XRSpace) => XRJointPose | undefined
+  external _i1.JSFunction? getJointPose;
+
+  /// Property [session]
+  ///
+  /// readonly session: XRSession
+  external XRSession get session;
+
+  /// Property [predictedDisplayTime]
+  ///
+  /// readonly predictedDisplayTime: DOMHighResTimeStamp
+  external _i2.DOMHighResTimeStamp get predictedDisplayTime;
+
+  /// Method [getPose]
+  ///
+  /// Parameters:
+  /// - space: XRSpace
+  /// - baseSpace: XRSpace
+  ///
+  /// Returns:
+  /// - XRPose | undefined
+  external _i2.XRPose? getPose(_i2.XRSpace space, _i2.XRSpace baseSpace);
+
+  /// Method [getViewerPose]
+  ///
+  /// Parameters:
+  /// - referenceSpace: XRReferenceSpace
+  ///
+  /// Returns:
+  /// - XRViewerPose | undefined
+  external _i2.XRViewerPose? getViewerPose(_i2.XRReferenceSpace referenceSpace);
+
+  /// Method [getHitTestResults]
+  ///
+  /// Parameters:
+  /// - hitTestSource: XRHitTestSource
+  ///
+  /// Returns:
+  /// - XRHitTestResult[]
+  external _i1.JSArray<XRHitTestResult> getHitTestResults(XRHitTestSource hitTestSource);
+
+  /// Method [getHitTestResultsForTransientInput]
+  ///
+  /// Parameters:
+  /// - hitTestSource: XRTransientInputHitTestSource
+  ///
+  /// Returns:
+  /// - XRTransientInputHitTestResult[]
+  external _i1.JSArray<XRTransientInputHitTestResult> getHitTestResultsForTransientInput(
+    XRTransientInputHitTestSource hitTestSource,
+  );
+
+  /// Property [detectedPlanes]
+  ///
+  /// readonly detectedPlanes?: XRPlaneSet
+  external XRPlaneSet? get detectedPlanes;
+
+  /// Property [detectedMeshes]
+  ///
+  /// readonly detectedMeshes?: XRMeshSet
+  external XRMeshSet? get detectedMeshes;
+
+  /// Method [getDepthInformation]
+  ///
+  /// Parameters:
+  /// - view: XRView
+  ///
+  /// Returns:
+  /// - XRCPUDepthInformation | null | undefined
+  external XRCPUDepthInformation? getDepthInformation(XRView view);
+
+  /// Method [getHitTestResults]
+  ///
+  /// Parameters:
+  /// - hitTestSource: XRHitTestSource
+  ///
+  /// Returns:
+  /// - XRHitTestResult[]
+  external _i1.JSArray<XRHitTestResult> getHitTestResults(XRHitTestSource hitTestSource);
+
+  /// Method [getHitTestResultsForTransientInput]
+  ///
+  /// Parameters:
+  /// - hitTestSource: XRTransientInputHitTestSource
+  ///
+  /// Returns:
+  /// - XRTransientInputHitTestResult[]
+  external _i1.JSArray<XRTransientInputHitTestResult> getHitTestResultsForTransientInput(
+    XRTransientInputHitTestSource hitTestSource,
+  );
 
   /// Property [detectedPlanes]
   ///
@@ -663,10 +1139,7 @@ extension type XRInputSourceEvent.$(_i1.JSObject _) implements _i1.JSObject, _i2
   /// Parameters:
   /// - type: XRInputSourceEventType
   /// - eventInitDict: XRInputSourceEventInit
-  external XRInputSourceEvent(
-    XRInputSourceEventType type, [
-    _i2.XRInputSourceEventInit eventInitDict,
-  ]);
+  external XRInputSourceEvent(XRInputSourceEventType type, [_i2.XRInputSourceEventInit eventInitDict]);
 
   /// Property [type]
   ///
@@ -707,10 +1180,7 @@ extension type XRSessionEvent.$(_i1.JSObject _) implements _i1.JSObject, _i2.Eve
   /// Parameters:
   /// - type: XRSessionEventType
   /// - eventInitDict: XRSessionEventInit
-  external XRSessionEvent(
-    XRSessionEventType type, [
-    _i2.XRSessionEventInit eventInitDict,
-  ]);
+  external XRSessionEvent(XRSessionEventType type, [_i2.XRSessionEventInit eventInitDict]);
 
   /// Property [session]
   ///
@@ -732,6 +1202,16 @@ extension type XRSessionInit.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// requiredFeatures?: string[] | undefined
   external _i1.JSArray<_i1.JSString>? requiredFeatures;
+
+  /// Property [domOverlay]
+  ///
+  /// domOverlay?: XRDOMOverlayInit | undefined
+  external XRDOMOverlayInit? domOverlay;
+
+  /// Property [depthSensing]
+  ///
+  /// depthSensing?: XRDepthStateInit | undefined
+  external XRDepthStateInit? depthSensing;
 }
 
 /// Interface [XRSessionEventMap]
@@ -787,8 +1267,58 @@ extension type XRSessionEventMap.$(_i1.JSObject _) implements _i1.JSObject {
   external _i2.XRInputSourceEvent squeezeend;
 }
 
-/// Class [XRSession]
-extension type XRSession._(_i1.JSObject _) implements _i1.JSObject {
+/// Interface [XRSession]
+extension type XRSession.$(_i1.JSObject _) implements _i1.JSObject, _i2.EventTarget {
+  /// Property [onend]
+  ///
+  /// onend: XRSessionEventHandler
+  external XRSessionEventHandler onend;
+
+  /// Property [oninputsourceschange]
+  ///
+  /// oninputsourceschange: XRInputSourcesChangeEventHandler
+  external XRInputSourcesChangeEventHandler oninputsourceschange;
+
+  /// Property [onselect]
+  ///
+  /// onselect: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onselect;
+
+  /// Property [onselectstart]
+  ///
+  /// onselectstart: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onselectstart;
+
+  /// Property [onselectend]
+  ///
+  /// onselectend: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onselectend;
+
+  /// Property [onsqueeze]
+  ///
+  /// onsqueeze: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onsqueeze;
+
+  /// Property [onsqueezestart]
+  ///
+  /// onsqueezestart: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onsqueezestart;
+
+  /// Property [onsqueezeend]
+  ///
+  /// onsqueezeend: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onsqueezeend;
+
+  /// Property [onvisibilitychange]
+  ///
+  /// onvisibilitychange: XRSessionEventHandler
+  external XRSessionEventHandler onvisibilitychange;
+
+  /// Property [onframeratechange]
+  ///
+  /// onframeratechange: XRSessionEventHandler
+  external XRSessionEventHandler onframeratechange;
+
   /// Property [requestHitTestSource]
   ///
   /// requestHitTestSource?: (options: XRHitTestOptionsInit) => Promise | undefined
@@ -803,6 +1333,160 @@ extension type XRSession._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// requestHitTest?: (ray: XRRay, referenceSpace: XRReferenceSpace) => Promise | undefined
   external _i1.JSFunction? requestHitTest;
+
+  /// Property [inputSources]
+  ///
+  /// readonly inputSources: XRInputSourceArray
+  external XRInputSourceArray get inputSources;
+
+  /// Property [renderState]
+  ///
+  /// readonly renderState: XRRenderState
+  external XRRenderState get renderState;
+
+  /// Property [environmentBlendMode]
+  ///
+  /// readonly environmentBlendMode: XREnvironmentBlendMode
+  external XREnvironmentBlendMode get environmentBlendMode;
+
+  /// Property [visibilityState]
+  ///
+  /// readonly visibilityState: XRVisibilityState
+  external XRVisibilityState get visibilityState;
+
+  /// Property [frameRate]
+  ///
+  /// readonly frameRate?: number | undefined
+  external _i1.JSNumber? get frameRate;
+
+  /// Property [supportedFrameRates]
+  ///
+  /// readonly supportedFrameRates?: Float32Array | undefined
+  external _i1.JSFloat32Array? get supportedFrameRates;
+
+  /// Property [enabledFeatures]
+  ///
+  /// readonly enabledFeatures?: string[] | undefined
+  external _i1.JSArray<_i1.JSString>? get enabledFeatures;
+
+  /// Property [isSystemKeyboardSupported]
+  ///
+  /// readonly isSystemKeyboardSupported: boolean
+  external _i1.JSBoolean get isSystemKeyboardSupported;
+
+  /// Property [interactionMode]
+  ///
+  /// readonly interactionMode?: XRInteractionMode | undefined
+  external XRInteractionMode? get interactionMode;
+
+  /// Method [cancelAnimationFrame]
+  ///
+  /// Parameters:
+  /// - id: number
+  ///
+  /// Returns:
+  /// - void
+  external void cancelAnimationFrame(_i1.JSNumber id);
+
+  /// Method [end]
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise end();
+
+  /// Method [requestAnimationFrame]
+  ///
+  /// Parameters:
+  /// - callback: XRFrameRequestCallback
+  ///
+  /// Returns:
+  /// - number
+  external _i1.JSNumber requestAnimationFrame(XRFrameRequestCallback callback);
+
+  /// Method [requestReferenceSpace]
+  ///
+  /// Parameters:
+  /// - type: XRReferenceSpaceType
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise<_i1.JSAny> requestReferenceSpace(XRReferenceSpaceType type);
+
+  /// Method [updateRenderState]
+  ///
+  /// Parameters:
+  /// - renderStateInit: XRRenderStateInit
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise updateRenderState([XRRenderStateInit renderStateInit]);
+
+  /// Method [updateTargetFrameRate]
+  ///
+  /// Parameters:
+  /// - rate: number
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise updateTargetFrameRate(_i1.JSNumber rate);
+
+  /// Method [addEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRSessionEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRSession, ev: XRSessionEventMap[K]) => any
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [addEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRSessionEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRSession, ev: XRSessionEventMap[K]) => any
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
 
   /// Method [initiateRoomCapture]
   ///
@@ -826,6 +1510,293 @@ extension type XRSession._(_i1.JSObject _) implements _i1.JSObject {
   external XRDepthDataFormat? get depthDataFormat;
 }
 
+/// Class [XRSession]
+extension type XRSession._(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [onend]
+  ///
+  /// onend: XRSessionEventHandler
+  external XRSessionEventHandler onend;
+
+  /// Property [oninputsourceschange]
+  ///
+  /// oninputsourceschange: XRInputSourcesChangeEventHandler
+  external XRInputSourcesChangeEventHandler oninputsourceschange;
+
+  /// Property [onselect]
+  ///
+  /// onselect: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onselect;
+
+  /// Property [onselectstart]
+  ///
+  /// onselectstart: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onselectstart;
+
+  /// Property [onselectend]
+  ///
+  /// onselectend: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onselectend;
+
+  /// Property [onsqueeze]
+  ///
+  /// onsqueeze: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onsqueeze;
+
+  /// Property [onsqueezestart]
+  ///
+  /// onsqueezestart: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onsqueezestart;
+
+  /// Property [onsqueezeend]
+  ///
+  /// onsqueezeend: XRInputSourceEventHandler
+  external XRInputSourceEventHandler onsqueezeend;
+
+  /// Property [onvisibilitychange]
+  ///
+  /// onvisibilitychange: XRSessionEventHandler
+  external XRSessionEventHandler onvisibilitychange;
+
+  /// Property [onframeratechange]
+  ///
+  /// onframeratechange: XRSessionEventHandler
+  external XRSessionEventHandler onframeratechange;
+
+  /// Property [requestHitTestSource]
+  ///
+  /// requestHitTestSource?: (options: XRHitTestOptionsInit) => Promise | undefined
+  external _i1.JSFunction? requestHitTestSource;
+
+  /// Property [requestHitTestSourceForTransientInput]
+  ///
+  /// requestHitTestSourceForTransientInput?: (options: XRTransientInputHitTestOptionsInit) => Promise | undefined
+  external _i1.JSFunction? requestHitTestSourceForTransientInput;
+
+  /// Property [requestHitTest]
+  ///
+  /// requestHitTest?: (ray: XRRay, referenceSpace: XRReferenceSpace) => Promise | undefined
+  external _i1.JSFunction? requestHitTest;
+
+  /// Property [requestHitTestSource]
+  ///
+  /// requestHitTestSource?: (options: XRHitTestOptionsInit) => Promise | undefined
+  external _i1.JSFunction? requestHitTestSource;
+
+  /// Property [requestHitTestSourceForTransientInput]
+  ///
+  /// requestHitTestSourceForTransientInput?: (options: XRTransientInputHitTestOptionsInit) => Promise | undefined
+  external _i1.JSFunction? requestHitTestSourceForTransientInput;
+
+  /// Property [requestHitTest]
+  ///
+  /// requestHitTest?: (ray: XRRay, referenceSpace: XRReferenceSpace) => Promise | undefined
+  external _i1.JSFunction? requestHitTest;
+
+  /// Property [inputSources]
+  ///
+  /// readonly inputSources: XRInputSourceArray
+  external XRInputSourceArray get inputSources;
+
+  /// Property [renderState]
+  ///
+  /// readonly renderState: XRRenderState
+  external XRRenderState get renderState;
+
+  /// Property [environmentBlendMode]
+  ///
+  /// readonly environmentBlendMode: XREnvironmentBlendMode
+  external XREnvironmentBlendMode get environmentBlendMode;
+
+  /// Property [visibilityState]
+  ///
+  /// readonly visibilityState: XRVisibilityState
+  external XRVisibilityState get visibilityState;
+
+  /// Property [frameRate]
+  ///
+  /// readonly frameRate?: number | undefined
+  external _i1.JSNumber? get frameRate;
+
+  /// Property [supportedFrameRates]
+  ///
+  /// readonly supportedFrameRates?: Float32Array | undefined
+  external _i1.JSFloat32Array? get supportedFrameRates;
+
+  /// Property [enabledFeatures]
+  ///
+  /// readonly enabledFeatures?: string[] | undefined
+  external _i1.JSArray<_i1.JSString>? get enabledFeatures;
+
+  /// Property [isSystemKeyboardSupported]
+  ///
+  /// readonly isSystemKeyboardSupported: boolean
+  external _i1.JSBoolean get isSystemKeyboardSupported;
+
+  /// Property [interactionMode]
+  ///
+  /// readonly interactionMode?: XRInteractionMode | undefined
+  external XRInteractionMode? get interactionMode;
+
+  /// Method [cancelAnimationFrame]
+  ///
+  /// Parameters:
+  /// - id: number
+  ///
+  /// Returns:
+  /// - void
+  external void cancelAnimationFrame(_i1.JSNumber id);
+
+  /// Method [end]
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise end();
+
+  /// Method [requestAnimationFrame]
+  ///
+  /// Parameters:
+  /// - callback: XRFrameRequestCallback
+  ///
+  /// Returns:
+  /// - number
+  external _i1.JSNumber requestAnimationFrame(XRFrameRequestCallback callback);
+
+  /// Method [requestReferenceSpace]
+  ///
+  /// Parameters:
+  /// - type: XRReferenceSpaceType
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise<_i1.JSAny> requestReferenceSpace(XRReferenceSpaceType type);
+
+  /// Method [updateRenderState]
+  ///
+  /// Parameters:
+  /// - renderStateInit: XRRenderStateInit
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise updateRenderState([XRRenderStateInit renderStateInit]);
+
+  /// Method [updateTargetFrameRate]
+  ///
+  /// Parameters:
+  /// - rate: number
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise updateTargetFrameRate(_i1.JSNumber rate);
+
+  /// Method [addEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRSessionEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRSession, ev: XRSessionEventMap[K]) => any
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [addEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRSessionEventMap
+  ///
+  /// Parameters:
+  /// - type: K
+  /// - listener: (this: XRSession, ev: XRSessionEventMap[K]) => any
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener<K extends _i1.JSAny>(K type, _i1.JSFunction listener, [_i1.JSAny options]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [initiateRoomCapture]
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise initiateRoomCapture();
+
+  /// Property [domOverlayState]
+  ///
+  /// readonly domOverlayState?: XRDOMOverlayState | undefined
+  external XRDOMOverlayState? get domOverlayState;
+
+  /// Property [depthUsage]
+  ///
+  /// readonly depthUsage?: XRDepthUsage | undefined
+  external XRDepthUsage? get depthUsage;
+
+  /// Property [depthDataFormat]
+  ///
+  /// readonly depthDataFormat?: XRDepthDataFormat | undefined
+  external XRDepthDataFormat? get depthDataFormat;
+
+  /// Method [initiateRoomCapture]
+  ///
+  /// Returns:
+  /// - Promise
+  external _i1.JSPromise initiateRoomCapture();
+
+  /// Property [domOverlayState]
+  ///
+  /// readonly domOverlayState?: XRDOMOverlayState | undefined
+  external XRDOMOverlayState? get domOverlayState;
+
+  /// Property [depthUsage]
+  ///
+  /// readonly depthUsage?: XRDepthUsage | undefined
+  external XRDepthUsage? get depthUsage;
+
+  /// Property [depthDataFormat]
+  ///
+  /// readonly depthDataFormat?: XRDepthDataFormat | undefined
+  external XRDepthDataFormat? get depthDataFormat;
+}
+
+/// Interface [XRViewerPose]
+extension type XRViewerPose.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRPose, _i2.XRViewerPose {
+  /// Property [views]
+  ///
+  /// readonly views: readonly XRView[]
+  external _i1.JSArray<XRView> get views;
+}
+
 /// Class [XRViewerPose]
 extension type XRViewerPose._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [views]
@@ -841,10 +1812,7 @@ extension type XRRigidTransform.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - position: DOMPointInit
   /// - direction: DOMPointInit
-  external XRRigidTransform([
-    _i2.DOMPointInit position,
-    _i2.DOMPointInit direction,
-  ]);
+  external XRRigidTransform([_i2.DOMPointInit position, _i2.DOMPointInit direction]);
 
   /// Property [position]
   ///
@@ -865,6 +1833,38 @@ extension type XRRigidTransform.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// readonly inverse: XRRigidTransform
   external _i2.XRRigidTransform get inverse;
+}
+
+/// Interface [XRView]
+extension type XRView.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [eye]
+  ///
+  /// readonly eye: XREye
+  external XREye get eye;
+
+  /// Property [projectionMatrix]
+  ///
+  /// readonly projectionMatrix: Float32Array
+  external _i1.JSFloat32Array get projectionMatrix;
+
+  /// Property [transform]
+  ///
+  /// readonly transform: XRRigidTransform
+  external _i2.XRRigidTransform get transform;
+
+  /// Property [recommendedViewportScale]
+  ///
+  /// readonly recommendedViewportScale?: number | undefined
+  external _i1.JSNumber? get recommendedViewportScale;
+
+  /// Method [requestViewportScale]
+  ///
+  /// Parameters:
+  /// - scale: number
+  ///
+  /// Returns:
+  /// - void
+  external void requestViewportScale(_i1.JSNumber scale);
 }
 
 /// Class [XRView]
@@ -920,6 +1920,20 @@ extension type XRInputSourcesChangeEventHandler.$(_i1.JSFunction _) implements _
 /// Set
 typedef XRAnchorSet = Set<XRAnchor>;
 
+/// Interface [XRAnchor]
+extension type XRAnchor.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [anchorSpace]
+  ///
+  /// anchorSpace: XRSpace
+  external _i2.XRSpace anchorSpace;
+
+  /// Method [delete]
+  ///
+  /// Returns:
+  /// - void
+  external void delete();
+}
+
 /// Class [XRAnchor]
 extension type XRAnchor._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [anchorSpace]
@@ -941,10 +1955,7 @@ extension type XRRay.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - transformOrOrigin: XRRigidTransform | DOMPointInit
   /// - direction: DOMPointInit
-  external XRRay([
-    _i1.JSAny transformOrOrigin,
-    _i2.DOMPointInit direction,
-  ]);
+  external XRRay([_i1.JSAny transformOrOrigin, _i2.DOMPointInit direction]);
 
   /// Property [origin]
   ///
@@ -967,6 +1978,19 @@ extension type XRRay.$(_i1.JSObject _) implements _i1.JSObject {
 /// "point" | "plane" | "mesh"
 typedef XRHitTestTrackableType = _i1.JSString;
 
+/// Interface [XRTransientInputHitTestResult]
+extension type XRTransientInputHitTestResult.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [inputSource]
+  ///
+  /// readonly inputSource: XRInputSource
+  external _i2.XRInputSource get inputSource;
+
+  /// Property [results]
+  ///
+  /// readonly results: readonly XRHitTestResult[]
+  external _i1.JSArray<XRHitTestResult> get results;
+}
+
 /// Class [XRTransientInputHitTestResult]
 extension type XRTransientInputHitTestResult.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [prototype]
@@ -983,6 +2007,23 @@ extension type XRTransientInputHitTestResult.$(_i1.JSObject _) implements _i1.JS
   ///
   /// readonly results: readonly XRHitTestResult[]
   external _i1.JSArray<XRHitTestResult> get results;
+}
+
+/// Interface [XRHitTestResult]
+extension type XRHitTestResult.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [createAnchor]
+  ///
+  /// createAnchor?: (pose: XRRigidTransform) => Promise | undefined
+  external _i1.JSFunction? createAnchor;
+
+  /// Method [getPose]
+  ///
+  /// Parameters:
+  /// - baseSpace: XRSpace
+  ///
+  /// Returns:
+  /// - XRPose | undefined
+  external _i2.XRPose? getPose(_i2.XRSpace baseSpace);
 }
 
 /// Class [XRHitTestResult]
@@ -1002,8 +2043,26 @@ extension type XRHitTestResult._(_i1.JSObject _) implements _i1.JSObject {
   external _i2.XRPose? getPose(_i2.XRSpace baseSpace);
 }
 
+/// Interface [XRHitTestSource]
+extension type XRHitTestSource.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Method [cancel]
+  ///
+  /// Returns:
+  /// - void
+  external void cancel();
+}
+
 /// Class [XRHitTestSource]
 extension type XRHitTestSource._(_i1.JSObject _) implements _i1.JSObject {
+  /// Method [cancel]
+  ///
+  /// Returns:
+  /// - void
+  external void cancel();
+}
+
+/// Interface [XRTransientInputHitTestSource]
+extension type XRTransientInputHitTestSource.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [cancel]
   ///
   /// Returns:
@@ -1074,6 +2133,34 @@ typedef XRPlaneSet = Set<XRPlane>;
 /// "horizontal" | "vertical"
 typedef XRPlaneOrientation = _i1.JSString;
 
+/// Interface [XRPlane]
+extension type XRPlane.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [orientation]
+  ///
+  /// orientation: XRPlaneOrientation
+  external XRPlaneOrientation orientation;
+
+  /// Property [planeSpace]
+  ///
+  /// planeSpace: XRSpace
+  external _i2.XRSpace planeSpace;
+
+  /// Property [polygon]
+  ///
+  /// polygon: DOMPointReadOnly[]
+  external _i1.JSArray<_i2.DOMPointReadOnly> polygon;
+
+  /// Property [lastChangedTime]
+  ///
+  /// lastChangedTime: DOMHighResTimeStamp
+  external _i2.DOMHighResTimeStamp lastChangedTime;
+
+  /// Property [semanticLabel]
+  ///
+  /// semanticLabel?: string
+  external _i1.JSString? semanticLabel;
+}
+
 /// Class [XRPlane]
 extension type XRPlane._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [orientation]
@@ -1095,12 +2182,45 @@ extension type XRPlane._(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// lastChangedTime: DOMHighResTimeStamp
   external _i2.DOMHighResTimeStamp lastChangedTime;
+
+  /// Property [semanticLabel]
+  ///
+  /// semanticLabel?: string
+  external _i1.JSString? semanticLabel;
 }
 
 /// Typedef [XRMeshSet]
 ///
 /// Set
 typedef XRMeshSet = Set<XRMesh>;
+
+/// Interface [XRMesh]
+extension type XRMesh.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [meshSpace]
+  ///
+  /// meshSpace: XRSpace
+  external _i2.XRSpace meshSpace;
+
+  /// Property [vertices]
+  ///
+  /// vertices: Float32Array
+  external _i1.JSFloat32Array vertices;
+
+  /// Property [indices]
+  ///
+  /// indices: Uint32Array
+  external _i1.JSUint32Array indices;
+
+  /// Property [lastChangedTime]
+  ///
+  /// lastChangedTime: DOMHighResTimeStamp
+  external _i2.DOMHighResTimeStamp lastChangedTime;
+
+  /// Property [semanticLabel]
+  ///
+  /// semanticLabel?: string
+  external _i1.JSString? semanticLabel;
+}
 
 /// Class [XRMesh]
 extension type XRMesh._(_i1.JSObject _) implements _i1.JSObject {
@@ -1135,6 +2255,14 @@ extension type XRMesh._(_i1.JSObject _) implements _i1.JSObject {
 /// "wrist" | "thumb-metacarpal" | "thumb-phalanx-proximal" | "thumb-phalanx-distal" | "thumb-tip" | "index-finger-metacarpal" | "index-finger-phalanx-proximal" | "index-finger-phalanx-intermediate" | "index-finger-phalanx-distal" | "index-finger-tip" | "middle-finger-metacarpal" | "middle-finger-phalanx-proximal" | "middle-finger-phalanx-intermediate" | "middle-finger-phalanx-distal" | "middle-finger-tip" | "ring-finger-metacarpal" | "ring-finger-phalanx-proximal" | "ring-finger-phalanx-intermediate" | "ring-finger-phalanx-distal" | "ring-finger-tip" | "pinky-finger-metacarpal" | "pinky-finger-phalanx-proximal" | "pinky-finger-phalanx-intermediate" | "pinky-finger-phalanx-distal" | "pinky-finger-tip"
 typedef XRHandJoint = _i1.JSString;
 
+/// Interface [XRJointSpace]
+extension type XRJointSpace.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRSpace, _i2.XRJointSpace {
+  /// Property [jointName]
+  ///
+  /// readonly jointName: XRHandJoint
+  external _i2.XRHandJoint get jointName;
+}
+
 /// Class [XRJointSpace]
 extension type XRJointSpace._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [jointName]
@@ -1143,12 +2271,148 @@ extension type XRJointSpace._(_i1.JSObject _) implements _i1.JSObject {
   external _i2.XRHandJoint get jointName;
 }
 
+/// Interface [XRJointPose]
+extension type XRJointPose.$(_i1.JSObject _) implements _i1.JSObject, _i2.XRPose, _i2.XRJointPose {
+  /// Property [radius]
+  ///
+  /// readonly radius: number | undefined
+  external _i1.JSNumber get radius;
+}
+
 /// Class [XRJointPose]
 extension type XRJointPose._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [radius]
   ///
   /// readonly radius: number | undefined
   external _i1.JSNumber get radius;
+}
+
+/// Interface [XRHand]
+extension type XRHand.$(_i1.JSObject _) implements _i1.JSObject, Map<_i2.XRHandJoint, _i2.XRJointSpace>, _i2.XRHand {
+  /// Property [WRIST]
+  ///
+  /// readonly WRIST: number
+  external _i1.JSNumber get WRIST;
+
+  /// Property [THUMB_METACARPAL]
+  ///
+  /// readonly THUMB_METACARPAL: number
+  external _i1.JSNumber get THUMB_METACARPAL;
+
+  /// Property [THUMB_PHALANX_PROXIMAL]
+  ///
+  /// readonly THUMB_PHALANX_PROXIMAL: number
+  external _i1.JSNumber get THUMB_PHALANX_PROXIMAL;
+
+  /// Property [THUMB_PHALANX_DISTAL]
+  ///
+  /// readonly THUMB_PHALANX_DISTAL: number
+  external _i1.JSNumber get THUMB_PHALANX_DISTAL;
+
+  /// Property [THUMB_PHALANX_TIP]
+  ///
+  /// readonly THUMB_PHALANX_TIP: number
+  external _i1.JSNumber get THUMB_PHALANX_TIP;
+
+  /// Property [INDEX_METACARPAL]
+  ///
+  /// readonly INDEX_METACARPAL: number
+  external _i1.JSNumber get INDEX_METACARPAL;
+
+  /// Property [INDEX_PHALANX_PROXIMAL]
+  ///
+  /// readonly INDEX_PHALANX_PROXIMAL: number
+  external _i1.JSNumber get INDEX_PHALANX_PROXIMAL;
+
+  /// Property [INDEX_PHALANX_INTERMEDIATE]
+  ///
+  /// readonly INDEX_PHALANX_INTERMEDIATE: number
+  external _i1.JSNumber get INDEX_PHALANX_INTERMEDIATE;
+
+  /// Property [INDEX_PHALANX_DISTAL]
+  ///
+  /// readonly INDEX_PHALANX_DISTAL: number
+  external _i1.JSNumber get INDEX_PHALANX_DISTAL;
+
+  /// Property [INDEX_PHALANX_TIP]
+  ///
+  /// readonly INDEX_PHALANX_TIP: number
+  external _i1.JSNumber get INDEX_PHALANX_TIP;
+
+  /// Property [MIDDLE_METACARPAL]
+  ///
+  /// readonly MIDDLE_METACARPAL: number
+  external _i1.JSNumber get MIDDLE_METACARPAL;
+
+  /// Property [MIDDLE_PHALANX_PROXIMAL]
+  ///
+  /// readonly MIDDLE_PHALANX_PROXIMAL: number
+  external _i1.JSNumber get MIDDLE_PHALANX_PROXIMAL;
+
+  /// Property [MIDDLE_PHALANX_INTERMEDIATE]
+  ///
+  /// readonly MIDDLE_PHALANX_INTERMEDIATE: number
+  external _i1.JSNumber get MIDDLE_PHALANX_INTERMEDIATE;
+
+  /// Property [MIDDLE_PHALANX_DISTAL]
+  ///
+  /// readonly MIDDLE_PHALANX_DISTAL: number
+  external _i1.JSNumber get MIDDLE_PHALANX_DISTAL;
+
+  /// Property [MIDDLE_PHALANX_TIP]
+  ///
+  /// readonly MIDDLE_PHALANX_TIP: number
+  external _i1.JSNumber get MIDDLE_PHALANX_TIP;
+
+  /// Property [RING_METACARPAL]
+  ///
+  /// readonly RING_METACARPAL: number
+  external _i1.JSNumber get RING_METACARPAL;
+
+  /// Property [RING_PHALANX_PROXIMAL]
+  ///
+  /// readonly RING_PHALANX_PROXIMAL: number
+  external _i1.JSNumber get RING_PHALANX_PROXIMAL;
+
+  /// Property [RING_PHALANX_INTERMEDIATE]
+  ///
+  /// readonly RING_PHALANX_INTERMEDIATE: number
+  external _i1.JSNumber get RING_PHALANX_INTERMEDIATE;
+
+  /// Property [RING_PHALANX_DISTAL]
+  ///
+  /// readonly RING_PHALANX_DISTAL: number
+  external _i1.JSNumber get RING_PHALANX_DISTAL;
+
+  /// Property [RING_PHALANX_TIP]
+  ///
+  /// readonly RING_PHALANX_TIP: number
+  external _i1.JSNumber get RING_PHALANX_TIP;
+
+  /// Property [LITTLE_METACARPAL]
+  ///
+  /// readonly LITTLE_METACARPAL: number
+  external _i1.JSNumber get LITTLE_METACARPAL;
+
+  /// Property [LITTLE_PHALANX_PROXIMAL]
+  ///
+  /// readonly LITTLE_PHALANX_PROXIMAL: number
+  external _i1.JSNumber get LITTLE_PHALANX_PROXIMAL;
+
+  /// Property [LITTLE_PHALANX_INTERMEDIATE]
+  ///
+  /// readonly LITTLE_PHALANX_INTERMEDIATE: number
+  external _i1.JSNumber get LITTLE_PHALANX_INTERMEDIATE;
+
+  /// Property [LITTLE_PHALANX_DISTAL]
+  ///
+  /// readonly LITTLE_PHALANX_DISTAL: number
+  external _i1.JSNumber get LITTLE_PHALANX_DISTAL;
+
+  /// Property [LITTLE_PHALANX_TIP]
+  ///
+  /// readonly LITTLE_PHALANX_TIP: number
+  external _i1.JSNumber get LITTLE_PHALANX_TIP;
 }
 
 /// Class [XRHand]
@@ -1279,6 +2543,9 @@ extension type XRHand._(_i1.JSObject _) implements _i1.JSObject {
   external _i1.JSNumber get LITTLE_PHALANX_TIP;
 }
 
+/// Interface [XRLayer]
+extension type XRLayer.$(_i1.JSObject _) implements _i1.JSObject, _i2.EventTarget {}
+
 /// Class [XRLayer]
 extension type XRLayer._(_i1.JSObject _) implements _i1.JSObject {}
 
@@ -1323,11 +2590,7 @@ extension type XRWebGLLayer.$(_i1.JSObject _) implements _i1.JSObject, XRLayer {
   /// - session: XRSession
   /// - context: WebGLRenderingContext | WebGL2RenderingContext
   /// - layerInit: XRWebGLLayerInit
-  external XRWebGLLayer(
-    XRSession session,
-    _i1.JSAny context, [
-    XRWebGLLayerInit layerInit,
-  ]);
+  external XRWebGLLayer(XRSession session, _i1.JSAny context, [XRWebGLLayerInit layerInit]);
 
   /// Property [fixedFoveation]
   ///
@@ -1398,8 +2661,231 @@ extension type XRCompositionLayerEventMap.$(_i1.JSObject _) implements _i1.JSObj
   external XRLayerEvent redraw;
 }
 
+/// Interface [XRCompositionLayer]
+extension type XRCompositionLayer.$(_i1.JSObject _) implements _i1.JSObject, XRLayer {
+  /// Property [blendTextureSourceAlpha]
+  ///
+  /// blendTextureSourceAlpha: boolean
+  external _i1.JSBoolean blendTextureSourceAlpha;
+
+  /// Property [chromaticAberrationCorrection]
+  ///
+  /// chromaticAberrationCorrection?: boolean | undefined
+  external _i1.JSBoolean? chromaticAberrationCorrection;
+
+  /// Property [quality]
+  ///
+  /// quality: XRLayerQuality
+  external XRLayerQuality quality;
+
+  /// Property [space]
+  ///
+  /// space: XRSpace
+  external _i2.XRSpace space;
+
+  /// Property [onredraw]
+  ///
+  /// onredraw: (evt: XRCompositionLayerEventMap["redraw"]) => any
+  external _i1.JSFunction onredraw;
+
+  /// Property [layout]
+  ///
+  /// readonly layout: XRLayerLayout
+  external XRLayerLayout get layout;
+
+  /// Property [mipLevels]
+  ///
+  /// readonly mipLevels: number
+  external _i1.JSNumber get mipLevels;
+
+  /// Property [needsRedraw]
+  ///
+  /// readonly needsRedraw: boolean
+  external _i1.JSBoolean get needsRedraw;
+
+  /// Method [destroy]
+  ///
+  /// Returns:
+  /// - void
+  external void destroy();
+
+  /// Method [addEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRCompositionLayerEventMap
+  ///
+  /// Parameters:
+  /// - this: XRCompositionLayer
+  /// - type: K
+  /// - callback: (evt: XRCompositionLayerEventMap[K]) => any
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener<K extends _i1.JSAny>(
+    XRCompositionLayer this$,
+    K type,
+    _i1.JSFunction callback, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [addEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRCompositionLayerEventMap
+  ///
+  /// Parameters:
+  /// - this: XRCompositionLayer
+  /// - type: K
+  /// - callback: (evt: XRCompositionLayerEventMap[K]) => any
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener<K extends _i1.JSAny>(XRCompositionLayer this$, K type, _i1.JSFunction callback);
+
+  /// Method [removeEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+}
+
 /// Class [XRCompositionLayer]
-extension type XRCompositionLayer._(_i1.JSObject _) implements _i1.JSObject {}
+extension type XRCompositionLayer._(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [blendTextureSourceAlpha]
+  ///
+  /// blendTextureSourceAlpha: boolean
+  external _i1.JSBoolean blendTextureSourceAlpha;
+
+  /// Property [chromaticAberrationCorrection]
+  ///
+  /// chromaticAberrationCorrection?: boolean | undefined
+  external _i1.JSBoolean? chromaticAberrationCorrection;
+
+  /// Property [quality]
+  ///
+  /// quality: XRLayerQuality
+  external XRLayerQuality quality;
+
+  /// Property [space]
+  ///
+  /// space: XRSpace
+  external _i2.XRSpace space;
+
+  /// Property [onredraw]
+  ///
+  /// onredraw: (evt: XRCompositionLayerEventMap["redraw"]) => any
+  external _i1.JSFunction onredraw;
+
+  /// Property [layout]
+  ///
+  /// readonly layout: XRLayerLayout
+  external XRLayerLayout get layout;
+
+  /// Property [mipLevels]
+  ///
+  /// readonly mipLevels: number
+  external _i1.JSNumber get mipLevels;
+
+  /// Property [needsRedraw]
+  ///
+  /// readonly needsRedraw: boolean
+  external _i1.JSBoolean get needsRedraw;
+
+  /// Method [destroy]
+  ///
+  /// Returns:
+  /// - void
+  external void destroy();
+
+  /// Method [addEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRCompositionLayerEventMap
+  ///
+  /// Parameters:
+  /// - this: XRCompositionLayer
+  /// - type: K
+  /// - callback: (evt: XRCompositionLayerEventMap[K]) => any
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener<K extends _i1.JSAny>(
+    XRCompositionLayer this$,
+    K type,
+    _i1.JSFunction callback, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [addEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | AddEventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void addEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+
+  /// Method [removeEventListener]
+  ///
+  /// Type Parameters:
+  /// - K extends keyof XRCompositionLayerEventMap
+  ///
+  /// Parameters:
+  /// - this: XRCompositionLayer
+  /// - type: K
+  /// - callback: (evt: XRCompositionLayerEventMap[K]) => any
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener<K extends _i1.JSAny>(XRCompositionLayer this$, K type, _i1.JSFunction callback);
+
+  /// Method [removeEventListener]
+  ///
+  /// Parameters:
+  /// - type: string
+  /// - listener: EventListenerOrEventListenerObject
+  /// - options: boolean | EventListenerOptions
+  ///
+  /// Returns:
+  /// - void
+  external void removeEventListener(
+    _i1.JSString type,
+    _i3.EventListenerOrEventListenerObject listener, [
+    _i1.JSAny options,
+  ]);
+}
 
 /// Typedef [XRTextureType]
 ///
@@ -1439,6 +2925,34 @@ extension type XRProjectionLayerInit.$(_i1.JSObject _) implements _i1.JSObject {
   external _i2.GLenum? depthFormat;
 }
 
+/// Interface [XRProjectionLayer]
+extension type XRProjectionLayer.$(_i1.JSObject _) implements _i1.JSObject, XRCompositionLayer {
+  /// Property [fixedFoveation]
+  ///
+  /// fixedFoveation: number
+  external _i1.JSNumber fixedFoveation;
+
+  /// Property [textureWidth]
+  ///
+  /// readonly textureWidth: number
+  external _i1.JSNumber get textureWidth;
+
+  /// Property [textureHeight]
+  ///
+  /// readonly textureHeight: number
+  external _i1.JSNumber get textureHeight;
+
+  /// Property [textureArrayLength]
+  ///
+  /// readonly textureArrayLength: number
+  external _i1.JSNumber get textureArrayLength;
+
+  /// Property [ignoreDepthValues]
+  ///
+  /// readonly ignoreDepthValues: boolean
+  external _i1.JSBoolean get ignoreDepthValues;
+}
+
 /// Class [XRProjectionLayer]
 extension type XRProjectionLayer._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [fixedFoveation]
@@ -1463,8 +2977,8 @@ extension type XRProjectionLayer._(_i1.JSObject _) implements _i1.JSObject {
 
   /// Property [ignoreDepthValues]
   ///
-  /// readonly ignoreDepthValues: number
-  external _i1.JSNumber get ignoreDepthValues;
+  /// readonly ignoreDepthValues: boolean
+  external _i1.JSBoolean get ignoreDepthValues;
 }
 
 /// Interface [XRLayerInit]
@@ -1579,6 +3093,29 @@ extension type XRMediaCylinderLayerInit.$(_i1.JSObject _) implements _i1.JSObjec
   external _i1.JSNumber? aspectRatio;
 }
 
+/// Interface [XRCylinderLayer]
+extension type XRCylinderLayer.$(_i1.JSObject _) implements _i1.JSObject, XRCompositionLayer {
+  /// Property [transform]
+  ///
+  /// transform: XRRigidTransform
+  external _i2.XRRigidTransform transform;
+
+  /// Property [radius]
+  ///
+  /// radius: number
+  external _i1.JSNumber radius;
+
+  /// Property [centralAngle]
+  ///
+  /// centralAngle: number
+  external _i1.JSNumber centralAngle;
+
+  /// Property [aspectRatio]
+  ///
+  /// aspectRatio: number
+  external _i1.JSNumber aspectRatio;
+}
+
 /// Class [XRCylinderLayer]
 extension type XRCylinderLayer._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [transform]
@@ -1641,6 +3178,24 @@ extension type XRMediaQuadLayerInit.$(_i1.JSObject _) implements _i1.JSObject, X
   ///
   /// height?: number | undefined
   external _i1.JSNumber? height;
+}
+
+/// Interface [XRQuadLayer]
+extension type XRQuadLayer.$(_i1.JSObject _) implements _i1.JSObject, XRCompositionLayer {
+  /// Property [transform]
+  ///
+  /// transform: XRRigidTransform
+  external _i2.XRRigidTransform transform;
+
+  /// Property [width]
+  ///
+  /// width: number
+  external _i1.JSNumber width;
+
+  /// Property [height]
+  ///
+  /// height: number
+  external _i1.JSNumber height;
 }
 
 /// Class [XRQuadLayer]
@@ -1722,6 +3277,34 @@ extension type XRMediaEquirectLayerInit.$(_i1.JSObject _) implements _i1.JSObjec
   external _i1.JSNumber? lowerVerticalAngle;
 }
 
+/// Interface [XREquirectLayer]
+extension type XREquirectLayer.$(_i1.JSObject _) implements _i1.JSObject, XRCompositionLayer {
+  /// Property [transform]
+  ///
+  /// transform: XRRigidTransform
+  external _i2.XRRigidTransform transform;
+
+  /// Property [radius]
+  ///
+  /// radius: number
+  external _i1.JSNumber radius;
+
+  /// Property [centralHorizontalAngle]
+  ///
+  /// centralHorizontalAngle: number
+  external _i1.JSNumber centralHorizontalAngle;
+
+  /// Property [upperVerticalAngle]
+  ///
+  /// upperVerticalAngle: number
+  external _i1.JSNumber upperVerticalAngle;
+
+  /// Property [lowerVerticalAngle]
+  ///
+  /// lowerVerticalAngle: number
+  external _i1.JSNumber lowerVerticalAngle;
+}
+
 /// Class [XREquirectLayer]
 extension type XREquirectLayer._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [transform]
@@ -1758,6 +3341,14 @@ extension type XRCubeLayerInit.$(_i1.JSObject _) implements _i1.JSObject, XRLaye
   external _i2.DOMPointReadOnly? orientation;
 }
 
+/// Interface [XRCubeLayer]
+extension type XRCubeLayer.$(_i1.JSObject _) implements _i1.JSObject, XRCompositionLayer {
+  /// Property [orientation]
+  ///
+  /// orientation: DOMPointReadOnly
+  external _i2.DOMPointReadOnly orientation;
+}
+
 /// Class [XRCubeLayer]
 extension type XRCubeLayer._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [orientation]
@@ -1766,12 +3357,48 @@ extension type XRCubeLayer._(_i1.JSObject _) implements _i1.JSObject {
   external _i2.DOMPointReadOnly orientation;
 }
 
+/// Interface [XRSubImage]
+extension type XRSubImage.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Property [viewport]
+  ///
+  /// readonly viewport: XRViewport
+  external _i2.XRViewport get viewport;
+}
+
 /// Class [XRSubImage]
 extension type XRSubImage._(_i1.JSObject _) implements _i1.JSObject {
   /// Property [viewport]
   ///
   /// readonly viewport: XRViewport
   external _i2.XRViewport get viewport;
+}
+
+/// Interface [XRWebGLSubImage]
+extension type XRWebGLSubImage.$(_i1.JSObject _) implements _i1.JSObject, XRSubImage {
+  /// Property [colorTexture]
+  ///
+  /// readonly colorTexture: WebGLTexture
+  external _i2.WebGLTexture get colorTexture;
+
+  /// Property [depthStencilTexture]
+  ///
+  /// readonly depthStencilTexture: WebGLTexture
+  external _i2.WebGLTexture get depthStencilTexture;
+
+  /// Property [imageIndex]
+  ///
+  /// readonly imageIndex: number
+  external _i1.JSNumber get imageIndex;
+
+  /// Property [textureWidth]
+  ///
+  /// readonly textureWidth: number
+  external _i1.JSNumber get textureWidth;
+
+  /// Property [textureHeight]
+  ///
+  /// readonly textureHeight: number
+  external _i1.JSNumber get textureHeight;
 }
 
 /// Class [XRWebGLSubImage]
@@ -1809,10 +3436,7 @@ extension type XRWebGLBinding.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - session: XRSession
   /// - context: WebGLRenderingContext
-  external XRWebGLBinding(
-    XRSession session,
-    _i2.WebGLRenderingContext context,
-  );
+  external XRWebGLBinding(XRSession session, _i2.WebGLRenderingContext context);
 
   /// Property [nativeProjectionScaleFactor]
   ///
@@ -1855,21 +3479,14 @@ extension type XRWebGLBinding.$(_i1.JSObject _) implements _i1.JSObject {
   /// - layer: XRCompositionLayer
   /// - frame: XRFrame
   /// - eye: XREye
-  external XRWebGLSubImage getSubImage(
-    XRCompositionLayer layer,
-    XRFrame frame, [
-    XREye eye,
-  ]);
+  external XRWebGLSubImage getSubImage(XRCompositionLayer layer, XRFrame frame, [XREye eye]);
 
   /// Method [getViewSubImage]
   ///
   /// Parameters:
   /// - layer: XRProjectionLayer
   /// - view: XRView
-  external XRWebGLSubImage getViewSubImage(
-    XRProjectionLayer layer,
-    XRView view,
-  );
+  external XRWebGLSubImage getViewSubImage(XRProjectionLayer layer, XRView view);
 
   /// Method [getDepthInformation]
   ///
@@ -1894,30 +3511,21 @@ extension type XRMediaBinding.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - video: HTMLVideoElement
   /// - init: XRMediaQuadLayerInit
-  external XRQuadLayer createQuadLayer(
-    _i2.HTMLVideoElement video, [
-    XRMediaQuadLayerInit init,
-  ]);
+  external XRQuadLayer createQuadLayer(_i2.HTMLVideoElement video, [XRMediaQuadLayerInit init]);
 
   /// Method [createCylinderLayer]
   ///
   /// Parameters:
   /// - video: HTMLVideoElement
   /// - init: XRMediaCylinderLayerInit
-  external XRCylinderLayer createCylinderLayer(
-    _i2.HTMLVideoElement video, [
-    XRMediaCylinderLayerInit init,
-  ]);
+  external XRCylinderLayer createCylinderLayer(_i2.HTMLVideoElement video, [XRMediaCylinderLayerInit init]);
 
   /// Method [createEquirectLayer]
   ///
   /// Parameters:
   /// - video: HTMLVideoElement
   /// - init: XRMediaEquirectLayerInit
-  external XREquirectLayer createEquirectLayer(
-    _i2.HTMLVideoElement video, [
-    XRMediaEquirectLayerInit init,
-  ]);
+  external XREquirectLayer createEquirectLayer(_i2.HTMLVideoElement video, [XRMediaEquirectLayerInit init]);
 }
 
 /// enum XOVR_multiview2
@@ -1963,6 +3571,32 @@ extension type XRSystemSessionGrantedEvent.$(_i1.JSObject _) implements _i1.JSOb
 
 /// Interface [XRSystemSessionGrantedEventHandler]
 extension type XRSystemSessionGrantedEventHandler.$(_i1.JSFunction _) implements _i1.JSFunction {}
+
+/// Interface [OCULUS_multiview]
+extension type OCULUS_multiview.$(_i1.JSObject _) implements _i1.JSObject, _i2.OVR_multiview2 {
+  /// Method [framebufferTextureMultisampleMultiviewOVR]
+  ///
+  /// Parameters:
+  /// - target: GLenum
+  /// - attachment: GLenum
+  /// - texture: WebGLTexture | null
+  /// - level: GLint
+  /// - samples: GLsizei
+  /// - baseViewIndex: GLint
+  /// - numViews: GLsizei
+  ///
+  /// Returns:
+  /// - void
+  external void framebufferTextureMultisampleMultiviewOVR(
+    _i2.GLenum target,
+    _i2.GLenum attachment,
+    _i2.WebGLTexture? texture,
+    _i2.GLint level,
+    _i2.GLsizei samples,
+    _i2.GLint baseViewIndex,
+    _i2.GLsizei numViews,
+  );
+}
 
 /// Class [OCULUS_multiview]
 extension type OCULUS_multiview._(_i1.JSObject _) implements _i1.JSObject {
@@ -2088,10 +3722,7 @@ extension type XRCPUDepthInformation.$(_i1.JSObject _) implements _i1.JSObject, 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber getDepthInMeters(
-    _i1.JSNumber x,
-    _i1.JSNumber y,
-  );
+  external _i1.JSNumber getDepthInMeters(_i1.JSNumber x, _i1.JSNumber y);
 }
 
 /// Interface [XRWebGLDepthInformation]
@@ -2111,3 +3742,20 @@ extension type XRWebGLDepthInformation.$(_i1.JSObject _) implements _i1.JSObject
   /// readonly imageIndex?: number | null | undefined
   external _i1.JSNumber? get imageIndex;
 }
+
+/// Interface [XRWebGLBinding]
+extension type XRWebGLBinding.$(_i1.JSObject _) implements _i1.JSObject {
+  /// Method [getDepthInformation]
+  ///
+  /// Parameters:
+  /// - view: XRView
+  ///
+  /// Returns:
+  /// - XRWebGLDepthInformation | null | undefined
+  external XRWebGLDepthInformation? getDepthInformation(XRView view);
+}
+
+/// Typedef [XRInteractionMode]
+///
+/// "screen-space" | "world-space"
+typedef XRInteractionMode = _i1.JSString;

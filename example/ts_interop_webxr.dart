@@ -106,8 +106,7 @@ void main() async {
 
   final sw = Stopwatch()..start();
   stdout.write('Reading input file... ');
-  // final inFile = File('example/babylonjs@7.19.1.json');
-  final inFile = File('example/@types_webxr@0.5.19.json');
+  final inFile = File('example/@types_webxr@0.5.22.json');
   final content = inFile.readAsStringSync();
   final json = jsonDecode(content);
   final package = TsPackage.fromJson(json);
