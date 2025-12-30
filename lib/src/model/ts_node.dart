@@ -1,5 +1,5 @@
 import 'package:binary_tree/binary_tree.dart';
-import 'package:ts_interop/src/transpiler/type_evaluator.dart';
+import '../transpiler/type_evaluator.dart';
 
 import '../util/ts_node_search.dart';
 
@@ -15,6 +15,8 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
         throw StateError('Node with kind ${TsNodeKind.$unsupported.name} is not allowed in JSON!');
       case TsNodeKind.$removed:
         throw StateError('Node with kind ${TsNodeKind.$removed.name} is not allowed in JSON!');
+      case TsNodeKind.$dependencies:
+        throw StateError('Node with kind ${TsNodeKind.$dependencies.name} is not allowed in JSON!');
       case TsNodeKind.abstractKeyword:
         return TsAbstractKeyword() as T;
       case TsNodeKind.anyKeyword:
@@ -249,6 +251,7 @@ enum TsNodeKind {
   $null,
   $unsupported,
   $removed,
+  $dependencies,
   abstractKeyword,
   anyKeyword,
   arrayBindingPattern,
@@ -627,6 +630,24 @@ class Ts$Removed extends TsNode {
 
   @override
   TsNode copy() => Ts$Removed(this, meta: meta.copy());
+}
+
+class Ts$Dependencies extends TsNode {
+  final ListNode dependencies;
+
+  Ts$Dependencies(List<TsPackage> dependencies, {TsNodeMeta? meta})
+    : dependencies = ListNode(dependencies),
+      super(TsNodeKind.$dependencies, meta ?? TsNodeMeta());
+
+  @override
+  String get nodeName => 'dependencies';
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [dependencies];
+
+  @override
+  TsNode copy() =>
+      Ts$Dependencies(dependencies.value.map((n) => n.copy()).whereType<TsPackage>().toList(), meta: meta.copy());
 }
 
 class TsAbstractKeyword extends TsNode {
@@ -1803,8 +1824,9 @@ class TsPackage extends TsNode {
   final String name;
   final String version;
   final ListNode sourceFiles;
+  final ListNode dependencies;
 
-  TsPackage(this.name, this.version, this.sourceFiles, {TsNodeMeta? meta})
+  TsPackage(this.name, this.version, this.sourceFiles, this.dependencies, {TsNodeMeta? meta})
     : super(TsNodeKind.package, meta ?? TsNodeMeta());
 
   factory TsPackage.fromJson(Map<String, dynamic> json) {
@@ -1812,6 +1834,7 @@ class TsPackage extends TsNode {
       json['name'] as String,
       json['version'] as String,
       ListNode(_fromJsonArray(json['sourceFiles'])),
+      ListNode([]),
     );
     result._parent = null;
     result._applyParentToChilds();
@@ -1822,10 +1845,10 @@ class TsPackage extends TsNode {
   String? get nodeName => name;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [sourceFiles];
+  List<TsNodeWrapper> get nodeWrappers => [sourceFiles, dependencies];
 
   @override
-  TsNode copy() => TsPackage(name, version, sourceFiles.copy(), meta: meta.copy());
+  TsNode copy() => TsPackage(name, version, sourceFiles.copy(), dependencies.copy(), meta: meta.copy());
 }
 
 class TsParameter extends TsNode {

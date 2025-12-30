@@ -2,7 +2,10 @@ include: package:lints/recommended.yaml
 
 formatter:
   page_width: 120
-
+  trailing_commas: preserve
+  
 linter:
   rules:
     - invalid_runtime_check_with_js_interop_types
+    - prefer_relative_imports
+    - avoid_relative_lib_imports

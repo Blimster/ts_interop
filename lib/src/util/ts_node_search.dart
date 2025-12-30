@@ -1,5 +1,5 @@
 import 'package:binary_tree/binary_tree.dart';
-import 'package:ts_interop/src/util/ts_node_foreach.dart';
+import 'ts_node_foreach.dart';
 
 import '../model/ts_node.dart';
 

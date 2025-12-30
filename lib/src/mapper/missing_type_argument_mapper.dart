@@ -1,4 +1,4 @@
-import 'package:ts_interop/src/util/ts_node_search.dart';
+import '../util/ts_node_search.dart';
 
 import '../model/ts_node.dart';
 import '../transpiler/type_evaluator.dart';

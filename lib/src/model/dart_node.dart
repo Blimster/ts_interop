@@ -1,6 +1,7 @@
 import 'package:code_builder/code_builder.dart';
 
-import '../../ts_interop.dart';
+import '../dependency/dependency.dart';
+import 'ts_node.dart';
 
 sealed class DartNode<S extends Spec> {
   final TsNode tsNode;

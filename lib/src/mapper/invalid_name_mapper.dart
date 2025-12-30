@@ -1,5 +1,6 @@
-import 'package:ts_interop/src/transpiler/type_evaluator.dart';
-import 'package:ts_interop/ts_interop.dart';
+import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
+import '../util/ts_node_search.dart';
 
 String _sanitizeTypeName(String? name) {
   const invalidNames = {

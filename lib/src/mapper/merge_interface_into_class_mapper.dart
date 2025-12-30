@@ -6,7 +6,6 @@ TsNode mergeInterfaceIntoClassMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsClassDeclaration(name: SingleNode(value: TsNode(nodeName: final className?)))) {
     final interfaces = node.root.searchDown<TsInterfaceDeclaration>(hasName(className));
     if (interfaces.isNotEmpty) {
-      // TODO merge modifiers and heritage clauses into class
       final members = List.of(node.members.value);
       for (final interfaze in interfaces) {
         members.addAll(interfaze.members.value);
@@ -22,13 +21,18 @@ TsNode mergeInterfaceIntoClassMapper(TsNode node, TypeEvaluator typeEvaluator) {
         newHeritageClauses.add(currentHeritageClause);
       }
     }
-    node.heritageClauses.set([
-      TsHeritageClause(
-        SingleNode(TsImplementsKeyword()),
-        ListNode(newHeritageClauses),
-      )
-    ]);
+    node.heritageClauses.set([TsHeritageClause(SingleNode(TsImplementsKeyword()), ListNode(newHeritageClauses))]);
     return node;
+  }
+  return node;
+}
+
+TsNode deleteInterfaceAfterMergeIntoClassMapper(TsNode node, TypeEvaluator typeEvaluator) {
+  if (node case TsInterfaceDeclaration(name: SingleNode(value: TsNode(nodeName: final interfaceName?)))) {
+    final classes = node.root.searchDown<TsClassDeclaration>(hasName(interfaceName));
+    if (classes.isNotEmpty) {
+      return Ts$Removed(node);
+    }
   }
   return node;
 }

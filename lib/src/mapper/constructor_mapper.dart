@@ -1,5 +1,6 @@
-import '../../ts_interop.dart';
+import '../model/ts_node.dart';
 import '../transpiler/type_evaluator.dart';
+import '../util/ts_node_search.dart';
 
 TsNode constructorCopyMapper(TsNode node, TypeEvaluator typeEvaluator) {
   if (node case TsInterfaceDeclaration(name: SingleNode(value: TsIdentifier(text: String? interfaceName)))) {
@@ -17,8 +18,6 @@ TsNode constructorCopyMapper(TsNode node, TypeEvaluator typeEvaluator) {
         type: NullableNode(value: TsTypeLiteral(members: ListNode(value: List<TsNode> members))),
       )) {
         node.members.set([...node.members.value, ...members.whereType<TsConstructSignature>().map((e) => e.copy())]);
-        // TODO copy methods as statics methods to the interface
-        // print(members.whereType<TsMethodSignature>());
       }
     }
   }

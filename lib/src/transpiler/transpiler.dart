@@ -1,10 +1,11 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:ts_interop/src/model/dart_node.dart';
-import 'package:ts_interop/src/transpiler/type_evaluator.dart';
-import 'package:ts_interop/ts_interop.dart';
 
+import '../dependency/dependency.dart';
+import '../model/dart_node.dart';
 import '../model/ts_node.dart';
+import '../util/ts_node_search.dart';
+import 'type_evaluator.dart';
 
 final _ignoreDirectives = [
   'non_constant_identifier_names',
@@ -816,10 +817,9 @@ class Transpiler {
     }
 
     final isNullable = type.typeName.value.nodeName?.endsWith('?') ?? false;
-    final name =
-        isNullable
-            ? type.typeName.value.nodeName?.substring(0, type.typeName.value.nodeName!.length - 1)
-            : type.typeName.value.nodeName;
+    final name = isNullable
+        ? type.typeName.value.nodeName?.substring(0, type.typeName.value.nodeName!.length - 1)
+        : type.typeName.value.nodeName;
     final nameWithoutQualifier = name?.contains('.') ?? false ? name?.split('.').last : name;
 
     return TypeReference((builder) {
@@ -885,7 +885,10 @@ class Transpiler {
   DartNode<S> _transpileNode<S extends Spec>(TsNode? node) {
     final DartNode<S> transpiledNode = switch (node) {
       null => DartNode.empty<S>(Ts$Null()),
+      Ts$Null() => DartNode.empty<S>(node),
+      Ts$Unsupported() => DartNode.empty<S>(node),
       Ts$Removed() => DartNode.empty<S>(node),
+      Ts$Dependencies() => DartNode.empty<S>(node),
       TsAnyKeyword() => _transpileAnyKeyword(node),
       TsArrayType() => _transpileArrayType(node),
       TsBigIntKeyword() => _transpileBigIntKeyword(node),
