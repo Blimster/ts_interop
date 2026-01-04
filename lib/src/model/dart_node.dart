@@ -32,6 +32,9 @@ final class DartUnsupported<S extends Spec> extends DartNode<S> {
     return [];
   }
 
+  @override
+  String toString() => 'DartUnsupported(tsNode: $tsNode)';
+
   DartNode<S> toEmpty() => DartNode.empty<S>(tsNode);
 }
 
@@ -45,6 +48,9 @@ class DartSpec<S extends Spec> extends DartNode<S> {
 
   @override
   List<S> toSpecs(Dependencies dependencies) => [spec];
+
+  @override
+  String toString() => 'DartSpec(spec: $spec, tsNode: $tsNode)';
 }
 
 extension SpecToDartNode on Spec {

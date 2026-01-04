@@ -21,11 +21,7 @@ TsNode literalAsTypeArgumentMapper(TsNode node, TypeEvaluator typeEvaluator) {
       }
     }
     if (changed) {
-      final result = TsTypeReference(
-        node.typeName,
-        newTypeArguments.toListNode(),
-      );
-      return result;
+      node.typeArguments.set(newTypeArguments);
     }
   }
   return node;

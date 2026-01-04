@@ -332,6 +332,10 @@ class Transpiler {
     }).toDartNode(enumDeclaration);
   }
 
+  DartNode<Spec> _transpileExportDeclaration(TsExportDeclaration exportDeclaration) {
+    return _transpileNode(exportDeclaration.moduleSpecifier.value).toSpecs(dependencies).toDartNode(exportDeclaration);
+  }
+
   DartNode<TypeReference> _transpileExpressionWithTypeArguments(
     TsExpressionWithTypeArguments expressionWithTypeArguments,
   ) {
@@ -394,6 +398,25 @@ class Transpiler {
       builder.symbol = 'JSFunction';
       builder.url = dependencies.libraryUrlForType(builder.symbol, functionType);
     }).toDartNode(functionType);
+  }
+
+  DartNode<Method> _transpileGetAccessor(TsGetAccessor getAccessor) {
+    final name = getAccessor.name.value.nodeName;
+    return Method((builder) {
+      builder.docs.add('/// Get Accessor [$name]');
+      builder.docs.add('///');
+      builder.docs.add('/// ${getAccessor.toCode()}');
+      getAccessor.meta.ifNotOriginalName(name, (originalName) {
+        builder.annotations.addJsAnnotation(getAccessor, originalName, dependencies);
+      });
+      builder.type = MethodType.getter;
+      builder.external = true;
+      builder.name = name;
+      builder.types.addAll(_transpileNodes<Reference>(getAccessor.typeParameters.value).toSpecs(dependencies));
+      builder.returns = _transpileNode<TypeReference>(
+        typeEvaluator.evaluateType(getAccessor.type.value),
+      ).toSpec(dependencies);
+    }).toDartNode(getAccessor);
   }
 
   DartNode<Reference> _transpileHeritageClause(TsHeritageClause heritageClause) {
@@ -713,6 +736,29 @@ class Transpiler {
     }
   }
 
+  DartNode<Method> _transpileSetAccessor(TsSetAccessor setAccessor) {
+    final name = setAccessor.name.value.nodeName;
+    return Method((builder) {
+      builder.docs.add('/// Get Accessor [$name]');
+      builder.docs.add('///');
+      builder.docs.add('/// ${setAccessor.toCode()}');
+      setAccessor.meta.ifNotOriginalName(name, (originalName) {
+        builder.annotations.addJsAnnotation(setAccessor, originalName, dependencies);
+      });
+      builder.type = MethodType.setter;
+      builder.external = true;
+      builder.name = name;
+      builder.requiredParameters.add(
+        Parameter((builder) {
+          builder.name = 'value';
+          builder.type = _transpileNode<TypeReference>(
+            typeEvaluator.evaluateType(setAccessor.type.value),
+          ).toSpec(dependencies);
+        }),
+      );
+    }).toDartNode(setAccessor);
+  }
+
   DartNode<Spec> _transpileSourceFile(TsSourceFile sourceFile) {
     return _transpileNodes(sourceFile.statements.value).toSpecs(dependencies).toDartNode(sourceFile);
   }
@@ -862,7 +908,7 @@ class Transpiler {
           builder.symbol = 'JS';
           builder.url = dependencies.libraryUrlForType(builder.symbol, variableDeclaration);
         }))}(\'${variableDeclaration.meta.originalName}\')',
-        'external ${allocator(_transpileNode<Reference>(variableDeclaration.type.value).toSpec(dependencies)!)} ${variableDeclaration.name.value.nodeName};',
+        'external ${allocator(_transpileNode<Reference>(variableDeclaration.type.value).toSpec(dependencies) ?? Reference('JSAny', dependencies.libraryUrlForType('JSAny', variableDeclaration)))} ${variableDeclaration.name.value.nodeName};',
       ].join('\n');
     }).toDartNode(variableDeclaration);
   }
@@ -900,9 +946,11 @@ class Transpiler {
       TsConstructSignature() => _transpileConstructSignature(node),
       TsConstructorType() => _transpileConstructorType(node),
       TsEnumDeclaration() => _transpileEnumDeclaration(node),
+      TsExportDeclaration() => _transpileExportDeclaration(node),
       TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(node),
       TsFunctionDeclaration() => _transpileFunctionDeclaration(node),
       TsFunctionType() => _transpileFunctionType(node),
+      TsGetAccessor() => _transpileGetAccessor(node),
       TsHeritageClause() => _transpileHeritageClause(node),
       TsInterfaceDeclaration() => _transpileInterfaceDeclaration(node),
       TsIndexSignature() => _transpileIndexSignature(node),
@@ -921,6 +969,7 @@ class Transpiler {
       TsParameter() => _transpileParameter(node),
       TsPropertyDeclaration() => _transpilePropertyDeclaration(node),
       TsPropertySignature() => _transpilePropertySignature(node),
+      TsSetAccessor() => _transpileSetAccessor(node),
       TsSourceFile() => _transpileSourceFile(node),
       TsStringKeyword() => _transpileStringKeyword(node),
       TsStringLiteral() => _transpileStringLiteral(node),

@@ -11,7 +11,6 @@ TsNode mergeDuplicateInterfacesMapper(TsNode node, TypeEvaluator typeEvaluator) 
         final members = <TsNode>{};
         members.addAll(interfaces.expand((interface) => interface.members.value.map((e) => e.copy())));
         node.members.set(members.toList());
-        return node;
       }
     }
   }

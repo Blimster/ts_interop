@@ -1,7 +1,16 @@
 import 'package:binary_tree/binary_tree.dart';
-import '../transpiler/type_evaluator.dart';
 
+import '../transpiler/type_evaluator.dart';
 import '../util/ts_node_search.dart';
+
+class IllegalKindError extends Error {
+  final TsNodeKind kind;
+
+  IllegalKindError(this.kind);
+
+  @override
+  String toString() => 'IllegalKindError: Node with kind ${kind.name} is not allowed here.';
+}
 
 String _toFirstLower(String text) => "${text[0].toLowerCase()}${text.substring(1)}";
 
@@ -10,13 +19,13 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
     final kind = TsNodeKind.values.byName(_toFirstLower(json['kind'] as String));
     switch (kind) {
       case TsNodeKind.$null:
-        throw StateError('Node with kind ${TsNodeKind.$null.name} is not allowed in JSON!');
+        throw IllegalKindError(TsNodeKind.$null);
       case TsNodeKind.$unsupported:
-        throw StateError('Node with kind ${TsNodeKind.$unsupported.name} is not allowed in JSON!');
+        throw IllegalKindError(TsNodeKind.$unsupported);
       case TsNodeKind.$removed:
-        throw StateError('Node with kind ${TsNodeKind.$removed.name} is not allowed in JSON!');
+        throw IllegalKindError(TsNodeKind.$removed);
       case TsNodeKind.$dependencies:
-        throw StateError('Node with kind ${TsNodeKind.$dependencies.name} is not allowed in JSON!');
+        throw IllegalKindError(TsNodeKind.$dependencies);
       case TsNodeKind.abstractKeyword:
         return TsAbstractKeyword() as T;
       case TsNodeKind.anyKeyword:
@@ -53,6 +62,8 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
         return TsEnumMember.fromJson(json) as T;
       case TsNodeKind.exclamationToken:
         return TsExclamationToken() as T;
+      case TsNodeKind.exportDeclaration:
+        return TsExportDeclaration.fromJson(json) as T;
       case TsNodeKind.exportKeyword:
         return TsExportKeyword() as T;
       case TsNodeKind.expressionWithTypeArguments:
@@ -129,6 +140,8 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
         return TsNumericLiteral.fromJson(json) as T;
       case TsNodeKind.objectKeyword:
         return TsObjectKeyword() as T;
+      case TsNodeKind.optionalType:
+        return TsOptionalType.fromJson(json) as T;
       case TsNodeKind.package:
         return TsPackage.fromJson(json) as T;
       case TsNodeKind.parameter:
@@ -220,9 +233,13 @@ T _fromJsonObject<T extends TsNode>(Map<String, dynamic> json) {
       case TsNodeKind.voidKeyword:
         return TsVoidKeyword() as T;
     }
-  } catch (e) {
-    print('WARNING: Unsupported node kind: ${json['kind']}');
+  } on IllegalKindError catch (e) {
+    print('WARNING: Unsupported node kind: ${e.kind.name}');
     return Ts$Unsupported(_toFirstLower(json['kind'].toString())) as T;
+  } catch (e, s) {
+    print(e);
+    print(s);
+    rethrow;
   }
 }
 
@@ -270,6 +287,7 @@ enum TsNodeKind {
   enumDeclaration,
   enumMember,
   exclamationToken,
+  exportDeclaration,
   exportKeyword,
   expressionWithTypeArguments,
   extendsKeyword,
@@ -308,6 +326,7 @@ enum TsNodeKind {
   numberKeyword,
   numericLiteral,
   objectKeyword,
+  optionalType,
   parameter,
   parenthesizedType,
   prefixUnaryExpression,
@@ -1002,6 +1021,33 @@ class TsEnumMember extends TsNode {
 
   @override
   TsNode copy() => TsEnumMember(name.copy(), initializer.copy(), meta: meta.copy());
+}
+
+class TsExportDeclaration extends TsNode {
+  final String? namespaceExport;
+  final NullableNode moduleSpecifier;
+
+  TsExportDeclaration(this.namespaceExport, this.moduleSpecifier, {TsNodeMeta? meta})
+    : super(TsNodeKind.exportDeclaration, meta ?? TsNodeMeta());
+
+  factory TsExportDeclaration.fromJson(Map<String, dynamic> json) {
+    final moduleSpecifier = json['moduleSpecifier'];
+    return TsExportDeclaration(
+      json['namespaceExport'] as String?,
+      NullableNode(moduleSpecifier != null ? _fromJsonObject(moduleSpecifier) : null),
+    );
+  }
+
+  @override
+  String? get nodeName => moduleSpecifier.value?.nodeName;
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [moduleSpecifier];
+
+  @override
+  TsNode copy() {
+    return TsExportDeclaration(namespaceExport, moduleSpecifier.copy(), meta: meta.copy());
+  }
 }
 
 class TsExportKeyword extends TsNode {
@@ -1820,6 +1866,30 @@ class TsObjectKeyword extends TsNode {
   TsNode copy() => TsObjectKeyword(meta: meta.copy());
 }
 
+class TsOptionalType extends TsNode {
+  final SingleNode type;
+
+  TsOptionalType(this.type, {TsNodeMeta? meta}) : super(TsNodeKind.optionalType, meta ?? TsNodeMeta());
+
+  factory TsOptionalType.fromJson(Map<String, dynamic> json) {
+    return TsOptionalType(SingleNode(_fromJsonObject(json['type'])));
+  }
+
+  @override
+  String? get nodeName => type.value.nodeName;
+
+  @override
+  List<TsNodeWrapper> get nodeWrappers => [type];
+
+  @override
+  String toCode() => '${type.toCode()}?';
+
+  @override
+  TsNode copy() {
+    return TsOptionalType(type.copy(), meta: meta.copy());
+  }
+}
+
 class TsPackage extends TsNode {
   final String name;
   final String version;
@@ -2184,25 +2254,23 @@ class TsSetAccessor extends TsNode with WithTypeParameters {
 }
 
 class TsSourceFile extends TsNode {
-  final String path;
   final String baseName;
   final ListNode statements;
 
-  TsSourceFile(this.path, this.baseName, this.statements, {TsNodeMeta? meta})
-    : super(TsNodeKind.sourceFile, meta ?? TsNodeMeta());
+  TsSourceFile(this.baseName, this.statements, {TsNodeMeta? meta}) : super(TsNodeKind.sourceFile, meta ?? TsNodeMeta());
 
   factory TsSourceFile.fromJson(Map<String, dynamic> json) {
-    return TsSourceFile(json['path'], json['baseName'], ListNode(_fromJsonArray(json['statements'])));
+    return TsSourceFile(json['baseName'], ListNode(_fromJsonArray(json['statements'])));
   }
 
   @override
-  String? get nodeName => '$path$baseName';
+  String? get nodeName => baseName;
 
   @override
   List<TsNodeWrapper> get nodeWrappers => [statements];
 
   @override
-  TsNode copy() => TsSourceFile(path, baseName, statements.copy(), meta: meta.copy());
+  TsNode copy() => TsSourceFile(baseName, statements.copy(), meta: meta.copy());
 }
 
 class TsStaticKeyword extends TsNode {

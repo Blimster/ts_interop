@@ -9,6 +9,7 @@ import '../dependency/dependency.dart';
 import '../mapper/constructor_mapper.dart';
 import '../mapper/interface_mappers.dart';
 import '../mapper/invalid_name_mapper.dart';
+import '../mapper/literal_as_type_argument_mapper.dart';
 import '../mapper/merge_interface_into_class_mapper.dart';
 import '../mapper/missing_type_argument_mapper.dart';
 import '../mapper/missing_type_parameter_mapper.dart';
@@ -158,6 +159,11 @@ final _predefinedPhases = {
   'invalidIdentifiers': [
     SanitizerPhase('invalidIdentifiers', PhaseDirection.bottomUp, [
       invalidNameMapper,
+    ]),
+  ],
+  'literalAsTypeArgument': [
+    SanitizerPhase('literalAsTypeArgument', PhaseDirection.bottomUp, [
+      literalAsTypeArgumentMapper,
     ]),
   ],
 };

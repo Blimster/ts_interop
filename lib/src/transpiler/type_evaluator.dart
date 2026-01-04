@@ -99,7 +99,9 @@ class TypeEvaluator {
       TsConstructorType() => evaluateType(node.type.value),
       TsFalseKeyword() => _typeRef('JSBoolean'),
       TsFunctionType() => _typeRef('JSFunction'),
+      TsIdentifier() => _typeRef(node.text),
       TsIndexedAccessType() => _typeRef('JSAny'),
+      TsImportType() => evaluateType(node.qualifier.value),
       TsIntersectionType() => _typeRef('JSAny'),
       TsIntrinsicKeyword() => _typeRef('JSAny'),
       TsLiteralType() => evaluateType(node.literal.value),
@@ -119,18 +121,25 @@ class TypeEvaluator {
       TsTupleType() => _typeRef(
         'JSArray',
         typeArguments: [
-          TsTypeParameter(ListNode([]), SingleNode(TsIdentifier('JSAny')), NullableNode(null), NullableNode(null)),
+          TsTypeParameter(
+            ListNode([]),
+            SingleNode(TsIdentifier('JSAny')),
+            NullableNode(null),
+            NullableNode(null),
+          ),
         ],
       ),
       TsTypeLiteral() => _typeRef('JSObject'),
       TsTypeOperator() => _typeOperator(node),
       TsTypePredicate() => _typeRef('JSBoolean'),
       TsTypeReference() => _typeReference(node),
+      TsTypeQuery() => _typeRef('JSString'),
       TsUndefinedKeyword() => _typeRef('Null'),
       TsUnionType() => _unionType(node),
       TsUnknownKeyword() => _typeRef('JSAny'),
       TsVoidKeyword() => _typeRef('__<VOID>__'),
-      _ => throw UnimplementedError(node?.toString()),
+      null => _typeRef('JSAny'),
+      _ => throw UnimplementedError(node.toString()),
     };
   }
 

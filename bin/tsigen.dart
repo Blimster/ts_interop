@@ -6,7 +6,12 @@ void main(List<String> args) async {
     final (inputFile, configFile, outputDir) = parseArgs(args);
     final config = await fromYaml(configFile, inputFile, outputDir);
     final generator = Generator();
-    await generator.generate(config);
+    try {
+      await generator.generate(config);
+    } catch (e, st) {
+      print('Error during generation: $e');
+      print(st);
+    }
   } catch (_) {
     // error messages are handled in parseArgs()
   }
