@@ -17,8 +17,11 @@ const _nodeKinds = {
 
 class PackageDependency implements Dependency {
   final TsPackage package;
+  final Map<String, TsNode> _nodeCache = {};
 
-  PackageDependency(this.package);
+  PackageDependency(this.package) {
+    _cacheNodes(package);
+  }
 
   @override
   String? libraryUrlForType(String? typeName, TsNode currentNode) {
@@ -30,7 +33,7 @@ class PackageDependency implements Dependency {
       return '${package.name}_${typeName.split('.').first.toLowerCase()}.dart';
     }
 
-    final node = _findNode(package, typeName);
+    final node = _nodeCache[typeName];
     if (node != null) {
       if (_isInSameModule(currentNode, node)) {
         return null;
@@ -46,17 +49,14 @@ class PackageDependency implements Dependency {
     return null;
   }
 
-  TsNode? _findNode(TsNode node, String name) {
-    if (node.nodeName == name && _nodeKinds.contains(node.kind)) {
-      return node;
+  void _cacheNodes(TsNode node) {
+    final nodeName = node.nodeName;
+    if (_nodeKinds.contains(node.kind) && nodeName != null) {
+      _nodeCache.putIfAbsent(nodeName, () => node);
     }
     for (final child in node.children) {
-      final result = _findNode(child, name);
-      if (result != null) {
-        return result;
-      }
+      _cacheNodes(child);
     }
-    return null;
   }
 
   bool _isInSameModule(TsNode node1, TsNode node2) {
