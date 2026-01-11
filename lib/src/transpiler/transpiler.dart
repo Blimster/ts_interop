@@ -336,6 +336,47 @@ class Transpiler {
     return _transpileNode(exportDeclaration.moduleSpecifier.value).toSpecs(dependencies).toDartNode(exportDeclaration);
   }
 
+  DartNode<Spec> _transpileImportDeclaration(TsImportDeclaration importDeclaration) {
+    // Get the module specifier (the imported file path)
+    final moduleSpecifier = importDeclaration.moduleSpecifier.value;
+    if (moduleSpecifier is! TsStringLiteral) {
+      // If module specifier is not a string literal, we can't resolve it
+      return DartNode.empty<Spec>(importDeclaration);
+    }
+
+    final importPath = moduleSpecifier.text;
+    
+    // Find the source file in the package that matches this import
+    final package = importDeclaration.root;
+    if (package is! TsPackage) {
+      return DartNode.empty<Spec>(importDeclaration);
+    }
+
+    // Search for the source file by comparing baseName with the import path
+    TsSourceFile? targetSourceFile;
+    for (final sourceFile in package.sourceFiles.value) {
+      if (sourceFile is TsSourceFile) {
+        // Match the basename with or without extension
+        final baseName = sourceFile.baseName;
+        if (baseName == importPath || 
+            baseName == '$importPath.d.ts' || 
+            baseName.endsWith('/$importPath.d.ts') ||
+            baseName.endsWith('/$importPath')) {
+          targetSourceFile = sourceFile;
+          break;
+        }
+      }
+    }
+
+    if (targetSourceFile == null) {
+      // Could not find the imported file
+      return DartNode.empty<Spec>(importDeclaration);
+    }
+
+    // Transpile the statements from the imported source file
+    return _transpileNodes(targetSourceFile.statements.value).toSpecs(dependencies).toDartNode(importDeclaration);
+  }
+
   DartNode<TypeReference> _transpileExpressionWithTypeArguments(
     TsExpressionWithTypeArguments expressionWithTypeArguments,
   ) {
@@ -962,6 +1003,7 @@ class Transpiler {
       TsEnumDeclaration() => _transpileEnumDeclaration(node),
       TsExportDeclaration() => _transpileExportDeclaration(node),
       TsExpressionWithTypeArguments() => _transpileExpressionWithTypeArguments(node),
+      TsImportDeclaration() => _transpileImportDeclaration(node),
       TsFunctionDeclaration() => _transpileFunctionDeclaration(node),
       TsFunctionType() => _transpileFunctionType(node),
       TsGetAccessor() => _transpileGetAccessor(node),
