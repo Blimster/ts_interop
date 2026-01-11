@@ -610,17 +610,31 @@ class Transpiler {
     }).toDartNode(methodSignature);
   }
 
-  DartNode<Library> _transpileModuleDeclaration(TsModuleDeclaration moduleDeclaration) {
-    final library = Library((builder) {
-      builder.name = moduleDeclaration.name.value.nodeName?.toLowerCase();
-      builder.ignoreForFile.addAll(_ignoreDirectives);
-      final body = moduleDeclaration.body.value;
-      if (body != null) {
-        builder.body.addAll(_transpileNodes(body.children).toSpecs(dependencies));
-      }
-    });
-    libraries.add(library);
-    return library.toDartNode<Library>(moduleDeclaration);
+  DartNode<Spec> _transpileModuleDeclaration(TsModuleDeclaration moduleDeclaration) {
+    switch (moduleDeclaration.declarationKind) {
+      case 'namespace':
+        final library = Library((builder) {
+          builder.name = moduleDeclaration.name.value.nodeName?.toLowerCase();
+          builder.ignoreForFile.addAll(_ignoreDirectives);
+          final body = moduleDeclaration.body.value;
+          if (body != null) {
+            builder.body.addAll(_transpileNodes(body.children).toSpecs(dependencies));
+          }
+        });
+        libraries.add(library);
+        return library.toDartNode<Library>(moduleDeclaration);
+      case 'module':
+        final body = moduleDeclaration.body.value;
+        if (body != null) {
+          return _transpileNodes(body.children).toSpecs(dependencies).toDartNode(moduleDeclaration);
+        }
+        return DartNode.empty<Spec>(moduleDeclaration);
+      case 'global':
+        print('WARNING: Global module declarations are not supported yet.');
+        return DartNode.empty<Spec>(moduleDeclaration);
+      default:
+        throw StateError('Unsupported module declaration kind: ${moduleDeclaration.declarationKind}');
+    }
   }
 
   DartNode<TypeReference> _transpileNullKeyword(TsNullKeyword nullKeyword) {

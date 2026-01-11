@@ -17,10 +17,12 @@ class Generator {
     final typeEvaluator = TypeEvaluator();
     final dependencies = config.dependencies;
 
+    stdout.write('Reading input file... ');
     final inputFile = File(config.inputFile);
     final content = inputFile.readAsStringSync();
     final json = jsonDecode(content);
     final package = TsPackage.fromJson(json);
+    stdout.writeln('Done');
 
     final packageDependencies = dependencies.dependencies
         .whereType<PackageDependency>()
@@ -31,15 +33,20 @@ class Generator {
       updateParentAndChilds(packageDependency, package);
     }
 
+    stdout.write('Sanitizing... ');
     final sanitizer = Sanitizer(typeEvaluator);
     sanitizer.addPhases(config.sanitizerPhases);
     final sanitizedPackage = sanitizer.sanitize(package);
+    stdout.writeln('Done');
 
+    stdout.write('Transpiling... ');
     final transpiler = Transpiler(typeEvaluator, dependencies);
     final libraries = transpiler.transpile(sanitizedPackage);
+    stdout.writeln('Done');
 
     final mainLibName = sanitizedPackage.name.toLowerCase().split('/').last;
     for (final lib in libraries) {
+      stdout.write('Writing library ${lib.name}... ');
       final emitter = DartEmitter.scoped(useNullSafetySyntax: true);
       final DartFormatter formatter = DartFormatter(
         languageVersion: DartFormatter.latestLanguageVersion,
@@ -54,8 +61,11 @@ class Generator {
       } catch (e) {
         outFile.writeAsStringSync(lib.accept(emitter).toString());
       }
+      stdout.writeln('Done');
     }
 
+    stdout.write('Creating meta.json... ');
     File(config.inputFile).copySync('${config.outputDir}/meta.json');
+    stdout.writeln('Done');
   }
 }

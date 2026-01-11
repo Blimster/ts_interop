@@ -1752,15 +1752,17 @@ class TsModuleBlock extends TsNode {
 class TsModuleDeclaration extends TsNode {
   final ListNode modifiers;
   final SingleNode name;
+  final String declarationKind;
   final NullableNode body;
 
-  TsModuleDeclaration(this.modifiers, this.name, this.body, {TsNodeMeta? meta})
+  TsModuleDeclaration(this.modifiers, this.name, this.declarationKind, this.body, {TsNodeMeta? meta})
     : super(TsNodeKind.moduleDeclaration, meta ?? TsNodeMeta());
 
   factory TsModuleDeclaration.fromJson(Map<String, dynamic> json) {
     return TsModuleDeclaration(
       ListNode(_fromJsonArray(json['modifiers'])),
       SingleNode(_fromJsonObject(json['name']), affectsParent: true),
+      json['declarationKind'] as String,
       NullableNode(_fromNullableJsonObject(json['body'])),
     );
   }
@@ -1772,7 +1774,7 @@ class TsModuleDeclaration extends TsNode {
   List<TsNodeWrapper> get nodeWrappers => [modifiers, name, body];
 
   @override
-  TsNode copy() => TsModuleDeclaration(modifiers.copy(), name.copy(), body.copy(), meta: meta.copy());
+  TsNode copy() => TsModuleDeclaration(modifiers.copy(), name.copy(), declarationKind, body.copy(), meta: meta.copy());
 }
 
 class TsNamedImports extends TsNode {
