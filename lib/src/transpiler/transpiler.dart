@@ -121,6 +121,7 @@ class Transpiler {
   final TypeEvaluator typeEvaluator;
   final Dependencies dependencies;
   final List<Library> libraries = [];
+  final Set<String> _processingImports = {}; // Track imports being processed to prevent circular imports
 
   Transpiler(this.typeEvaluator, this.dependencies);
 
@@ -372,6 +373,11 @@ class Transpiler {
 
     final importPath = moduleSpecifier.text;
     
+    // Validate import path
+    if (importPath.trim().isEmpty) {
+      return DartNode.empty<Spec>(importDeclaration);
+    }
+    
     // Find the source file in the package that matches this import
     final package = importDeclaration.root;
     if (package is! TsPackage) {
@@ -385,8 +391,23 @@ class Transpiler {
       return DartNode.empty<Spec>(importDeclaration);
     }
 
-    // Transpile the statements from the imported source file and add them to the current package
-    return _transpileNodes(targetSourceFile.statements.value).toSpecs(dependencies).toDartNode(importDeclaration);
+    // Check for circular imports to prevent infinite recursion
+    final fileKey = targetSourceFile.baseName;
+    if (_processingImports.contains(fileKey)) {
+      // Circular import detected, skip to avoid infinite recursion
+      return DartNode.empty<Spec>(importDeclaration);
+    }
+
+    // Mark this file as being processed
+    _processingImports.add(fileKey);
+    
+    try {
+      // Transpile the statements from the imported source file and add them to the current package
+      return _transpileNodes(targetSourceFile.statements.value).toSpecs(dependencies).toDartNode(importDeclaration);
+    } finally {
+      // Always remove from processing set, even if an error occurs
+      _processingImports.remove(fileKey);
+    }
   }
 
   DartNode<TypeReference> _transpileExpressionWithTypeArguments(
