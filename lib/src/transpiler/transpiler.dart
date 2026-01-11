@@ -392,7 +392,8 @@ class Transpiler {
     }
 
     // Check for circular imports to prevent infinite recursion
-    final fileKey = targetSourceFile.baseName;
+    // Use the node's unique ID to identify files being processed
+    final fileKey = targetSourceFile.id.toString();
     if (_processingImports.contains(fileKey)) {
       // Circular import detected, skip to avoid infinite recursion
       return DartNode.empty<Spec>(importDeclaration);
