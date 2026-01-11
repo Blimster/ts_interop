@@ -336,6 +336,32 @@ class Transpiler {
     return _transpileNode(exportDeclaration.moduleSpecifier.value).toSpecs(dependencies).toDartNode(exportDeclaration);
   }
 
+  TsSourceFile? _resolveImportedFile(TsPackage package, String importPath) {
+    // Try to find the source file that matches the import path
+    for (final sourceFile in package.sourceFiles.value) {
+      if (sourceFile is TsSourceFile) {
+        final baseName = sourceFile.baseName;
+        // Match the basename with various formats
+        if (_matchesImportPath(baseName, importPath)) {
+          return sourceFile;
+        }
+      }
+    }
+    return null;
+  }
+
+  bool _matchesImportPath(String baseName, String importPath) {
+    // Direct match
+    if (baseName == importPath) return true;
+    // With .d.ts extension
+    if (baseName == '$importPath.d.ts') return true;
+    // Relative path with .d.ts
+    if (baseName.endsWith('/$importPath.d.ts')) return true;
+    // Relative path without extension
+    if (baseName.endsWith('/$importPath')) return true;
+    return false;
+  }
+
   DartNode<Spec> _transpileImportDeclaration(TsImportDeclaration importDeclaration) {
     // Get the module specifier (the imported file path)
     final moduleSpecifier = importDeclaration.moduleSpecifier.value;
@@ -352,28 +378,14 @@ class Transpiler {
       return DartNode.empty<Spec>(importDeclaration);
     }
 
-    // Search for the source file by comparing baseName with the import path
-    TsSourceFile? targetSourceFile;
-    for (final sourceFile in package.sourceFiles.value) {
-      if (sourceFile is TsSourceFile) {
-        // Match the basename with or without extension
-        final baseName = sourceFile.baseName;
-        if (baseName == importPath || 
-            baseName == '$importPath.d.ts' || 
-            baseName.endsWith('/$importPath.d.ts') ||
-            baseName.endsWith('/$importPath')) {
-          targetSourceFile = sourceFile;
-          break;
-        }
-      }
-    }
-
+    // Resolve the imported file
+    final targetSourceFile = _resolveImportedFile(package, importPath);
     if (targetSourceFile == null) {
       // Could not find the imported file
       return DartNode.empty<Spec>(importDeclaration);
     }
 
-    // Transpile the statements from the imported source file
+    // Transpile the statements from the imported source file and add them to the current package
     return _transpileNodes(targetSourceFile.statements.value).toSpecs(dependencies).toDartNode(importDeclaration);
   }
 
