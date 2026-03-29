@@ -130,21 +130,21 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       final sanitizedName = _sanitizeTypeName(originalName);
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
-        node.name.set(TsIdentifier(sanitizedName));
+        node.name.set(TsIdentifier([], sanitizedName));
       }
       return node;
     case TsInterfaceDeclaration(name: SingleNode(value: TsIdentifier(text: String? originalName))):
       final sanitizedName = _sanitizeTypeName(originalName);
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
-        node.name.set(TsIdentifier(sanitizedName));
+        node.name.set(TsIdentifier([], sanitizedName));
       }
       return node;
     case TsExpressionWithTypeArguments(expression: SingleNode(value: TsIdentifier(text: String originalName))):
       final sanitizedName = _sanitizeTypeName(originalName);
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
-        node.expression.set(TsIdentifier(sanitizedName));
+        node.expression.set(TsIdentifier([], sanitizedName));
       }
       return node;
     case TsTypeReference(typeName: SingleNode(value: TsIdentifier(text: String? originalName))):
@@ -154,7 +154,7 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       );
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
-        node.typeName.set(TsIdentifier(sanitizedName));
+        node.typeName.set(TsIdentifier([], sanitizedName));
       }
       return node;
     case TsPropertyDeclaration(name: SingleNode(value: TsNode nameNode)):
@@ -163,7 +163,7 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       final sanitizedName = _sanitizePropertyName(originalName, typeName);
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
-        node.name.set(TsIdentifier(sanitizedName));
+        node.name.set(TsIdentifier([], sanitizedName));
       }
       return node;
     case TsPropertySignature(name: SingleNode(value: TsNode nameNode)):
@@ -183,7 +183,10 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       if (sanitizedName != originalName || overloadIds.length > 1) {
         node.meta.originalName = originalName;
         node.name.set(
-          TsIdentifier(overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName),
+          TsIdentifier(
+            [],
+            overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName,
+          ),
         );
       }
       return node;
@@ -193,7 +196,7 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       final sanitizedName = _sanitizePropertyName(originalName, typeName);
       if (sanitizedName != originalName) {
         node.meta.originalName = originalName;
-        node.name.set(TsIdentifier(sanitizedName));
+        node.name.set(TsIdentifier([], sanitizedName));
       }
       return node;
     case TsFunctionDeclaration(name: SingleNode(value: TsNode nameNode)):
@@ -212,7 +215,10 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
         if (sanitizedName != originalName || overloadIds.length > 1) {
           node.meta.originalName = originalName;
           node.name.set(
-            TsIdentifier(overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName),
+            TsIdentifier(
+              [],
+              overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName,
+            ),
           );
         }
       }
@@ -223,7 +229,7 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       if (originalName != null) {
         final overloadIds = <int>[];
         if (node.parent case final parent?) {
-          final overloads = parent.searchChilds<TsMethodSignature>(hasName(originalName));
+          final overloads = parent.searchChilds<TsMethodDeclaration>(hasName(originalName));
           for (final overload in overloads) {
             overloadIds.add(overload.id);
           }
@@ -233,7 +239,10 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
         if (sanitizedName != originalName || overloadIds.length > 1) {
           node.meta.originalName = originalName;
           node.name.set(
-            TsIdentifier(overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName),
+            TsIdentifier(
+              [],
+              overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName,
+            ),
           );
         }
       }
@@ -254,7 +263,10 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
         if (sanitizedName != originalName || overloadIds.length > 1) {
           node.meta.originalName = originalName;
           node.name.set(
-            TsIdentifier(overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName),
+            TsIdentifier(
+              [],
+              overloadIds.length > 1 ? '$originalName\$${overloadIds.indexOf(node.id) + 1}' : sanitizedName,
+            ),
           );
         }
       }

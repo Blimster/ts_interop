@@ -17,7 +17,12 @@ import '../model/ts_node.dart';
 }
 
 TsTypeReference _typeRef(String name, {List<TsNode> typeArguments = const [], TsNodeMeta? meta}) {
-  return TsTypeReference(TsIdentifier(name).toSingleNode(affectsParent: true), typeArguments.toListNode(), meta: meta);
+  return TsTypeReference(
+    [],
+    TsIdentifier([], name).toSingleNode(affectsParent: true),
+    typeArguments.toListNode(),
+    meta: meta,
+  );
 }
 
 class TypeEvaluator {
@@ -66,7 +71,7 @@ class TypeEvaluator {
           limitedTypeArgs.value.addAll(node.typeArguments.value.take(typeParamCount));
         }
 
-        return TsTypeReference(TsIdentifier(newType).toSingleNode(), limitedTypeArgs);
+        return TsTypeReference([], TsIdentifier([], newType).toSingleNode(), limitedTypeArgs);
       }
     }
     return node;
@@ -80,7 +85,8 @@ class TypeEvaluator {
     if (types.length == 1) {
       final name = '${types.first.nodeName}${hasNull ? '?' : ''}';
       return TsTypeReference(
-        TsIdentifier(name).toSingleNode(),
+        [],
+        TsIdentifier([], name).toSingleNode(),
         types.first.typeArguments,
         meta: TsNodeMeta(documentation: [doc]),
       );
@@ -122,8 +128,9 @@ class TypeEvaluator {
         'JSArray',
         typeArguments: [
           TsTypeParameter(
+            [],
             ListNode([]),
-            SingleNode(TsIdentifier('JSAny')),
+            SingleNode(TsIdentifier([], 'JSAny')),
             NullableNode(null),
             NullableNode(null),
           ),

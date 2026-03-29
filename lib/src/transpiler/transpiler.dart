@@ -509,8 +509,16 @@ class Transpiler {
     }).toDartNode(intersectionType);
   }
 
-  DartNode<Spec> _transpileLiteralType(TsLiteralType literalType) {
-    return _transpileNode(literalType.literal.value);
+  DartNode<TypeReference> _transpileLiteralType(TsLiteralType literalType) {
+    final type = switch (literalType.literal.value) {
+      TsNumericLiteral() => 'JSNumber',
+      TsStringLiteral() => 'JSString',
+      _ => 'JSAny',
+    };
+    return TypeReference((builder) {
+      builder.symbol = type;
+      builder.url = dependencies.libraryUrlForType(builder.symbol, literalType);
+    }).toDartNode(literalType);
   }
 
   DartNode<TypeReference> _transpileMappedType(TsMappedType mappedType) {
@@ -918,10 +926,11 @@ class Transpiler {
         '/// Variable [${variableDeclaration.name.value.nodeName}]',
         '///',
         '/// ${variableDeclaration.toCode()}',
-        '@${allocator(TypeReference((builder) {
-          builder.symbol = 'JS';
-          builder.url = dependencies.libraryUrlForType(builder.symbol, variableDeclaration);
-        }))}(\'${variableDeclaration.meta.originalName}\')',
+        if (variableDeclaration.meta.originalName != null)
+          '@${allocator(TypeReference((builder) {
+            builder.symbol = 'JS';
+            builder.url = dependencies.libraryUrlForType(builder.symbol, variableDeclaration);
+          }))}(\'${variableDeclaration.meta.originalName}\')',
         'external ${allocator(_transpileNode<Reference>(variableDeclaration.type.value).toSpec(dependencies) ?? Reference('JSAny', dependencies.libraryUrlForType('JSAny', variableDeclaration)))} ${variableDeclaration.name.value.nodeName};',
       ].join('\n');
     }).toDartNode(variableDeclaration);

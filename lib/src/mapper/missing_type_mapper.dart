@@ -4,16 +4,18 @@ import '../transpiler/type_evaluator.dart';
 TsNode missingTypeMapper(TsNode node, TypeEvaluator typeEvaluator) {
   return switch (node) {
     TsParameter(type: NullableNode(value: null)) => TsParameter(
-        node.modifiers,
-        node.dotDotDotToken,
-        node.name,
-        node.questionToken,
-        TsTypeReference(
-          TsIdentifier('JSAny').toSingleNode(),
-          <TsNode>[].toListNode(),
-        ).toNullableNode(),
-        node.initializer,
-      ),
+      [],
+      node.modifiers,
+      node.dotDotDotToken,
+      node.name,
+      node.questionToken,
+      TsTypeReference(
+        [],
+        TsIdentifier([], 'JSAny').toSingleNode(),
+        <TsNode>[].toListNode(),
+      ).toNullableNode(),
+      node.initializer,
+    ),
     _ => node,
   };
 }

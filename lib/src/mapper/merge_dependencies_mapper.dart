@@ -8,16 +8,20 @@ TsNodeMapper mergeDependenciesMapper(Dependencies dependencies, {Set<String> exc
       if (!excludes.contains(name) && dependencies.containsType(name, node)) {
         node.heritageClauses.update((heritageClauses) {
           final result = List.of(heritageClauses);
-          result.add(TsHeritageClause(
-            TsImplementsKeyword().toSingleNode(),
-            [
-              TsTypeReference(
-                TsIdentifier(name).toSingleNode(),
-                ListNode([]),
-                meta: TsNodeMeta(external: true),
-              )
-            ].toListNode(),
-          ));
+          result.add(
+            TsHeritageClause(
+              [],
+              TsImplementsKeyword().toSingleNode(),
+              [
+                TsTypeReference(
+                  [],
+                  TsIdentifier([], name).toSingleNode(),
+                  ListNode([]),
+                  meta: TsNodeMeta(external: true),
+                ),
+              ].toListNode(),
+            ),
+          );
           return result;
         });
       }
@@ -26,16 +30,20 @@ TsNodeMapper mergeDependenciesMapper(Dependencies dependencies, {Set<String> exc
       if (!excludes.contains(name) && dependencies.containsType(name, node)) {
         node.heritageClauses.update((heritageClauses) {
           final result = List.of(heritageClauses);
-          result.add(TsHeritageClause(
-            TsImplementsKeyword().toSingleNode(),
-            [
-              TsTypeReference(
-                TsIdentifier(name).toSingleNode(),
-                ListNode([]),
-                meta: TsNodeMeta(external: true),
-              )
-            ].toListNode(),
-          ));
+          result.add(
+            TsHeritageClause(
+              [],
+              TsImplementsKeyword().toSingleNode(),
+              [
+                TsTypeReference(
+                  [],
+                  TsIdentifier([], name).toSingleNode(),
+                  ListNode([]),
+                  meta: TsNodeMeta(external: true),
+                ),
+              ].toListNode(),
+            ),
+          );
           return result;
         });
       }

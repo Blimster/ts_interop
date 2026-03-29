@@ -13,15 +13,16 @@ TsNode mergeInterfaceIntoClassMapper(TsNode node, TypeEvaluator typeEvaluator) {
       node.members.set(members);
     }
     final newHeritageClauses = <TsNode>[];
-    for (final currentHeritageClause in node.heritageClauses.value
-        .whereType<TsHeritageClause>()
-        .expand((node) => node.types.value)
-        .where((node) => node.nodeName != className)) {
+    for (final currentHeritageClause
+        in node.heritageClauses.value
+            .whereType<TsHeritageClause>()
+            .expand((node) => node.types.value)
+            .where((node) => node.nodeName != className)) {
       if (currentHeritageClause.nodeName != className || currentHeritageClause.meta.external) {
         newHeritageClauses.add(currentHeritageClause);
       }
     }
-    node.heritageClauses.set([TsHeritageClause(SingleNode(TsImplementsKeyword()), ListNode(newHeritageClauses))]);
+    node.heritageClauses.set([TsHeritageClause([], SingleNode(TsImplementsKeyword()), ListNode(newHeritageClauses))]);
     return node;
   }
   return node;
