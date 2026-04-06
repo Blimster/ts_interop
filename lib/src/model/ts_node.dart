@@ -1099,16 +1099,23 @@ class TsEnumMember extends TsNode {
 }
 
 class TsExportDeclaration extends TsNode {
+  final bool isTypeOnly;
   final String? namespaceExport;
   final NullableNode moduleSpecifier;
 
-  TsExportDeclaration(List<String> flags, this.namespaceExport, this.moduleSpecifier, {TsNodeMeta? meta})
-    : super(TsNodeKind.exportDeclaration, flags, meta ?? TsNodeMeta());
+  TsExportDeclaration(
+    List<String> flags,
+    this.isTypeOnly,
+    this.namespaceExport,
+    this.moduleSpecifier, {
+    TsNodeMeta? meta,
+  }) : super(TsNodeKind.exportDeclaration, flags, meta ?? TsNodeMeta());
 
   factory TsExportDeclaration.fromJson(Map<String, dynamic> json) {
     final moduleSpecifier = json['moduleSpecifier'];
     return TsExportDeclaration(
       _fromJsonStringArray(json['flags']),
+      json['isTypeOnly'] as bool,
       json['namespaceExport'] as String?,
       NullableNode(moduleSpecifier != null ? _fromJsonObject(moduleSpecifier) : null),
     );
@@ -1122,7 +1129,13 @@ class TsExportDeclaration extends TsNode {
 
   @override
   TsNode copy() {
-    return TsExportDeclaration(flags, namespaceExport, moduleSpecifier.copy(), meta: meta.copy());
+    return TsExportDeclaration(
+      flags,
+      isTypeOnly,
+      namespaceExport,
+      moduleSpecifier.copy(),
+      meta: meta.copy(),
+    );
   }
 }
 

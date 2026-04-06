@@ -333,7 +333,9 @@ class Transpiler {
   }
 
   DartNode<Spec> _transpileExportDeclaration(TsExportDeclaration exportDeclaration) {
-    return _transpileNode(exportDeclaration.moduleSpecifier.value).toSpecs(dependencies).toDartNode(exportDeclaration);
+    return _transpileNode(
+      exportDeclaration.moduleSpecifier.value,
+    ).toSpecs(dependencies).toDartNode(exportDeclaration);
   }
 
   DartNode<TypeReference> _transpileExpressionWithTypeArguments(
