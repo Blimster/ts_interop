@@ -14,6 +14,7 @@ import '../mapper/merge_interface_into_class_mapper.dart';
 import '../mapper/missing_type_argument_mapper.dart';
 import '../mapper/missing_type_parameter_mapper.dart';
 import '../mapper/module_mappers.dart';
+import '../mapper/remove_node_mapper.dart';
 import '../mapper/type_literal_mapper.dart';
 import '../model/ts_node.dart';
 import '../sanitizer/sanitizer.dart';
@@ -165,6 +166,11 @@ final _predefinedPhases = {
   'literalAsTypeArgument': [
     SanitizerPhase('literalAsTypeArgument', PhaseDirection.bottomUp, [
       literalAsTypeArgumentMapper,
+    ]),
+  ],
+  'underscoreIdentifiers': [
+    SanitizerPhase('removeUnderscoreIdentifiers', PhaseDirection.topDown, [
+      removeNodesWithUnderscoreIdentifierMapper,
     ]),
   ],
   'typeLiterals': [
