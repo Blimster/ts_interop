@@ -488,12 +488,14 @@ class Transpiler {
           builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
         });
       });
-      builder.implements.add(
-        TypeReference((builder) {
-          builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
-          builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
-        }),
-      );
+      if (interfaceDeclaration.heritageClauses.value.isEmpty) {
+        builder.implements.add(
+          TypeReference((builder) {
+            builder.symbol = hasCallSignature ? 'JSFunction' : 'JSObject';
+            builder.url = dependencies.libraryUrlForType(builder.symbol, interfaceDeclaration);
+          }),
+        );
+      }
       builder.implements.addAll(
         _transpileNodes<Reference>(interfaceDeclaration.heritageClauses.value).toSpecs(dependencies),
       );
@@ -772,13 +774,10 @@ class Transpiler {
       builder.type = MethodType.setter;
       builder.external = true;
       builder.name = name;
-      builder.requiredParameters.add(
-        Parameter((builder) {
-          builder.name = 'value';
-          builder.type = _transpileNode<TypeReference>(
-            typeEvaluator.evaluateType(setAccessor.type.value),
-          ).toSpec(dependencies);
-        }),
+      builder.requiredParameters.addAll(
+        _transpileNodes<Reference>(
+          setAccessor.parameters.value,
+        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
       );
     }).toDartNode(setAccessor);
   }

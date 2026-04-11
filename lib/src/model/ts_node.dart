@@ -2455,9 +2455,9 @@ class TsSetAccessor extends TsNode with WithTypeParameters {
   final SingleNode name;
   @override
   final ListNode typeParameters;
-  final NullableNode type;
+  final ListNode parameters;
 
-  TsSetAccessor(List<String> flags, this.modifiers, this.name, this.typeParameters, this.type, {TsNodeMeta? meta})
+  TsSetAccessor(List<String> flags, this.modifiers, this.name, this.typeParameters, this.parameters, {TsNodeMeta? meta})
     : super(TsNodeKind.setAccessor, flags, meta ?? TsNodeMeta());
 
   factory TsSetAccessor.fromJson(Map<String, dynamic> json) {
@@ -2466,7 +2466,7 @@ class TsSetAccessor extends TsNode with WithTypeParameters {
       ListNode(_fromJsonObjectArray(json['modifiers'])),
       SingleNode(_fromJsonObject(json['name']), affectsParent: true),
       ListNode(_fromJsonObjectArray(json['typeParameters'])),
-      NullableNode(_fromNullableJsonObject(json['type'])),
+      ListNode(_fromJsonObjectArray(json['parameters'])),
     );
   }
 
@@ -2474,11 +2474,11 @@ class TsSetAccessor extends TsNode with WithTypeParameters {
   String? get nodeName => name.value.nodeName;
 
   @override
-  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, type];
+  List<TsNodeWrapper> get nodeWrappers => [modifiers, name, typeParameters, parameters];
 
   @override
   TsNode copy() =>
-      TsSetAccessor(flags, modifiers.copy(), name.copy(), typeParameters.copy(), type.copy(), meta: meta.copy());
+      TsSetAccessor(flags, modifiers.copy(), name.copy(), typeParameters.copy(), parameters.copy(), meta: meta.copy());
 }
 
 class TsSourceFile extends TsNode {
