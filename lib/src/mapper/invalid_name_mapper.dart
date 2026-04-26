@@ -271,6 +271,21 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
         }
       }
       return node;
+    case TsConstructorDeclaration():
+      final overloadIds = <int>[];
+      if (node.parent case final parent?) {
+        final overloads = parent.searchChilds<TsConstructorDeclaration>();
+        for (final overload in overloads) {
+          overloadIds.add(overload.id);
+        }
+      }
+      overloadIds.sort();
+
+      if (overloadIds.length > 1) {
+        node.meta.newName = '\$${overloadIds.indexOf(node.id) + 1}';
+      }
+
+      return node;
     case _:
       return node;
   }

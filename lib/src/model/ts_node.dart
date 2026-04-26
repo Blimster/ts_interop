@@ -499,6 +499,7 @@ class TsNodeMeta {
   List<String> documentation = [];
   bool external = false;
   String? originalName;
+  String? newName;
 
   TsNodeMeta({List<String>? documentation, bool? external, String? originalName}) {
     this.documentation = documentation ?? this.documentation;

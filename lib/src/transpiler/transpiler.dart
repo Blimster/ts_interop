@@ -222,6 +222,9 @@ class Transpiler {
 
   DartNode<Spec> _transpileConstructorDeclaration(TsConstructorDeclaration constructorDeclaration) {
     return Constructor((builder) {
+      if (constructorDeclaration.meta.newName case var newName?) {
+        builder.name = newName;
+      }
       builder.docs.addAll([
         '/// Constructor',
         if (constructorDeclaration.typeParameters.value.isNotEmpty) ...['///', '/// Type Parameters:'],
