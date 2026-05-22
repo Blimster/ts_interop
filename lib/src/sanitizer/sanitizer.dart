@@ -1,6 +1,5 @@
-import '../transpiler/type_evaluator.dart';
-
 import '../model/ts_node.dart';
+import '../transpiler/type_evaluator.dart';
 import '../util/ts_node_search.dart';
 
 enum PhaseDirection { topDown, bottomUp }
@@ -98,9 +97,7 @@ class Sanitizer {
   final void Function(String name)? _afterPhase;
   final List<SanitizerPhase> _phases = [];
 
-  Sanitizer(this.typeEvaluator, {void Function(String name)? beforePhase, void Function(String name)? afterPhase})
-    : _beforePhase = beforePhase,
-      _afterPhase = afterPhase;
+  Sanitizer(this.typeEvaluator, {this._beforePhase, this._afterPhase});
 
   Sanitizer addPhase(SanitizerPhase phase) {
     _phases.add(phase);

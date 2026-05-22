@@ -4,7 +4,7 @@ version: 0.1.0
 repository: https://github.com/blimster/ts_interop
 
 environment:
-  sdk: ^3.11.0
+  sdk: ^3.12.0
 
 executables:
   tsigen:
