@@ -3,14 +3,7 @@ import '../transpiler/type_evaluator.dart';
 import '../util/ts_node_search.dart';
 
 String _scopeId(TsNode node) {
-  TsNode? current = node.parent;
-  while (current != null) {
-    if (current is TsModuleDeclaration || current is TsSourceFile) {
-      return '${current.runtimeType}:${current.id}';
-    }
-    current = current.parent;
-  }
-  return 'root';
+  return 'package';
 }
 
 bool _isDuplicateInScope<T extends TsNode>(T node) {

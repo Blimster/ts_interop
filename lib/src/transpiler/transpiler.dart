@@ -121,11 +121,17 @@ class Transpiler {
   final TypeEvaluator typeEvaluator;
   final Dependencies dependencies;
   final List<Library> libraries = [];
+  final Set<String> _emittedVariables = {};
 
   Transpiler(this.typeEvaluator, this.dependencies);
 
   bool _isDeclaredTypeInScope(TsNode node, String typeName) {
-    return node.root.searchDown<TsNode>(hasName(typeName)).isNotEmpty;
+    return node.root.searchDown<TsNode>(hasName(typeName)).any((candidate) {
+      return candidate is TsClassDeclaration ||
+          candidate is TsInterfaceDeclaration ||
+          candidate is TsTypeAliasDeclaration ||
+          candidate is TsEnumDeclaration;
+    });
   }
 
   bool _isTypeParameterInScope(TsNode node, String typeName) {
@@ -160,6 +166,34 @@ class Transpiler {
         typeName == 'double' ||
         typeName == 'num' ||
         typeName == 'Null';
+  }
+
+  String _scopeKey(TsNode node) {
+    final modules = <String>[];
+    TsNode? current = node.parent;
+    while (current != null) {
+      if (current case TsModuleDeclaration(name: SingleNode(value: TsIdentifier(text: final moduleName)))) {
+        modules.add(moduleName);
+      }
+      current = current.parent;
+    }
+    if (modules.isEmpty) {
+      return 'package';
+    }
+    return 'module:${modules.reversed.join('.')}';
+  }
+
+  int? _declaredTypeParameterCount(TsNode node, String typeName) {
+    final counts = node.root
+        .searchDown<TsNode>(hasName(typeName))
+        .whereType<WithTypeParameters>()
+        .map((candidate) => candidate.typeParameters.value.length)
+        .toList();
+    if (counts.isEmpty) {
+      return null;
+    }
+    counts.sort();
+    return counts.first;
   }
 
   List<Library> transpile(TsPackage package) {
@@ -385,11 +419,17 @@ class Transpiler {
     final expression = expressionWithTypeArguments.expression.value;
     return switch (expression) {
       TsIdentifier() => TypeReference((builder) {
-        builder.symbol = expression.nodeName;
-        builder.url = dependencies.libraryUrlForType(expression.nodeName, expressionWithTypeArguments);
-        builder.types.addAll(
-          _transpileNodes<Reference>(expressionWithTypeArguments.typeArguments.value).toSpecs(dependencies),
-        );
+        final symbol = expression.nodeName;
+        final url = dependencies.libraryUrlForType(symbol, expressionWithTypeArguments);
+        builder.symbol = symbol;
+        builder.url = url;
+        if (url == null && symbol != null) {
+          final typeArguments = _transpileNodes<Reference>(expressionWithTypeArguments.typeArguments.value).toSpecs(
+            dependencies,
+          );
+          final maxArgs = _declaredTypeParameterCount(expressionWithTypeArguments, symbol) ?? typeArguments.length;
+          builder.types.addAll(typeArguments.take(maxArgs));
+        }
       }),
       _ => throw StateError('WARNING: Unsupported expression type ${expression.kind.name}:${expression.nodeName}'),
     }.toDartNode(expressionWithTypeArguments);
@@ -909,6 +949,12 @@ class Transpiler {
     return TypeReference((builder) {
       builder.symbol = name;
       builder.url = dependencies.libraryUrlForType(name, typeParameter);
+      if (name != 'JSAny') {
+        builder.bound = TypeReference((builder) {
+          builder.symbol = 'JSAny';
+          builder.url = dependencies.libraryUrlForType('JSAny', typeParameter);
+        });
+      }
     }).toDartNode(typeParameter);
   }
 
@@ -950,8 +996,10 @@ class Transpiler {
       builder.symbol = nameWithoutQualifier;
       builder.url = libraryUrl;
       builder.isNullable = isNullable;
-      if (libraryUrl == null || isDeclaredType || isTypeParam) {
-        builder.types.addAll(_transpileNodes<Reference>(type.typeArguments.value).toSpecs(dependencies));
+      if (libraryUrl == null || isTypeParam) {
+        final transpiledTypes = _transpileNodes<Reference>(type.typeArguments.value).toSpecs(dependencies);
+        final maxArgs = nameWithoutQualifier == null ? transpiledTypes.length : _declaredTypeParameterCount(typeReference, nameWithoutQualifier);
+        builder.types.addAll(transpiledTypes.take(maxArgs ?? transpiledTypes.length));
       }
     }).toDartNode(typeReference);
   }
@@ -979,9 +1027,20 @@ class Transpiler {
   }
 
   DartNode<Spec> _transpileVariableDeclaration(TsVariableDeclaration variableDeclaration) {
+    final variableName = variableDeclaration.name.value.nodeName;
+    if (variableName == null) {
+      return DartNode.empty(variableDeclaration);
+    }
+
+    final variableKey = '${_scopeKey(variableDeclaration)}::$variableName';
+    if (_emittedVariables.contains(variableKey)) {
+      return DartNode.empty(variableDeclaration);
+    }
+    _emittedVariables.add(variableKey);
+
     return Code.scope((allocator) {
       return [
-        '/// Variable [${variableDeclaration.name.value.nodeName}]',
+        '/// Variable [$variableName]',
         '///',
         '/// ${variableDeclaration.toCode()}',
         if (variableDeclaration.meta.originalName != null)
@@ -989,7 +1048,7 @@ class Transpiler {
             builder.symbol = 'JS';
             builder.url = dependencies.libraryUrlForType(builder.symbol, variableDeclaration);
           }))}(\'${variableDeclaration.meta.originalName}\')',
-        'external ${allocator(_transpileNode<Reference>(variableDeclaration.type.value).toSpec(dependencies) ?? Reference('JSAny', dependencies.libraryUrlForType('JSAny', variableDeclaration)))} ${variableDeclaration.name.value.nodeName};',
+        'external ${allocator(_transpileNode<Reference>(variableDeclaration.type.value).toSpec(dependencies) ?? Reference('JSAny', dependencies.libraryUrlForType('JSAny', variableDeclaration)))} $variableName;',
       ].join('\n');
     }).toDartNode(variableDeclaration);
   }
