@@ -1,0 +1,25 @@
+dependencies:
+  - dart:
+      package: js_interop
+      library: js_interop
+  - pubDev:
+      package: web
+      library: web
+  - pubDev:
+      package: es2023
+      library: es2023
+  - pubDev:
+      package: webxr
+      library: webxr
+sanitizer:
+  phases:
+    - typeLiterals
+    - literalAsTypeArgument
+    - mergeModules
+    - mergeInterfaces
+    - mergeInterfacesIntoClasses
+    - missingTypeArgsAndParams
+    - constructorInterfaces
+    - invalidIdentifiers
+    - underscoreIdentifiers
+    - duplicateNameTypeAliases
