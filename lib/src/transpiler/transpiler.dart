@@ -124,6 +124,44 @@ class Transpiler {
 
   Transpiler(this.typeEvaluator, this.dependencies);
 
+  bool _isDeclaredTypeInScope(TsNode node, String typeName) {
+    return node.root.searchDown<TsNode>(hasName(typeName)).isNotEmpty;
+  }
+
+  bool _isTypeParameterInScope(TsNode node, String typeName) {
+    TsNode? current = node.parent;
+    while (current != null) {
+      if (current is WithTypeParameters) {
+        final hasTypeParam = current.typeParameters.value
+            .whereType<TsTypeParameter>()
+            .any((tp) => tp.nodeName == typeName);
+        if (hasTypeParam) {
+          return true;
+        }
+      }
+      current = current.parent;
+    }
+    return false;
+  }
+
+  bool _isKnownBuiltinType(String typeName) {
+    return typeName == 'JSAny' ||
+        typeName == 'JSObject' ||
+        typeName == 'JSString' ||
+        typeName == 'JSNumber' ||
+        typeName == 'JSBoolean' ||
+        typeName == 'JSArray' ||
+        typeName == 'JSPromise' ||
+        typeName == 'JSFunction' ||
+        typeName == 'Object' ||
+        typeName == 'String' ||
+        typeName == 'bool' ||
+        typeName == 'int' ||
+        typeName == 'double' ||
+        typeName == 'num' ||
+        typeName == 'Null';
+  }
+
   List<Library> transpile(TsPackage package) {
     dependencies.dependencies.insert(0, PackageDependency(package));
     updateParentAndChilds(package, package.parent);
@@ -777,11 +815,20 @@ class Transpiler {
       builder.type = MethodType.setter;
       builder.external = true;
       builder.name = name;
-      builder.requiredParameters.addAll(
-        _transpileNodes<Reference>(
-          setAccessor.parameters.value,
-        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
-      );
+      final params = _transpileNodes<Reference>(setAccessor.parameters.value).cast<DartParameter>().toList();
+      if (params.isNotEmpty) {
+        builder.requiredParameters.add(params.first.parameter);
+      } else {
+        builder.requiredParameters.add(
+          Parameter((builder) {
+            builder.name = 'value';
+            builder.type = TypeReference((builder) {
+              builder.symbol = 'JSAny';
+              builder.url = dependencies.libraryUrlForType('JSAny', setAccessor);
+            });
+          }),
+        );
+      }
     }).toDartNode(setAccessor);
   }
 
@@ -859,18 +906,9 @@ class Transpiler {
 
   DartNode<TypeReference> _transpileTypeParameter(TsTypeParameter typeParameter) {
     final name = typeParameter.name.value.nodeName;
-    final extendsClause = _transpileNode<Reference>(typeParameter.constraint.value).toSpecs(dependencies);
     return TypeReference((builder) {
       builder.symbol = name;
       builder.url = dependencies.libraryUrlForType(name, typeParameter);
-      if (name != 'JSAny') {
-        builder.bound =
-            extendsClause.firstOrNull ??
-            TypeReference((builder) {
-              builder.symbol = 'JSAny';
-              builder.url = dependencies.libraryUrlForType(builder.symbol, typeParameter);
-            });
-      }
     }).toDartNode(typeParameter);
   }
 
@@ -893,12 +931,28 @@ class Transpiler {
         ? type.typeName.value.nodeName?.substring(0, type.typeName.value.nodeName!.length - 1)
         : type.typeName.value.nodeName;
     final nameWithoutQualifier = name?.contains('.') ?? false ? name?.split('.').last : name;
+    final libraryUrl = dependencies.libraryUrlForType(name, typeReference);
+    final isDeclaredType = nameWithoutQualifier != null && _isDeclaredTypeInScope(typeReference, nameWithoutQualifier);
+    final isTypeParam = nameWithoutQualifier != null && _isTypeParameterInScope(typeReference, nameWithoutQualifier);
+    final fallbackToJsAny =
+        nameWithoutQualifier != null &&
+        libraryUrl == null &&
+        !isDeclaredType &&
+        !isTypeParam &&
+        !_isKnownBuiltinType(nameWithoutQualifier);
 
     return TypeReference((builder) {
+      if (fallbackToJsAny) {
+        builder.symbol = 'JSAny';
+        builder.url = dependencies.libraryUrlForType('JSAny', typeReference);
+        return;
+      }
       builder.symbol = nameWithoutQualifier;
-      builder.url = dependencies.libraryUrlForType(name, typeReference);
+      builder.url = libraryUrl;
       builder.isNullable = isNullable;
-      builder.types.addAll(_transpileNodes<Reference>(type.typeArguments.value).toSpecs(dependencies));
+      if (libraryUrl == null || isDeclaredType || isTypeParam) {
+        builder.types.addAll(_transpileNodes<Reference>(type.typeArguments.value).toSpecs(dependencies));
+      }
     }).toDartNode(typeReference);
   }
 

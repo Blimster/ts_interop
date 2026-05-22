@@ -29,6 +29,8 @@ TsNode missingTypeArgumentMapper(TsNode node, TypeEvaluator typeEvaluator) {
             additionalTypeArguments.add(defaultType.value ?? constraint.value ?? TsAnyKeyword());
           }
           (node).updateTypeArguments([...typeArguments.value, ...additionalTypeArguments]);
+        } else if (typeArguments.value.length > typeParameters.value.length) {
+          (node).updateTypeArguments(typeArguments.value.take(typeParameters.value.length).toList());
         }
       } else {
         _notFound.add(referencedName);

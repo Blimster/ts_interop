@@ -7,6 +7,7 @@ import 'package:yaml/yaml.dart';
 
 import '../dependency/dependency.dart';
 import '../mapper/constructor_mapper.dart';
+import '../mapper/duplicate_declaration_mapper.dart';
 import '../mapper/duplicate_name_type_alias_mapper.dart';
 import '../mapper/interface_mappers.dart';
 import '../mapper/invalid_name_mapper.dart';
@@ -167,6 +168,7 @@ final _predefinedPhases = {
   'duplicateNameTypeAliases': [
     SanitizerPhase('duplicateNameTypeAliases', PhaseDirection.topDown, [
       duplicateNameTypeAliasMapper,
+      removeDuplicateDeclarationMapper,
     ]),
   ],
   'literalAsTypeArgument': [
