@@ -138,9 +138,9 @@ class Transpiler {
     TsNode? current = node.parent;
     while (current != null) {
       if (current is WithTypeParameters) {
-        final hasTypeParam = current.typeParameters.value
-            .whereType<TsTypeParameter>()
-            .any((tp) => tp.nodeName == typeName);
+        final hasTypeParam = current.typeParameters.value.whereType<TsTypeParameter>().any(
+          (tp) => tp.nodeName == typeName,
+        );
         if (hasTypeParam) {
           return true;
         }
@@ -245,6 +245,7 @@ class Transpiler {
   DartNode<ExtensionType> _transpileClassDeclaration(TsClassDeclaration classDeclaration) {
     final isAbstract = _containsNodeKind(classDeclaration.modifiers.value, TsNodeKind.abstractKeyword);
     final members = _transpileNodes(classDeclaration.members.value);
+    final hasConstructorDeclaration = classDeclaration.members.value.whereType<TsConstructorDeclaration>().isNotEmpty;
     final hasCallSignature = classDeclaration.searchDown<TsCallSignature>().isNotEmpty;
     final className = classDeclaration.name.value.nodeName;
 
@@ -280,6 +281,14 @@ class Transpiler {
         _transpileNodes<Reference>(classDeclaration.heritageClauses.value).toSpecs(dependencies),
       );
       builder.constructors.addAll(members.whereType<DartConstructor>().map((c) => c.constructor));
+      if (!hasConstructorDeclaration) {
+        builder.constructors.add(
+          Constructor((builder) {
+            builder.docs.add('/// Constructor');
+            builder.external = true;
+          }),
+        );
+      }
       builder.fields.addAll(members.expand((m) => m.toSpecs(dependencies)).whereType<Field>());
       builder.methods.addAll(members.expand((m) => m.toSpecs(dependencies)).whereType<Method>());
     }).toDartNode(classDeclaration);
@@ -998,7 +1007,9 @@ class Transpiler {
       builder.isNullable = isNullable;
       if (libraryUrl == null || isTypeParam) {
         final transpiledTypes = _transpileNodes<Reference>(type.typeArguments.value).toSpecs(dependencies);
-        final maxArgs = nameWithoutQualifier == null ? transpiledTypes.length : _declaredTypeParameterCount(typeReference, nameWithoutQualifier);
+        final maxArgs = nameWithoutQualifier == null
+            ? transpiledTypes.length
+            : _declaredTypeParameterCount(typeReference, nameWithoutQualifier);
         builder.types.addAll(transpiledTypes.take(maxArgs ?? transpiledTypes.length));
       }
     }).toDartNode(typeReference);
