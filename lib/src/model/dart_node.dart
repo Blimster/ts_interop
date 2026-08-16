@@ -8,7 +8,7 @@ sealed class DartNode<S extends Spec> {
 
   DartNode(this.tsNode);
 
-  static empty<S extends Spec>(TsNode tsNode) {
+  static DartFragment<S> empty<S extends Spec>(TsNode tsNode) {
     return DartFragment<S>([], tsNode);
   }
 

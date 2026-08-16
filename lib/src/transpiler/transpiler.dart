@@ -956,7 +956,7 @@ class Transpiler {
   }
 
   DartNode<S> _transpileNode<S extends Spec>(TsNode? node) {
-    final DartNode<S> transpiledNode = switch (node) {
+    final DartNode transpiledNode = switch (node) {
       null => DartNode.empty<S>(Ts$Null()),
       Ts$Null() => DartNode.empty<S>(node),
       Ts$Unsupported() => DartNode.empty<S>(node),
@@ -1017,6 +1017,12 @@ class Transpiler {
       _ => DartUnsupported<S>(node),
     };
 
+    if (transpiledNode is! DartNode<S>) {
+      throw ArgumentError(
+        'Caller exptected DartNode<$S> but node $node was transpiled to ${transpiledNode.runtimeType}!',
+      );
+    }
+
     if (transpiledNode is DartUnsupported<S>) {
       print('WARNING: Unsupported node $node');
       return transpiledNode.toEmpty();
@@ -1025,10 +1031,10 @@ class Transpiler {
     return transpiledNode;
   }
 
-  List<DartNode<T>> _transpileNodes<T extends Spec>(List<TsNode> nodes) {
-    final result = <DartNode<T>>[];
+  List<DartNode<S>> _transpileNodes<S extends Spec>(List<TsNode> nodes) {
+    final result = <DartNode<S>>[];
     for (final node in nodes) {
-      final dartNode = _transpileNode<T>(node);
+      final dartNode = _transpileNode<S>(node);
       result.add(dartNode);
     }
     return result;

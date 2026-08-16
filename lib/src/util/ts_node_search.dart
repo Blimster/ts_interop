@@ -197,14 +197,14 @@ void updateCache(List<TsNode> added, List<TsNode> removed) {
 }
 
 List<T> searchCache<T extends TsNode>([SearchConstraint? constraint]) {
-  return and([_IsTypeConstraint<T>(), if (constraint != null) constraint])._matchingNodes().cast<T>().toList();
+  return and([_IsTypeConstraint<T>(), ?constraint])._matchingNodes().cast<T>().toList();
 }
 
 extension TsNodeSearch on TsNode {
   List<T> _search<T extends TsNode>(bool Function(TsNode) predicate, [SearchConstraint? constraint]) {
     return and([
       _IsTypeConstraint<T>(),
-      if (constraint != null) constraint,
+      ?constraint,
     ])._matchingNodes().where((node) => predicate(node)).cast<T>().toList();
   }
 

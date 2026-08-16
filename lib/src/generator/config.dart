@@ -103,7 +103,7 @@ File? _searchFile(Directory dir, String fileName) {
   return null;
 }
 
-_parseSanitizerPhases(dynamic yaml) {
+List<SanitizerPhase> _parseSanitizerPhases(dynamic yaml) {
   final result = <SanitizerPhase>[];
 
   if (yaml case {'sanitizer': {'phases': List phases}}) {

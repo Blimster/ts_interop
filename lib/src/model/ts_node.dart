@@ -449,14 +449,14 @@ final class NullableNode extends TsNodeWrapper<TsNode?> {
 
   @override
   (List<TsNode>, List<TsNode>) set(TsNode? value) {
-    final result = ([if (value != null) value], [if (_value != null) _value!]);
+    final result = ([?value], [?_value]);
     _value = value;
     updateCache(result.$1, result.$2);
     return result;
   }
 
   @override
-  List<TsNode> get nodes => [if (_value != null) _value!];
+  List<TsNode> get nodes => [?_value];
 
   String toCode(String code) => value != null ? code.replaceAll('&', value!.toCode()) : '';
 
