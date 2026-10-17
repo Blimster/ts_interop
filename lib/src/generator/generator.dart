@@ -44,6 +44,8 @@ class Generator {
     final libraries = transpiler.transpile(sanitizedPackage);
     stdout.writeln('Done');
 
+    Directory(config.outputDir).createSync(recursive: true);
+
     final mainLibName = sanitizedPackage.name.toLowerCase().split('/').last;
     for (final lib in libraries) {
       stdout.write('Writing library ${lib.name}... ');

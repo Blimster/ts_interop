@@ -979,6 +979,7 @@ class Transpiler {
       TsFunctionType() => _transpileFunctionType(node),
       TsGetAccessor() => _transpileGetAccessor(node),
       TsHeritageClause() => _transpileHeritageClause(node),
+      TsImportDeclaration() => DartNode.empty<S>(node),
       TsInterfaceDeclaration() => _transpileInterfaceDeclaration(node),
       TsIndexSignature() => _transpileIndexSignature(node),
       TsIntersectionType() => _transpileIntersectionType(node),
