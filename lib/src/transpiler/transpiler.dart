@@ -433,6 +433,13 @@ class Transpiler {
     return result.toDartNode(heritageClause);
   }
 
+  DartNode<TypeReference> _transpileIndexedAccessType(TsIndexedAccessType indexedAccessType) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSAny';
+      builder.url = dependencies.libraryUrlForType(builder.symbol, indexedAccessType);
+    }).toDartNode(indexedAccessType);
+  }
+
   DartNode<Method> _transpileIndexSignature(TsIndexSignature indexSignature) {
     return <Method>[
       Method((builder) {
@@ -796,6 +803,13 @@ class Transpiler {
     }).toDartNode(stringKeyword);
   }
 
+  DartNode<TypeReference> _transpileThisType(TsThisType thisType) {
+    return TypeReference((builder) {
+      builder.symbol = 'JSAny';
+      builder.url = dependencies.libraryUrlForType(builder.symbol, thisType);
+    }).toDartNode(thisType);
+  }
+
   DartNode<Code> _transpileStringLiteral(TsStringLiteral stringLiteral) {
     return Code(stringLiteral.text).toDartNode(stringLiteral);
   }
@@ -980,6 +994,7 @@ class Transpiler {
       TsGetAccessor() => _transpileGetAccessor(node),
       TsHeritageClause() => _transpileHeritageClause(node),
       TsImportDeclaration() => DartNode.empty<S>(node),
+      TsIndexedAccessType() => _transpileIndexedAccessType(node),
       TsInterfaceDeclaration() => _transpileInterfaceDeclaration(node),
       TsIndexSignature() => _transpileIndexSignature(node),
       TsIntersectionType() => _transpileIntersectionType(node),
@@ -1001,6 +1016,7 @@ class Transpiler {
       TsSourceFile() => _transpileSourceFile(node),
       TsStringKeyword() => _transpileStringKeyword(node),
       TsStringLiteral() => _transpileStringLiteral(node),
+      TsThisType() => _transpileThisType(node),
       TsTupleType() => _transpileTupleType(node),
       TsTypeAliasDeclaration() => _transpileTypeAliasDeclaration(node),
       TsTypeLiteral() => _transpileTypeLiteral(node),
