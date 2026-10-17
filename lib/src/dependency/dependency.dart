@@ -121,6 +121,10 @@ Future<StaticDependency> pubDevDependency(String package, String library, {Strin
 }
 
 Future<StaticDependency> dartDependency(String package, String library, {String? dartVersion}) async {
+  if (package == 'js_interop' && library == 'js_interop') {
+    return StaticDependency('dart:js_interop', _jsInteropTypes);
+  }
+
   return _remoteDependency(
     () => Uri.https('api.dart.dev', ['stable', dartVersion ?? 'latest', 'dart-$library', 'index.html'].join('/')),
     () => 'dart:$package',
@@ -129,6 +133,35 @@ Future<StaticDependency> dartDependency(String package, String library, {String?
     dartVersion,
   );
 }
+
+const _jsInteropTypes = {
+  'JS',
+  'JSAny',
+  'JSArray',
+  'JSArrayBuffer',
+  'JSBigInt',
+  'JSBoolean',
+  'JSBoxedDartObject',
+  'JSDataView',
+  'JSDate',
+  'JSExportedDartFunction',
+  'JSFloat32Array',
+  'JSFloat64Array',
+  'JSFunction',
+  'JSInt8Array',
+  'JSInt16Array',
+  'JSInt32Array',
+  'JSNumber',
+  'JSObject',
+  'JSPromise',
+  'JSString',
+  'JSSymbol',
+  'JSTypedArray',
+  'JSUint8Array',
+  'JSUint8ClampedArray',
+  'JSUint16Array',
+  'JSUint32Array',
+};
 
 class Dependencies {
   final Dependencies? parent;

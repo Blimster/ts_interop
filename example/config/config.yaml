@@ -1,28 +1,7 @@
 dependencies:
-  - static:
-      package: dart:js_interop
-      types:
-        - JS
-        - JSAny
-        - JSArray
-        - JSArrayBuffer
-        - JSBigInt
-        - JSBoolean
-        - JSFloat32Array
-        - JSFloat64Array
-        - JSFunction
-        - JSInt8Array
-        - JSInt16Array
-        - JSInt32Array
-        - JSNumber
-        - JSObject
-        - JSPromise
-        - JSString
-        - JSSymbol
-        - JSUint8Array
-        - JSUint8ClampedArray
-        - JSUint16Array
-        - JSUint32Array
+  - dart:
+      package: js_interop
+      library: js_interop
   - pubDev:
       package: web
       library: web
