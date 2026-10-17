@@ -7,6 +7,9 @@ import 'three.dart' as three;
 @JS('createThreeMaterial')
 external JSObject createThreeMaterial();
 
+@JS('addThreeObject')
+external void addThreeObject(JSObject parent, JSObject child);
+
 void main() {
   final scene = three.Scene<three.Object3DEventMap>();
   final camera = three.PerspectiveCamera(
@@ -22,7 +25,7 @@ void main() {
   );
 
   camera.position.z = 5.toJS;
-  scene.add(<three.Object3D<three.Object3DEventMap>>[cube].toJS);
+  addThreeObject(scene, cube);
   web.document.body!.append(renderer.domElement);
 
   void resize() {
