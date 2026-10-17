@@ -20,10 +20,22 @@ This packages provides the cli command `tsigen`. Install this packages globally 
 
 If the cli tool does not provide enough features, you can use it as a dependency.
 
+## Three.js rotating cube
+
+Compile the minimal browser example and serve `example/web` over HTTP:
+
+```sh
+dart pub get
+dart compile js example/web/main.dart -o example/web/main.dart.js
+cd example/web
+python3 -m http.server
+```
+
+Open `http://localhost:8000` in a browser. The page loads Three.js from jsDelivr and renders a rotating cube.
+
 ## Roadmap
 
 - Use Dart core types like String num etc. where posible
 - Create types for unions and anonymous functions like https://gist.github.com/nikeokoronkwo/dd83becbb6cee4d98f63556ba108e14b
 - Replace `meta.json` by translating Dart code into input AST
 - Integrate [ts-ast-export](https://github.com/Blimster/ts-ast-export) into cli tool.
-
