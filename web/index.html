@@ -15,7 +15,6 @@
 
       globalThis.THREE = THREE;
       Object.assign(globalThis, THREE);
-      globalThis.createThreeMaterial = () => new THREE.MeshBasicMaterial({ color: 0x44aa88 });
       globalThis.addThreeObject = (parent, child) => parent.add(child);
 
       const script = document.createElement('script');

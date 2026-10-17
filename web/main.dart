@@ -4,11 +4,14 @@ import 'package:web/web.dart' as web;
 
 import 'three.dart' as three;
 
-@JS('createThreeMaterial')
-external JSObject createThreeMaterial();
-
 @JS('addThreeObject')
 external void addThreeObject(JSObject parent, JSObject child);
+
+three.MeshStandardMaterial _createMaterial(int color) {
+  final material = three.MeshStandardMaterial();
+  three.MeshStandardMaterialProperties.$(material).color.setHex(color.toJS);
+  return material;
+}
 
 void main() {
   final scene = three.Scene<three.Object3DEventMap>();
@@ -19,13 +22,23 @@ void main() {
     1000.toJS,
   );
   final renderer = three.WebGLRenderer();
-  final cube = three.Mesh<three.BoxGeometry, JSObject, three.Object3DEventMap>(
+  final materials = <three.MeshStandardMaterial>[
+    for (final color in [0xe63946, 0xf1c40f, 0x2a9d8f, 0x4361ee, 0x9b5de5, 0xf77f00])
+      _createMaterial(color),
+  ].toJS;
+  final cube =
+      three.Mesh<three.BoxGeometry, JSArray<three.MeshStandardMaterial>, three.Object3DEventMap>(
     three.BoxGeometry(1.toJS, 1.toJS, 1.toJS),
-    createThreeMaterial(),
+    materials,
   );
+  final ambientLight = three.AmbientLight(0xffffff.toJS, 0.8.toJS);
+  final directionalLight = three.DirectionalLight(0xffffff.toJS, 2.toJS);
 
   camera.position.z = 5.toJS;
   addThreeObject(scene, cube);
+  addThreeObject(scene, ambientLight);
+  directionalLight.position.set(5.toJS, 5.toJS, 5.toJS);
+  addThreeObject(scene, directionalLight);
   web.document.body!.append(renderer.domElement);
 
   void resize() {
