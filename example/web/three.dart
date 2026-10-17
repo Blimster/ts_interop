@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_shadowing_type_parameters, camel_case_types
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
+// ignore_for_file: unused_element
 
 library three;
 
@@ -278,7 +280,7 @@ extension type AnimationClip.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [userData]
   ///
   /// userData: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> userData;
+  external _i1.JSObject userData;
 
   /// Method [parse]
   ///
@@ -688,6 +690,8 @@ external AnimationClip makeClipAdditive(
 
 /// Class [AnimationUtils]
 extension type AnimationUtils.$(_i1.JSObject _) implements _i1.JSObject {
+  external AnimationUtils();
+
   /// Method [convertArray]
   ///
   /// Parameters:
@@ -1007,7 +1011,9 @@ extension type PropertyBinding.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Class [Composite]
-extension type Composite.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type Composite.$(_i1.JSObject _) implements _i1.JSObject {
+  external Composite();
+}
 
 /// Class [PropertyMixer]
 extension type PropertyMixer.$(_i1.JSObject _) implements _i1.JSObject {
@@ -1185,7 +1191,7 @@ extension type Audio<TNode extends _i3.AudioNode>.$(_i1.JSObject _)
   ///
   /// Parameters:
   /// - listener: AudioListener
-  external Audio(_i3.AudioListener listener);
+  external Audio(AudioListener listener);
 
   /// Property [autoplay]
   ///
@@ -1215,12 +1221,12 @@ extension type Audio<TNode extends _i3.AudioNode>.$(_i1.JSObject _)
   /// Property [listener]
   ///
   /// readonly listener: AudioListener
-  external _i3.AudioListener get listener;
+  external AudioListener get listener;
 
   /// Property [context]
   ///
   /// readonly context: AudioContext
-  external _i3.AudioContext get context;
+  external AudioContext get context;
 
   /// Property [gain]
   ///
@@ -1431,22 +1437,26 @@ extension type AudioAnalyser.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Class [AudioContext]
 extension type AudioContext.$(_i1.JSObject _) implements _i1.JSObject {
+  external AudioContext();
+
   /// Method [getContext]
-  external static _i3.AudioContext getContext();
+  external static AudioContext getContext();
 
   /// Method [setContext]
   ///
   /// Parameters:
   /// - value: AudioContext
-  external static void setContext(_i3.AudioContext value);
+  external static void setContext(AudioContext value);
 }
 
 /// Class [AudioListener]
 extension type AudioListener.$(_i1.JSObject _) implements _i1.JSObject, Object3D<Object3DEventMap> {
+  external AudioListener();
+
   /// Property [context]
   ///
   /// readonly context: AudioContext
-  external _i3.AudioContext get context;
+  external AudioContext get context;
 
   /// Property [gain]
   ///
@@ -1490,6 +1500,8 @@ extension type AudioListener.$(_i1.JSObject _) implements _i1.JSObject, Object3D
 
 /// Class [PositionalAudio]
 extension type PositionalAudio.$(_i1.JSObject _) implements _i1.JSObject, Audio<_i3.PannerNode> {
+  external PositionalAudio();
+
   /// Property [panner]
   ///
   /// readonly panner: PannerNode
@@ -1573,6 +1585,8 @@ extension type ArrayCamera.$(_i1.JSObject _) implements _i1.JSObject, Perspectiv
 
 /// Class [Camera]
 extension type Camera.$(_i1.JSObject _) implements _i1.JSObject, Object3D<Object3DEventMap> {
+  external Camera();
+
   /// Property [matrixWorldInverse]
   ///
   /// matrixWorldInverse: Matrix4
@@ -2215,6 +2229,8 @@ extension type PerspectiveCamera$View$TypeLiteral.$(_i1.JSObject _) implements _
 
 /// Class [StereoCamera]
 extension type StereoCamera.$(_i1.JSObject _) implements _i1.JSObject {
+  external StereoCamera();
+
   /// Property [aspect]
   ///
   /// aspect: number
@@ -2250,6 +2266,7 @@ extension type StereoCamera.$(_i1.JSObject _) implements _i1.JSObject {
 /// Variable [REVISION]
 ///
 /// REVISION: string
+@_i1.JS('REVISION')
 external _i1.JSString REVISION;
 
 /// enum MOUSE
@@ -2295,21 +2312,25 @@ extension type TOUCH(_i1.JSObject _) implements _i1.JSObject {
 /// Variable [CullFaceNone]
 ///
 /// CullFaceNone: 0
+@_i1.JS('CullFaceNone')
 external _i1.JSNumber CullFaceNone;
 
 /// Variable [CullFaceBack]
 ///
 /// CullFaceBack: 1
+@_i1.JS('CullFaceBack')
 external _i1.JSNumber CullFaceBack;
 
 /// Variable [CullFaceFront]
 ///
 /// CullFaceFront: 2
+@_i1.JS('CullFaceFront')
 external _i1.JSNumber CullFaceFront;
 
 /// Variable [CullFaceFrontBack]
 ///
 /// CullFaceFrontBack: 3
+@_i1.JS('CullFaceFrontBack')
 external _i1.JSNumber CullFaceFrontBack;
 
 /// Typedef [CullFace]
@@ -2320,21 +2341,25 @@ typedef CullFace = _i1.JSString;
 /// Variable [BasicShadowMap]
 ///
 /// BasicShadowMap: 0
+@_i1.JS('BasicShadowMap')
 external _i1.JSNumber BasicShadowMap;
 
 /// Variable [PCFShadowMap]
 ///
 /// PCFShadowMap: 1
+@_i1.JS('PCFShadowMap')
 external _i1.JSNumber PCFShadowMap;
 
 /// Variable [PCFSoftShadowMap]
 ///
 /// PCFSoftShadowMap: 2
+@_i1.JS('PCFSoftShadowMap')
 external _i1.JSNumber PCFSoftShadowMap;
 
 /// Variable [VSMShadowMap]
 ///
 /// VSMShadowMap: 3
+@_i1.JS('VSMShadowMap')
 external _i1.JSNumber VSMShadowMap;
 
 /// Typedef [ShadowMapType]
@@ -2345,16 +2370,19 @@ typedef ShadowMapType = _i1.JSString;
 /// Variable [FrontSide]
 ///
 /// FrontSide: 0
+@_i1.JS('FrontSide')
 external _i1.JSNumber FrontSide;
 
 /// Variable [BackSide]
 ///
 /// BackSide: 1
+@_i1.JS('BackSide')
 external _i1.JSNumber BackSide;
 
 /// Variable [DoubleSide]
 ///
 /// DoubleSide: 2
+@_i1.JS('DoubleSide')
 external _i1.JSNumber DoubleSide;
 
 /// Typedef [Side]
@@ -2365,36 +2393,43 @@ typedef Side = _i1.JSString;
 /// Variable [NoBlending]
 ///
 /// NoBlending: 0
+@_i1.JS('NoBlending')
 external _i1.JSNumber NoBlending;
 
 /// Variable [NormalBlending]
 ///
 /// NormalBlending: 1
+@_i1.JS('NormalBlending')
 external _i1.JSNumber NormalBlending;
 
 /// Variable [AdditiveBlending]
 ///
 /// AdditiveBlending: 2
+@_i1.JS('AdditiveBlending')
 external _i1.JSNumber AdditiveBlending;
 
 /// Variable [SubtractiveBlending]
 ///
 /// SubtractiveBlending: 3
+@_i1.JS('SubtractiveBlending')
 external _i1.JSNumber SubtractiveBlending;
 
 /// Variable [MultiplyBlending]
 ///
 /// MultiplyBlending: 4
+@_i1.JS('MultiplyBlending')
 external _i1.JSNumber MultiplyBlending;
 
 /// Variable [CustomBlending]
 ///
 /// CustomBlending: 5
+@_i1.JS('CustomBlending')
 external _i1.JSNumber CustomBlending;
 
 /// Variable [MaterialBlending]
 ///
 /// MaterialBlending: 6
+@_i1.JS('MaterialBlending')
 external _i1.JSNumber MaterialBlending;
 
 /// Typedef [Blending]
@@ -2405,26 +2440,31 @@ typedef Blending = _i1.JSString;
 /// Variable [AddEquation]
 ///
 /// AddEquation: 100
+@_i1.JS('AddEquation')
 external _i1.JSNumber AddEquation;
 
 /// Variable [SubtractEquation]
 ///
 /// SubtractEquation: 101
+@_i1.JS('SubtractEquation')
 external _i1.JSNumber SubtractEquation;
 
 /// Variable [ReverseSubtractEquation]
 ///
 /// ReverseSubtractEquation: 102
+@_i1.JS('ReverseSubtractEquation')
 external _i1.JSNumber ReverseSubtractEquation;
 
 /// Variable [MinEquation]
 ///
 /// MinEquation: 103
+@_i1.JS('MinEquation')
 external _i1.JSNumber MinEquation;
 
 /// Variable [MaxEquation]
 ///
 /// MaxEquation: 104
+@_i1.JS('MaxEquation')
 external _i1.JSNumber MaxEquation;
 
 /// Typedef [BlendingEquation]
@@ -2435,76 +2475,91 @@ typedef BlendingEquation = _i1.JSString;
 /// Variable [ZeroFactor]
 ///
 /// ZeroFactor: 200
+@_i1.JS('ZeroFactor')
 external _i1.JSNumber ZeroFactor;
 
 /// Variable [OneFactor]
 ///
 /// OneFactor: 201
+@_i1.JS('OneFactor')
 external _i1.JSNumber OneFactor;
 
 /// Variable [SrcColorFactor]
 ///
 /// SrcColorFactor: 202
+@_i1.JS('SrcColorFactor')
 external _i1.JSNumber SrcColorFactor;
 
 /// Variable [OneMinusSrcColorFactor]
 ///
 /// OneMinusSrcColorFactor: 203
+@_i1.JS('OneMinusSrcColorFactor')
 external _i1.JSNumber OneMinusSrcColorFactor;
 
 /// Variable [SrcAlphaFactor]
 ///
 /// SrcAlphaFactor: 204
+@_i1.JS('SrcAlphaFactor')
 external _i1.JSNumber SrcAlphaFactor;
 
 /// Variable [OneMinusSrcAlphaFactor]
 ///
 /// OneMinusSrcAlphaFactor: 205
+@_i1.JS('OneMinusSrcAlphaFactor')
 external _i1.JSNumber OneMinusSrcAlphaFactor;
 
 /// Variable [DstAlphaFactor]
 ///
 /// DstAlphaFactor: 206
+@_i1.JS('DstAlphaFactor')
 external _i1.JSNumber DstAlphaFactor;
 
 /// Variable [OneMinusDstAlphaFactor]
 ///
 /// OneMinusDstAlphaFactor: 207
+@_i1.JS('OneMinusDstAlphaFactor')
 external _i1.JSNumber OneMinusDstAlphaFactor;
 
 /// Variable [DstColorFactor]
 ///
 /// DstColorFactor: 208
+@_i1.JS('DstColorFactor')
 external _i1.JSNumber DstColorFactor;
 
 /// Variable [OneMinusDstColorFactor]
 ///
 /// OneMinusDstColorFactor: 209
+@_i1.JS('OneMinusDstColorFactor')
 external _i1.JSNumber OneMinusDstColorFactor;
 
 /// Variable [SrcAlphaSaturateFactor]
 ///
 /// SrcAlphaSaturateFactor: 210
+@_i1.JS('SrcAlphaSaturateFactor')
 external _i1.JSNumber SrcAlphaSaturateFactor;
 
 /// Variable [ConstantColorFactor]
 ///
 /// ConstantColorFactor: 211
+@_i1.JS('ConstantColorFactor')
 external _i1.JSNumber ConstantColorFactor;
 
 /// Variable [OneMinusConstantColorFactor]
 ///
 /// OneMinusConstantColorFactor: 212
+@_i1.JS('OneMinusConstantColorFactor')
 external _i1.JSNumber OneMinusConstantColorFactor;
 
 /// Variable [ConstantAlphaFactor]
 ///
 /// ConstantAlphaFactor: 213
+@_i1.JS('ConstantAlphaFactor')
 external _i1.JSNumber ConstantAlphaFactor;
 
 /// Variable [OneMinusConstantAlphaFactor]
 ///
 /// OneMinusConstantAlphaFactor: 214
+@_i1.JS('OneMinusConstantAlphaFactor')
 external _i1.JSNumber OneMinusConstantAlphaFactor;
 
 /// Typedef [BlendingDstFactor]
@@ -2520,41 +2575,49 @@ typedef BlendingSrcFactor = _i1.JSAny;
 /// Variable [NeverDepth]
 ///
 /// NeverDepth: 0
+@_i1.JS('NeverDepth')
 external _i1.JSNumber NeverDepth;
 
 /// Variable [AlwaysDepth]
 ///
 /// AlwaysDepth: 1
+@_i1.JS('AlwaysDepth')
 external _i1.JSNumber AlwaysDepth;
 
 /// Variable [LessDepth]
 ///
 /// LessDepth: 2
+@_i1.JS('LessDepth')
 external _i1.JSNumber LessDepth;
 
 /// Variable [LessEqualDepth]
 ///
 /// LessEqualDepth: 3
+@_i1.JS('LessEqualDepth')
 external _i1.JSNumber LessEqualDepth;
 
 /// Variable [EqualDepth]
 ///
 /// EqualDepth: 4
+@_i1.JS('EqualDepth')
 external _i1.JSNumber EqualDepth;
 
 /// Variable [GreaterEqualDepth]
 ///
 /// GreaterEqualDepth: 5
+@_i1.JS('GreaterEqualDepth')
 external _i1.JSNumber GreaterEqualDepth;
 
 /// Variable [GreaterDepth]
 ///
 /// GreaterDepth: 6
+@_i1.JS('GreaterDepth')
 external _i1.JSNumber GreaterDepth;
 
 /// Variable [NotEqualDepth]
 ///
 /// NotEqualDepth: 7
+@_i1.JS('NotEqualDepth')
 external _i1.JSNumber NotEqualDepth;
 
 /// Typedef [DepthModes]
@@ -2565,16 +2628,19 @@ typedef DepthModes = _i1.JSString;
 /// Variable [MultiplyOperation]
 ///
 /// MultiplyOperation: 0
+@_i1.JS('MultiplyOperation')
 external _i1.JSNumber MultiplyOperation;
 
 /// Variable [MixOperation]
 ///
 /// MixOperation: 1
+@_i1.JS('MixOperation')
 external _i1.JSNumber MixOperation;
 
 /// Variable [AddOperation]
 ///
 /// AddOperation: 2
+@_i1.JS('AddOperation')
 external _i1.JSNumber AddOperation;
 
 /// Typedef [Combine]
@@ -2585,41 +2651,49 @@ typedef Combine = _i1.JSString;
 /// Variable [NoToneMapping]
 ///
 /// NoToneMapping: 0
+@_i1.JS('NoToneMapping')
 external _i1.JSNumber NoToneMapping;
 
 /// Variable [LinearToneMapping]
 ///
 /// LinearToneMapping: 1
+@_i1.JS('LinearToneMapping')
 external _i1.JSNumber LinearToneMapping;
 
 /// Variable [ReinhardToneMapping]
 ///
 /// ReinhardToneMapping: 2
+@_i1.JS('ReinhardToneMapping')
 external _i1.JSNumber ReinhardToneMapping;
 
 /// Variable [CineonToneMapping]
 ///
 /// CineonToneMapping: 3
+@_i1.JS('CineonToneMapping')
 external _i1.JSNumber CineonToneMapping;
 
 /// Variable [ACESFilmicToneMapping]
 ///
 /// ACESFilmicToneMapping: 4
+@_i1.JS('ACESFilmicToneMapping')
 external _i1.JSNumber ACESFilmicToneMapping;
 
 /// Variable [CustomToneMapping]
 ///
 /// CustomToneMapping: 5
+@_i1.JS('CustomToneMapping')
 external _i1.JSNumber CustomToneMapping;
 
 /// Variable [AgXToneMapping]
 ///
 /// AgXToneMapping: 6
+@_i1.JS('AgXToneMapping')
 external _i1.JSNumber AgXToneMapping;
 
 /// Variable [NeutralToneMapping]
 ///
 /// NeutralToneMapping: 7
+@_i1.JS('NeutralToneMapping')
 external _i1.JSNumber NeutralToneMapping;
 
 /// Typedef [ToneMapping]
@@ -2630,11 +2704,13 @@ typedef ToneMapping = _i1.JSString;
 /// Variable [AttachedBindMode]
 ///
 /// AttachedBindMode: "attached"
+@_i1.JS('AttachedBindMode')
 external _i1.JSString AttachedBindMode;
 
 /// Variable [DetachedBindMode]
 ///
 /// DetachedBindMode: "detached"
+@_i1.JS('DetachedBindMode')
 external _i1.JSString DetachedBindMode;
 
 /// Typedef [BindMode]
@@ -2645,31 +2721,37 @@ typedef BindMode = _i1.JSString;
 /// Variable [UVMapping]
 ///
 /// UVMapping: 300
+@_i1.JS('UVMapping')
 external _i1.JSNumber UVMapping;
 
 /// Variable [CubeReflectionMapping]
 ///
 /// CubeReflectionMapping: 301
+@_i1.JS('CubeReflectionMapping')
 external _i1.JSNumber CubeReflectionMapping;
 
 /// Variable [CubeRefractionMapping]
 ///
 /// CubeRefractionMapping: 302
+@_i1.JS('CubeRefractionMapping')
 external _i1.JSNumber CubeRefractionMapping;
 
 /// Variable [CubeUVReflectionMapping]
 ///
 /// CubeUVReflectionMapping: 306
+@_i1.JS('CubeUVReflectionMapping')
 external _i1.JSNumber CubeUVReflectionMapping;
 
 /// Variable [EquirectangularReflectionMapping]
 ///
 /// EquirectangularReflectionMapping: 303
+@_i1.JS('EquirectangularReflectionMapping')
 external _i1.JSNumber EquirectangularReflectionMapping;
 
 /// Variable [EquirectangularRefractionMapping]
 ///
 /// EquirectangularRefractionMapping: 304
+@_i1.JS('EquirectangularRefractionMapping')
 external _i1.JSNumber EquirectangularRefractionMapping;
 
 /// Typedef [Mapping]
@@ -2690,16 +2772,19 @@ typedef AnyMapping = _i1.JSAny;
 /// Variable [RepeatWrapping]
 ///
 /// RepeatWrapping: 1000
+@_i1.JS('RepeatWrapping')
 external _i1.JSNumber RepeatWrapping;
 
 /// Variable [ClampToEdgeWrapping]
 ///
 /// ClampToEdgeWrapping: 1001
+@_i1.JS('ClampToEdgeWrapping')
 external _i1.JSNumber ClampToEdgeWrapping;
 
 /// Variable [MirroredRepeatWrapping]
 ///
 /// MirroredRepeatWrapping: 1002
+@_i1.JS('MirroredRepeatWrapping')
 external _i1.JSNumber MirroredRepeatWrapping;
 
 /// Typedef [Wrapping]
@@ -2710,51 +2795,61 @@ typedef Wrapping = _i1.JSString;
 /// Variable [NearestFilter]
 ///
 /// NearestFilter: 1003
+@_i1.JS('NearestFilter')
 external _i1.JSNumber NearestFilter;
 
 /// Variable [NearestMipmapNearestFilter]
 ///
 /// NearestMipmapNearestFilter: 1004
+@_i1.JS('NearestMipmapNearestFilter')
 external _i1.JSNumber NearestMipmapNearestFilter;
 
 /// Variable [NearestMipMapNearestFilter]
 ///
 /// NearestMipMapNearestFilter: 1004
+@_i1.JS('NearestMipMapNearestFilter')
 external _i1.JSNumber NearestMipMapNearestFilter;
 
 /// Variable [NearestMipmapLinearFilter]
 ///
 /// NearestMipmapLinearFilter: 1005
+@_i1.JS('NearestMipmapLinearFilter')
 external _i1.JSNumber NearestMipmapLinearFilter;
 
 /// Variable [NearestMipMapLinearFilter]
 ///
 /// NearestMipMapLinearFilter: 1005
+@_i1.JS('NearestMipMapLinearFilter')
 external _i1.JSNumber NearestMipMapLinearFilter;
 
 /// Variable [LinearFilter]
 ///
 /// LinearFilter: 1006
+@_i1.JS('LinearFilter')
 external _i1.JSNumber LinearFilter;
 
 /// Variable [LinearMipmapNearestFilter]
 ///
 /// LinearMipmapNearestFilter: 1007
+@_i1.JS('LinearMipmapNearestFilter')
 external _i1.JSNumber LinearMipmapNearestFilter;
 
 /// Variable [LinearMipMapNearestFilter]
 ///
 /// LinearMipMapNearestFilter: 1007
+@_i1.JS('LinearMipMapNearestFilter')
 external _i1.JSNumber LinearMipMapNearestFilter;
 
 /// Variable [LinearMipmapLinearFilter]
 ///
 /// LinearMipmapLinearFilter: 1008
+@_i1.JS('LinearMipmapLinearFilter')
 external _i1.JSNumber LinearMipmapLinearFilter;
 
 /// Variable [LinearMipMapLinearFilter]
 ///
 /// LinearMipMapLinearFilter: 1008
+@_i1.JS('LinearMipMapLinearFilter')
 external _i1.JSNumber LinearMipMapLinearFilter;
 
 /// Typedef [MagnificationTextureFilter]
@@ -2775,41 +2870,49 @@ typedef TextureFilter = _i1.JSAny;
 /// Variable [UnsignedByteType]
 ///
 /// UnsignedByteType: 1009
+@_i1.JS('UnsignedByteType')
 external _i1.JSNumber UnsignedByteType;
 
 /// Variable [ByteType]
 ///
 /// ByteType: 1010
+@_i1.JS('ByteType')
 external _i1.JSNumber ByteType;
 
 /// Variable [ShortType]
 ///
 /// ShortType: 1011
+@_i1.JS('ShortType')
 external _i1.JSNumber ShortType;
 
 /// Variable [UnsignedShortType]
 ///
 /// UnsignedShortType: 1012
+@_i1.JS('UnsignedShortType')
 external _i1.JSNumber UnsignedShortType;
 
 /// Variable [IntType]
 ///
 /// IntType: 1013
+@_i1.JS('IntType')
 external _i1.JSNumber IntType;
 
 /// Variable [UnsignedIntType]
 ///
 /// UnsignedIntType: 1014
+@_i1.JS('UnsignedIntType')
 external _i1.JSNumber UnsignedIntType;
 
 /// Variable [FloatType]
 ///
 /// FloatType: 1015
+@_i1.JS('FloatType')
 external _i1.JSNumber FloatType;
 
 /// Variable [HalfFloatType]
 ///
 /// HalfFloatType: 1016
+@_i1.JS('HalfFloatType')
 external _i1.JSNumber HalfFloatType;
 
 /// Variable [UnsignedShortfourfourfourfourType]
@@ -2855,56 +2958,67 @@ typedef TextureDataType = _i1.JSString;
 /// Variable [AlphaFormat]
 ///
 /// AlphaFormat: 1021
+@_i1.JS('AlphaFormat')
 external _i1.JSNumber AlphaFormat;
 
 /// Variable [RGBFormat]
 ///
 /// RGBFormat: 1022
+@_i1.JS('RGBFormat')
 external _i1.JSNumber RGBFormat;
 
 /// Variable [RGBAFormat]
 ///
 /// RGBAFormat: 1023
+@_i1.JS('RGBAFormat')
 external _i1.JSNumber RGBAFormat;
 
 /// Variable [DepthFormat]
 ///
 /// DepthFormat: 1026
+@_i1.JS('DepthFormat')
 external _i1.JSNumber DepthFormat;
 
 /// Variable [DepthStencilFormat]
 ///
 /// DepthStencilFormat: 1027
+@_i1.JS('DepthStencilFormat')
 external _i1.JSNumber DepthStencilFormat;
 
 /// Variable [RedFormat]
 ///
 /// RedFormat: 1028
+@_i1.JS('RedFormat')
 external _i1.JSNumber RedFormat;
 
 /// Variable [RedIntegerFormat]
 ///
 /// RedIntegerFormat: 1029
+@_i1.JS('RedIntegerFormat')
 external _i1.JSNumber RedIntegerFormat;
 
 /// Variable [RGFormat]
 ///
 /// RGFormat: 1030
+@_i1.JS('RGFormat')
 external _i1.JSNumber RGFormat;
 
 /// Variable [RGIntegerFormat]
 ///
 /// RGIntegerFormat: 1031
+@_i1.JS('RGIntegerFormat')
 external _i1.JSNumber RGIntegerFormat;
 
 /// Variable [RGBIntegerFormat]
 ///
 /// RGBIntegerFormat: 1032
+@_i1.JS('RGBIntegerFormat')
 external _i1.JSNumber RGBIntegerFormat;
 
 /// Variable [RGBAIntegerFormat]
 ///
 /// RGBAIntegerFormat: 1033
+@_i1.JS('RGBAIntegerFormat')
 external _i1.JSNumber RGBAIntegerFormat;
 
 /// Typedef [PixelFormat]
@@ -3094,16 +3208,19 @@ external _i1.JSNumber RGBA_ASTC_onetwoxonetwo_Format;
 /// Variable [RGBA_BPTC_Format]
 ///
 /// RGBA_BPTC_Format: 36492
+@_i1.JS('RGBA_BPTC_Format')
 external _i1.JSNumber RGBA_BPTC_Format;
 
 /// Variable [RGB_BPTC_SIGNED_Format]
 ///
 /// RGB_BPTC_SIGNED_Format = 36494
+@_i1.JS('RGB_BPTC_SIGNED_Format')
 external _i1.JSAny RGB_BPTC_SIGNED_Format;
 
 /// Variable [RGB_BPTC_UNSIGNED_Format]
 ///
 /// RGB_BPTC_UNSIGNED_Format = 36495
+@_i1.JS('RGB_BPTC_UNSIGNED_Format')
 external _i1.JSAny RGB_BPTC_UNSIGNED_Format;
 
 /// Variable [RED_RGTCone_Format]
@@ -3143,16 +3260,19 @@ typedef AnyPixelFormat = _i1.JSAny;
 /// Variable [LoopOnce]
 ///
 /// LoopOnce: 2200
+@_i1.JS('LoopOnce')
 external _i1.JSNumber LoopOnce;
 
 /// Variable [LoopRepeat]
 ///
 /// LoopRepeat: 2201
+@_i1.JS('LoopRepeat')
 external _i1.JSNumber LoopRepeat;
 
 /// Variable [LoopPingPong]
 ///
 /// LoopPingPong: 2202
+@_i1.JS('LoopPingPong')
 external _i1.JSNumber LoopPingPong;
 
 /// Typedef [AnimationActionLoopStyles]
@@ -3163,21 +3283,25 @@ typedef AnimationActionLoopStyles = _i1.JSString;
 /// Variable [InterpolateDiscrete]
 ///
 /// InterpolateDiscrete: 2300
+@_i1.JS('InterpolateDiscrete')
 external _i1.JSNumber InterpolateDiscrete;
 
 /// Variable [InterpolateLinear]
 ///
 /// InterpolateLinear: 2301
+@_i1.JS('InterpolateLinear')
 external _i1.JSNumber InterpolateLinear;
 
 /// Variable [InterpolateSmooth]
 ///
 /// InterpolateSmooth: 2302
+@_i1.JS('InterpolateSmooth')
 external _i1.JSNumber InterpolateSmooth;
 
 /// Variable [InterpolateBezier]
 ///
 /// InterpolateBezier: 2303
+@_i1.JS('InterpolateBezier')
 external _i1.JSNumber InterpolateBezier;
 
 /// Typedef [InterpolationModes]
@@ -3188,16 +3312,19 @@ typedef InterpolationModes = _i1.JSString;
 /// Variable [ZeroCurvatureEnding]
 ///
 /// ZeroCurvatureEnding: 2400
+@_i1.JS('ZeroCurvatureEnding')
 external _i1.JSNumber ZeroCurvatureEnding;
 
 /// Variable [ZeroSlopeEnding]
 ///
 /// ZeroSlopeEnding: 2401
+@_i1.JS('ZeroSlopeEnding')
 external _i1.JSNumber ZeroSlopeEnding;
 
 /// Variable [WrapAroundEnding]
 ///
 /// WrapAroundEnding: 2402
+@_i1.JS('WrapAroundEnding')
 external _i1.JSNumber WrapAroundEnding;
 
 /// Typedef [InterpolationEndingModes]
@@ -3208,11 +3335,13 @@ typedef InterpolationEndingModes = _i1.JSString;
 /// Variable [NormalAnimationBlendMode]
 ///
 /// NormalAnimationBlendMode: 2500
+@_i1.JS('NormalAnimationBlendMode')
 external _i1.JSNumber NormalAnimationBlendMode;
 
 /// Variable [AdditiveAnimationBlendMode]
 ///
 /// AdditiveAnimationBlendMode: 2501
+@_i1.JS('AdditiveAnimationBlendMode')
 external _i1.JSNumber AdditiveAnimationBlendMode;
 
 /// Typedef [AnimationBlendMode]
@@ -3223,16 +3352,19 @@ typedef AnimationBlendMode = _i1.JSString;
 /// Variable [TrianglesDrawMode]
 ///
 /// TrianglesDrawMode: 0
+@_i1.JS('TrianglesDrawMode')
 external _i1.JSNumber TrianglesDrawMode;
 
 /// Variable [TriangleStripDrawMode]
 ///
 /// TriangleStripDrawMode: 1
+@_i1.JS('TriangleStripDrawMode')
 external _i1.JSNumber TriangleStripDrawMode;
 
 /// Variable [TriangleFanDrawMode]
 ///
 /// TriangleFanDrawMode: 2
+@_i1.JS('TriangleFanDrawMode')
 external _i1.JSNumber TriangleFanDrawMode;
 
 /// Typedef [TrianglesDrawModes]
@@ -3243,21 +3375,25 @@ typedef TrianglesDrawModes = _i1.JSString;
 /// Variable [BasicDepthPacking]
 ///
 /// BasicDepthPacking: 3200
+@_i1.JS('BasicDepthPacking')
 external _i1.JSNumber BasicDepthPacking;
 
 /// Variable [RGBADepthPacking]
 ///
 /// RGBADepthPacking: 3201
+@_i1.JS('RGBADepthPacking')
 external _i1.JSNumber RGBADepthPacking;
 
 /// Variable [RGBDepthPacking]
 ///
 /// RGBDepthPacking: 3202
+@_i1.JS('RGBDepthPacking')
 external _i1.JSNumber RGBDepthPacking;
 
 /// Variable [RGDepthPacking]
 ///
 /// RGDepthPacking: 3203
+@_i1.JS('RGDepthPacking')
 external _i1.JSNumber RGDepthPacking;
 
 /// Typedef [DepthPackingStrategies]
@@ -3268,11 +3404,13 @@ typedef DepthPackingStrategies = _i1.JSString;
 /// Variable [TangentSpaceNormalMap]
 ///
 /// TangentSpaceNormalMap: 0
+@_i1.JS('TangentSpaceNormalMap')
 external _i1.JSNumber TangentSpaceNormalMap;
 
 /// Variable [ObjectSpaceNormalMap]
 ///
 /// ObjectSpaceNormalMap: 1
+@_i1.JS('ObjectSpaceNormalMap')
 external _i1.JSNumber ObjectSpaceNormalMap;
 
 /// Typedef [NormalMapTypes]
@@ -3283,16 +3421,19 @@ typedef NormalMapTypes = _i1.JSString;
 /// Variable [NoColorSpace]
 ///
 /// NoColorSpace: ""
+@_i1.JS('NoColorSpace')
 external _i1.JSString NoColorSpace;
 
 /// Variable [SRGBColorSpace]
 ///
 /// SRGBColorSpace: "srgb"
+@_i1.JS('SRGBColorSpace')
 external _i1.JSString SRGBColorSpace;
 
 /// Variable [LinearSRGBColorSpace]
 ///
 /// LinearSRGBColorSpace: "srgb-linear"
+@_i1.JS('LinearSRGBColorSpace')
 external _i1.JSString LinearSRGBColorSpace;
 
 /// Typedef [ColorSpace]
@@ -3303,11 +3444,13 @@ typedef ColorSpace = _i1.JSString;
 /// Variable [LinearTransfer]
 ///
 /// LinearTransfer: "linear"
+@_i1.JS('LinearTransfer')
 external _i1.JSString LinearTransfer;
 
 /// Variable [SRGBTransfer]
 ///
 /// SRGBTransfer: "srgb"
+@_i1.JS('SRGBTransfer')
 external _i1.JSString SRGBTransfer;
 
 /// Typedef [ColorSpaceTransfer]
@@ -3318,16 +3461,19 @@ typedef ColorSpaceTransfer = _i1.JSString;
 /// Variable [NoNormalPacking]
 ///
 /// NoNormalPacking: ""
+@_i1.JS('NoNormalPacking')
 external _i1.JSString NoNormalPacking;
 
 /// Variable [NormalRGPacking]
 ///
 /// NormalRGPacking: "rg"
+@_i1.JS('NormalRGPacking')
 external _i1.JSString NormalRGPacking;
 
 /// Variable [NormalGAPacking]
 ///
 /// NormalGAPacking: "ga"
+@_i1.JS('NormalGAPacking')
 external _i1.JSString NormalGAPacking;
 
 /// Typedef [NormalPacking]
@@ -3338,41 +3484,49 @@ typedef NormalPacking = _i1.JSString;
 /// Variable [ZeroStencilOp]
 ///
 /// ZeroStencilOp: 0
+@_i1.JS('ZeroStencilOp')
 external _i1.JSNumber ZeroStencilOp;
 
 /// Variable [KeepStencilOp]
 ///
 /// KeepStencilOp: 7680
+@_i1.JS('KeepStencilOp')
 external _i1.JSNumber KeepStencilOp;
 
 /// Variable [ReplaceStencilOp]
 ///
 /// ReplaceStencilOp: 7681
+@_i1.JS('ReplaceStencilOp')
 external _i1.JSNumber ReplaceStencilOp;
 
 /// Variable [IncrementStencilOp]
 ///
 /// IncrementStencilOp: 7682
+@_i1.JS('IncrementStencilOp')
 external _i1.JSNumber IncrementStencilOp;
 
 /// Variable [DecrementStencilOp]
 ///
 /// DecrementStencilOp: 7283
+@_i1.JS('DecrementStencilOp')
 external _i1.JSNumber DecrementStencilOp;
 
 /// Variable [IncrementWrapStencilOp]
 ///
 /// IncrementWrapStencilOp: 34055
+@_i1.JS('IncrementWrapStencilOp')
 external _i1.JSNumber IncrementWrapStencilOp;
 
 /// Variable [DecrementWrapStencilOp]
 ///
 /// DecrementWrapStencilOp: 34056
+@_i1.JS('DecrementWrapStencilOp')
 external _i1.JSNumber DecrementWrapStencilOp;
 
 /// Variable [InvertStencilOp]
 ///
 /// InvertStencilOp: 5386
+@_i1.JS('InvertStencilOp')
 external _i1.JSNumber InvertStencilOp;
 
 /// Typedef [StencilOp]
@@ -3383,41 +3537,49 @@ typedef StencilOp = _i1.JSString;
 /// Variable [NeverStencilFunc]
 ///
 /// NeverStencilFunc: 512
+@_i1.JS('NeverStencilFunc')
 external _i1.JSNumber NeverStencilFunc;
 
 /// Variable [LessStencilFunc]
 ///
 /// LessStencilFunc: 513
+@_i1.JS('LessStencilFunc')
 external _i1.JSNumber LessStencilFunc;
 
 /// Variable [EqualStencilFunc]
 ///
 /// EqualStencilFunc: 514
+@_i1.JS('EqualStencilFunc')
 external _i1.JSNumber EqualStencilFunc;
 
 /// Variable [LessEqualStencilFunc]
 ///
 /// LessEqualStencilFunc: 515
+@_i1.JS('LessEqualStencilFunc')
 external _i1.JSNumber LessEqualStencilFunc;
 
 /// Variable [GreaterStencilFunc]
 ///
 /// GreaterStencilFunc: 516
+@_i1.JS('GreaterStencilFunc')
 external _i1.JSNumber GreaterStencilFunc;
 
 /// Variable [NotEqualStencilFunc]
 ///
 /// NotEqualStencilFunc: 517
+@_i1.JS('NotEqualStencilFunc')
 external _i1.JSNumber NotEqualStencilFunc;
 
 /// Variable [GreaterEqualStencilFunc]
 ///
 /// GreaterEqualStencilFunc: 518
+@_i1.JS('GreaterEqualStencilFunc')
 external _i1.JSNumber GreaterEqualStencilFunc;
 
 /// Variable [AlwaysStencilFunc]
 ///
 /// AlwaysStencilFunc: 519
+@_i1.JS('AlwaysStencilFunc')
 external _i1.JSNumber AlwaysStencilFunc;
 
 /// Typedef [StencilFunc]
@@ -3428,41 +3590,49 @@ typedef StencilFunc = _i1.JSString;
 /// Variable [NeverCompare]
 ///
 /// NeverCompare: 512
+@_i1.JS('NeverCompare')
 external _i1.JSNumber NeverCompare;
 
 /// Variable [LessCompare]
 ///
 /// LessCompare: 513
+@_i1.JS('LessCompare')
 external _i1.JSNumber LessCompare;
 
 /// Variable [EqualCompare]
 ///
 /// EqualCompare: 514
+@_i1.JS('EqualCompare')
 external _i1.JSNumber EqualCompare;
 
 /// Variable [LessEqualCompare]
 ///
 /// LessEqualCompare: 515
+@_i1.JS('LessEqualCompare')
 external _i1.JSNumber LessEqualCompare;
 
 /// Variable [GreaterCompare]
 ///
 /// GreaterCompare: 516
+@_i1.JS('GreaterCompare')
 external _i1.JSNumber GreaterCompare;
 
 /// Variable [NotEqualCompare]
 ///
 /// NotEqualCompare: 517
+@_i1.JS('NotEqualCompare')
 external _i1.JSNumber NotEqualCompare;
 
 /// Variable [GreaterEqualCompare]
 ///
 /// GreaterEqualCompare: 518
+@_i1.JS('GreaterEqualCompare')
 external _i1.JSNumber GreaterEqualCompare;
 
 /// Variable [AlwaysCompare]
 ///
 /// AlwaysCompare: 519
+@_i1.JS('AlwaysCompare')
 external _i1.JSNumber AlwaysCompare;
 
 /// Typedef [TextureComparisonFunction]
@@ -3473,46 +3643,55 @@ typedef TextureComparisonFunction = _i1.JSString;
 /// Variable [StaticDrawUsage]
 ///
 /// StaticDrawUsage: 35044
+@_i1.JS('StaticDrawUsage')
 external _i1.JSNumber StaticDrawUsage;
 
 /// Variable [DynamicDrawUsage]
 ///
 /// DynamicDrawUsage: 35048
+@_i1.JS('DynamicDrawUsage')
 external _i1.JSNumber DynamicDrawUsage;
 
 /// Variable [StreamDrawUsage]
 ///
 /// StreamDrawUsage: 35040
+@_i1.JS('StreamDrawUsage')
 external _i1.JSNumber StreamDrawUsage;
 
 /// Variable [StaticReadUsage]
 ///
 /// StaticReadUsage: 35045
+@_i1.JS('StaticReadUsage')
 external _i1.JSNumber StaticReadUsage;
 
 /// Variable [DynamicReadUsage]
 ///
 /// DynamicReadUsage: 35049
+@_i1.JS('DynamicReadUsage')
 external _i1.JSNumber DynamicReadUsage;
 
 /// Variable [StreamReadUsage]
 ///
 /// StreamReadUsage: 35041
+@_i1.JS('StreamReadUsage')
 external _i1.JSNumber StreamReadUsage;
 
 /// Variable [StaticCopyUsage]
 ///
 /// StaticCopyUsage: 35046
+@_i1.JS('StaticCopyUsage')
 external _i1.JSNumber StaticCopyUsage;
 
 /// Variable [DynamicCopyUsage]
 ///
 /// DynamicCopyUsage: 35050
+@_i1.JS('DynamicCopyUsage')
 external _i1.JSNumber DynamicCopyUsage;
 
 /// Variable [StreamCopyUsage]
 ///
 /// StreamCopyUsage: 35042
+@_i1.JS('StreamCopyUsage')
 external _i1.JSNumber StreamCopyUsage;
 
 /// Typedef [Usage]
@@ -3540,11 +3719,13 @@ typedef GLSLVersion = _i1.JSString;
 /// Variable [WebGLCoordinateSystem]
 ///
 /// WebGLCoordinateSystem: 2000
+@_i1.JS('WebGLCoordinateSystem')
 external _i1.JSNumber WebGLCoordinateSystem;
 
 /// Variable [WebGPUCoordinateSystem]
 ///
 /// WebGPUCoordinateSystem: 2001
+@_i1.JS('WebGPUCoordinateSystem')
 external _i1.JSNumber WebGPUCoordinateSystem;
 
 /// Typedef [CoordinateSystem]
@@ -3555,6 +3736,7 @@ typedef CoordinateSystem = _i1.JSString;
 /// Variable [TimestampQuery]
 ///
 /// TimestampQuery: TimestampQuery$TypeLiteral
+@_i1.JS('TimestampQuery')
 external TimestampQuery$TypeLiteral TimestampQuery;
 
 /// Typedef [TimestampQuery$Type]
@@ -3565,6 +3747,7 @@ typedef TimestampQuery$Type = _i1.JSString;
 /// Variable [InterpolationSamplingType]
 ///
 /// InterpolationSamplingType: InterpolationSamplingType$TypeLiteral
+@_i1.JS('InterpolationSamplingType')
 external InterpolationSamplingType$TypeLiteral InterpolationSamplingType;
 
 /// Typedef [InterpolationSamplingType$Type]
@@ -3575,6 +3758,7 @@ typedef InterpolationSamplingType$Type = _i1.JSString;
 /// Variable [InterpolationSamplingMode]
 ///
 /// InterpolationSamplingMode: InterpolationSamplingMode$TypeLiteral
+@_i1.JS('InterpolationSamplingMode')
 external InterpolationSamplingMode$TypeLiteral InterpolationSamplingMode;
 
 /// Typedef [InterpolationSamplingMode$Type]
@@ -3585,6 +3769,7 @@ typedef InterpolationSamplingMode$Type = _i1.JSString;
 /// Variable [Compatibility]
 ///
 /// Compatibility: Compatibility$TypeLiteral
+@_i1.JS('Compatibility')
 external Compatibility$TypeLiteral Compatibility;
 
 /// Typedef [Compatibility$Type]
@@ -4098,12 +4283,12 @@ extension type BufferAttribute$UpdateRanges$TypeLiteral.$(_i1.JSObject _) implem
 /// Typedef [NormalBufferAttributes]
 ///
 /// Record
-typedef NormalBufferAttributes = _i2.Record<_i1.JSString, _i1.JSAny>;
+typedef NormalBufferAttributes = _i1.JSObject;
 
 /// Typedef [NormalOrGLBufferAttributes]
 ///
 /// Record
-typedef NormalOrGLBufferAttributes = _i2.Record<_i1.JSString, _i1.JSAny>;
+typedef NormalOrGLBufferAttributes = _i1.JSObject;
 
 /// Interface [BufferGeometryJSON]
 extension type BufferGeometryJSON.$(_i1.JSObject _) implements _i1.JSObject {
@@ -4130,7 +4315,7 @@ extension type BufferGeometryJSON.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [userData]
   ///
   /// userData?: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny>? userData;
+  external _i1.JSObject? userData;
 
   /// Property [data]
   ///
@@ -4195,7 +4380,7 @@ extension type BufferGeometry<
   /// Property [indirect]
   ///
   /// indirect: IndirectStorageBufferAttribute | null
-  external IndirectStorageBufferAttribute indirect;
+  external _i1.JSAny indirect;
 
   /// Property [indirectOffset]
   ///
@@ -4240,7 +4425,7 @@ extension type BufferGeometry<
   /// Property [userData]
   ///
   /// userData: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> userData;
+  external _i1.JSObject userData;
 
   /// Property [type]
   ///
@@ -4266,10 +4451,10 @@ extension type BufferGeometry<
   /// Parameters:
   /// - indirect: IndirectStorageBufferAttribute | null
   /// - indirectOffset: number | number[]
-  external _i1.JSAny setIndirect(IndirectStorageBufferAttribute? indirect, [_i1.JSAny indirectOffset]);
+  external _i1.JSAny setIndirect(_i1.JSAny indirect, [_i1.JSAny indirectOffset]);
 
   /// Method [getIndirect]
-  external IndirectStorageBufferAttribute? getIndirect();
+  external _i1.JSAny getIndirect();
 
   /// Method [setAttribute]
   ///
@@ -4464,7 +4649,7 @@ extension type BufferGeometryJSON$Data$TypeLiteral.$(_i1.JSObject _) implements 
   /// Property [attributes]
   ///
   /// attributes: Record
-  external _i2.Record<_i1.JSString, BufferAttributeJSON> attributes;
+  external _i1.JSObject attributes;
 
   /// Property [index]
   ///
@@ -4474,7 +4659,7 @@ extension type BufferGeometryJSON$Data$TypeLiteral.$(_i1.JSObject _) implements 
   /// Property [morphAttributes]
   ///
   /// morphAttributes?: Record
-  external _i2.Record<_i1.JSString, _i1.JSArray<BufferAttributeJSON>>? morphAttributes;
+  external _i1.JSObject? morphAttributes;
 
   /// Property [morphTargetsRelative]
   ///
@@ -4601,8 +4786,7 @@ typedef EventListener<TEventData extends _i1.JSAny, TEventType extends _i1.JSStr
     _i1.JSFunction;
 
 /// Class [EventDispatcher]
-extension type EventDispatcher<TEventMap extends EventDispatcher$TypeLiteral>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type EventDispatcher<TEventMap extends _i1.JSObject>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   external EventDispatcher();
 
@@ -4614,10 +4798,7 @@ extension type EventDispatcher<TEventMap extends EventDispatcher$TypeLiteral>.$(
   /// Parameters:
   /// - type: T
   /// - listener: EventListener
-  external void addEventListener<T extends _i2.Extract<_i1.JSAny, _i1.JSString>>(
-    T type,
-    _i3.EventListener<_i1.JSAny, T, _i1.JSAny> listener,
-  );
+  external void addEventListener<T extends _i1.JSString>(T type, EventListener<_i1.JSAny, T, _i1.JSAny> listener);
 
   /// Method [hasEventListener]
   ///
@@ -4627,9 +4808,9 @@ extension type EventDispatcher<TEventMap extends EventDispatcher$TypeLiteral>.$(
   /// Parameters:
   /// - type: T
   /// - listener: EventListener
-  external _i1.JSBoolean hasEventListener<T extends _i2.Extract<_i1.JSAny, _i1.JSString>>(
+  external _i1.JSBoolean hasEventListener<T extends _i1.JSString>(
     T type,
-    _i3.EventListener<_i1.JSAny, T, _i1.JSAny> listener,
+    EventListener<_i1.JSAny, T, _i1.JSAny> listener,
   );
 
   /// Method [removeEventListener]
@@ -4640,10 +4821,7 @@ extension type EventDispatcher<TEventMap extends EventDispatcher$TypeLiteral>.$(
   /// Parameters:
   /// - type: T
   /// - listener: EventListener
-  external void removeEventListener<T extends _i2.Extract<_i1.JSAny, _i1.JSString>>(
-    T type,
-    _i3.EventListener<_i1.JSAny, T, _i1.JSAny> listener,
-  );
+  external void removeEventListener<T extends _i1.JSString>(T type, EventListener<_i1.JSAny, T, _i1.JSAny> listener);
 
   /// Method [dispatchEvent]
   ///
@@ -4652,7 +4830,7 @@ extension type EventDispatcher<TEventMap extends EventDispatcher$TypeLiteral>.$(
   ///
   /// Parameters:
   /// - event:
-  external void dispatchEvent<T extends _i2.Extract<_i1.JSAny, _i1.JSString>>(_i1.JSAny event);
+  external void dispatchEvent<T extends _i1.JSString>(_i1.JSAny event);
 }
 
 /// Interface [EventDispatcher$TypeLiteral]
@@ -5311,7 +5489,7 @@ extension type Object3DJSONObject.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [userData]
   ///
   /// userData?: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny>? userData;
+  external _i1.JSObject? userData;
 
   /// Property [layers]
   ///
@@ -5372,42 +5550,42 @@ extension type JSONMeta.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [geometries]
   ///
   /// geometries: Record
-  external _i2.Record<_i1.JSString, BufferGeometryJSON> geometries;
+  external _i1.JSObject geometries;
 
   /// Property [materials]
   ///
   /// materials: Record
-  external _i2.Record<_i1.JSString, MaterialJSON> materials;
+  external _i1.JSObject materials;
 
   /// Property [textures]
   ///
   /// textures: Record
-  external _i2.Record<_i1.JSString, TextureJSON> textures;
+  external _i1.JSObject textures;
 
   /// Property [images]
   ///
   /// images: Record
-  external _i2.Record<_i1.JSString, SourceJSON> images;
+  external _i1.JSObject images;
 
   /// Property [shapes]
   ///
   /// shapes: Record
-  external _i2.Record<_i1.JSString, ShapeJSON> shapes;
+  external _i1.JSObject shapes;
 
   /// Property [skeletons]
   ///
   /// skeletons: Record
-  external _i2.Record<_i1.JSString, SkeletonJSON> skeletons;
+  external _i1.JSObject skeletons;
 
   /// Property [animations]
   ///
   /// animations: Record
-  external _i2.Record<_i1.JSString, AnimationClipJSON> animations;
+  external _i1.JSObject animations;
 
   /// Property [nodes]
   ///
   /// nodes: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> nodes;
+  external _i1.JSObject nodes;
 }
 
 /// Interface [Object3DEventMap]
@@ -5542,7 +5720,7 @@ extension type Object3D<TEventMap extends Object3DEventMap>.$(_i1.JSObject _)
   /// Property [userData]
   ///
   /// userData: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> userData;
+  external _i1.JSObject userData;
 
   /// Property [pivot]
   ///
@@ -7102,6 +7280,8 @@ extension type Shape$ExtractPoints$TypeLiteral.$(_i1.JSObject _) implements _i1.
 
 /// Class [ShapePath]
 extension type ShapePath.$(_i1.JSObject _) implements _i1.JSObject {
+  external ShapePath();
+
   /// Property [type]
   ///
   /// type: string
@@ -7125,7 +7305,7 @@ extension type ShapePath.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [userData]
   ///
   /// userData: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> userData;
+  external _i1.JSObject userData;
 
   /// Method [moveTo]
   ///
@@ -7614,6 +7794,8 @@ external _i1.JSNumber fromHalfFloat(_i1.JSNumber val);
 
 /// Class [DataUtils]
 extension type DataUtils.$(_i1.JSObject _) implements _i1.JSObject {
+  external DataUtils();
+
   /// Method [toHalfFloat]
   ///
   /// Parameters:
@@ -7629,6 +7811,8 @@ extension type DataUtils.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Class [ImageUtils]
 extension type ImageUtils.$(_i1.JSObject _) implements _i1.JSObject {
+  external ImageUtils();
+
   /// Method [getDataURL]
   ///
   /// Parameters:
@@ -7671,6 +7855,8 @@ extension type ImageUtils$SRGBToLinear$TypeLiteral.$(_i1.JSObject _) implements 
 
 /// Class [ShapeUtils]
 extension type ShapeUtils.$(_i1.JSObject _) implements _i1.JSObject {
+  external ShapeUtils();
+
   /// Method [area]
   ///
   /// Parameters:
@@ -7730,6 +7916,7 @@ external _i1.JSNumber getByteLength(_i1.JSNumber width, _i1.JSNumber height, _i1
 /// Variable [TextureUtils]
 ///
 /// TextureUtils: TextureUtils$TypeLiteral
+@_i1.JS('TextureUtils')
 external TextureUtils$TypeLiteral TextureUtils;
 
 /// Interface [TextureUtils$TypeLiteral]
@@ -8174,11 +8361,13 @@ extension type EdgesGeometry<TBufferGeometry extends BufferGeometry<NormalBuffer
   /// Property [parameters]
   ///
   /// readonly parameters: EdgesGeometry$Parameters$TypeLiteral
-  external EdgesGeometry$Parameters$TypeLiteral get parameters;
+  external EdgesGeometry$Parameters$TypeLiteral<TBufferGeometry> get parameters;
 }
 
 /// Interface [EdgesGeometry$Parameters$TypeLiteral]
-extension type EdgesGeometry$Parameters$TypeLiteral.$(_i1.JSObject _) implements _i1.JSObject {
+extension type EdgesGeometry$Parameters$TypeLiteral<
+  TBufferGeometry extends BufferGeometry<NormalBufferAttributes, BufferGeometryEventMap>
+>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [geometry]
   ///
   /// readonly geometry: TBufferGeometry | null
@@ -8240,7 +8429,8 @@ extension type ExtrudeGeometryOptions.$(_i1.JSObject _) implements _i1.JSObject 
   /// Property [UVGenerator]
   ///
   /// UVGenerator?: UVGenerator | undefined
-  external UVGenerator? UVGenerator;
+  @_i1.JS('UVGenerator')
+  external UVGenerator? uVGenerator;
 }
 
 /// Interface [UVGenerator]
@@ -9056,11 +9246,13 @@ extension type WireframeGeometry<
   /// Property [parameters]
   ///
   /// readonly parameters: WireframeGeometry$Parameters$TypeLiteral
-  external WireframeGeometry$Parameters$TypeLiteral get parameters;
+  external WireframeGeometry$Parameters$TypeLiteral<TBufferGeometry> get parameters;
 }
 
 /// Interface [WireframeGeometry$Parameters$TypeLiteral]
-extension type WireframeGeometry$Parameters$TypeLiteral.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WireframeGeometry$Parameters$TypeLiteral<
+  TBufferGeometry extends BufferGeometry<NormalBufferAttributes, BufferGeometryEventMap>
+>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [geometry]
   ///
   /// readonly geometry: TBufferGeometry
@@ -9785,7 +9977,7 @@ extension type LightShadow<TCamera extends Camera>._(_i1.JSObject _) implements 
   /// Property [biasNode]
   ///
   /// biasNode: Node | null
-  external _i3.Node<_i1.JSString> biasNode;
+  external _i1.JSAny biasNode;
 
   /// Property [normalBias]
   ///
@@ -10193,6 +10385,7 @@ extension type BufferGeometryLoader.$(_i1.JSObject _) implements _i1.JSObject, L
 /// Variable [Cache]
 ///
 /// Cache: Cache$TypeLiteral
+@_i1.JS('Cache')
 external Cache$TypeLiteral Cache;
 
 /// Interface [Cache$TypeLiteral]
@@ -10612,6 +10805,8 @@ extension type Loader$SetRequestHeader$RequestHeader$TypeLiteral.$(_i1.JSObject 
 
 /// Class [LoaderUtils]
 extension type LoaderUtils.$(_i1.JSObject _) implements _i1.JSObject {
+  external LoaderUtils();
+
   /// Method [extractUrlBase]
   ///
   /// Parameters:
@@ -10710,6 +10905,7 @@ extension type LoadingManager.$(_i1.JSObject _) implements _i1.JSObject {
 /// Variable [DefaultLoadingManager]
 ///
 /// DefaultLoadingManager: LoadingManager
+@_i1.JS('DefaultLoadingManager')
 external LoadingManager DefaultLoadingManager;
 
 /// Class [MaterialLoader]
@@ -11267,7 +11463,7 @@ extension type MaterialProperties.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [userData]
   ///
   /// userData: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> userData;
+  external _i1.JSObject userData;
 
   /// Get Accessor [alphaTest]
   ///
@@ -11869,7 +12065,7 @@ extension type MaterialJSON.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [userData]
   ///
   /// userData?: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny>? userData;
+  external _i1.JSObject? userData;
 
   /// Property [textures]
   ///
@@ -11893,6 +12089,8 @@ extension type MaterialEventMap.$(_i1.JSObject _) implements _i1.JSObject {
 /// Class [Material]
 extension type Material<TEventMap extends MaterialEventMap>.$(_i1.JSObject _)
     implements _i1.JSObject, EventDispatcher<TEventMap> {
+  external Material();
+
   /// Property [type]
   ///
   /// type: string
@@ -11901,7 +12099,7 @@ extension type Material<TEventMap extends MaterialEventMap>.$(_i1.JSObject _)
   /// Property [defines]
   ///
   /// defines?: Record | undefined
-  external _i2.Record<_i1.JSString, _i1.JSAny>? defines;
+  external _i1.JSObject? defines;
 
   /// Property [isMaterial]
   ///
@@ -11963,10 +12161,7 @@ extension type Material<TEventMap extends MaterialEventMap>.$(_i1.JSObject _)
   /// Parameters:
   /// - json: MaterialJSON
   /// - textures: Record
-  external _i1.JSAny fromJSON(
-    MaterialJSON json,
-    _i2.Record<_i1.JSString, Texture<_i1.JSAny, TextureEventMap>> textures,
-  );
+  external _i1.JSAny fromJSON(MaterialJSON json, _i1.JSObject textures);
 
   /// Method [clone]
   external _i1.JSAny clone();
@@ -13416,6 +13611,8 @@ extension type PointsMaterial.$(_i1.JSObject _) implements _i1.JSObject, Materia
 
 /// Class [RawShaderMaterial]
 extension type RawShaderMaterial.$(_i1.JSObject _) implements _i1.JSObject, ShaderMaterial {
+  external RawShaderMaterial();
+
   /// Property [isRawShaderMaterial]
   ///
   /// readonly isRawShaderMaterial: boolean
@@ -13427,7 +13624,7 @@ extension type ShaderMaterialProperties.$(_i1.JSObject _) implements MaterialPro
   /// Property [defines]
   ///
   /// defines: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> defines;
+  external _i1.JSObject defines;
 
   /// Property [uniforms]
   ///
@@ -13525,12 +13722,12 @@ extension type ShaderMaterialJSON.$(_i1.JSObject _) implements MaterialJSON {
   /// Property [uniforms]
   ///
   /// uniforms: Record
-  external _i2.Record<_i1.JSString, ShaderMaterialUniformJSON> uniforms;
+  external _i1.JSObject uniforms;
 
   /// Property [defines]
   ///
   /// defines?: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny>? defines;
+  external _i1.JSObject? defines;
 
   /// Property [vertexShader]
   ///
@@ -13555,7 +13752,7 @@ extension type ShaderMaterialJSON.$(_i1.JSObject _) implements MaterialJSON {
   /// Property [extensions]
   ///
   /// extensions?: Record
-  external _i2.Record<_i1.JSString, _i1.JSBoolean>? extensions;
+  external _i1.JSObject? extensions;
 }
 
 /// Class [ShaderMaterial]
@@ -13569,7 +13766,7 @@ extension type ShaderMaterial.$(_i1.JSObject _) implements _i1.JSObject, Materia
   /// Property [defines]
   ///
   /// defines: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> defines;
+  external _i1.JSObject defines;
 
   /// Property [isShaderMaterial]
   ///
@@ -13593,10 +13790,7 @@ extension type ShaderMaterial.$(_i1.JSObject _) implements _i1.JSObject, Materia
   /// Parameters:
   /// - json: MaterialJSON
   /// - textures: Record
-  external _i1.JSAny fromJSON(
-    MaterialJSON json,
-    _i2.Record<_i1.JSString, Texture<_i1.JSAny, TextureEventMap>> textures,
-  );
+  external _i1.JSAny fromJSON(MaterialJSON json, _i1.JSObject textures);
 }
 
 /// Interface [ShaderMaterialProperties$Uniforms$TypeLiteral]
@@ -14334,7 +14528,7 @@ extension type ColorManagement.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// spaces$1: Record
   @_i1.JS('spaces')
-  external _i2.Record<_i1.JSString, ColorSpaceDefinition> spaces$1;
+  external _i1.JSObject spaces$1;
 
   /// Property [convert$1]
   ///
@@ -14406,7 +14600,7 @@ extension type ColorManagement.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// spaces$2: Record
   @_i1.JS('spaces')
-  external _i2.Record<_i1.JSString, ColorSpaceDefinition> spaces$2;
+  external _i1.JSObject spaces$2;
 
   /// Property [convert$2]
   ///
@@ -15558,26 +15752,6 @@ extension type _colorKeywords$TypeLiteral.$(_i1.JSObject _) implements _i1.JSObj
   external _i1.JSNumber yellowgreen;
 }
 
-/// Variable [ColorManagement$]
-///
-/// ColorManagement$: ColorManagement
-@_i1.JS('ColorManagement')
-external ColorManagement ColorManagement$;
-
-/// Method [SRGBToLinear]
-///
-/// Parameters:
-/// - c: number
-@_i1.JS('SRGBToLinear')
-external _i1.JSNumber SRGBToLinear(_i1.JSNumber c);
-
-/// Method [LinearToSRGB]
-///
-/// Parameters:
-/// - c: number
-@_i1.JS('LinearToSRGB')
-external _i1.JSNumber LinearToSRGB(_i1.JSNumber c);
-
 /// Interface [ColorSpaceDefinition$WorkingColorSpaceConfig$TypeLiteral$2]
 extension type ColorSpaceDefinition$WorkingColorSpaceConfig$TypeLiteral$2.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [unpackColorSpace]
@@ -15857,6 +16031,8 @@ extension type Frustum.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Class [FrustumArray]
 extension type FrustumArray.$(_i1.JSObject _) implements _i1.JSObject {
+  external FrustumArray();
+
   /// Property [coordinateSystem]
   ///
   /// coordinateSystem: CoordinateSystem
@@ -15992,6 +16168,8 @@ extension type Interpolant$TypeLiteral.$(_i1.JSObject _) implements _i1.JSObject
 
 /// Class [BezierInterpolant]
 extension type BezierInterpolant.$(_i1.JSObject _) implements _i1.JSObject, Interpolant<Interpolant$TypeLiteral> {
+  external BezierInterpolant();
+
   /// Method [interpolate_]
   ///
   /// Parameters:
@@ -16017,6 +16195,8 @@ extension type CubicInterpolantSettings.$(_i1.JSObject _) implements _i1.JSObjec
 
 /// Class [CubicInterpolant]
 extension type CubicInterpolant.$(_i1.JSObject _) implements _i1.JSObject, Interpolant<CubicInterpolantSettings> {
+  external CubicInterpolant();
+
   /// Method [intervalChanged_]
   ///
   /// Parameters:
@@ -16037,6 +16217,8 @@ extension type CubicInterpolant.$(_i1.JSObject _) implements _i1.JSObject, Inter
 
 /// Class [DiscreteInterpolant]
 extension type DiscreteInterpolant.$(_i1.JSObject _) implements _i1.JSObject, Interpolant<Interpolant$TypeLiteral> {
+  external DiscreteInterpolant();
+
   /// Method [interpolate_]
   ///
   /// Parameters:
@@ -16046,6 +16228,8 @@ extension type DiscreteInterpolant.$(_i1.JSObject _) implements _i1.JSObject, In
 
 /// Class [LinearInterpolant]
 extension type LinearInterpolant.$(_i1.JSObject _) implements _i1.JSObject, Interpolant<Interpolant$TypeLiteral> {
+  external LinearInterpolant();
+
   /// Method [interpolate_]
   ///
   /// Parameters:
@@ -16059,6 +16243,8 @@ extension type LinearInterpolant.$(_i1.JSObject _) implements _i1.JSObject, Inte
 /// Class [QuaternionLinearInterpolant]
 extension type QuaternionLinearInterpolant.$(_i1.JSObject _)
     implements _i1.JSObject, Interpolant<Interpolant$TypeLiteral> {
+  external QuaternionLinearInterpolant();
+
   /// Method [interpolate_]
   ///
   /// Parameters:
@@ -16364,6 +16550,7 @@ external _i1.JSNumber normalize(_i1.JSNumber value, _i1.JSAny array);
 /// Variable [MathUtils]
 ///
 /// MathUtils: MathUtils$TypeLiteral
+@_i1.JS('MathUtils')
 external MathUtils$TypeLiteral MathUtils;
 
 /// Interface [MathUtils$TypeLiteral]
@@ -20548,7 +20735,7 @@ extension type Skeleton.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - json: SkeletonJSON
   /// - bones: Record
-  external void fromJSON(SkeletonJSON json, _i2.Record<_i1.JSString, Bone<Object3DEventMap>> bones);
+  external void fromJSON(SkeletonJSON json, _i1.JSObject bones);
 }
 
 /// Interface [SkeletonJSON$Metadata$TypeLiteral]
@@ -20845,6 +21032,8 @@ typedef XRControllerEventType = _i1.JSAny;
 
 /// Class [XRJointSpace]
 extension type XRJointSpace.$(_i1.JSObject _) implements _i1.JSObject, Group<Object3DEventMap> {
+  external XRJointSpace();
+
   /// Property [jointRadius]
   ///
   /// readonly jointRadius: number | undefined
@@ -20854,7 +21043,7 @@ extension type XRJointSpace.$(_i1.JSObject _) implements _i1.JSObject, Group<Obj
 /// Typedef [XRHandJoints]
 ///
 /// Record
-typedef XRHandJoints = _i2.Record<_i3.XRHandJoint, _i3.XRJointSpace>;
+typedef XRHandJoints = _i1.JSObject;
 
 /// Interface [XRHandInputState]
 extension type XRHandInputState.$(_i1.JSObject _) implements _i1.JSObject {
@@ -20924,6 +21113,8 @@ extension type WebXRSpaceEventMap.$(_i1.JSObject _) implements Object3DEventMap 
 
 /// Class [XRHandSpace]
 extension type XRHandSpace.$(_i1.JSObject _) implements _i1.JSObject, Group<WebXRSpaceEventMap> {
+  external XRHandSpace();
+
   /// Property [joints]
   ///
   /// readonly joints: Partial
@@ -20937,6 +21128,8 @@ extension type XRHandSpace.$(_i1.JSObject _) implements _i1.JSObject, Group<WebX
 
 /// Class [XRTargetRaySpace]
 extension type XRTargetRaySpace.$(_i1.JSObject _) implements _i1.JSObject, Group<WebXRSpaceEventMap> {
+  external XRTargetRaySpace();
+
   /// Property [hasLinearVelocity]
   ///
   /// hasLinearVelocity: boolean
@@ -20968,6 +21161,8 @@ extension type WebXRGripSpaceEventMap.$(_i1.JSObject _) implements WebXRSpaceEve
 
 /// Class [XRGripSpace]
 extension type XRGripSpace.$(_i1.JSObject _) implements _i1.JSObject, Group<WebXRGripSpaceEventMap> {
+  external XRGripSpace();
+
   /// Property [hasLinearVelocity]
   ///
   /// hasLinearVelocity: boolean
@@ -21323,6 +21518,8 @@ extension type SceneJSON.$(_i1.JSObject _) implements Object3DJSON {
 /// Class [Scene]
 extension type Scene<TEventMap extends Object3DEventMap>.$(_i1.JSObject _)
     implements _i1.JSObject, Object3D<TEventMap> {
+  external Scene();
+
   /// Property [background]
   ///
   /// background: (Color | Texture) | null
@@ -22130,6 +22327,8 @@ typedef SerializedImage = _i1.JSAny;
 
 /// Class [SourceJSON]
 extension type SourceJSON.$(_i1.JSObject _) implements _i1.JSObject {
+  external SourceJSON();
+
   /// Property [uuid]
   ///
   /// uuid: string
@@ -22406,7 +22605,7 @@ extension type TextureJSON.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [userData]
   ///
   /// userData?: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny>? userData;
+  external _i1.JSObject? userData;
 }
 
 /// Interface [OffscreenCanvas]
@@ -22611,7 +22810,7 @@ extension type Texture<TImage extends _i1.JSAny, TEventMap extends TextureEventM
   /// Property [userData]
   ///
   /// userData: Record
-  external _i2.Record<_i1.JSString, _i1.JSAny> userData;
+  external _i1.JSObject userData;
 
   /// Property [updateRanges]
   ///
@@ -22936,6 +23135,7 @@ external _i1.JSPromise probeAsync(_i3.WebGLRenderingContext gl, _i3.WebGLSync sy
 /// Variable [ReversedDepthFuncs]
 ///
 /// ReversedDepthFuncs:
+@_i1.JS('ReversedDepthFuncs')
 external _i1.JSObject ReversedDepthFuncs;
 
 /// Interface [PMREMGeneratorOptions]
@@ -23008,6 +23208,7 @@ extension type PMREMGenerator.$(_i1.JSObject _) implements _i1.JSObject {
 /// Variable [ShaderChunk]
 ///
 /// ShaderChunk: ShaderChunk$TypeLiteral
+@_i1.JS('ShaderChunk')
 external ShaderChunk$TypeLiteral ShaderChunk;
 
 /// Interface [ShaderChunk$TypeLiteral]
@@ -23734,6 +23935,7 @@ extension type ShaderLibShader.$(_i1.JSObject _) implements _i1.JSObject {
 /// Variable [ShaderLib]
 ///
 /// ShaderLib: ShaderLib$TypeLiteral
+@_i1.JS('ShaderLib')
 external ShaderLib$TypeLiteral ShaderLib;
 
 /// Interface [ShaderLibShader$Uniforms$TypeLiteral]
@@ -23839,6 +24041,7 @@ extension type IUniform<TValue extends _i1.JSAny>.$(_i1.JSObject _) implements _
 /// Variable [UniformsLib]
 ///
 /// UniformsLib: UniformsLib$TypeLiteral
+@_i1.JS('UniformsLib')
 external UniformsLib$TypeLiteral UniformsLib;
 
 /// Interface [UniformsLib$Common$TypeLiteral]
@@ -24833,6 +25036,7 @@ external _i1.JSArray<UniformsGroup<UniformsGroupEventMap>> cloneUniformsGroups(
 /// Variable [UniformsUtils]
 ///
 /// UniformsUtils: UniformsUtils$TypeLiteral
+@_i1.JS('UniformsUtils')
 external UniformsUtils$TypeLiteral UniformsUtils;
 
 /// Interface [CloneUniforms$TypeLiteral]
@@ -24942,7 +25146,7 @@ extension type WebGLBindingStates.$(_i1.JSObject _) implements _i1.JSObject {
   external void setup(
     Object3D<Object3DEventMap> object,
     Material<MaterialEventMap> material,
-    _i3.WebGLProgram program,
+    WebGLProgram program,
     BufferGeometry<NormalBufferAttributes, BufferGeometryEventMap> geometry,
     BufferAttribute<BufferAttributeEventMap> index,
   );
@@ -25197,6 +25401,8 @@ extension type WebGLClipping$Uniform$TypeLiteral.$(_i1.JSObject _) implements _i
 
 /// Class [WebGLEnvironments]
 extension type WebGLEnvironments.$(_i1.JSObject _) implements _i1.JSObject {
+  external WebGLEnvironments();
+
   /// Method [get]
   ///
   /// Parameters:
@@ -25323,7 +25529,7 @@ extension type WebGLInfo.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [programs]
   ///
   /// programs: WebGLProgram[] | null
-  external _i1.JSArray<_i3.WebGLProgram> programs;
+  external _i1.JSArray<WebGLProgram> programs;
 
   /// Property [render]
   ///
@@ -26358,7 +26564,7 @@ extension type WebGLPrograms.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [programs]
   ///
   /// programs: WebGLProgram[]
-  external _i1.JSArray<_i3.WebGLProgram> programs;
+  external _i1.JSArray<WebGLProgram> programs;
 
   /// Method [getParameters]
   ///
@@ -26395,13 +26601,13 @@ extension type WebGLPrograms.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - parameters: WebGLProgramParametersWithUniforms
   /// - cacheKey: string
-  external _i3.WebGLProgram acquireProgram(WebGLProgramParametersWithUniforms parameters, _i1.JSString cacheKey);
+  external WebGLProgram acquireProgram(WebGLProgramParametersWithUniforms parameters, _i1.JSString cacheKey);
 
   /// Method [releaseProgram]
   ///
   /// Parameters:
   /// - program: WebGLProgram
-  external void releaseProgram(_i3.WebGLProgram program);
+  external void releaseProgram(WebGLProgram program);
 }
 
 /// Interface [WebGLProgramParameters$Defines$TypeLiteral]
@@ -26644,6 +26850,8 @@ extension type WebGLShadowMap.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Class [WebGLColorBuffer]
 extension type WebGLColorBuffer.$(_i1.JSObject _) implements _i1.JSObject {
+  external WebGLColorBuffer();
+
   /// Method [setMask]
   ///
   /// Parameters:
@@ -26820,7 +27028,7 @@ extension type WebGLState.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Parameters:
   /// - program: WebGLProgram
-  external _i1.JSBoolean useProgram(_i3.WebGLProgram program);
+  external _i1.JSBoolean useProgram(WebGLProgram program);
 
   /// Method [setBlending]
   ///
@@ -27727,7 +27935,7 @@ extension type WebGLUniforms.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - gl: WebGLRenderingContext
   /// - program: WebGLProgram
-  external WebGLUniforms(_i3.WebGLRenderingContext gl, _i3.WebGLProgram program);
+  external WebGLUniforms(_i3.WebGLRenderingContext gl, WebGLProgram program);
 }
 
 /// Class [WebGLUtils]

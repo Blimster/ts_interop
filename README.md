@@ -26,6 +26,7 @@ Compile the minimal browser example and serve `example/web` over HTTP:
 
 ```sh
 dart pub get
+dart run bin/tsigen.dart -c example/config/config.yaml -i example/config/@types_three@0.185.1.json -o example/web
 dart compile js example/web/main.dart -o example/web/main.dart.js
 cd example/web
 python3 -m http.server
