@@ -26,4 +26,3 @@ If the cli tool does not provide enough features, you can use it as a dependency
 - Create types for unions and anonymous functions like https://gist.github.com/nikeokoronkwo/dd83becbb6cee4d98f63556ba108e14b
 - Replace `meta.json` by translating Dart code into input AST
 - Integrate [ts-ast-export](https://github.com/Blimster/ts-ast-export) into cli tool.
-

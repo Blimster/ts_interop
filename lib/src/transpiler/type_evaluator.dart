@@ -51,6 +51,8 @@ class TypeEvaluator {
       'Float32Array': ('JSFloat32Array', 0),
       'Float64Array': ('JSFloat64Array', 0),
       'Uint8ClampedArray': ('JSUint8ClampedArray', 0),
+      'Record': ('JSObject', 0),
+      'Extract': ('JSString', 0),
     };
 
     if (node case TsTypeReference(nodeName: final name?)) {

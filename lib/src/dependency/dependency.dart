@@ -18,9 +18,16 @@ const _nodeKinds = {
 class PackageDependency implements Dependency {
   final TsPackage package;
   final Map<String, TsNode> _nodeCache = {};
+  final Set<String> _relativeImportNames = {};
 
   PackageDependency(this.package) {
     _cacheNodes(package);
+  }
+
+  bool containsType(String? typeName) => _nodeCache.containsKey(typeName);
+
+  bool containsUnresolvedImport(String? typeName) {
+    return _relativeImportNames.contains(typeName) && !containsType(typeName);
   }
 
   @override
@@ -50,6 +57,25 @@ class PackageDependency implements Dependency {
   }
 
   void _cacheNodes(TsNode node) {
+    if (node case TsImportDeclaration(
+      importClause: NullableNode(
+        value: TsImportClause(
+          name: NullableNode(value: final defaultImport),
+          namedBindings: NullableNode(value: final bindings),
+        ),
+      ),
+      moduleSpecifier: SingleNode(value: TsStringLiteral(text: final moduleSpecifier)),
+    )) {
+      if (moduleSpecifier.replaceAll('"', '').replaceAll("'", '').startsWith('.')) {
+        if (defaultImport?.nodeName case final name?) {
+          _relativeImportNames.add(name);
+        }
+        if (bindings is TsNamedImports) {
+          _relativeImportNames.addAll(bindings.elements.value.map((element) => element.nodeName).nonNulls);
+        }
+      }
+    }
+
     final nodeName = node.nodeName;
     if (_nodeKinds.contains(node.kind) && nodeName != null) {
       _nodeCache.putIfAbsent(nodeName, () => node);
@@ -121,6 +147,10 @@ Future<StaticDependency> pubDevDependency(String package, String library, {Strin
 }
 
 Future<StaticDependency> dartDependency(String package, String library, {String? dartVersion}) async {
+  if (package == 'js_interop' && library == 'js_interop') {
+    return StaticDependency('dart:js_interop', _jsInteropTypes);
+  }
+
   return _remoteDependency(
     () => Uri.https('api.dart.dev', ['stable', dartVersion ?? 'latest', 'dart-$library', 'index.html'].join('/')),
     () => 'dart:$package',
@@ -129,6 +159,35 @@ Future<StaticDependency> dartDependency(String package, String library, {String?
     dartVersion,
   );
 }
+
+const _jsInteropTypes = {
+  'JS',
+  'JSAny',
+  'JSArray',
+  'JSArrayBuffer',
+  'JSBigInt',
+  'JSBoolean',
+  'JSBoxedDartObject',
+  'JSDataView',
+  'JSDate',
+  'JSExportedDartFunction',
+  'JSFloat32Array',
+  'JSFloat64Array',
+  'JSFunction',
+  'JSInt8Array',
+  'JSInt16Array',
+  'JSInt32Array',
+  'JSNumber',
+  'JSObject',
+  'JSPromise',
+  'JSString',
+  'JSSymbol',
+  'JSTypedArray',
+  'JSUint8Array',
+  'JSUint8ClampedArray',
+  'JSUint16Array',
+  'JSUint32Array',
+};
 
 class Dependencies {
   final Dependencies? parent;
@@ -142,12 +201,25 @@ class Dependencies {
 
   String? libraryUrlForType(String? typeName, TsNode currentNode) {
     for (final dependency in dependencies) {
+      if (dependency case PackageDependency() when dependency.containsType(typeName)) {
+        return dependency.libraryUrlForType(typeName, currentNode);
+      }
       final url = dependency.libraryUrlForType(typeName, currentNode);
       if (url != null) {
         return url;
       }
     }
     return parent?.libraryUrlForType(typeName, currentNode);
+  }
+
+  bool containsPackageType(String? typeName) {
+    return dependencies.whereType<PackageDependency>().any((dependency) => dependency.containsType(typeName));
+  }
+
+  bool isUnresolvedPackageImport(String? typeName) {
+    return dependencies.whereType<PackageDependency>().any(
+      (dependency) => dependency.containsUnresolvedImport(typeName),
+    );
   }
 
   bool containsType(String typeName, TsNode currentNode) {

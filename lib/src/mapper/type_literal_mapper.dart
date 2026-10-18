@@ -62,12 +62,45 @@ TsNode typeLiteralTypeAliasMapper(TsNode node, TypeEvaluator typeEvaluator) {
 
     final baseName = '${_deriveTypeName(node, () => 'InlineType${++counter}')}\$TypeLiteral';
     final name = _ensureUniqueTypeName(baseName, usedTypeNames!);
+    final referencedNames = node.root
+        .searchDown<TsTypeReference>()
+        .where((typeReference) => typeReference.parent != null && _isDescendantOf(typeReference, node))
+        .map((typeReference) => typeReference.nodeName)
+        .whereType<String>()
+        .toSet();
+    final enclosingTypeParameters = <String, TsTypeParameter>{};
+    final ancestors = <TsNode>[];
+    var ancestor = node.parent;
+    while (ancestor != null) {
+      ancestors.add(ancestor);
+      ancestor = ancestor.parent;
+    }
+    for (final ancestor in ancestors.reversed) {
+      if (ancestor is WithTypeParameters) {
+        for (final typeParameter in ancestor.typeParameters.value.whereType<TsTypeParameter>()) {
+          final parameterName = typeParameter.nodeName;
+          if (parameterName != null && referencedNames.contains(parameterName)) {
+            enclosingTypeParameters[parameterName] = typeParameter;
+          }
+        }
+      }
+    }
+    final typeParameters = enclosingTypeParameters.values.map((typeParameter) => typeParameter.copy()).toList();
+    final typeArguments = enclosingTypeParameters.keys
+        .map(
+          (parameterName) => TsTypeReference(
+            [],
+            SingleNode(TsIdentifier([], parameterName), affectsParent: true),
+            ListNode([]),
+          ),
+        )
+        .toList();
 
     final interface = TsInterfaceDeclaration(
       [],
       ListNode([]),
       SingleNode(TsIdentifier([], name), affectsParent: true),
-      ListNode([]),
+      ListNode(typeParameters),
       ListNode([]),
       node.members.copy(),
     );
@@ -80,7 +113,7 @@ TsNode typeLiteralTypeAliasMapper(TsNode node, TypeEvaluator typeEvaluator) {
     return TsTypeReference(
       [],
       SingleNode(TsIdentifier([], name), affectsParent: true),
-      ListNode([]),
+      ListNode(typeArguments),
     );
   }
 
@@ -111,6 +144,15 @@ TsNode typeLiteralTypeAliasMapper(TsNode node, TypeEvaluator typeEvaluator) {
 }
 
 // ─── Private helpers ─────────────────────────────────────────────────────────
+
+bool _isDescendantOf(TsNode node, TsNode ancestor) {
+  var current = node.parent;
+  while (current != null) {
+    if (current == ancestor) return true;
+    current = current.parent;
+  }
+  return false;
+}
 
 /// Derives a context-aware Dart identifier for the extension type that will
 /// replace [node] by walking the parent chain.  Falls back to [fallback] when
