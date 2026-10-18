@@ -10,6 +10,7 @@ abstract class Dependency {
 const _nodeKinds = {
   TsNodeKind.classDeclaration,
   TsNodeKind.enumDeclaration,
+  TsNodeKind.functionDeclaration,
   TsNodeKind.interfaceDeclaration,
   TsNodeKind.typeAliasDeclaration,
 };
