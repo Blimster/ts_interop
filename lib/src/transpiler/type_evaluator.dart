@@ -57,6 +57,11 @@ class TypeEvaluator {
 
     if (node case TsTypeReference(nodeName: final name?)) {
       if (standardTypes.keys.contains(name)) {
+        // Extract<T, U> is always assignable to U
+        if (name == 'Extract' && node.typeArguments.value.length == 2) {
+          return evaluateType(node.typeArguments.value.last);
+        }
+
         final (newType, typeParamCount) = standardTypes[name]!;
 
         // Create type arguments based on typeParamCount

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 import '../../ts_interop.dart';
 import '../dependency/dependency.dart';
@@ -51,8 +52,8 @@ class Generator {
       stdout.write('Writing library ${lib.name}... ');
       final emitter = DartEmitter.scoped(useNullSafetySyntax: true);
       final DartFormatter formatter = DartFormatter(
-        languageVersion: DartFormatter.latestLanguageVersion,
-        pageWidth: 120,
+        languageVersion: config.dartConfig?.version?.version ?? DartFormatter.latestLanguageVersion,
+        pageWidth: config.dartConfig?.pageWidth,
       );
 
       final libName = lib.name!.toLowerCase().split('/').last;
@@ -69,5 +70,12 @@ class Generator {
     stdout.write('Creating meta.json... ');
     File(config.inputFile).copySync('${config.outputDir}/meta.json');
     stdout.writeln('Done');
+  }
+}
+
+extension on String? {
+  Version? get version {
+    final ver = this;
+    return ver == null ? null : Version.parse(ver);
   }
 }
