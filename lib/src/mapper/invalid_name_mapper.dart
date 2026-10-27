@@ -201,7 +201,10 @@ TsNode invalidNameMapper(TsNode node, TypeEvaluator typeEvaluator) {
       return node;
     case TsFunctionDeclaration(name: SingleNode(value: TsNode nameNode)):
       final originalName = nameNode.nodeName;
-      final sanitizedName = _sanitizeMethodName(originalName);
+      var sanitizedName = _sanitizeMethodName(originalName);
+      if (sanitizedName == originalName && originalName != null && node.type.value?.nodeName == originalName) {
+        sanitizedName = '$originalName\$';
+      }
       if (originalName != null) {
         final overloadIds = <int>[];
         if (node.parent case final parent?) {

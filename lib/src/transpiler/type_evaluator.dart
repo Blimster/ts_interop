@@ -51,10 +51,17 @@ class TypeEvaluator {
       'Float32Array': ('JSFloat32Array', 0),
       'Float64Array': ('JSFloat64Array', 0),
       'Uint8ClampedArray': ('JSUint8ClampedArray', 0),
+      'Record': ('JSObject', 0),
+      'Extract': ('JSObject', 0),
     };
 
     if (node case TsTypeReference(nodeName: final name?)) {
       if (standardTypes.keys.contains(name)) {
+        // Extract<T, U> is always assignable to U
+        if (name == 'Extract' && node.typeArguments.value.length == 2) {
+          return evaluateType(node.typeArguments.value.last);
+        }
+
         final (newType, typeParamCount) = standardTypes[name]!;
 
         // Create type arguments based on typeParamCount

@@ -20,17 +20,21 @@ import '../mapper/type_literal_mapper.dart';
 import '../model/ts_node.dart';
 import '../sanitizer/sanitizer.dart';
 
+class GeneratorDartConfig(final String? version, final int? pageWidth);
+
 class GeneratorConfig {
   final String inputFile;
   final String outputDir;
   final Dependencies dependencies;
   final List<SanitizerPhase> sanitizerPhases;
+  final GeneratorDartConfig? dartConfig;
 
   GeneratorConfig({
     required this.inputFile,
     required this.outputDir,
     required this.dependencies,
     required this.sanitizerPhases,
+    this.dartConfig,
   });
 }
 
@@ -43,6 +47,7 @@ Future<GeneratorConfig> fromYaml(String configFile, String inputFile, String out
     outputDir: outputDir,
     dependencies: Dependencies(dependencies: await _parseDependencies(yaml)),
     sanitizerPhases: _parseSanitizerPhases(yaml),
+    dartConfig: _parseDartConfig(yaml),
   );
 }
 
@@ -120,6 +125,15 @@ List<SanitizerPhase> _parseSanitizerPhases(dynamic yaml) {
   }
 
   return result;
+}
+
+GeneratorDartConfig? _parseDartConfig(dynamic yaml) {
+  if (yaml case {'dart': final dart}) {
+    final version = dart['version'] as String?;
+    final pageWidth = dart['pageWidth'] as int?;
+    return GeneratorDartConfig(version, pageWidth);
+  }
+  return null;
 }
 
 final _predefinedPhases = {
