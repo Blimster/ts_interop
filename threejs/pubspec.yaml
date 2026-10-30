@@ -1,0 +1,17 @@
+name: threejs
+description: Dart bindings for the three.js library.
+version: 0.1.0
+repository: https://github.com/blimster/ts_interop
+
+environment:
+  sdk: ^3.3.0
+
+dependencies:
+  es2023: ^0.2.0
+  web: ^1.1.1
+  webxr: ^0.2.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  build_runner: ^2.4.0
+  build_web_compilers: ^4.4.12

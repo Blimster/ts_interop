@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>threejs Dart bindings - rotating cube</title>
+    <style>
+      html, body { margin: 0; overflow: hidden; background: #111; }
+    </style>
+    <script type="importmap">
+      { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js" } }
+    </script>
+    <script type="module">
+      import * as THREE from 'three';
+      Object.assign(window, THREE);
+      window.THREE = THREE;
+    </script>
+    <script defer src="main.dart.js"></script>
+  </head>
+  <body></body>
+</html>
