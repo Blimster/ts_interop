@@ -260,14 +260,16 @@ class Transpiler {
       ]);
       builder.external = true;
       builder.requiredParameters.addAll(
-        _transpileNodes<Reference>(
-          constructorDeclaration.parameters.value,
-        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(constructorDeclaration.parameters.value)
+            .where((p) => !p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
       builder.optionalParameters.addAll(
-        _transpileNodes<Reference>(
-          constructorDeclaration.parameters.value,
-        ).cast<DartParameter>().where((p) => p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(constructorDeclaration.parameters.value)
+            .where((p) => p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
     }).toDartNode(constructorDeclaration);
   }
@@ -295,14 +297,16 @@ class Transpiler {
         builder.name = '\$${overloadIds.indexOf(constructSignature.id) + 1}';
       }
       builder.requiredParameters.addAll(
-        _transpileNodes<Reference>(
-          constructSignature.parameters.value,
-        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(constructSignature.parameters.value)
+            .where((p) => !p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
       builder.optionalParameters.addAll(
-        _transpileNodes<Reference>(
-          constructSignature.parameters.value,
-        ).cast<DartParameter>().where((p) => p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(constructSignature.parameters.value)
+            .where((p) => p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
     }).toDartNode(constructSignature);
   }
@@ -412,14 +416,16 @@ class Transpiler {
       builder.name = functionDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(functionDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(
-        _transpileNodes<Reference>(
-          functionDeclaration.parameters.value,
-        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(functionDeclaration.parameters.value)
+            .where((p) => !p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
       builder.optionalParameters.addAll(
-        _transpileNodes<Reference>(
-          functionDeclaration.parameters.value,
-        ).cast<DartParameter>().where((p) => p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(functionDeclaration.parameters.value)
+            .where((p) => p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
     }).toDartNode(functionDeclaration);
   }
@@ -600,14 +606,16 @@ class Transpiler {
       builder.name = methodDeclaration.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(methodDeclaration.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(
-        _transpileNodes<Reference>(
-          methodDeclaration.parameters.value,
-        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(methodDeclaration.parameters.value)
+            .where((p) => !p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
       builder.optionalParameters.addAll(
-        _transpileNodes<Reference>(
-          methodDeclaration.parameters.value,
-        ).cast<DartParameter>().where((p) => p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(methodDeclaration.parameters.value)
+            .where((p) => p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
     }).toDartNode(methodDeclaration);
   }
@@ -646,14 +654,16 @@ class Transpiler {
       builder.name = methodSignature.name.value.nodeName;
       builder.types.addAll(_transpileNodes<Reference>(methodSignature.typeParameters.value).toSpecs(dependencies));
       builder.requiredParameters.addAll(
-        _transpileNodes<Reference>(
-          methodSignature.parameters.value,
-        ).cast<DartParameter>().where((p) => !p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(methodSignature.parameters.value)
+            .where((p) => !p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
       builder.optionalParameters.addAll(
-        _transpileNodes<Reference>(
-          methodSignature.parameters.value,
-        ).cast<DartParameter>().where((p) => p.isNullable).map((node) => node.parameter).toList(),
+        _transpileParameters(methodSignature.parameters.value)
+            .where((p) => p.isNullable)
+            .map((node) => node.parameter)
+            .toList(),
       );
     }).toDartNode(methodSignature);
   }
@@ -738,11 +748,38 @@ class Transpiler {
     return _transpileNode<Reference>(parenthesizedType.type.value);
   }
 
-  DartNode<Reference> _transpileParameter(TsParameter parameter) {
+  DartParameter _transpileParameter(TsParameter parameter) {
+    final isOptional = parameter.questionToken.value != null;
     return Parameter((builder) {
       builder.name = _sanitizeParamName(parameter.name.value.nodeName);
       builder.type = _transpileNode<Reference>(typeEvaluator.evaluateType(parameter.type.value)).toSpec(dependencies);
-    }).toDartNode(parameter, parameter.questionToken.value != null);
+    }).toDartNode(parameter, isOptional);
+  }
+
+  List<DartParameter> _transpileParameters(List<TsNode> parameters) {
+    return parameters.expand<DartParameter>((node) {
+      if (node is TsParameter && node.dotDotDotToken) {
+        final restType = switch (node.type.value) {
+          TsArrayType(elementType: final elementType) => elementType.value,
+          final type => type,
+        };
+        final type = _transpileNode<TypeReference>(
+          typeEvaluator.evaluateType(restType),
+        ).toSpec(dependencies)?.copyWith(isNullable: true);
+        final name = _sanitizeParamName(node.name.value.nodeName);
+        return List.generate(
+          5,
+          (index) => Parameter((builder) {
+            builder.name = index == 0 ? name : '$name${index + 1}';
+            builder.named = false;
+            builder.type = type;
+          }).toDartNode(node, true),
+        );
+      }
+
+      final parameter = node as TsParameter;
+      return [_transpileParameter(parameter)];
+    }).toList();
   }
 
   DartNode<Spec> _transpilePropertyDeclaration(TsPropertyDeclaration propertyDeclaration) {

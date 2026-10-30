@@ -1,5 +1,4 @@
 import 'dart:js_interop';
-import 'dart:js_interop_unsafe';
 
 import 'package:threejs/three.dart' as three;
 import 'package:web/web.dart' as web;
@@ -21,13 +20,11 @@ void main() {
   renderer.setSize(width.toJS, height.toJS);
   web.document.body!.appendChild(renderer.domElement);
 
-  final cube = three.Mesh<three.BoxGeometry, three.MeshNormalMaterial,
-      three.Object3DEventMap>(
+  final cube = three.Mesh(
     three.BoxGeometry(1.toJS, 1.toJS, 1.toJS),
     three.MeshNormalMaterial(),
   );
-  //scene.add([cube].toJS);
-  scene.callMethod('add'.toJS, cube);
+  scene.add(cube);
 
   web.window.addEventListener(
     'resize',

@@ -641,7 +641,13 @@ extension type AnimationObjectGroup.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Parameters:
   /// - ...args: Object3D[]
-  external AnimationObjectGroup(_i1.JSArray<Object3D<Object3DEventMap>> args);
+  external AnimationObjectGroup([
+    Object3D<Object3DEventMap>? args,
+    Object3D<Object3DEventMap>? args2,
+    Object3D<Object3DEventMap>? args3,
+    Object3D<Object3DEventMap>? args4,
+    Object3D<Object3DEventMap>? args5,
+  ]);
 
   /// Property [isAnimationObjectGroup]
   ///
@@ -657,19 +663,37 @@ extension type AnimationObjectGroup.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Parameters:
   /// - ...args: Object3D[]
-  external void add(_i1.JSArray<Object3D<Object3DEventMap>> args);
+  external void add([
+    Object3D<Object3DEventMap>? args,
+    Object3D<Object3DEventMap>? args2,
+    Object3D<Object3DEventMap>? args3,
+    Object3D<Object3DEventMap>? args4,
+    Object3D<Object3DEventMap>? args5,
+  ]);
 
   /// Method [remove]
   ///
   /// Parameters:
   /// - ...args: Object3D[]
-  external void remove(_i1.JSArray<Object3D<Object3DEventMap>> args);
+  external void remove([
+    Object3D<Object3DEventMap>? args,
+    Object3D<Object3DEventMap>? args2,
+    Object3D<Object3DEventMap>? args3,
+    Object3D<Object3DEventMap>? args4,
+    Object3D<Object3DEventMap>? args5,
+  ]);
 
   /// Method [uncache]
   ///
   /// Parameters:
   /// - ...args: Object3D[]
-  external void uncache(_i1.JSArray<Object3D<Object3DEventMap>> args);
+  external void uncache([
+    Object3D<Object3DEventMap>? args,
+    Object3D<Object3DEventMap>? args2,
+    Object3D<Object3DEventMap>? args3,
+    Object3D<Object3DEventMap>? args4,
+    Object3D<Object3DEventMap>? args5,
+  ]);
 }
 
 /// Method [convertArray]
@@ -6439,13 +6463,25 @@ extension type Object3D<TEventMap extends Object3DEventMap>.$(_i1.JSObject _)
   ///
   /// Parameters:
   /// - ...object: Object3D[]
-  external _i1.JSAny add(_i1.JSArray<Object3D<Object3DEventMap>> object);
+  external _i1.JSAny add([
+    Object3D<Object3DEventMap>? object,
+    Object3D<Object3DEventMap>? object2,
+    Object3D<Object3DEventMap>? object3,
+    Object3D<Object3DEventMap>? object4,
+    Object3D<Object3DEventMap>? object5,
+  ]);
 
   /// Method [remove]
   ///
   /// Parameters:
   /// - ...object: Object3D[]
-  external _i1.JSAny remove(_i1.JSArray<Object3D<Object3DEventMap>> object);
+  external _i1.JSAny remove([
+    Object3D<Object3DEventMap>? object,
+    Object3D<Object3DEventMap>? object2,
+    Object3D<Object3DEventMap>? object3,
+    Object3D<Object3DEventMap>? object4,
+    Object3D<Object3DEventMap>? object5,
+  ]);
 
   /// Method [removeFromParent]
   external _i1.JSAny removeFromParent();
@@ -15985,7 +16021,13 @@ extension type Color.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Parameters:
   /// - ...args: [] | [, , ]
-  external _i1.JSAny set(_i1.JSArray<_i1.JSAny> args);
+  external _i1.JSAny set([
+    _i1.JSArray<_i1.JSAny>? args,
+    _i1.JSArray<_i1.JSAny>? args2,
+    _i1.JSArray<_i1.JSAny>? args3,
+    _i1.JSArray<_i1.JSAny>? args4,
+    _i1.JSArray<_i1.JSAny>? args5,
+  ]);
 
   /// Method [setFromVector3]
   ///
@@ -25249,28 +25291,52 @@ external _i1.JSFunction getConsoleFunction();
 /// Parameters:
 /// - ...params: []
 @_i1.JS('log')
-external void log(_i1.JSArray<_i1.JSAny> params);
+external void log([
+  _i1.JSAny? params,
+  _i1.JSAny? params2,
+  _i1.JSAny? params3,
+  _i1.JSAny? params4,
+  _i1.JSAny? params5,
+]);
 
 /// Method [warn]
 ///
 /// Parameters:
 /// - ...params: []
 @_i1.JS('warn')
-external void warn(_i1.JSArray<_i1.JSAny> params);
+external void warn([
+  _i1.JSAny? params,
+  _i1.JSAny? params2,
+  _i1.JSAny? params3,
+  _i1.JSAny? params4,
+  _i1.JSAny? params5,
+]);
 
 /// Method [error]
 ///
 /// Parameters:
 /// - ...params: []
 @_i1.JS('error')
-external void error(_i1.JSArray<_i1.JSAny> params);
+external void error([
+  _i1.JSAny? params,
+  _i1.JSAny? params2,
+  _i1.JSAny? params3,
+  _i1.JSAny? params4,
+  _i1.JSAny? params5,
+]);
 
 /// Method [warnOnce]
 ///
 /// Parameters:
 /// - ...params: []
 @_i1.JS('warnOnce')
-external void warnOnce(_i1.JSArray<_i1.JSAny> params);
+external void warnOnce([
+  _i1.JSAny? params,
+  _i1.JSAny? params2,
+  _i1.JSAny? params3,
+  _i1.JSAny? params4,
+  _i1.JSAny? params5,
+]);
 
 /// Method [probeAsync]
 ///
