@@ -1,8 +1,11 @@
 // ignore_for_file: avoid_shadowing_type_parameters, camel_case_types
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
+// ignore_for_file: unused_element
 
-library reflect; // ignore_for_file: no_leading_underscores_for_library_prefixes
+library reflect;
 
 import 'dart:js_interop' as _i1;
 import 'es2023.dart' as _i2;
@@ -19,7 +22,8 @@ import 'es2023.dart' as _i2;
 /// - thisArgument: T
 /// - argumentsList: Readonly
 @_i1.JS('apply')
-external R apply$1<T extends _i1.JSAny, A extends _i1.JSAny, R extends _i1.JSAny>(
+external R
+    apply$1<T extends _i1.JSAny, A extends _i1.JSAny, R extends _i1.JSAny>(
   _i1.JSFunction target,
   T thisArgument,
   _i2.Readonly<A> argumentsList,
@@ -32,7 +36,11 @@ external R apply$1<T extends _i1.JSAny, A extends _i1.JSAny, R extends _i1.JSAny
 /// - thisArgument: any
 /// - argumentsList: ArrayLike
 @_i1.JS('apply')
-external _i1.JSAny apply$2(_i2.Function$ target, _i1.JSAny thisArgument, _i2.ArrayLike<_i1.JSAny> argumentsList);
+external _i1.JSAny apply$2(
+  _i2.Function$ target,
+  _i1.JSAny thisArgument,
+  _i2.ArrayLike<_i1.JSAny> argumentsList,
+);
 
 /// Method [construct$1]
 ///
@@ -58,7 +66,11 @@ external R construct$1<A extends _i1.JSAny, R extends _i1.JSAny>(
 /// - argumentsList: ArrayLike
 /// - newTarget: Function$
 @_i1.JS('construct')
-external _i1.JSAny construct$2(_i2.Function$ target, _i2.ArrayLike<_i1.JSAny> argumentsList, [_i2.Function$ newTarget]);
+external _i1.JSAny construct$2(
+  _i2.Function$ target,
+  _i2.ArrayLike<_i1.JSAny> argumentsList, [
+  _i2.Function$ newTarget,
+]);
 
 /// Method [defineProperty]
 ///
@@ -67,7 +79,11 @@ external _i1.JSAny construct$2(_i2.Function$ target, _i2.ArrayLike<_i1.JSAny> ar
 /// - propertyKey: PropertyKey
 /// - attributes:
 @_i1.JS('defineProperty')
-external _i1.JSBoolean defineProperty(_i1.JSObject target, _i2.PropertyKey propertyKey, _i1.JSAny attributes);
+external _i1.JSBoolean defineProperty(
+  _i1.JSObject target,
+  _i2.PropertyKey propertyKey,
+  _i1.JSAny attributes,
+);
 
 /// Method [deleteProperty]
 ///
@@ -75,7 +91,10 @@ external _i1.JSBoolean defineProperty(_i1.JSObject target, _i2.PropertyKey prope
 /// - target: object
 /// - propertyKey: PropertyKey
 @_i1.JS('deleteProperty')
-external _i1.JSBoolean deleteProperty(_i1.JSObject target, _i2.PropertyKey propertyKey);
+external _i1.JSBoolean deleteProperty(
+  _i1.JSObject target,
+  _i2.PropertyKey propertyKey,
+);
 
 /// Method [get]
 ///
@@ -104,7 +123,11 @@ external _i1.JSAny get<T extends _i1.JSObject, P extends _i2.PropertyKey>(
 /// - target: T
 /// - propertyKey: P
 @_i1.JS('getOwnPropertyDescriptor')
-external _i1.JSAny getOwnPropertyDescriptor<T extends _i1.JSObject, P extends _i2.PropertyKey>(T target, P propertyKey);
+external _i1.JSAny
+    getOwnPropertyDescriptor<T extends _i1.JSObject, P extends _i2.PropertyKey>(
+  T target,
+  P propertyKey,
+);
 
 /// Method [getPrototypeOf]
 ///
@@ -119,7 +142,10 @@ external _i1.JSAny getPrototypeOf(_i1.JSObject target);
 /// - target: object
 /// - propertyKey: PropertyKey
 @_i1.JS('has')
-external _i1.JSBoolean has(_i1.JSObject target, _i2.PropertyKey propertyKey);
+external _i1.JSBoolean has(
+  _i1.JSObject target,
+  _i2.PropertyKey propertyKey,
+);
 
 /// Method [isExtensible]
 ///
@@ -169,7 +195,12 @@ external _i1.JSBoolean set$1<T extends _i1.JSObject, P extends _i2.PropertyKey>(
 /// - value: any
 /// - receiver: any
 @_i1.JS('set')
-external _i1.JSBoolean set$2(_i1.JSObject target, _i2.PropertyKey propertyKey, _i1.JSAny value, [_i1.JSAny receiver]);
+external _i1.JSBoolean set$2(
+  _i1.JSObject target,
+  _i2.PropertyKey propertyKey,
+  _i1.JSAny value, [
+  _i1.JSAny receiver,
+]);
 
 /// Method [setPrototypeOf]
 ///
@@ -177,4 +208,7 @@ external _i1.JSBoolean set$2(_i1.JSObject target, _i2.PropertyKey propertyKey, _
 /// - target: object
 /// - proto: object | null
 @_i1.JS('setPrototypeOf')
-external _i1.JSBoolean setPrototypeOf(_i1.JSObject target, _i1.JSObject? proto);
+external _i1.JSBoolean setPrototypeOf(
+  _i1.JSObject target,
+  _i1.JSObject? proto,
+);

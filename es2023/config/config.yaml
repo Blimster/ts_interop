@@ -10,3 +10,5 @@ sanitizer:
     - missingTypeArgsAndParams
     - constructorInterfaces
     - invalidIdentifiers
+dart:
+  version: 3.3.0

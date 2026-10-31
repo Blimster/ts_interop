@@ -1,8 +1,11 @@
 // ignore_for_file: avoid_shadowing_type_parameters, camel_case_types
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unintended_html_in_doc_comment, unnecessary_library_name
+// ignore_for_file: unused_element
 
-library es2023; // ignore_for_file: no_leading_underscores_for_library_prefixes
+library es2023;
 
 import 'dart:js_interop' as _i1;
 import 'es2023_intl.dart' as _i2;
@@ -28,7 +31,8 @@ typedef DecoratorMetadataObject = _i1.JSAny;
 typedef DecoratorMetadata = _i1.JSAny;
 
 /// Interface [ClassDecoratorContext]
-extension type ClassDecoratorContext<Class extends _i1.JSFunction>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ClassDecoratorContext<Class extends _i1.JSFunction>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Property [kind]
   ///
   /// readonly kind: "class"
@@ -55,8 +59,8 @@ extension type ClassDecoratorContext<Class extends _i1.JSFunction>.$(_i1.JSObjec
 }
 
 /// Interface [ClassMethodDecoratorContext]
-extension type ClassMethodDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSFunction>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassMethodDecoratorContext<This extends _i1.JSAny,
+    Value extends _i1.JSFunction>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [kind]
   ///
   /// readonly kind: "method"
@@ -79,7 +83,7 @@ extension type ClassMethodDecoratorContext<This extends _i1.JSAny, Value extends
 
   /// Property [access]
   ///
-  /// readonly access:
+  /// readonly access: { has; get }
   external _i1.JSObject get access;
 
   /// Method [addInitializer]
@@ -98,8 +102,8 @@ extension type ClassMethodDecoratorContext<This extends _i1.JSAny, Value extends
 }
 
 /// Interface [ClassGetterDecoratorContext]
-extension type ClassGetterDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassGetterDecoratorContext<This extends _i1.JSAny,
+    Value extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [kind]
   ///
   /// readonly kind: "getter"
@@ -122,7 +126,7 @@ extension type ClassGetterDecoratorContext<This extends _i1.JSAny, Value extends
 
   /// Property [access]
   ///
-  /// readonly access:
+  /// readonly access: { has; get }
   external _i1.JSObject get access;
 
   /// Method [addInitializer]
@@ -141,8 +145,8 @@ extension type ClassGetterDecoratorContext<This extends _i1.JSAny, Value extends
 }
 
 /// Interface [ClassSetterDecoratorContext]
-extension type ClassSetterDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassSetterDecoratorContext<This extends _i1.JSAny,
+    Value extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [kind]
   ///
   /// readonly kind: "setter"
@@ -165,7 +169,7 @@ extension type ClassSetterDecoratorContext<This extends _i1.JSAny, Value extends
 
   /// Property [access]
   ///
-  /// readonly access:
+  /// readonly access: { has; set }
   external _i1.JSObject get access;
 
   /// Method [addInitializer]
@@ -184,8 +188,8 @@ extension type ClassSetterDecoratorContext<This extends _i1.JSAny, Value extends
 }
 
 /// Interface [ClassAccessorDecoratorContext]
-extension type ClassAccessorDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassAccessorDecoratorContext<This extends _i1.JSAny,
+    Value extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [kind]
   ///
   /// readonly kind: "accessor"
@@ -208,7 +212,7 @@ extension type ClassAccessorDecoratorContext<This extends _i1.JSAny, Value exten
 
   /// Property [access]
   ///
-  /// readonly access:
+  /// readonly access: { has; get; set }
   external _i1.JSObject get access;
 
   /// Method [addInitializer]
@@ -227,8 +231,8 @@ extension type ClassAccessorDecoratorContext<This extends _i1.JSAny, Value exten
 }
 
 /// Interface [ClassAccessorDecoratorTarget]
-extension type ClassAccessorDecoratorTarget<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassAccessorDecoratorTarget<This extends _i1.JSAny,
+    Value extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [get]
   ///
   /// Parameters:
@@ -246,12 +250,15 @@ extension type ClassAccessorDecoratorTarget<This extends _i1.JSAny, Value extend
   ///
   /// Returns:
   /// - void
-  external void set(This this$, Value value);
+  external void set(
+    This this$,
+    Value value,
+  );
 }
 
 /// Interface [ClassAccessorDecoratorResult]
-extension type ClassAccessorDecoratorResult<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassAccessorDecoratorResult<This extends _i1.JSAny,
+    Value extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [get]
   ///
   /// Parameters:
@@ -269,7 +276,10 @@ extension type ClassAccessorDecoratorResult<This extends _i1.JSAny, Value extend
   ///
   /// Returns:
   /// - void
-  external void set(This this$, Value value);
+  external void set(
+    This this$,
+    Value value,
+  );
 
   /// Method [init]
   ///
@@ -279,12 +289,15 @@ extension type ClassAccessorDecoratorResult<This extends _i1.JSAny, Value extend
   ///
   /// Returns:
   /// - Value
-  external Value init(This this$, Value value);
+  external Value init(
+    This this$,
+    Value value,
+  );
 }
 
 /// Interface [ClassFieldDecoratorContext]
-extension type ClassFieldDecoratorContext<This extends _i1.JSAny, Value extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type ClassFieldDecoratorContext<This extends _i1.JSAny,
+    Value extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [kind]
   ///
   /// readonly kind: "field"
@@ -307,7 +320,7 @@ extension type ClassFieldDecoratorContext<This extends _i1.JSAny, Value extends 
 
   /// Property [access]
   ///
-  /// readonly access:
+  /// readonly access: { has; get; set }
   external _i1.JSObject get access;
 
   /// Method [addInitializer]
@@ -346,7 +359,8 @@ typedef MethodDecorator<T extends _i1.JSAny> = _i1.JSFunction;
 typedef ParameterDecorator = _i1.JSFunction;
 
 /// Interface [Map]
-extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   external Map.$1();
 
@@ -396,7 +410,10 @@ extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) i
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [get]
   ///
@@ -424,7 +441,10 @@ extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) i
   ///
   /// Returns:
   /// -
-  external _i1.JSAny set(K key, V value);
+  external _i1.JSAny set(
+    K key,
+    V value,
+  );
 
   /// Property [size]
   ///
@@ -456,7 +476,8 @@ extension type Map<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) i
 }
 
 /// Interface [ReadonlyMap]
-extension type ReadonlyMap<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ReadonlyMap<K extends _i1.JSAny, V extends _i1.JSAny>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Method [forEach]
   ///
   /// Parameters:
@@ -465,7 +486,10 @@ extension type ReadonlyMap<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObj
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [get]
   ///
@@ -510,7 +534,8 @@ extension type ReadonlyMap<K extends _i1.JSAny, V extends _i1.JSAny>.$(_i1.JSObj
 }
 
 /// Interface [WeakMap]
-extension type WeakMap<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WeakMap<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -566,7 +591,10 @@ extension type WeakMap<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// -
-  external _i1.JSAny set(K key, V value);
+  external _i1.JSAny set(
+    K key,
+    V value,
+  );
 
   /// Property [null$]
   ///
@@ -575,7 +603,8 @@ extension type WeakMap<K extends WeakKey, V extends _i1.JSAny>.$(_i1.JSObject _)
 }
 
 /// Interface [Set]
-extension type Set<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Set<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -626,7 +655,10 @@ extension type Set<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObjec
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [has]
   ///
@@ -667,7 +699,8 @@ extension type Set<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObjec
 }
 
 /// Interface [ReadonlySet]
-extension type ReadonlySet<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ReadonlySet<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Method [forEach]
   ///
   /// Parameters:
@@ -676,7 +709,10 @@ extension type ReadonlySet<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [has]
   ///
@@ -712,7 +748,8 @@ extension type ReadonlySet<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
 }
 
 /// Interface [WeakSet]
-extension type WeakSet<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WeakSet<T extends WeakKey>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -765,7 +802,8 @@ extension type WeakSet<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObj
 }
 
 /// Interface [Array]
-extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
@@ -788,7 +826,13 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Parameters:
   /// - ...items: T[]
-  external Array.$3(_i1.JSArray<T> items);
+  external Array.$3([
+    T? items,
+    T? items2,
+    T? items3,
+    T? items4,
+    T? items5,
+  ]);
 
   /// Property [length]
   ///
@@ -807,7 +851,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - S | undefined
   @_i1.JS('find')
-  external S? find$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? find$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find$2]
   ///
@@ -818,7 +865,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T | undefined
   @_i1.JS('find')
-  external T? find$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external T? find$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -828,7 +878,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -839,7 +892,11 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(T value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    T value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [copyWithin]
   ///
@@ -850,7 +907,11 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$1]
   ///
@@ -861,7 +922,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i1.JSAny options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i1.JSAny options,
+  ]);
 
   /// Method [entries]
   ///
@@ -894,7 +958,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(T searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    T searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [flatMap]
   ///
@@ -908,7 +975,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - U[]
-  external _i1.JSArray<U> flatMap<U extends _i1.JSAny, This extends _i1.JSAny>(_i1.JSFunction callback, [This thisArg]);
+  external _i1.JSArray<U> flatMap<U extends _i1.JSAny, This extends _i1.JSAny>(
+    _i1.JSFunction callback, [
+    This thisArg,
+  ]);
 
   /// Method [flat]
   ///
@@ -922,7 +992,11 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - FlatArray[]
-  external _i1.JSArray<FlatArray<A, D>> flat<A extends _i1.JSAny, D extends _i1.JSNumber>(A this$, [D depth]);
+  external _i1.JSArray<FlatArray<A, D>>
+      flat<A extends _i1.JSAny, D extends _i1.JSNumber>(
+    A this$, [
+    D depth,
+  ]);
 
   /// Method [at]
   ///
@@ -945,7 +1019,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -956,7 +1033,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T | undefined
   @_i1.JS('findLast')
-  external T? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external T? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -966,7 +1046,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -993,7 +1076,15 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('toSpliced')
-  external _i1.JSArray<T> toSpliced$1(_i1.JSNumber start, _i1.JSNumber deleteCount, _i1.JSArray<T> items);
+  external _i1.JSArray<T> toSpliced$1(
+    _i1.JSNumber start,
+    _i1.JSNumber deleteCount, [
+    T? items,
+    T? items2,
+    T? items3,
+    T? items4,
+    T? items5,
+  ]);
 
   /// Method [toSpliced$2]
   ///
@@ -1004,7 +1095,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('toSpliced')
-  external _i1.JSArray<T> toSpliced$2(_i1.JSNumber start, [_i1.JSNumber deleteCount]);
+  external _i1.JSArray<T> toSpliced$2(
+    _i1.JSNumber start, [
+    _i1.JSNumber deleteCount,
+  ]);
 
   /// Method [with$]
   ///
@@ -1015,7 +1109,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('with')
-  external _i1.JSArray<T> with$(_i1.JSNumber index, T value);
+  external _i1.JSArray<T> with$(
+    _i1.JSNumber index,
+    T value,
+  );
 
   /// Method [toString$]
   ///
@@ -1044,7 +1141,13 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber push(_i1.JSArray<T> items);
+  external _i1.JSNumber push([
+    T? items,
+    T? items2,
+    T? items3,
+    T? items4,
+    T? items5,
+  ]);
 
   /// Method [concat$1]
   ///
@@ -1054,7 +1157,13 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('concat')
-  external _i1.JSArray<T> concat$1(_i1.JSArray<ConcatArray<T>> items);
+  external _i1.JSArray<T> concat$1([
+    ConcatArray<T>? items,
+    ConcatArray<T>? items2,
+    ConcatArray<T>? items3,
+    ConcatArray<T>? items4,
+    ConcatArray<T>? items5,
+  ]);
 
   /// Method [concat$2]
   ///
@@ -1064,7 +1173,13 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('concat')
-  external _i1.JSArray<T> concat$2(_i1.JSArray<_i1.JSAny> items);
+  external _i1.JSArray<T> concat$2([
+    _i1.JSAny? items,
+    _i1.JSAny? items2,
+    _i1.JSAny? items3,
+    _i1.JSAny? items4,
+    _i1.JSAny? items5,
+  ]);
 
   /// Method [join]
   ///
@@ -1095,7 +1210,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - T[]
-  external _i1.JSArray<T> slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSArray<T> slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [sort]
   ///
@@ -1115,7 +1233,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('splice')
-  external _i1.JSArray<T> splice$1(_i1.JSNumber start, [_i1.JSNumber deleteCount]);
+  external _i1.JSArray<T> splice$1(
+    _i1.JSNumber start, [
+    _i1.JSNumber deleteCount,
+  ]);
 
   /// Method [splice$2]
   ///
@@ -1127,7 +1248,15 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('splice')
-  external _i1.JSArray<T> splice$2(_i1.JSNumber start, _i1.JSNumber deleteCount, _i1.JSArray<T> items);
+  external _i1.JSArray<T> splice$2(
+    _i1.JSNumber start,
+    _i1.JSNumber deleteCount, [
+    T? items,
+    T? items2,
+    T? items3,
+    T? items4,
+    T? items5,
+  ]);
 
   /// Method [unshift]
   ///
@@ -1136,7 +1265,13 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber unshift(_i1.JSArray<T> items);
+  external _i1.JSNumber unshift([
+    T? items,
+    T? items2,
+    T? items3,
+    T? items4,
+    T? items5,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -1146,7 +1281,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(T searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    T searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [lastIndexOf]
   ///
@@ -1156,7 +1294,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(T searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    T searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [every$1]
   ///
@@ -1170,7 +1311,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// -
   @_i1.JS('every')
-  external _i1.JSBoolean every$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [every$2]
   ///
@@ -1181,7 +1325,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - boolean
   @_i1.JS('every')
-  external _i1.JSBoolean every$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [some]
   ///
@@ -1191,7 +1338,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -1201,7 +1351,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [map]
   ///
@@ -1214,7 +1367,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   ///
   /// Returns:
   /// - U[]
-  external _i1.JSArray<U> map<U extends _i1.JSAny>(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSArray<U> map<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [filter$1]
   ///
@@ -1228,7 +1384,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - S[]
   @_i1.JS('filter')
-  external _i1.JSArray<S> filter$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSArray<S> filter$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [filter$2]
   ///
@@ -1239,7 +1398,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T[]
   @_i1.JS('filter')
-  external _i1.JSArray<T> filter$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSArray<T> filter$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -1260,7 +1422,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T
   @_i1.JS('reduce')
-  external T reduce$2(_i1.JSFunction callbackfn, T initialValue);
+  external T reduce$2(
+    _i1.JSFunction callbackfn,
+    T initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -1274,7 +1439,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -1295,7 +1463,10 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - T
   @_i1.JS('reduceRight')
-  external T reduceRight$2(_i1.JSFunction callbackfn, T initialValue);
+  external T reduceRight$2(
+    _i1.JSFunction callbackfn,
+    T initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -1309,8 +1480,14 @@ extension type Array<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObj
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
-  external void operator []=(_i1.JSNumber n, T value);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
+  external void operator []=(
+    _i1.JSNumber n,
+    T value,
+  );
   external T operator [](_i1.JSNumber n);
 }
 
@@ -1321,7 +1498,13 @@ extension type Function$.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Parameters:
   /// - ...args: string[]
-  external Function$(_i1.JSArray<_i1.JSString> args);
+  external Function$([
+    _i1.JSString? args,
+    _i1.JSString? args2,
+    _i1.JSString? args3,
+    _i1.JSString? args4,
+    _i1.JSString? args5,
+  ]);
 
   /// Property [prototype]
   ///
@@ -1352,7 +1535,11 @@ extension type Function$.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - any
-  external _i1.JSAny apply(Function$ this$, _i1.JSAny thisArg, [_i1.JSAny argArray]);
+  external _i1.JSAny apply(
+    Function$ this$,
+    _i1.JSAny thisArg, [
+    _i1.JSAny argArray,
+  ]);
 
   /// Method [call]
   ///
@@ -1363,7 +1550,15 @@ extension type Function$.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - any
-  external _i1.JSAny call(Function$ this$, _i1.JSAny thisArg, _i1.JSArray<_i1.JSAny> argArray);
+  external _i1.JSAny call(
+    Function$ this$,
+    _i1.JSAny thisArg, [
+    _i1.JSAny? argArray,
+    _i1.JSAny? argArray2,
+    _i1.JSAny? argArray3,
+    _i1.JSAny? argArray4,
+    _i1.JSAny? argArray5,
+  ]);
 
   /// Method [bind]
   ///
@@ -1374,7 +1569,15 @@ extension type Function$.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - any
-  external _i1.JSAny bind(Function$ this$, _i1.JSAny thisArg, _i1.JSArray<_i1.JSAny> argArray);
+  external _i1.JSAny bind(
+    Function$ this$,
+    _i1.JSAny thisArg, [
+    _i1.JSAny? argArray,
+    _i1.JSAny? argArray2,
+    _i1.JSAny? argArray3,
+    _i1.JSAny? argArray4,
+    _i1.JSAny? argArray5,
+  ]);
 
   /// Method [toString$]
   ///
@@ -1408,7 +1611,10 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber imul(_i1.JSNumber x, _i1.JSNumber y);
+  external _i1.JSNumber imul(
+    _i1.JSNumber x,
+    _i1.JSNumber y,
+  );
 
   /// Method [sign]
   ///
@@ -1516,7 +1722,13 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber hypot(_i1.JSArray<_i1.JSNumber> values);
+  external _i1.JSNumber hypot([
+    _i1.JSNumber? values,
+    _i1.JSNumber? values2,
+    _i1.JSNumber? values3,
+    _i1.JSNumber? values4,
+    _i1.JSNumber? values5,
+  ]);
 
   /// Method [trunc]
   ///
@@ -1640,7 +1852,10 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber atan2(_i1.JSNumber y, _i1.JSNumber x);
+  external _i1.JSNumber atan2(
+    _i1.JSNumber y,
+    _i1.JSNumber x,
+  );
 
   /// Method [ceil]
   ///
@@ -1694,7 +1909,13 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber max(_i1.JSArray<_i1.JSNumber> values);
+  external _i1.JSNumber max([
+    _i1.JSNumber? values,
+    _i1.JSNumber? values2,
+    _i1.JSNumber? values3,
+    _i1.JSNumber? values4,
+    _i1.JSNumber? values5,
+  ]);
 
   /// Method [min]
   ///
@@ -1703,7 +1924,13 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber min(_i1.JSArray<_i1.JSNumber> values);
+  external _i1.JSNumber min([
+    _i1.JSNumber? values,
+    _i1.JSNumber? values2,
+    _i1.JSNumber? values3,
+    _i1.JSNumber? values4,
+    _i1.JSNumber? values5,
+  ]);
 
   /// Method [pow]
   ///
@@ -1713,7 +1940,10 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber pow(_i1.JSNumber x, _i1.JSNumber y);
+  external _i1.JSNumber pow(
+    _i1.JSNumber x,
+    _i1.JSNumber y,
+  );
 
   /// Method [random]
   ///
@@ -1759,7 +1989,8 @@ extension type Math.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [ReadonlyArray]
-extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Method [find$1]
   ///
   /// Type Parameters:
@@ -1772,7 +2003,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - S | undefined
   @_i1.JS('find')
-  external S? find$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? find$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find$2]
   ///
@@ -1783,7 +2017,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T | undefined
   @_i1.JS('find')
-  external T? find$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external T? find$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -1793,7 +2030,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toLocaleString$1]
   ///
@@ -1804,7 +2044,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i1.JSAny options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i1.JSAny options,
+  ]);
 
   /// Method [entries]
   ///
@@ -1837,7 +2080,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(T searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    T searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [flatMap]
   ///
@@ -1851,7 +2097,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - U[]
-  external _i1.JSArray<U> flatMap<U extends _i1.JSAny, This extends _i1.JSAny>(_i1.JSFunction callback, [This thisArg]);
+  external _i1.JSArray<U> flatMap<U extends _i1.JSAny, This extends _i1.JSAny>(
+    _i1.JSFunction callback, [
+    This thisArg,
+  ]);
 
   /// Method [flat]
   ///
@@ -1865,7 +2114,11 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - FlatArray[]
-  external _i1.JSArray<FlatArray<A, D>> flat<A extends _i1.JSAny, D extends _i1.JSNumber>(A this$, [D depth]);
+  external _i1.JSArray<FlatArray<A, D>>
+      flat<A extends _i1.JSAny, D extends _i1.JSNumber>(
+    A this$, [
+    D depth,
+  ]);
 
   /// Method [at]
   ///
@@ -1888,7 +2141,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -1899,7 +2155,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T | undefined
   @_i1.JS('findLast')
-  external T? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external T? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -1909,7 +2168,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -1936,7 +2198,15 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T[]
   @_i1.JS('toSpliced')
-  external _i1.JSArray<T> toSpliced$1(_i1.JSNumber start, _i1.JSNumber deleteCount, _i1.JSArray<T> items);
+  external _i1.JSArray<T> toSpliced$1(
+    _i1.JSNumber start,
+    _i1.JSNumber deleteCount, [
+    T? items,
+    T? items2,
+    T? items3,
+    T? items4,
+    T? items5,
+  ]);
 
   /// Method [toSpliced$2]
   ///
@@ -1947,7 +2217,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T[]
   @_i1.JS('toSpliced')
-  external _i1.JSArray<T> toSpliced$2(_i1.JSNumber start, [_i1.JSNumber deleteCount]);
+  external _i1.JSArray<T> toSpliced$2(
+    _i1.JSNumber start, [
+    _i1.JSNumber deleteCount,
+  ]);
 
   /// Method [with$]
   ///
@@ -1958,7 +2231,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T[]
   @_i1.JS('with')
-  external _i1.JSArray<T> with$(_i1.JSNumber index, T value);
+  external _i1.JSArray<T> with$(
+    _i1.JSNumber index,
+    T value,
+  );
 
   /// Property [length]
   ///
@@ -1987,7 +2263,13 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T[]
   @_i1.JS('concat')
-  external _i1.JSArray<T> concat$1(_i1.JSArray<ConcatArray<T>> items);
+  external _i1.JSArray<T> concat$1([
+    ConcatArray<T>? items,
+    ConcatArray<T>? items2,
+    ConcatArray<T>? items3,
+    ConcatArray<T>? items4,
+    ConcatArray<T>? items5,
+  ]);
 
   /// Method [concat$2]
   ///
@@ -1997,7 +2279,13 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T[]
   @_i1.JS('concat')
-  external _i1.JSArray<T> concat$2(_i1.JSArray<_i1.JSAny> items);
+  external _i1.JSArray<T> concat$2([
+    _i1.JSAny? items,
+    _i1.JSAny? items2,
+    _i1.JSAny? items3,
+    _i1.JSAny? items4,
+    _i1.JSAny? items5,
+  ]);
 
   /// Method [join]
   ///
@@ -2016,7 +2304,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - T[]
-  external _i1.JSArray<T> slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSArray<T> slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -2026,7 +2317,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(T searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    T searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [lastIndexOf]
   ///
@@ -2036,7 +2330,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(T searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    T searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [every$1]
   ///
@@ -2050,7 +2347,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// -
   @_i1.JS('every')
-  external _i1.JSBoolean every$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [every$2]
   ///
@@ -2061,7 +2361,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - boolean
   @_i1.JS('every')
-  external _i1.JSBoolean every$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [some]
   ///
@@ -2071,7 +2374,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -2081,7 +2387,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [map]
   ///
@@ -2094,7 +2403,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   ///
   /// Returns:
   /// - U[]
-  external _i1.JSArray<U> map<U extends _i1.JSAny>(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSArray<U> map<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [filter$1]
   ///
@@ -2108,7 +2420,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - S[]
   @_i1.JS('filter')
-  external _i1.JSArray<S> filter$1<S extends T>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSArray<S> filter$1<S extends T>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [filter$2]
   ///
@@ -2119,7 +2434,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T[]
   @_i1.JS('filter')
-  external _i1.JSArray<T> filter$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSArray<T> filter$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -2140,7 +2458,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T
   @_i1.JS('reduce')
-  external T reduce$2(_i1.JSFunction callbackfn, T initialValue);
+  external T reduce$2(
+    _i1.JSFunction callbackfn,
+    T initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -2154,7 +2475,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -2175,7 +2499,10 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - T
   @_i1.JS('reduceRight')
-  external T reduceRight$2(_i1.JSFunction callbackfn, T initialValue);
+  external T reduceRight$2(
+    _i1.JSFunction callbackfn,
+    T initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -2189,8 +2516,14 @@ extension type ReadonlyArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
-  external void operator []=(_i1.JSNumber n, T value);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
+  external void operator []=(
+    _i1.JSNumber n,
+    T value,
+  );
   external T operator [](_i1.JSNumber n);
 }
 
@@ -2201,7 +2534,10 @@ extension type RegExp.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - pattern: RegExp | string
   /// - flags: string
-  external RegExp.$1(_i1.JSAny pattern, [_i1.JSString flags]);
+  external RegExp.$1(
+    _i1.JSAny pattern, [
+    _i1.JSString flags,
+  ]);
 
   /// Constructor
   ///
@@ -2214,7 +2550,10 @@ extension type RegExp.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - pattern: string
   /// - flags: string
-  external RegExp.$3(_i1.JSString pattern, [_i1.JSString flags]);
+  external RegExp.$3(
+    _i1.JSString pattern, [
+    _i1.JSString flags,
+  ]);
 
   /// Property [lastIndex]
   ///
@@ -2292,7 +2631,10 @@ extension type RegExp.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// -
-  external _i1.JSAny compile(_i1.JSString pattern, [_i1.JSString flags]);
+  external _i1.JSAny compile(
+    _i1.JSString pattern, [
+    _i1.JSString flags,
+  ]);
 }
 
 /// Interface [String]
@@ -2320,7 +2662,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSString searchString, [_i1.JSNumber position]);
+  external _i1.JSBoolean includes(
+    _i1.JSString searchString, [
+    _i1.JSNumber position,
+  ]);
 
   /// Method [endsWith]
   ///
@@ -2330,7 +2675,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean endsWith(_i1.JSString searchString, [_i1.JSNumber endPosition]);
+  external _i1.JSBoolean endsWith(
+    _i1.JSString searchString, [
+    _i1.JSNumber endPosition,
+  ]);
 
   /// Method [normalize$1]
   ///
@@ -2369,7 +2717,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean startsWith(_i1.JSString searchString, [_i1.JSNumber position]);
+  external _i1.JSBoolean startsWith(
+    _i1.JSString searchString, [
+    _i1.JSNumber position,
+  ]);
 
   /// Method [anchor]
   ///
@@ -2475,7 +2826,7 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [match$1]
   ///
   /// Parameters:
-  /// - matcher:
+  /// - matcher: {  }
   ///
   /// Returns:
   /// - RegExpMatchArray | null
@@ -2485,29 +2836,35 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [replace$1]
   ///
   /// Parameters:
-  /// - searchValue:
+  /// - searchValue: {  }
   /// - replaceValue: string
   ///
   /// Returns:
   /// - string
   @_i1.JS('replace')
-  external _i1.JSString replace$1(_i1.JSObject searchValue, _i1.JSString replaceValue);
+  external _i1.JSString replace$1(
+    _i1.JSObject searchValue,
+    _i1.JSString replaceValue,
+  );
 
   /// Method [replace$2]
   ///
   /// Parameters:
-  /// - searchValue:
+  /// - searchValue: {  }
   /// - replacer: (substring: string, ...args: any[]) => string
   ///
   /// Returns:
   /// - string
   @_i1.JS('replace')
-  external _i1.JSString replace$2(_i1.JSObject searchValue, _i1.JSFunction replacer);
+  external _i1.JSString replace$2(
+    _i1.JSObject searchValue,
+    _i1.JSFunction replacer,
+  );
 
   /// Method [search$1]
   ///
   /// Parameters:
-  /// - searcher:
+  /// - searcher: {  }
   ///
   /// Returns:
   /// - number
@@ -2517,13 +2874,16 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [split$1]
   ///
   /// Parameters:
-  /// - splitter:
+  /// - splitter: {  }
   /// - limit: number
   ///
   /// Returns:
   /// - string[]
   @_i1.JS('split')
-  external _i1.JSArray<_i1.JSString> split$1(_i1.JSObject splitter, [_i1.JSNumber limit]);
+  external _i1.JSArray<_i1.JSString> split$1(
+    _i1.JSObject splitter, [
+    _i1.JSNumber limit,
+  ]);
 
   /// Method [padStart]
   ///
@@ -2533,7 +2893,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString padStart(_i1.JSNumber maxLength, [_i1.JSString fillString]);
+  external _i1.JSString padStart(
+    _i1.JSNumber maxLength, [
+    _i1.JSString fillString,
+  ]);
 
   /// Method [padEnd]
   ///
@@ -2543,7 +2906,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString padEnd(_i1.JSNumber maxLength, [_i1.JSString fillString]);
+  external _i1.JSString padEnd(
+    _i1.JSNumber maxLength, [
+    _i1.JSString fillString,
+  ]);
 
   /// Method [trimEnd]
   ///
@@ -2608,7 +2974,11 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('localeCompare')
-  external _i1.JSNumber localeCompare$1(_i1.JSString that, [_i2.LocalesArgument locales, _i2.CollatorOptions options]);
+  external _i1.JSNumber localeCompare$1(
+    _i1.JSString that, [
+    _i2.LocalesArgument locales,
+    _i2.CollatorOptions options,
+  ]);
 
   /// Method [replaceAll$1]
   ///
@@ -2619,7 +2989,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('replaceAll')
-  external _i1.JSString replaceAll$1(_i1.JSAny searchValue, _i1.JSString replaceValue);
+  external _i1.JSString replaceAll$1(
+    _i1.JSAny searchValue,
+    _i1.JSString replaceValue,
+  );
 
   /// Method [replaceAll$2]
   ///
@@ -2630,7 +3003,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('replaceAll')
-  external _i1.JSString replaceAll$2(_i1.JSAny searchValue, _i1.JSFunction replacer);
+  external _i1.JSString replaceAll$2(
+    _i1.JSAny searchValue,
+    _i1.JSFunction replacer,
+  );
 
   /// Method [at]
   ///
@@ -2673,7 +3049,13 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString concat(_i1.JSArray<_i1.JSString> strings);
+  external _i1.JSString concat([
+    _i1.JSString? strings,
+    _i1.JSString? strings2,
+    _i1.JSString? strings3,
+    _i1.JSString? strings4,
+    _i1.JSString? strings5,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -2683,7 +3065,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSString searchString, [_i1.JSNumber position]);
+  external _i1.JSNumber indexOf(
+    _i1.JSString searchString, [
+    _i1.JSNumber position,
+  ]);
 
   /// Method [lastIndexOf]
   ///
@@ -2693,7 +3078,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSString searchString, [_i1.JSNumber position]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSString searchString, [
+    _i1.JSNumber position,
+  ]);
 
   /// Method [localeCompare$2]
   ///
@@ -2724,7 +3112,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('replace')
-  external _i1.JSString replace$3(_i1.JSAny searchValue, _i1.JSString replaceValue);
+  external _i1.JSString replace$3(
+    _i1.JSAny searchValue,
+    _i1.JSString replaceValue,
+  );
 
   /// Method [replace$4]
   ///
@@ -2735,7 +3126,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('replace')
-  external _i1.JSString replace$4(_i1.JSAny searchValue, _i1.JSFunction replacer);
+  external _i1.JSString replace$4(
+    _i1.JSAny searchValue,
+    _i1.JSFunction replacer,
+  );
 
   /// Method [search$2]
   ///
@@ -2755,7 +3149,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSString slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [split$2]
   ///
@@ -2766,7 +3163,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string[]
   @_i1.JS('split')
-  external _i1.JSArray<_i1.JSString> split$2(_i1.JSAny separator, [_i1.JSNumber limit]);
+  external _i1.JSArray<_i1.JSString> split$2(
+    _i1.JSAny separator, [
+    _i1.JSNumber limit,
+  ]);
 
   /// Method [substring]
   ///
@@ -2776,7 +3176,10 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString substring(_i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSString substring(
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLowerCase]
   ///
@@ -2829,14 +3232,20 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString substr(_i1.JSNumber from, [_i1.JSNumber length]);
+  external _i1.JSString substr(
+    _i1.JSNumber from, [
+    _i1.JSNumber length,
+  ]);
 
   /// Method [valueOf]
   ///
   /// Returns:
   /// - string
   external _i1.JSString valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSString value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSString value,
+  );
   external _i1.JSString operator [](_i1.JSNumber index);
 
   /// Method [localeCompare$3]
@@ -2849,11 +3258,16 @@ extension type String.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('localeCompare')
-  external _i1.JSNumber localeCompare$3(_i1.JSString that, [_i1.JSAny locales, _i2.CollatorOptions options]);
+  external _i1.JSNumber localeCompare$3(
+    _i1.JSString that, [
+    _i1.JSAny locales,
+    _i2.CollatorOptions options,
+  ]);
 }
 
 /// Interface [Int8Array]
-extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
@@ -2884,7 +3298,11 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Int8Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Int8Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -2892,7 +3310,11 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Int8Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Int8Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -2909,7 +3331,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -2942,7 +3367,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -2965,7 +3393,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -2976,7 +3407,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -2986,7 +3420,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -3012,7 +3449,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - Int8Array
   @_i1.JS('with')
-  external _i1.JSInt8Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSInt8Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -3043,7 +3483,11 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -3053,7 +3497,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -3064,7 +3511,11 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -3074,7 +3525,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - Int8Array
-  external _i1.JSInt8Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSInt8Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -3084,7 +3538,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -3094,7 +3551,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -3104,7 +3564,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -3114,7 +3577,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -3133,7 +3599,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -3148,7 +3617,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - Int8Array
-  external _i1.JSInt8Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSInt8Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -3169,7 +3641,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -3183,7 +3658,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -3204,7 +3682,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -3218,7 +3699,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -3234,7 +3718,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -3244,7 +3731,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - Int8Array
-  external _i1.JSInt8Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSInt8Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -3254,7 +3744,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -3273,7 +3766,10 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   ///
   /// Returns:
   /// - Int8Array
-  external _i1.JSInt8Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSInt8Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -3294,12 +3790,16 @@ extension type Int8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Uint8Array]
-extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
@@ -3330,7 +3830,11 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint8Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint8Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -3338,7 +3842,11 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint8Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint8Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -3355,7 +3863,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -3388,7 +3899,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -3411,7 +3925,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -3422,7 +3939,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -3432,7 +3952,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -3458,7 +3981,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - Uint8Array
   @_i1.JS('with')
-  external _i1.JSUint8Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSUint8Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -3489,7 +4015,11 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -3499,7 +4029,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -3510,7 +4043,11 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -3520,7 +4057,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Uint8Array
-  external _i1.JSUint8Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSUint8Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -3530,7 +4070,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -3540,7 +4083,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -3550,7 +4096,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -3560,7 +4109,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -3579,7 +4131,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -3594,7 +4149,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Uint8Array
-  external _i1.JSUint8Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSUint8Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -3615,7 +4173,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -3629,7 +4190,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -3650,7 +4214,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -3664,7 +4231,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -3680,7 +4250,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -3690,7 +4263,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Uint8Array
-  external _i1.JSUint8Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSUint8Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -3700,7 +4276,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -3719,7 +4298,10 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Uint8Array
-  external _i1.JSUint8Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSUint8Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -3740,17 +4322,22 @@ extension type Uint8Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Uint8ClampedArray]
-extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
   /// - elements: Iterable
-  external Uint8ClampedArray.$1(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+  external Uint8ClampedArray.$1(
+      Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
 
   /// Constructor
   external Uint8ClampedArray.$2();
@@ -3776,7 +4363,11 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint8ClampedArray.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint8ClampedArray.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -3784,7 +4375,11 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint8ClampedArray.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint8ClampedArray.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -3801,7 +4396,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -3834,7 +4432,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -3857,7 +4458,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -3868,7 +4472,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -3878,7 +4485,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -3904,7 +4514,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - Uint8ClampedArray
   @_i1.JS('with')
-  external _i1.JSUint8ClampedArray with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSUint8ClampedArray with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -3935,7 +4548,11 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -3945,7 +4562,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -3956,7 +4576,11 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -3966,7 +4590,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - Uint8ClampedArray
-  external _i1.JSUint8ClampedArray filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSUint8ClampedArray filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -3976,7 +4603,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -3986,7 +4616,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -3996,7 +4629,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -4006,7 +4642,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -4025,7 +4664,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -4040,7 +4682,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - Uint8ClampedArray
-  external _i1.JSUint8ClampedArray map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSUint8ClampedArray map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -4061,7 +4706,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -4075,7 +4723,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -4096,7 +4747,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -4110,7 +4764,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -4126,7 +4783,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -4136,7 +4796,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - Uint8ClampedArray
-  external _i1.JSUint8ClampedArray slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSUint8ClampedArray slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -4146,7 +4809,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -4165,7 +4831,10 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   ///
   /// Returns:
   /// - Uint8ClampedArray
-  external _i1.JSUint8ClampedArray subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSUint8ClampedArray subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -4186,12 +4855,16 @@ extension type Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSO
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Int16Array]
-extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
@@ -4222,7 +4895,11 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Int16Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Int16Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -4230,7 +4907,11 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Int16Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Int16Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -4247,7 +4928,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -4280,7 +4964,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -4303,7 +4990,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -4314,7 +5004,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -4324,7 +5017,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -4350,7 +5046,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - Int16Array
   @_i1.JS('with')
-  external _i1.JSInt16Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSInt16Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -4381,7 +5080,11 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -4391,7 +5094,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -4402,7 +5108,11 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -4412,7 +5122,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int16Array
-  external _i1.JSInt16Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSInt16Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -4422,7 +5135,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -4432,7 +5148,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -4442,7 +5161,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -4452,7 +5174,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -4471,7 +5196,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -4486,7 +5214,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int16Array
-  external _i1.JSInt16Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSInt16Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -4507,7 +5238,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -4521,7 +5255,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -4542,7 +5279,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -4556,7 +5296,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -4572,7 +5315,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -4582,7 +5328,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int16Array
-  external _i1.JSInt16Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSInt16Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -4592,7 +5341,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -4611,7 +5363,10 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int16Array
-  external _i1.JSInt16Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSInt16Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -4632,17 +5387,22 @@ extension type Int16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Uint16Array]
-extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
   /// - elements: Iterable
-  external Uint16Array.$1(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+  external Uint16Array.$1(
+      Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
 
   /// Constructor
   external Uint16Array.$2();
@@ -4668,7 +5428,11 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint16Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint16Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -4676,7 +5440,11 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint16Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint16Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -4693,7 +5461,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -4726,7 +5497,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -4749,7 +5523,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -4760,7 +5537,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -4770,7 +5550,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -4796,7 +5579,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - Uint16Array
   @_i1.JS('with')
-  external _i1.JSUint16Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSUint16Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -4827,7 +5613,11 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -4837,7 +5627,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -4848,7 +5641,11 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -4858,7 +5655,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint16Array
-  external _i1.JSUint16Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSUint16Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -4868,7 +5668,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -4878,7 +5681,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -4888,7 +5694,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -4898,7 +5707,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -4917,7 +5729,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -4932,7 +5747,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint16Array
-  external _i1.JSUint16Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSUint16Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -4953,7 +5771,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -4967,7 +5788,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -4988,7 +5812,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -5002,7 +5829,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -5018,7 +5848,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -5028,7 +5861,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint16Array
-  external _i1.JSUint16Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSUint16Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -5038,7 +5874,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -5057,7 +5896,10 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint16Array
-  external _i1.JSUint16Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSUint16Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -5078,12 +5920,16 @@ extension type Uint16Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Int32Array]
-extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
@@ -5114,7 +5960,11 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Int32Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Int32Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -5122,7 +5972,11 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Int32Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Int32Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -5139,7 +5993,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -5172,7 +6029,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -5195,7 +6055,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -5206,7 +6069,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -5216,7 +6082,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -5242,7 +6111,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - Int32Array
   @_i1.JS('with')
-  external _i1.JSInt32Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSInt32Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -5273,7 +6145,11 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -5283,7 +6159,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -5294,7 +6173,11 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -5304,7 +6187,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int32Array
-  external _i1.JSInt32Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSInt32Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -5314,7 +6200,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -5324,7 +6213,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -5334,7 +6226,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -5344,7 +6239,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -5363,7 +6261,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -5378,7 +6279,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int32Array
-  external _i1.JSInt32Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSInt32Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -5399,7 +6303,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -5413,7 +6320,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -5434,7 +6344,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -5448,7 +6361,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -5464,7 +6380,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -5474,7 +6393,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int32Array
-  external _i1.JSInt32Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSInt32Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -5484,7 +6406,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -5503,7 +6428,10 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   ///
   /// Returns:
   /// - Int32Array
-  external _i1.JSInt32Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSInt32Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -5524,17 +6452,22 @@ extension type Int32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Uint32Array]
-extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
   /// - elements: Iterable
-  external Uint32Array.$1(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+  external Uint32Array.$1(
+      Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
 
   /// Constructor
   external Uint32Array.$2();
@@ -5560,7 +6493,11 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint32Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint32Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -5568,7 +6505,11 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Uint32Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Uint32Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -5585,7 +6526,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -5618,7 +6562,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -5641,7 +6588,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -5652,7 +6602,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -5662,7 +6615,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -5688,7 +6644,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - Uint32Array
   @_i1.JS('with')
-  external _i1.JSUint32Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSUint32Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -5719,7 +6678,11 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -5729,7 +6692,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -5740,7 +6706,11 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -5750,7 +6720,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint32Array
-  external _i1.JSUint32Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSUint32Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -5760,7 +6733,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -5770,7 +6746,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -5780,7 +6759,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -5790,7 +6772,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -5809,7 +6794,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -5824,7 +6812,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint32Array
-  external _i1.JSUint32Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSUint32Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -5845,7 +6836,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -5859,7 +6853,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -5880,7 +6877,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -5894,7 +6894,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -5910,7 +6913,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -5920,7 +6926,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint32Array
-  external _i1.JSUint32Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSUint32Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -5930,7 +6939,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -5949,7 +6961,10 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   ///
   /// Returns:
   /// - Uint32Array
-  external _i1.JSUint32Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSUint32Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -5970,17 +6985,22 @@ extension type Uint32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject 
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Float32Array]
-extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
   /// - elements: Iterable
-  external Float32Array.$1(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+  external Float32Array.$1(
+      Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
 
   /// Constructor
   external Float32Array.$2();
@@ -6006,7 +7026,11 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Float32Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Float32Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -6014,7 +7038,11 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Float32Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Float32Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -6031,7 +7059,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -6064,7 +7095,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -6087,7 +7121,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -6098,7 +7135,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -6108,7 +7148,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -6134,7 +7177,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - Float32Array
   @_i1.JS('with')
-  external _i1.JSFloat32Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSFloat32Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -6165,7 +7211,11 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -6175,7 +7225,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -6186,7 +7239,11 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -6196,7 +7253,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float32Array
-  external _i1.JSFloat32Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSFloat32Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -6206,7 +7266,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -6216,7 +7279,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -6226,7 +7292,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -6236,7 +7305,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -6255,7 +7327,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -6270,7 +7345,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float32Array
-  external _i1.JSFloat32Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSFloat32Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -6291,7 +7369,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -6305,7 +7386,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -6326,7 +7410,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -6340,7 +7427,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -6356,7 +7446,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -6366,7 +7459,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float32Array
-  external _i1.JSFloat32Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSFloat32Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -6376,7 +7472,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -6395,7 +7494,10 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float32Array
-  external _i1.JSFloat32Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSFloat32Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -6416,17 +7518,22 @@ extension type Float32Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Float64Array]
-extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
   /// - elements: Iterable
-  external Float64Array.$1(Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
+  external Float64Array.$1(
+      Iterable<_i1.JSNumber, _i1.JSAny, _i1.JSAny> elements);
 
   /// Constructor
   external Float64Array.$2();
@@ -6452,7 +7559,11 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Float64Array.$5(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Float64Array.$5(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -6460,7 +7571,11 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external Float64Array.$6(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external Float64Array.$6(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -6477,7 +7592,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1(_i1.JSAny locales, [_i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1(
+    _i1.JSAny locales, [
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [entries]
   ///
@@ -6510,7 +7628,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [at]
   ///
@@ -6533,7 +7654,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSNumber>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSNumber>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -6544,7 +7668,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - number | undefined
   @_i1.JS('findLast')
-  external _i1.JSNumber? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -6554,7 +7681,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -6580,7 +7710,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - Float64Array
   @_i1.JS('with')
-  external _i1.JSFloat64Array with$(_i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSFloat64Array with$(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [BYTES_PER_ELEMENT]
   ///
@@ -6611,7 +7744,11 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [every]
   ///
@@ -6621,7 +7758,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -6632,7 +7772,11 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSNumber value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSNumber value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -6642,7 +7786,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float64Array
-  external _i1.JSFloat64Array filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSFloat64Array filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -6652,7 +7799,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number | undefined
-  external _i1.JSNumber? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -6662,7 +7812,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -6672,7 +7825,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -6682,7 +7838,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -6701,7 +7860,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSNumber searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSNumber searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -6716,7 +7878,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float64Array
-  external _i1.JSFloat64Array map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external _i1.JSFloat64Array map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -6737,7 +7902,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - number
   @_i1.JS('reduce')
-  external _i1.JSNumber reduce$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduce$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduce$3]
   ///
@@ -6751,7 +7919,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -6772,7 +7943,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - number
   @_i1.JS('reduceRight')
-  external _i1.JSNumber reduceRight$2(_i1.JSFunction callbackfn, _i1.JSNumber initialValue);
+  external _i1.JSNumber reduceRight$2(
+    _i1.JSFunction callbackfn,
+    _i1.JSNumber initialValue,
+  );
 
   /// Method [reduceRight$3]
   ///
@@ -6786,7 +7960,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$3<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$3<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -6802,7 +7979,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSNumber> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSNumber> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -6812,7 +7992,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float64Array
-  external _i1.JSFloat64Array slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSFloat64Array slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -6822,7 +8005,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -6841,7 +8027,10 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   ///
   /// Returns:
   /// - Float64Array
-  external _i1.JSFloat64Array subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSFloat64Array subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString$2]
   ///
@@ -6862,13 +8051,17 @@ extension type Float64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject
   /// Returns:
   /// -
   external _i1.JSAny valueOf();
-  external void operator []=(_i1.JSNumber index, _i1.JSNumber value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
   external _i1.JSNumber operator [](_i1.JSNumber index);
 }
 
 /// Interface [Generator]
-extension type Generator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, TReturn, TNext> {
+extension type Generator<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+        TNext extends _i1.JSAny>.$(_i1.JSObject _)
+    implements IteratorObject<T, TReturn, TNext> {
   /// Method [next]
   ///
   /// Parameters:
@@ -6876,7 +8069,13 @@ extension type Generator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext e
   ///
   /// Returns:
   /// - IteratorResult
-  external IteratorResult<T, TReturn> next(_i1.JSArray<_i1.JSAny> _);
+  external IteratorResult<T, TReturn> next([
+    _i1.JSArray<_i1.JSAny>? _,
+    _i1.JSArray<_i1.JSAny>? _2,
+    _i1.JSArray<_i1.JSAny>? _3,
+    _i1.JSArray<_i1.JSAny>? _4,
+    _i1.JSArray<_i1.JSAny>? _5,
+  ]);
 
   /// Method [return$]
   ///
@@ -6906,13 +8105,25 @@ extension type GeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunction {
   ///
   /// Parameters:
   /// - ...args: any[]
-  external GeneratorFunction.$1(_i1.JSArray<_i1.JSAny> args);
+  external GeneratorFunction.$1([
+    _i1.JSAny? args,
+    _i1.JSAny? args2,
+    _i1.JSAny? args3,
+    _i1.JSAny? args4,
+    _i1.JSAny? args5,
+  ]);
 
   /// Constructor
   ///
   /// Parameters:
   /// - ...args: string[]
-  external GeneratorFunction.$2(_i1.JSArray<_i1.JSString> args);
+  external GeneratorFunction.$2([
+    _i1.JSString? args,
+    _i1.JSString? args2,
+    _i1.JSString? args3,
+    _i1.JSString? args4,
+    _i1.JSString? args5,
+  ]);
 
   /// Property [length]
   ///
@@ -6936,7 +8147,8 @@ extension type GeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunction {
 }
 
 /// Interface [IteratorYieldResult]
-extension type IteratorYieldResult<TYield extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type IteratorYieldResult<TYield extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Property [done]
   ///
   /// done?: false
@@ -6949,7 +8161,8 @@ extension type IteratorYieldResult<TYield extends _i1.JSAny>.$(_i1.JSObject _) i
 }
 
 /// Interface [IteratorReturnResult]
-extension type IteratorReturnResult<TReturn extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type IteratorReturnResult<TReturn extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Property [done]
   ///
   /// done: true
@@ -6964,11 +8177,12 @@ extension type IteratorReturnResult<TReturn extends _i1.JSAny>.$(_i1.JSObject _)
 /// Typedef [IteratorResult]
 ///
 /// IteratorYieldResult | IteratorReturnResult
-typedef IteratorResult<T extends _i1.JSAny, TReturn extends _i1.JSAny> = _i1.JSAny;
+typedef IteratorResult<T extends _i1.JSAny, TReturn extends _i1.JSAny>
+    = _i1.JSAny;
 
 /// Interface [Iterator]
-extension type Iterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type Iterator<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+    TNext extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [next]
   ///
   /// Parameters:
@@ -6976,7 +8190,13 @@ extension type Iterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext ex
   ///
   /// Returns:
   /// - IteratorResult
-  external IteratorResult<T, TReturn> next(_i1.JSArray<_i1.JSAny> _);
+  external IteratorResult<T, TReturn> next([
+    _i1.JSArray<_i1.JSAny>? _,
+    _i1.JSArray<_i1.JSAny>? _2,
+    _i1.JSArray<_i1.JSAny>? _3,
+    _i1.JSArray<_i1.JSAny>? _4,
+    _i1.JSArray<_i1.JSAny>? _5,
+  ]);
 
   /// Method [return$]
   ///
@@ -7000,18 +8220,18 @@ extension type Iterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext ex
 }
 
 /// Interface [Iterable]
-extension type Iterable<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {}
+extension type Iterable<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+    TNext extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {}
 
 /// Interface [IterableIterator]
-extension type IterableIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(
-  _i1.JSObject _
-)
-    implements _i1.JSObject, Iterator<T, TReturn, TNext> {}
+extension type IterableIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+        TNext extends _i1.JSAny>.$(_i1.JSObject _)
+    implements Iterator<T, TReturn, TNext> {}
 
 /// Interface [IteratorObject]
-extension type IteratorObject<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, Iterator<T, TReturn, TNext> {}
+extension type IteratorObject<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+        TNext extends _i1.JSAny>.$(_i1.JSObject _)
+    implements Iterator<T, TReturn, TNext> {}
 
 /// Typedef [BuiltinIteratorReturn]
 ///
@@ -7020,7 +8240,7 @@ typedef BuiltinIteratorReturn = _i1.JSAny;
 
 /// Interface [ArrayIterator]
 extension type ArrayIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+    implements IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [IArguments]
 extension type IArguments.$(_i1.JSObject _) implements _i1.JSObject {
@@ -7034,20 +8254,24 @@ extension type IArguments.$(_i1.JSObject _) implements _i1.JSObject {
   /// callee: Function$
   external Function$ callee;
 
-  external void operator []=(_i1.JSNumber index, _i1.JSAny value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSAny value,
+  );
   external _i1.JSAny operator [](_i1.JSNumber index);
 }
 
 /// Interface [MapIterator]
 extension type MapIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+    implements IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [SetIterator]
 extension type SetIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+    implements IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [Promise]
-extension type Promise<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type Promise<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -7084,7 +8308,8 @@ extension type Promise<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSO
   ///
   /// Returns:
   /// - Promise
-  external _i1.JSPromise<_i1.JSAny> then<TResult1 extends _i1.JSAny, TResult2 extends _i1.JSAny>([
+  external _i1.JSPromise<_i1.JSAny>
+      then<TResult1 extends _i1.JSAny, TResult2 extends _i1.JSAny>([
     _i1.JSFunction? onfulfilled,
     _i1.JSFunction? onrejected,
   ]);
@@ -7100,15 +8325,17 @@ extension type Promise<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSO
   /// Returns:
   /// - Promise
   @_i1.JS('catch')
-  external _i1.JSPromise<_i1.JSAny> catch$<TResult extends _i1.JSAny>([_i1.JSFunction? onrejected]);
+  external _i1.JSPromise<_i1.JSAny> catch$<TResult extends _i1.JSAny>(
+      [_i1.JSFunction? onrejected]);
 }
 
 /// Interface [StringIterator]
 extension type StringIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+    implements IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [ProxyHandler]
-extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Method [apply]
   ///
   /// Parameters:
@@ -7118,7 +8345,11 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - any
-  external _i1.JSAny apply(T target, _i1.JSAny thisArg, _i1.JSArray<_i1.JSAny> argArray);
+  external _i1.JSAny apply(
+    T target,
+    _i1.JSAny thisArg,
+    _i1.JSArray<_i1.JSAny> argArray,
+  );
 
   /// Method [construct]
   ///
@@ -7129,7 +8360,11 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - object
-  external _i1.JSObject construct(T target, _i1.JSArray<_i1.JSAny> argArray, Function$ newTarget);
+  external _i1.JSObject construct(
+    T target,
+    _i1.JSArray<_i1.JSAny> argArray,
+    Function$ newTarget,
+  );
 
   /// Method [defineProperty]
   ///
@@ -7140,7 +8375,11 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean defineProperty(T target, _i1.JSAny property, PropertyDescriptor attributes);
+  external _i1.JSBoolean defineProperty(
+    T target,
+    _i1.JSAny property,
+    PropertyDescriptor attributes,
+  );
 
   /// Method [deleteProperty]
   ///
@@ -7150,7 +8389,10 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean deleteProperty(T target, _i1.JSAny p);
+  external _i1.JSBoolean deleteProperty(
+    T target,
+    _i1.JSAny p,
+  );
 
   /// Method [get]
   ///
@@ -7161,7 +8403,11 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - any
-  external _i1.JSAny get(T target, _i1.JSAny p, _i1.JSAny receiver);
+  external _i1.JSAny get(
+    T target,
+    _i1.JSAny p,
+    _i1.JSAny receiver,
+  );
 
   /// Method [getOwnPropertyDescriptor]
   ///
@@ -7171,7 +8417,10 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - PropertyDescriptor | undefined
-  external PropertyDescriptor? getOwnPropertyDescriptor(T target, _i1.JSAny p);
+  external PropertyDescriptor? getOwnPropertyDescriptor(
+    T target,
+    _i1.JSAny p,
+  );
 
   /// Method [getPrototypeOf]
   ///
@@ -7190,7 +8439,10 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean has(T target, _i1.JSAny p);
+  external _i1.JSBoolean has(
+    T target,
+    _i1.JSAny p,
+  );
 
   /// Method [isExtensible]
   ///
@@ -7229,7 +8481,12 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean set(T target, _i1.JSAny p, _i1.JSAny newValue, _i1.JSAny receiver);
+  external _i1.JSBoolean set(
+    T target,
+    _i1.JSAny p,
+    _i1.JSAny newValue,
+    _i1.JSAny receiver,
+  );
 
   /// Method [setPrototypeOf]
   ///
@@ -7239,12 +8496,16 @@ extension type ProxyHandler<T extends _i1.JSObject>.$(_i1.JSObject _) implements
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean setPrototypeOf(T target, _i1.JSObject? v);
+  external _i1.JSBoolean setPrototypeOf(
+    T target,
+    _i1.JSObject? v,
+  );
 }
 
 /// Interface [ProxyConstructor]
 @_i1.JS('T')
-extension type ProxyConstructor<T extends _i1.JSObject>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ProxyConstructor<T extends _i1.JSObject>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -7253,7 +8514,10 @@ extension type ProxyConstructor<T extends _i1.JSObject>.$(_i1.JSObject _) implem
   /// Parameters:
   /// - target: T
   /// - handler: ProxyHandler
-  external ProxyConstructor(T target, ProxyHandler<T> handler);
+  external ProxyConstructor(
+    T target,
+    ProxyHandler<T> handler,
+  );
 
   /// Method [revocable]
   ///
@@ -7265,8 +8529,11 @@ extension type ProxyConstructor<T extends _i1.JSObject>.$(_i1.JSObject _) implem
   /// - handler: ProxyHandler
   ///
   /// Returns:
-  /// -
-  external _i1.JSObject revocable<T extends _i1.JSObject>(T target, ProxyHandler<T> handler);
+  /// - { proxy: T; revoke: () => void }
+  external _i1.JSObject revocable<T extends _i1.JSObject>(
+    T target,
+    ProxyHandler<T> handler,
+  );
 }
 
 /// Interface [Symbol]
@@ -7341,7 +8608,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1([_i2.LocalesArgument locales, _i2.DateTimeFormatOptions options]);
+  external _i1.JSString toLocaleString$1([
+    _i2.LocalesArgument locales,
+    _i2.DateTimeFormatOptions options,
+  ]);
 
   /// Method [toLocaleDateString$1]
   ///
@@ -7352,7 +8622,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleDateString')
-  external _i1.JSString toLocaleDateString$1([_i2.LocalesArgument locales, _i2.DateTimeFormatOptions options]);
+  external _i1.JSString toLocaleDateString$1([
+    _i2.LocalesArgument locales,
+    _i2.DateTimeFormatOptions options,
+  ]);
 
   /// Method [toLocaleTimeString$1]
   ///
@@ -7363,7 +8636,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleTimeString')
-  external _i1.JSString toLocaleTimeString$1([_i2.LocalesArgument locales, _i2.DateTimeFormatOptions options]);
+  external _i1.JSString toLocaleTimeString$1([
+    _i2.LocalesArgument locales,
+    _i2.DateTimeFormatOptions options,
+  ]);
 
   /// Method [toString$]
   ///
@@ -7554,7 +8830,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setSeconds(_i1.JSNumber sec, [_i1.JSNumber ms]);
+  external _i1.JSNumber setSeconds(
+    _i1.JSNumber sec, [
+    _i1.JSNumber ms,
+  ]);
 
   /// Method [setUTCSeconds]
   ///
@@ -7564,7 +8843,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setUTCSeconds(_i1.JSNumber sec, [_i1.JSNumber ms]);
+  external _i1.JSNumber setUTCSeconds(
+    _i1.JSNumber sec, [
+    _i1.JSNumber ms,
+  ]);
 
   /// Method [setMinutes]
   ///
@@ -7575,7 +8857,11 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setMinutes(_i1.JSNumber min, [_i1.JSNumber sec, _i1.JSNumber ms]);
+  external _i1.JSNumber setMinutes(
+    _i1.JSNumber min, [
+    _i1.JSNumber sec,
+    _i1.JSNumber ms,
+  ]);
 
   /// Method [setUTCMinutes]
   ///
@@ -7586,7 +8872,11 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setUTCMinutes(_i1.JSNumber min, [_i1.JSNumber sec, _i1.JSNumber ms]);
+  external _i1.JSNumber setUTCMinutes(
+    _i1.JSNumber min, [
+    _i1.JSNumber sec,
+    _i1.JSNumber ms,
+  ]);
 
   /// Method [setHours]
   ///
@@ -7598,7 +8888,12 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setHours(_i1.JSNumber hours, [_i1.JSNumber min, _i1.JSNumber sec, _i1.JSNumber ms]);
+  external _i1.JSNumber setHours(
+    _i1.JSNumber hours, [
+    _i1.JSNumber min,
+    _i1.JSNumber sec,
+    _i1.JSNumber ms,
+  ]);
 
   /// Method [setUTCHours]
   ///
@@ -7610,7 +8905,12 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setUTCHours(_i1.JSNumber hours, [_i1.JSNumber min, _i1.JSNumber sec, _i1.JSNumber ms]);
+  external _i1.JSNumber setUTCHours(
+    _i1.JSNumber hours, [
+    _i1.JSNumber min,
+    _i1.JSNumber sec,
+    _i1.JSNumber ms,
+  ]);
 
   /// Method [setDate]
   ///
@@ -7638,7 +8938,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setMonth(_i1.JSNumber month, [_i1.JSNumber date]);
+  external _i1.JSNumber setMonth(
+    _i1.JSNumber month, [
+    _i1.JSNumber date,
+  ]);
 
   /// Method [setUTCMonth]
   ///
@@ -7648,7 +8951,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setUTCMonth(_i1.JSNumber month, [_i1.JSNumber date]);
+  external _i1.JSNumber setUTCMonth(
+    _i1.JSNumber month, [
+    _i1.JSNumber date,
+  ]);
 
   /// Method [setFullYear]
   ///
@@ -7659,7 +8965,11 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setFullYear(_i1.JSNumber year, [_i1.JSNumber month, _i1.JSNumber date]);
+  external _i1.JSNumber setFullYear(
+    _i1.JSNumber year, [
+    _i1.JSNumber month,
+    _i1.JSNumber date,
+  ]);
 
   /// Method [setUTCFullYear]
   ///
@@ -7670,7 +8980,11 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber setUTCFullYear(_i1.JSNumber year, [_i1.JSNumber month, _i1.JSNumber date]);
+  external _i1.JSNumber setUTCFullYear(
+    _i1.JSNumber year, [
+    _i1.JSNumber month,
+    _i1.JSNumber date,
+  ]);
 
   /// Method [toUTCString]
   ///
@@ -7702,7 +9016,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$3([_i1.JSAny locales, _i2.DateTimeFormatOptions options]);
+  external _i1.JSString toLocaleString$3([
+    _i1.JSAny locales,
+    _i2.DateTimeFormatOptions options,
+  ]);
 
   /// Method [toLocaleDateString$3]
   ///
@@ -7713,7 +9030,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleDateString')
-  external _i1.JSString toLocaleDateString$3([_i1.JSAny locales, _i2.DateTimeFormatOptions options]);
+  external _i1.JSString toLocaleDateString$3([
+    _i1.JSAny locales,
+    _i2.DateTimeFormatOptions options,
+  ]);
 
   /// Method [toLocaleTimeString$3]
   ///
@@ -7724,7 +9044,10 @@ extension type Date.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleTimeString')
-  external _i1.JSString toLocaleTimeString$3([_i1.JSAny locales, _i2.DateTimeFormatOptions options]);
+  external _i1.JSString toLocaleTimeString$3([
+    _i1.JSAny locales,
+    _i2.DateTimeFormatOptions options,
+  ]);
 }
 
 /// Interface [JSON]
@@ -7742,7 +9065,10 @@ extension type JSON.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - any
-  external _i1.JSAny parse(_i1.JSString text, [_i1.JSFunction reviver]);
+  external _i1.JSAny parse(
+    _i1.JSString text, [
+    _i1.JSFunction reviver,
+  ]);
 
   /// Method [stringify$1]
   ///
@@ -7754,7 +9080,11 @@ extension type JSON.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('stringify')
-  external _i1.JSString stringify$1(_i1.JSAny value, [_i1.JSFunction replacer, _i1.JSAny space]);
+  external _i1.JSString stringify$1(
+    _i1.JSAny value, [
+    _i1.JSFunction replacer,
+    _i1.JSAny space,
+  ]);
 
   /// Method [stringify$2]
   ///
@@ -7766,7 +9096,11 @@ extension type JSON.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('stringify')
-  external _i1.JSString stringify$2(_i1.JSAny value, [_i1.JSArray<_i1.JSAny>? replacer, _i1.JSAny space]);
+  external _i1.JSString stringify$2(
+    _i1.JSAny value, [
+    _i1.JSArray<_i1.JSAny>? replacer,
+    _i1.JSAny space,
+  ]);
 }
 
 /// Interface [ArrayBuffer]
@@ -7798,11 +9132,15 @@ extension type ArrayBuffer.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - ArrayBuffer
-  external _i1.JSArrayBuffer slice([_i1.JSNumber begin, _i1.JSNumber end]);
+  external _i1.JSArrayBuffer slice([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 }
 
 /// Interface [DataView]
-extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -7812,7 +9150,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - byteLength: number
-  external DataView(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber byteLength]);
+  external DataView(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber byteLength,
+  ]);
 
   /// Property [null$]
   ///
@@ -7827,7 +9169,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - bigint
-  external _i1.JSBigInt getBigInt64(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSBigInt getBigInt64(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [getBigUint64]
   ///
@@ -7837,7 +9182,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - bigint
-  external _i1.JSBigInt getBigUint64(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSBigInt getBigUint64(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setBigInt64]
   ///
@@ -7848,7 +9196,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setBigInt64(_i1.JSNumber byteOffset, _i1.JSBigInt value, [_i1.JSBoolean littleEndian]);
+  external void setBigInt64(
+    _i1.JSNumber byteOffset,
+    _i1.JSBigInt value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setBigUint64]
   ///
@@ -7859,7 +9211,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setBigUint64(_i1.JSNumber byteOffset, _i1.JSBigInt value, [_i1.JSBoolean littleEndian]);
+  external void setBigUint64(
+    _i1.JSNumber byteOffset,
+    _i1.JSBigInt value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Property [buffer]
   ///
@@ -7884,7 +9240,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber getFloat32(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSNumber getFloat32(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [getFloat64]
   ///
@@ -7894,7 +9253,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber getFloat64(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSNumber getFloat64(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [getInt8]
   ///
@@ -7913,7 +9275,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber getInt16(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSNumber getInt16(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [getInt32]
   ///
@@ -7923,7 +9288,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber getInt32(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSNumber getInt32(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [getUint8]
   ///
@@ -7942,7 +9310,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber getUint16(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSNumber getUint16(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [getUint32]
   ///
@@ -7952,7 +9323,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber getUint32(_i1.JSNumber byteOffset, [_i1.JSBoolean littleEndian]);
+  external _i1.JSNumber getUint32(
+    _i1.JSNumber byteOffset, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setFloat32]
   ///
@@ -7963,7 +9337,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setFloat32(_i1.JSNumber byteOffset, _i1.JSNumber value, [_i1.JSBoolean littleEndian]);
+  external void setFloat32(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setFloat64]
   ///
@@ -7974,7 +9352,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setFloat64(_i1.JSNumber byteOffset, _i1.JSNumber value, [_i1.JSBoolean littleEndian]);
+  external void setFloat64(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setInt8]
   ///
@@ -7984,7 +9366,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setInt8(_i1.JSNumber byteOffset, _i1.JSNumber value);
+  external void setInt8(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value,
+  );
 
   /// Method [setInt16]
   ///
@@ -7995,7 +9380,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setInt16(_i1.JSNumber byteOffset, _i1.JSNumber value, [_i1.JSBoolean littleEndian]);
+  external void setInt16(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setInt32]
   ///
@@ -8006,7 +9395,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setInt32(_i1.JSNumber byteOffset, _i1.JSNumber value, [_i1.JSBoolean littleEndian]);
+  external void setInt32(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setUint8]
   ///
@@ -8016,7 +9409,10 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setUint8(_i1.JSNumber byteOffset, _i1.JSNumber value);
+  external void setUint8(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value,
+  );
 
   /// Method [setUint16]
   ///
@@ -8027,7 +9423,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setUint16(_i1.JSNumber byteOffset, _i1.JSNumber value, [_i1.JSBoolean littleEndian]);
+  external void setUint16(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 
   /// Method [setUint32]
   ///
@@ -8038,7 +9438,11 @@ extension type DataView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) 
   ///
   /// Returns:
   /// - void
-  external void setUint32(_i1.JSNumber byteOffset, _i1.JSNumber value, [_i1.JSBoolean littleEndian]);
+  external void setUint32(
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber value, [
+    _i1.JSBoolean littleEndian,
+  ]);
 }
 
 /// Interface [SharedArrayBuffer]
@@ -8062,7 +9466,10 @@ extension type SharedArrayBuffer.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - SharedArrayBuffer
-  external SharedArrayBuffer slice([_i1.JSNumber begin, _i1.JSNumber end]);
+  external SharedArrayBuffer slice([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Property [null$]
   ///
@@ -8097,7 +9504,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('add')
-  external _i1.JSNumber add$1(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSNumber add$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Method [and$1]
   ///
@@ -8109,7 +9520,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('and')
-  external _i1.JSNumber and$1(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSNumber and$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Method [compareExchange$1]
   ///
@@ -8139,7 +9554,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('exchange')
-  external _i1.JSNumber exchange$1(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSNumber exchange$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Method [isLockFree]
   ///
@@ -8159,7 +9578,10 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('load')
-  external _i1.JSNumber load$1(_i1.JSAny typedArray, _i1.JSNumber index);
+  external _i1.JSNumber load$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+  );
 
   /// Method [or$1]
   ///
@@ -8171,7 +9593,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('or')
-  external _i1.JSNumber or$1(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSNumber or$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Method [store$1]
   ///
@@ -8183,7 +9609,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('store')
-  external _i1.JSNumber store$1(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSNumber store$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Method [sub$1]
   ///
@@ -8195,7 +9625,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('sub')
-  external _i1.JSNumber sub$1(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSNumber sub$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Method [wait$1]
   ///
@@ -8225,7 +9659,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('notify')
-  external _i1.JSNumber notify$1(_i1.JSInt32Array typedArray, _i1.JSNumber index, [_i1.JSNumber count]);
+  external _i1.JSNumber notify$1(
+    _i1.JSInt32Array typedArray,
+    _i1.JSNumber index, [
+    _i1.JSNumber count,
+  ]);
 
   /// Method [xor$1]
   ///
@@ -8237,7 +9675,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('xor')
-  external _i1.JSNumber xor$1(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSNumber value);
+  external _i1.JSNumber xor$1(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSNumber value,
+  );
 
   /// Property [null$]
   ///
@@ -8254,7 +9696,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('add')
-  external _i1.JSBigInt add$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
+  external _i1.JSBigInt add$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 
   /// Method [and$2]
   ///
@@ -8266,7 +9712,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('and')
-  external _i1.JSBigInt and$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
+  external _i1.JSBigInt and$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 
   /// Method [compareExchange$2]
   ///
@@ -8296,7 +9746,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('exchange')
-  external _i1.JSBigInt exchange$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
+  external _i1.JSBigInt exchange$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 
   /// Method [load$2]
   ///
@@ -8307,7 +9761,10 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('load')
-  external _i1.JSBigInt load$2(_i1.JSAny typedArray, _i1.JSNumber index);
+  external _i1.JSBigInt load$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+  );
 
   /// Method [or$2]
   ///
@@ -8319,7 +9776,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('or')
-  external _i1.JSBigInt or$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
+  external _i1.JSBigInt or$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 
   /// Method [store$2]
   ///
@@ -8331,7 +9792,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('store')
-  external _i1.JSBigInt store$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
+  external _i1.JSBigInt store$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 
   /// Method [sub$2]
   ///
@@ -8343,7 +9808,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('sub')
-  external _i1.JSBigInt sub$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
+  external _i1.JSBigInt sub$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 
   /// Method [wait$2]
   ///
@@ -8373,7 +9842,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - number
   @_i1.JS('notify')
-  external _i1.JSNumber notify$2(BigInt64Array<ArrayBufferLike> typedArray, _i1.JSNumber index, [_i1.JSNumber count]);
+  external _i1.JSNumber notify$2(
+    BigInt64Array<ArrayBufferLike> typedArray,
+    _i1.JSNumber index, [
+    _i1.JSNumber count,
+  ]);
 
   /// Method [xor$2]
   ///
@@ -8385,7 +9858,11 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - bigint
   @_i1.JS('xor')
-  external _i1.JSBigInt xor$2(_i1.JSAny typedArray, _i1.JSNumber index, _i1.JSBigInt value);
+  external _i1.JSBigInt xor$2(
+    _i1.JSAny typedArray,
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 }
 
 /// Variable [Atomics$]
@@ -8395,8 +9872,9 @@ extension type Atomics.$(_i1.JSObject _) implements _i1.JSObject {
 external Atomics Atomics$;
 
 /// Interface [AsyncGenerator]
-extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, AsyncIteratorObject<T, TReturn, TNext> {
+extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+        TNext extends _i1.JSAny>.$(_i1.JSObject _)
+    implements AsyncIteratorObject<T, TReturn, TNext> {
   /// Method [next]
   ///
   /// Parameters:
@@ -8404,7 +9882,13 @@ extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TN
   ///
   /// Returns:
   /// - Promise
-  external _i1.JSPromise<IteratorResult<T, TReturn>> next(_i1.JSArray<_i1.JSAny> _);
+  external _i1.JSPromise<IteratorResult<T, TReturn>> next([
+    _i1.JSArray<_i1.JSAny>? _,
+    _i1.JSArray<_i1.JSAny>? _2,
+    _i1.JSArray<_i1.JSAny>? _3,
+    _i1.JSArray<_i1.JSAny>? _4,
+    _i1.JSArray<_i1.JSAny>? _5,
+  ]);
 
   /// Method [return$]
   ///
@@ -8429,18 +9913,31 @@ extension type AsyncGenerator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TN
 
 /// Interface [AsyncGeneratorFunction]
 @_i1.JS('AsyncGenerator')
-extension type AsyncGeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunction {
+extension type AsyncGeneratorFunction.$(_i1.JSFunction _)
+    implements _i1.JSFunction {
   /// Constructor
   ///
   /// Parameters:
   /// - ...args: any[]
-  external AsyncGeneratorFunction.$1(_i1.JSArray<_i1.JSAny> args);
+  external AsyncGeneratorFunction.$1([
+    _i1.JSAny? args,
+    _i1.JSAny? args2,
+    _i1.JSAny? args3,
+    _i1.JSAny? args4,
+    _i1.JSAny? args5,
+  ]);
 
   /// Constructor
   ///
   /// Parameters:
   /// - ...args: string[]
-  external AsyncGeneratorFunction.$2(_i1.JSArray<_i1.JSString> args);
+  external AsyncGeneratorFunction.$2([
+    _i1.JSString? args,
+    _i1.JSString? args2,
+    _i1.JSString? args3,
+    _i1.JSString? args4,
+    _i1.JSString? args5,
+  ]);
 
   /// Property [length]
   ///
@@ -8459,8 +9956,8 @@ extension type AsyncGeneratorFunction.$(_i1.JSFunction _) implements _i1.JSFunct
 }
 
 /// Interface [AsyncIterator]
-extension type AsyncIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {
+extension type AsyncIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+    TNext extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
   /// Method [next]
   ///
   /// Parameters:
@@ -8468,7 +9965,13 @@ extension type AsyncIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNe
   ///
   /// Returns:
   /// - Promise
-  external _i1.JSPromise<IteratorResult<T, TReturn>> next(_i1.JSArray<_i1.JSAny> _);
+  external _i1.JSPromise<IteratorResult<T, TReturn>> next([
+    _i1.JSArray<_i1.JSAny>? _,
+    _i1.JSArray<_i1.JSAny>? _2,
+    _i1.JSArray<_i1.JSAny>? _3,
+    _i1.JSArray<_i1.JSAny>? _4,
+    _i1.JSArray<_i1.JSAny>? _5,
+  ]);
 
   /// Method [return$]
   ///
@@ -8492,26 +9995,24 @@ extension type AsyncIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNe
 }
 
 /// Interface [AsyncIterable]
-extension type AsyncIterable<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject {}
+extension type AsyncIterable<T extends _i1.JSAny, TReturn extends _i1.JSAny,
+    TNext extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {}
 
 /// Interface [AsyncIterableIterator]
-extension type AsyncIterableIterator<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(
-  _i1.JSObject _
-)
-    implements _i1.JSObject, AsyncIterator<T, TReturn, TNext> {}
+extension type AsyncIterableIterator<T extends _i1.JSAny,
+        TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
+    implements AsyncIterator<T, TReturn, TNext> {}
 
 /// Interface [AsyncIteratorObject]
-extension type AsyncIteratorObject<T extends _i1.JSAny, TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(
-  _i1.JSObject _
-)
-    implements _i1.JSObject, AsyncIterator<T, TReturn, TNext> {}
+extension type AsyncIteratorObject<T extends _i1.JSAny,
+        TReturn extends _i1.JSAny, TNext extends _i1.JSAny>.$(_i1.JSObject _)
+    implements AsyncIterator<T, TReturn, TNext> {}
 
 /// Interface [RegExpMatchArray]
 extension type RegExpMatchArray.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [groups]
   ///
-  /// groups?:
+  /// groups?: {  }
   external _i1.JSObject? groups;
 
   /// Property [indices]
@@ -8540,7 +10041,7 @@ extension type RegExpMatchArray.$(_i1.JSObject _) implements _i1.JSObject {
 extension type RegExpExecArray.$(_i1.JSObject _) implements _i1.JSObject {
   /// Property [groups]
   ///
-  /// groups?:
+  /// groups?: {  }
   external _i1.JSObject? groups;
 
   /// Property [indices]
@@ -8567,11 +10068,13 @@ extension type RegExpExecArray.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Typedef [FlatArray]
 ///
-/// []
-typedef FlatArray<Arr extends _i1.JSAny, Depth extends _i1.JSNumber> = _i1.JSAny;
+/// { done: Arr; recur:  }[]
+typedef FlatArray<Arr extends _i1.JSAny, Depth extends _i1.JSNumber>
+    = _i1.JSAny;
 
 /// Interface [BigIntToLocaleStringOptions]
-extension type BigIntToLocaleStringOptions.$(_i1.JSObject _) implements _i1.JSObject {
+extension type BigIntToLocaleStringOptions.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Property [localeMatcher]
   ///
   /// localeMatcher?: string
@@ -8668,7 +10171,10 @@ extension type BigInt.$(_i1.JSObject _) implements _i1.JSObject {
   ///
   /// Returns:
   /// - string
-  external _i1.JSString toLocaleString([_i2.LocalesArgument locales, BigIntToLocaleStringOptions options]);
+  external _i1.JSString toLocaleString([
+    _i2.LocalesArgument locales,
+    BigIntToLocaleStringOptions options,
+  ]);
 
   /// Method [valueOf]
   ///
@@ -8683,7 +10189,8 @@ extension type BigInt.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [BigInt64Array]
-extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
@@ -8705,7 +10212,11 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external BigInt64Array.$3(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external BigInt64Array.$3(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -8713,7 +10224,11 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external BigInt64Array.$4(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external BigInt64Array.$4(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -8750,7 +10265,11 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [entries]
   ///
@@ -8766,7 +10285,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -8777,7 +10299,11 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSBigInt value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSBigInt value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -8787,7 +10313,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - BigInt64Array
-  external BigInt64Array<_i1.JSArrayBuffer> filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external BigInt64Array<_i1.JSArrayBuffer> filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -8797,7 +10326,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - bigint | undefined
-  external _i1.JSBigInt? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBigInt? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -8807,7 +10339,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -8817,7 +10352,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [includes]
   ///
@@ -8827,7 +10365,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSBigInt searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSBigInt searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -8837,7 +10378,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSBigInt searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSBigInt searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -8862,7 +10406,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSBigInt searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSBigInt searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -8877,7 +10424,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - BigInt64Array
-  external BigInt64Array<_i1.JSArrayBuffer> map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external BigInt64Array<_i1.JSArrayBuffer> map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -8901,7 +10451,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$2<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$2<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -8925,7 +10478,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$2<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$2<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -8941,7 +10497,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSBigInt> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSBigInt> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -8951,7 +10510,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - BigInt64Array
-  external BigInt64Array<_i1.JSArrayBuffer> slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external BigInt64Array<_i1.JSArrayBuffer> slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -8961,7 +10523,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -8980,7 +10545,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - BigInt64Array
-  external BigInt64Array<TArrayBuffer> subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external BigInt64Array<TArrayBuffer> subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString]
   ///
@@ -8990,7 +10558,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - string
-  external _i1.JSString toLocaleString([_i1.JSAny locales, _i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString([
+    _i1.JSAny locales,
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [toString$]
   ///
@@ -9015,7 +10586,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// readonly null$: "BigInt64Array"
   external _i1.JSString get null$;
-  external void operator []=(_i1.JSNumber index, _i1.JSBigInt value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
   external _i1.JSBigInt operator [](_i1.JSNumber index);
 
   /// Method [at]
@@ -9039,7 +10613,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSBigInt>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSBigInt>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -9050,7 +10627,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   /// Returns:
   /// - bigint | undefined
   @_i1.JS('findLast')
-  external _i1.JSBigInt? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBigInt? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -9060,7 +10640,10 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -9075,7 +10658,8 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   ///
   /// Returns:
   /// - BigInt64Array
-  external BigInt64Array<_i1.JSArrayBuffer> toSorted([_i1.JSFunction compareFn]);
+  external BigInt64Array<_i1.JSArrayBuffer> toSorted(
+      [_i1.JSFunction compareFn]);
 
   /// Method [with$]
   ///
@@ -9086,11 +10670,15 @@ extension type BigInt64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObjec
   /// Returns:
   /// - BigInt64Array
   @_i1.JS('with')
-  external BigInt64Array<_i1.JSArrayBuffer> with$(_i1.JSNumber index, _i1.JSBigInt value);
+  external BigInt64Array<_i1.JSArrayBuffer> with$(
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 }
 
 /// Interface [BigUint64Array]
-extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Constructor
   ///
   /// Parameters:
@@ -9112,7 +10700,11 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   /// - buffer: TArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external BigUint64Array.$3(TArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external BigUint64Array.$3(
+    TArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -9120,7 +10712,11 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   /// - buffer: ArrayBuffer
   /// - byteOffset: number
   /// - length: number
-  external BigUint64Array.$4(_i1.JSArrayBuffer buffer, [_i1.JSNumber byteOffset, _i1.JSNumber length]);
+  external BigUint64Array.$4(
+    _i1.JSArrayBuffer buffer, [
+    _i1.JSNumber byteOffset,
+    _i1.JSNumber length,
+  ]);
 
   /// Constructor
   ///
@@ -9157,7 +10753,11 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// -
-  external _i1.JSAny copyWithin(_i1.JSNumber target, _i1.JSNumber start, [_i1.JSNumber end]);
+  external _i1.JSAny copyWithin(
+    _i1.JSNumber target,
+    _i1.JSNumber start, [
+    _i1.JSNumber end,
+  ]);
 
   /// Method [entries]
   ///
@@ -9173,7 +10773,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean every(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean every(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [fill]
   ///
@@ -9184,7 +10787,11 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// -
-  external _i1.JSAny fill(_i1.JSBigInt value, [_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSAny fill(
+    _i1.JSBigInt value, [
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [filter]
   ///
@@ -9194,7 +10801,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - BigUint64Array
-  external BigUint64Array<_i1.JSArrayBuffer> filter(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external BigUint64Array<_i1.JSArrayBuffer> filter(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [find]
   ///
@@ -9204,7 +10814,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - bigint | undefined
-  external _i1.JSBigInt? find(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBigInt? find(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findIndex]
   ///
@@ -9214,7 +10827,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [forEach]
   ///
@@ -9224,7 +10840,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - void
-  external void forEach(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external void forEach(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [includes]
   ///
@@ -9234,7 +10853,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean includes(_i1.JSBigInt searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSBoolean includes(
+    _i1.JSBigInt searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [indexOf]
   ///
@@ -9244,7 +10866,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber indexOf(_i1.JSBigInt searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber indexOf(
+    _i1.JSBigInt searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Method [join]
   ///
@@ -9269,7 +10894,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber lastIndexOf(_i1.JSBigInt searchElement, [_i1.JSNumber fromIndex]);
+  external _i1.JSNumber lastIndexOf(
+    _i1.JSBigInt searchElement, [
+    _i1.JSNumber fromIndex,
+  ]);
 
   /// Property [length]
   ///
@@ -9284,7 +10912,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - BigUint64Array
-  external BigUint64Array<_i1.JSArrayBuffer> map(_i1.JSFunction callbackfn, [_i1.JSAny thisArg]);
+  external BigUint64Array<_i1.JSArrayBuffer> map(
+    _i1.JSFunction callbackfn, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [reduce$1]
   ///
@@ -9308,7 +10939,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   /// Returns:
   /// - U
   @_i1.JS('reduce')
-  external U reduce$2<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduce$2<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reduceRight$1]
   ///
@@ -9332,7 +10966,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   /// Returns:
   /// - U
   @_i1.JS('reduceRight')
-  external U reduceRight$2<U extends _i1.JSAny>(_i1.JSFunction callbackfn, U initialValue);
+  external U reduceRight$2<U extends _i1.JSAny>(
+    _i1.JSFunction callbackfn,
+    U initialValue,
+  );
 
   /// Method [reverse]
   ///
@@ -9348,7 +10985,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - void
-  external void set(ArrayLike<_i1.JSBigInt> array, [_i1.JSNumber offset]);
+  external void set(
+    ArrayLike<_i1.JSBigInt> array, [
+    _i1.JSNumber offset,
+  ]);
 
   /// Method [slice]
   ///
@@ -9358,7 +10998,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - BigUint64Array
-  external BigUint64Array<_i1.JSArrayBuffer> slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external BigUint64Array<_i1.JSArrayBuffer> slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [some]
   ///
@@ -9368,7 +11011,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - boolean
-  external _i1.JSBoolean some(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBoolean some(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [sort]
   ///
@@ -9387,7 +11033,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - BigUint64Array
-  external BigUint64Array<TArrayBuffer> subarray([_i1.JSNumber begin, _i1.JSNumber end]);
+  external BigUint64Array<TArrayBuffer> subarray([
+    _i1.JSNumber begin,
+    _i1.JSNumber end,
+  ]);
 
   /// Method [toLocaleString]
   ///
@@ -9397,7 +11046,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - string
-  external _i1.JSString toLocaleString([_i1.JSAny locales, _i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString([
+    _i1.JSAny locales,
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [toString$]
   ///
@@ -9422,7 +11074,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// readonly null$: "BigUint64Array"
   external _i1.JSString get null$;
-  external void operator []=(_i1.JSNumber index, _i1.JSBigInt value);
+  external void operator []=(
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
   external _i1.JSBigInt operator [](_i1.JSNumber index);
 
   /// Method [at]
@@ -9446,7 +11101,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   /// Returns:
   /// - S | undefined
   @_i1.JS('findLast')
-  external S? findLast$1<S extends _i1.JSBigInt>(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external S? findLast$1<S extends _i1.JSBigInt>(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLast$2]
   ///
@@ -9457,7 +11115,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   /// Returns:
   /// - bigint | undefined
   @_i1.JS('findLast')
-  external _i1.JSBigInt? findLast$2(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSBigInt? findLast$2(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [findLastIndex]
   ///
@@ -9467,7 +11128,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - number
-  external _i1.JSNumber findLastIndex(_i1.JSFunction predicate, [_i1.JSAny thisArg]);
+  external _i1.JSNumber findLastIndex(
+    _i1.JSFunction predicate, [
+    _i1.JSAny thisArg,
+  ]);
 
   /// Method [toReversed]
   ///
@@ -9482,7 +11146,8 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   ///
   /// Returns:
   /// - BigUint64Array
-  external BigUint64Array<_i1.JSArrayBuffer> toSorted([_i1.JSFunction compareFn]);
+  external BigUint64Array<_i1.JSArrayBuffer> toSorted(
+      [_i1.JSFunction compareFn]);
 
   /// Method [with$]
   ///
@@ -9493,7 +11158,10 @@ extension type BigUint64Array<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObje
   /// Returns:
   /// - BigUint64Array
   @_i1.JS('with')
-  external BigUint64Array<_i1.JSArrayBuffer> with$(_i1.JSNumber index, _i1.JSBigInt value);
+  external BigUint64Array<_i1.JSArrayBuffer> with$(
+    _i1.JSNumber index,
+    _i1.JSBigInt value,
+  );
 }
 
 /// Interface [Number]
@@ -9513,7 +11181,10 @@ extension type Number.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$1([_i2.LocalesArgument locales, _i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$1([
+    _i2.LocalesArgument locales,
+    _i2.NumberFormatOptions options,
+  ]);
 
   /// Method [toString$]
   ///
@@ -9567,11 +11238,15 @@ extension type Number.$(_i1.JSObject _) implements _i1.JSObject {
   /// Returns:
   /// - string
   @_i1.JS('toLocaleString')
-  external _i1.JSString toLocaleString$2([_i1.JSAny locales, _i2.NumberFormatOptions options]);
+  external _i1.JSString toLocaleString$2([
+    _i1.JSAny locales,
+    _i2.NumberFormatOptions options,
+  ]);
 }
 
 /// Interface [PromiseFulfilledResult]
-extension type PromiseFulfilledResult<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PromiseFulfilledResult<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Property [status]
   ///
   /// status: "fulfilled"
@@ -9603,16 +11278,19 @@ typedef PromiseSettledResult<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [RegExpStringIterator]
 extension type RegExpStringIterator<T extends _i1.JSAny>.$(_i1.JSObject _)
-    implements _i1.JSObject, IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
+    implements IteratorObject<T, BuiltinIteratorReturn, _i1.JSAny> {}
 
 /// Interface [AggregateError]
-extension type AggregateError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type AggregateError.$(_i1.JSObject _) implements Error {
   /// Constructor
   ///
   /// Parameters:
   /// - errors: Iterable
   /// - message: string
-  external AggregateError.$1(Iterable<_i1.JSAny, _i1.JSAny, _i1.JSAny> errors, [_i1.JSString message]);
+  external AggregateError.$1(
+    Iterable<_i1.JSAny, _i1.JSAny, _i1.JSAny> errors, [
+    _i1.JSString message,
+  ]);
 
   /// Constructor
   ///
@@ -9633,7 +11311,8 @@ extension type AggregateError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 }
 
 /// Interface [WeakRef]
-extension type WeakRef<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type WeakRef<T extends WeakKey>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -9656,7 +11335,8 @@ extension type WeakRef<T extends WeakKey>.$(_i1.JSObject _) implements _i1.JSObj
 }
 
 /// Interface [FinalizationRegistry]
-extension type FinalizationRegistry<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type FinalizationRegistry<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Constructor
   ///
   /// Type Parameters:
@@ -9680,7 +11360,11 @@ extension type FinalizationRegistry<T extends _i1.JSAny>.$(_i1.JSObject _) imple
   ///
   /// Returns:
   /// - void
-  external void register(WeakKey target, T heldValue, [WeakKey unregisterToken]);
+  external void register(
+    WeakKey target,
+    T heldValue, [
+    WeakKey unregisterToken,
+  ]);
 
   /// Method [unregister]
   ///
@@ -9707,7 +11391,10 @@ extension type Error.$(_i1.JSObject _) implements _i1.JSObject {
   /// Parameters:
   /// - message: string
   /// - options: ErrorOptions
-  external Error.$1([_i1.JSString message, ErrorOptions options]);
+  external Error.$1([
+    _i1.JSString message,
+    ErrorOptions options,
+  ]);
 
   /// Constructor
   ///
@@ -9737,10 +11424,11 @@ extension type Error.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [RegExpIndicesArray]
-extension type RegExpIndicesArray.$(_i1.JSObject _) implements _i1.JSObject, Array<_i1.JSArray<_i1.JSAny>> {
+extension type RegExpIndicesArray.$(_i1.JSObject _)
+    implements Array<_i1.JSArray<_i1.JSAny>> {
   /// Property [groups]
   ///
-  /// groups?:
+  /// groups?: {  }
   external _i1.JSObject? groups;
 }
 
@@ -9760,13 +11448,13 @@ extension type WeakKeyTypes.$(_i1.JSObject _) implements _i1.JSObject {
 /// Variable [NaN]
 ///
 /// NaN: number
-@_i1.JS('null')
+@_i1.JS('NaN')
 external _i1.JSNumber NaN;
 
 /// Variable [Infinity]
 ///
 /// Infinity: number
-@_i1.JS('null')
+@_i1.JS('Infinity')
 external _i1.JSNumber Infinity;
 
 /// Method [eval]
@@ -9782,7 +11470,10 @@ external _i1.JSAny eval(_i1.JSString x);
 /// - string: string
 /// - radix: number
 @_i1.JS('parseInt')
-external _i1.JSNumber parseInt(_i1.JSString string, [_i1.JSNumber radix]);
+external _i1.JSNumber parseInt(
+  _i1.JSString string, [
+  _i1.JSNumber radix,
+]);
 
 /// Method [parseFloat]
 ///
@@ -9892,7 +11583,10 @@ extension type PropertyDescriptor.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Interface [PropertyDescriptorMap]
 extension type PropertyDescriptorMap.$(_i1.JSObject _) implements _i1.JSObject {
-  external void operator []=(PropertyKey key, PropertyDescriptor value);
+  external void operator []=(
+    PropertyKey key,
+    PropertyDescriptor value,
+  );
   external PropertyDescriptor operator [](PropertyKey key);
 }
 
@@ -9967,7 +11661,7 @@ typedef ThisParameterType<T extends _i1.JSAny> = _i1.JSAny;
 typedef OmitThisParameter<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [CallableFunction]
-extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Function$ {
+extension type CallableFunction.$(_i1.JSObject _) implements Function$ {
   /// Method [apply$1]
   ///
   /// Type Parameters:
@@ -9981,7 +11675,10 @@ extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Funct
   /// Returns:
   /// - R
   @_i1.JS('apply')
-  external R apply$1<T extends _i1.JSAny, R extends _i1.JSAny>(_i1.JSFunction this$, T thisArg);
+  external R apply$1<T extends _i1.JSAny, R extends _i1.JSAny>(
+    _i1.JSFunction this$,
+    T thisArg,
+  );
 
   /// Method [apply$2]
   ///
@@ -9998,7 +11695,8 @@ extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Funct
   /// Returns:
   /// - R
   @_i1.JS('apply')
-  external R apply$2<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>, R extends _i1.JSAny>(
+  external R apply$2<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>,
+      R extends _i1.JSAny>(
     _i1.JSFunction this$,
     T thisArg,
     A args,
@@ -10018,11 +11716,16 @@ extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Funct
   ///
   /// Returns:
   /// - R
-  external R call<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>, R extends _i1.JSAny>(
+  external R call<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>,
+      R extends _i1.JSAny>(
     _i1.JSFunction this$,
-    T thisArg,
-    A args,
-  );
+    T thisArg, [
+    A? args,
+    A? args2,
+    A? args3,
+    A? args4,
+    A? args5,
+  ]);
 
   /// Method [bind$1]
   ///
@@ -10036,7 +11739,10 @@ extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Funct
   /// Returns:
   /// - OmitThisParameter
   @_i1.JS('bind')
-  external OmitThisParameter<T> bind$1<T extends _i1.JSAny>(T this$, ThisParameterType<T> thisArg);
+  external OmitThisParameter<T> bind$1<T extends _i1.JSAny>(
+    T this$,
+    ThisParameterType<T> thisArg,
+  );
 
   /// Method [bind$2]
   ///
@@ -10055,15 +11761,22 @@ extension type CallableFunction.$(_i1.JSObject _) implements _i1.JSObject, Funct
   /// - (...args: B) => R
   @_i1.JS('bind')
   external _i1.JSFunction bind$2<
-    T extends _i1.JSAny,
-    A extends _i1.JSArray<_i1.JSAny>,
-    B extends _i1.JSArray<_i1.JSAny>,
-    R extends _i1.JSAny
-  >(_i1.JSFunction this$, T thisArg, A args);
+      T extends _i1.JSAny,
+      A extends _i1.JSArray<_i1.JSAny>,
+      B extends _i1.JSArray<_i1.JSAny>,
+      R extends _i1.JSAny>(
+    _i1.JSFunction this$,
+    T thisArg, [
+    A? args,
+    A? args2,
+    A? args3,
+    A? args4,
+    A? args5,
+  ]);
 }
 
 /// Interface [NewableFunction]
-extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Function$ {
+extension type NewableFunction.$(_i1.JSObject _) implements Function$ {
   /// Method [apply$1]
   ///
   /// Type Parameters:
@@ -10076,7 +11789,10 @@ extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Functi
   /// Returns:
   /// - void
   @_i1.JS('apply')
-  external void apply$1<T extends _i1.JSAny>(T this$, T thisArg);
+  external void apply$1<T extends _i1.JSAny>(
+    T this$,
+    T thisArg,
+  );
 
   /// Method [apply$2]
   ///
@@ -10092,7 +11808,11 @@ extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Functi
   /// Returns:
   /// - void
   @_i1.JS('apply')
-  external void apply$2<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>>(T this$, T thisArg, A args);
+  external void apply$2<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>>(
+    T this$,
+    T thisArg,
+    A args,
+  );
 
   /// Method [call]
   ///
@@ -10107,7 +11827,15 @@ extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Functi
   ///
   /// Returns:
   /// - void
-  external void call<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>>(T this$, T thisArg, A args);
+  external void call<T extends _i1.JSAny, A extends _i1.JSArray<_i1.JSAny>>(
+    T this$,
+    T thisArg, [
+    A? args,
+    A? args2,
+    A? args3,
+    A? args4,
+    A? args5,
+  ]);
 
   /// Method [bind$1]
   ///
@@ -10121,7 +11849,10 @@ extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Functi
   /// Returns:
   /// - T
   @_i1.JS('bind')
-  external T bind$1<T extends _i1.JSAny>(T this$, _i1.JSAny thisArg);
+  external T bind$1<T extends _i1.JSAny>(
+    T this$,
+    _i1.JSAny thisArg,
+  );
 
   /// Method [bind$2]
   ///
@@ -10138,11 +11869,16 @@ extension type NewableFunction.$(_i1.JSObject _) implements _i1.JSObject, Functi
   /// Returns:
   /// -
   @_i1.JS('bind')
-  external R bind$2<A extends _i1.JSArray<_i1.JSAny>, B extends _i1.JSArray<_i1.JSAny>, R extends _i1.JSAny>(
+  external R bind$2<A extends _i1.JSArray<_i1.JSAny>,
+      B extends _i1.JSArray<_i1.JSAny>, R extends _i1.JSAny>(
     R this$,
-    _i1.JSAny thisArg,
-    A args,
-  );
+    _i1.JSAny thisArg, [
+    A? args,
+    A? args2,
+    A? args3,
+    A? args4,
+    A? args5,
+  ]);
 }
 
 /// Interface [Boolean]
@@ -10161,7 +11897,8 @@ extension type Boolean.$(_i1.JSObject _) implements _i1.JSObject {
 }
 
 /// Interface [TemplateStringsArray]
-extension type TemplateStringsArray.$(_i1.JSObject _) implements _i1.JSObject, ReadonlyArray<_i1.JSString> {
+extension type TemplateStringsArray.$(_i1.JSObject _)
+    implements ReadonlyArray<_i1.JSString> {
   /// Property [raw]
   ///
   /// readonly raw: readonly string[]
@@ -10188,13 +11925,19 @@ extension type ImportCallOptions.$(_i1.JSObject _) implements _i1.JSObject {
 
 /// Interface [ImportAssertions]
 extension type ImportAssertions.$(_i1.JSObject _) implements _i1.JSObject {
-  external void operator []=(_i1.JSString key, _i1.JSString value);
+  external void operator []=(
+    _i1.JSString key,
+    _i1.JSString value,
+  );
   external _i1.JSString operator [](_i1.JSString key);
 }
 
 /// Interface [ImportAttributes]
 extension type ImportAttributes.$(_i1.JSObject _) implements _i1.JSObject {
-  external void operator []=(_i1.JSString key, _i1.JSString value);
+  external void operator []=(
+    _i1.JSString key,
+    _i1.JSString value,
+  );
   external _i1.JSString operator [](_i1.JSString key);
 }
 
@@ -10205,13 +11948,16 @@ extension type ImportAttributes.$(_i1.JSObject _) implements _i1.JSObject {
 external Math Math$;
 
 /// Interface [EvalError]
-extension type EvalError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type EvalError.$(_i1.JSObject _) implements Error {
   /// Constructor
   ///
   /// Parameters:
   /// - message: string
   /// - options: ErrorOptions
-  external EvalError.$1([_i1.JSString message, ErrorOptions options]);
+  external EvalError.$1([
+    _i1.JSString message,
+    ErrorOptions options,
+  ]);
 
   /// Constructor
   ///
@@ -10221,13 +11967,16 @@ extension type EvalError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 }
 
 /// Interface [RangeError]
-extension type RangeError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type RangeError.$(_i1.JSObject _) implements Error {
   /// Constructor
   ///
   /// Parameters:
   /// - message: string
   /// - options: ErrorOptions
-  external RangeError.$1([_i1.JSString message, ErrorOptions options]);
+  external RangeError.$1([
+    _i1.JSString message,
+    ErrorOptions options,
+  ]);
 
   /// Constructor
   ///
@@ -10237,13 +11986,16 @@ extension type RangeError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 }
 
 /// Interface [ReferenceError]
-extension type ReferenceError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type ReferenceError.$(_i1.JSObject _) implements Error {
   /// Constructor
   ///
   /// Parameters:
   /// - message: string
   /// - options: ErrorOptions
-  external ReferenceError.$1([_i1.JSString message, ErrorOptions options]);
+  external ReferenceError.$1([
+    _i1.JSString message,
+    ErrorOptions options,
+  ]);
 
   /// Constructor
   ///
@@ -10253,13 +12005,16 @@ extension type ReferenceError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 }
 
 /// Interface [SyntaxError]
-extension type SyntaxError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type SyntaxError.$(_i1.JSObject _) implements Error {
   /// Constructor
   ///
   /// Parameters:
   /// - message: string
   /// - options: ErrorOptions
-  external SyntaxError.$1([_i1.JSString message, ErrorOptions options]);
+  external SyntaxError.$1([
+    _i1.JSString message,
+    ErrorOptions options,
+  ]);
 
   /// Constructor
   ///
@@ -10269,13 +12024,16 @@ extension type SyntaxError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 }
 
 /// Interface [TypeError]
-extension type TypeError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type TypeError.$(_i1.JSObject _) implements Error {
   /// Constructor
   ///
   /// Parameters:
   /// - message: string
   /// - options: ErrorOptions
-  external TypeError.$1([_i1.JSString message, ErrorOptions options]);
+  external TypeError.$1([
+    _i1.JSString message,
+    ErrorOptions options,
+  ]);
 
   /// Constructor
   ///
@@ -10285,13 +12043,16 @@ extension type TypeError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 }
 
 /// Interface [URIError]
-extension type URIError.$(_i1.JSObject _) implements _i1.JSObject, Error {
+extension type URIError.$(_i1.JSObject _) implements Error {
   /// Constructor
   ///
   /// Parameters:
   /// - message: string
   /// - options: ErrorOptions
-  external URIError.$1([_i1.JSString message, ErrorOptions options]);
+  external URIError.$1([
+    _i1.JSString message,
+    ErrorOptions options,
+  ]);
 
   /// Constructor
   ///
@@ -10307,12 +12068,16 @@ extension type URIError.$(_i1.JSObject _) implements _i1.JSObject, Error {
 external JSON JSON$;
 
 /// Interface [ConcatArray]
-extension type ConcatArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ConcatArray<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Property [length]
   ///
   /// readonly length: number
   external _i1.JSNumber get length;
-  external void operator []=(_i1.JSNumber n, T value);
+  external void operator []=(
+    _i1.JSNumber n,
+    T value,
+  );
   external T operator [](_i1.JSNumber n);
 
   /// Method [join]
@@ -10332,11 +12097,15 @@ extension type ConcatArray<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
   ///
   /// Returns:
   /// - T[]
-  external _i1.JSArray<T> slice([_i1.JSNumber start, _i1.JSNumber end]);
+  external _i1.JSArray<T> slice([
+    _i1.JSNumber start,
+    _i1.JSNumber end,
+  ]);
 }
 
 /// Interface [TypedPropertyDescriptor]
-extension type TypedPropertyDescriptor<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type TypedPropertyDescriptor<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Property [enumerable]
   ///
   /// enumerable?: boolean
@@ -10374,7 +12143,8 @@ extension type TypedPropertyDescriptor<T extends _i1.JSAny>.$(_i1.JSObject _) im
 typedef PromiseConstructorLike<T extends _i1.JSAny> = PromiseLike<T>;
 
 /// Interface [PromiseLike]
-extension type PromiseLike<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type PromiseLike<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Method [then]
   ///
   /// Type Parameters:
@@ -10387,7 +12157,8 @@ extension type PromiseLike<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
   ///
   /// Returns:
   /// - PromiseLike
-  external PromiseLike<_i1.JSAny> then<TResult1 extends _i1.JSAny, TResult2 extends _i1.JSAny>([
+  external PromiseLike<_i1.JSAny>
+      then<TResult1 extends _i1.JSAny, TResult2 extends _i1.JSAny>([
     _i1.JSFunction? onfulfilled,
     _i1.JSFunction? onrejected,
   ]);
@@ -10399,12 +12170,16 @@ extension type PromiseLike<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1
 typedef Awaited<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [ArrayLike]
-extension type ArrayLike<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayLike<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {
   /// Property [length]
   ///
   /// readonly length: number
   external _i1.JSNumber get length;
-  external void operator []=(_i1.JSNumber n, T value);
+  external void operator []=(
+    _i1.JSNumber n,
+    T value,
+  );
   external T operator [](_i1.JSNumber n);
 }
 
@@ -10446,7 +12221,8 @@ typedef Extract<T extends _i1.JSAny, U extends _i1.JSAny> = _i1.JSAny;
 /// Typedef [Omit]
 ///
 /// Pick
-typedef Omit<T extends _i1.JSAny, K extends _i1.JSAny> = Pick<T, Exclude<_i1.JSAny, K>>;
+typedef Omit<T extends _i1.JSAny, K extends _i1.JSAny>
+    = Pick<T, Exclude<_i1.JSAny, K>>;
 
 /// Typedef [NonNullable]
 ///
@@ -10499,7 +12275,8 @@ typedef Uncapitalize<S extends _i1.JSString> = _i1.JSAny;
 typedef NoInfer<T extends _i1.JSAny> = _i1.JSAny;
 
 /// Interface [ThisType]
-extension type ThisType<T extends _i1.JSAny>.$(_i1.JSObject _) implements _i1.JSObject {}
+extension type ThisType<T extends _i1.JSAny>.$(_i1.JSObject _)
+    implements _i1.JSObject {}
 
 /// Typedef [WeakKey]
 ///
@@ -10512,7 +12289,8 @@ typedef WeakKey = _i1.JSAny;
 typedef ArrayBufferLike = _i1.JSAny;
 
 /// Interface [ArrayBufferView]
-extension type ArrayBufferView<TArrayBuffer extends ArrayBufferLike>.$(_i1.JSObject _) implements _i1.JSObject {
+extension type ArrayBufferView<TArrayBuffer extends ArrayBufferLike>.$(
+    _i1.JSObject _) implements _i1.JSObject {
   /// Property [buffer]
   ///
   /// readonly buffer: TArrayBuffer

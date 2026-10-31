@@ -1924,11 +1924,20 @@ class TsModuleDeclaration extends TsNode {
   }) : super(TsNodeKind.moduleDeclaration, flags, meta ?? TsNodeMeta());
 
   factory TsModuleDeclaration.fromJson(Map<String, dynamic> json) {
+    final name = json['name'] as Map<String, dynamic>;
+    // Older exports omit declarationKind; derive it from the name node.
+    final declarationKind =
+        json['declarationKind'] as String? ??
+        switch (name) {
+          {'kind': 'StringLiteral'} => 'module',
+          {'kind': 'Identifier', 'text': 'global'} => 'global',
+          _ => 'namespace',
+        };
     return TsModuleDeclaration(
       _fromJsonStringArray(json['flags']),
       ListNode(_fromJsonObjectArray(json['modifiers'])),
-      SingleNode(_fromJsonObject(json['name']), affectsParent: true),
-      json['declarationKind'] as String,
+      SingleNode(_fromJsonObject(name), affectsParent: true),
+      declarationKind,
       NullableNode(_fromNullableJsonObject(json['body'])),
     );
   }
