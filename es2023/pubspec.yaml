@@ -1,0 +1,12 @@
+name: es2023
+description: Bindings for the ECMAScript 2023 specification.
+version: 0.2.0
+repository: https://github.com/blimster/es2023
+
+environment:
+  sdk: ^3.4.0
+
+dev_dependencies:
+  build_runner: ^2.4.0
+  build_web_compilers: ^4.0.4
+  web: ^1.1.0

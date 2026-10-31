@@ -1,0 +1,12 @@
+dependencies:
+  - dart:
+      package: js_interop
+      library: js_interop
+sanitizer:
+  phases:
+    - mergeModules
+    - mergeInterfaces
+    - mergeInterfacesIntoClasses
+    - missingTypeArgsAndParams
+    - constructorInterfaces
+    - invalidIdentifiers
